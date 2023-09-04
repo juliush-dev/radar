@@ -17,8 +17,8 @@ use App\Models\LearningMaterial;
 use App\Models\ModificationRequest;
 use App\Models\PriorKnowledge;
 use App\Models\Subject;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class ContributionController extends Controller
 {
@@ -27,21 +27,27 @@ class ContributionController extends Controller
      */
     public function index()
     {
-        $contributions = Auth::user()->contributions;
-        $contributionsReferences = $contributions->map(function (Contribution $contribution) {
-            return $contribution->reference();
-        });
-        $contributedKnowHow = $contributionsReferences->filter(
-            function ($reference) {
-                return $reference instanceof KnowHow;
-            }
-        );
-        dd($contributedKnowHow);
-        $contributedPriorKnowledge = $contributionsReferences->filter(
-            function ($reference) {
-                return $reference instanceof PriorKnowledge;
-            }
-        );
+        $userId = Auth::user()->id;
+        $contributedKnowHow = KnowHow::whereHas('contribution', function ($query) use ($userId) {
+            $query->where(
+                'contributor_id',
+                $userId,
+            );
+        })->get();
+
+        $contributedPriorKnowledge = PriorKnowledge::whereHas('contribution', function ($query) use ($userId) {
+            $query->where(
+                'contributor_id',
+                $userId,
+            );
+        })->get();
+
+        $contributedLearningMaterials = LearningMaterial::whereHas('contribution', function ($query) use ($userId) {
+            $query->where(
+                'contributor_id',
+                $userId,
+            );
+        })->get();
 
         $publicApprovedKnowHowAvailable =
             KnowHow::whereHas('contribution', function ($query) {
@@ -113,6 +119,8 @@ class ContributionController extends Controller
             'contribution.index',
             [
                 'contributedKnowHow' => $contributedKnowHow,
+                'contributedPriorKnowledge' => $contributedPriorKnowledge,
+                'contributedLearningMaterials' => $contributedLearningMaterials,
                 'contributedPriorKnowledge' => $contributedPriorKnowledge,
                 'publicApprovedKnowHowAvailable' => $publicApprovedKnowHowAvailable,
                 'publicApprovedPriorKnowledgeAvailable' => $publicApprovedPriorKnowledgeAvailable,
@@ -197,6 +205,7 @@ class ContributionController extends Controller
                 "link" => $request->enum('source', Source::class) == Source::InternetPage ? $request->input('link') : null,
             ]
         );
+        Toast::title('New Information submitted successfuly!')->autoDismiss(10);
         return redirect()->route('contribution.index');
     }
 

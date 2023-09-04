@@ -14,7 +14,7 @@
                 </p>
                 <div class="text-center">
                     <x-nav-link :href="route('contribution.index')" type="call-to-action">
-                        Be the first to contribute
+                        Submit a new information
                     </x-nav-link>
                 </div>
             </div>
