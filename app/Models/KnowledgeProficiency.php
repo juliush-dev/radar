@@ -16,8 +16,8 @@ class KnowledgeProficiency extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function assessingPriorKnowledge(): BelongsTo
+    public function assessingKnowledge(): BelongsTo
     {
-        return $this->belongsTo(PriorKnowledge::class, 'assessing_prior_knowledge_id');
+        return $this->belongsTo(Knowledge::class, 'assessing_knowledge_id');
     }
 }

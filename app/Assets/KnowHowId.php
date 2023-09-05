@@ -3,7 +3,7 @@
 namespace App\Assets;
 
 
-class KnowHowId extends ValueObject
+class SkillId extends ValueObject
 {
     function __construct(private String $id)
     {

@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class Teacher extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $fillable = [
+        'name',
+        'salutation',
+        'email',
+    ];
+
     public function contribution(): MorphOne
     {
         return $this->morphOne(Contribution::class, 'contribution');

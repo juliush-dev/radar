@@ -19,7 +19,7 @@ return new class extends Migration
                 'salutation',
                 array_column(Salutation::cases(), 'value'),
             );
-            $table->string('teacher_email')->unique();
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }

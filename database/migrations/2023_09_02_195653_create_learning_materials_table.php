@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('required_for_prior_knowledge_id');
+            $table->foreignUuid('required_for_knowledge_id');
             $table->enum(
                 "learning_material_type",
                 array_column(LearningMaterialType::cases(), 'value'),

@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\KnowledgeField;
-use App\Enums\KnowledgeGroup;
 use App\Enums\YearLevel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,20 +13,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('know_hows', function (Blueprint $table) {
+        Schema::create('knowledge', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('covered_by_subject_id');
+            $table->foreignUuid('required_by_skill_id');
             $table->set(
-                'fields_covered_by_it',
-                array_column(KnowledgeField::cases(), 'value',)
-            );
-            $table->set(
-                'years_levels_covering_it',
+                'year_teached_at',
                 array_column(YearLevel::cases(), 'value'),
             );
-            $table->enum(
-                'knowledge_group_covering_it',
-                array_column(KnowledgeGroup::cases(), 'value'),
-            )->nullable();
+            $table->set(
+                'knowledge_field',
+                array_column(KnowledgeField::cases(), 'value'),
+            );
             $table->timestamps();
         });
     }
@@ -37,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('know_hows');
+        Schema::dropIfExists('knowledge');
     }
 };

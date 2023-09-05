@@ -16,7 +16,7 @@
     @spladeHead
 </head>
 
-<body class="font-sans antialiased h-screen flex flex-col text-slate-300 bg-slate-800">
+<body class="font-sans antialiased h-screen flex flex-col text-slate-400 bg-slate-800">
     @splade
 </body>
 

@@ -3,6 +3,7 @@
 
         @if ($skills->count() > 0)
             @foreach ($skills as $skill)
+                {{ $skill->contribution->title }} <br>
                 {{ $skill->fields_covered_by_it }} <br>
                 {{ $skill->years_levels_covering_it }} <br>
                 {{ $skill->knowledge_group_covering_it }} <br>

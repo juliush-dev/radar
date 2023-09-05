@@ -7,7 +7,7 @@
                 <div class="uppercase text-center text-5xl font-light">radar</div>
                 <x-authentication />
             </div>
-            <x-nav-link :href="route('know-how.index')" type="call-to-action">
+            <x-nav-link :href="route('skill.index')" type="call-to-action">
                 Acquire these skills before it is too late
             </x-nav-link>
         </div>

@@ -18,6 +18,6 @@ class LearningMaterial extends Model
 
     public function priorKnowledge(): BelongsTo
     {
-        return $this->belongsTo(PriorKnowledge::class, 'required_for_prior_knowledge_id');
+        return $this->belongsTo(Knowledge::class, 'required_for_knowledge_id');
     }
 }

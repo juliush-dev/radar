@@ -4,7 +4,7 @@
     <template #default="button">
         <{{ $type === 'link' ? 'Link' : 'button' }} :disabled="button.spinner"
             {{ $attributes->class([
-                    'rounded-sm border border-teal-300 outline outline-1 p-2 py-3 inline-flex items.center justify.center gap-2 capitalize leading-5 focus:text-teal-400 hover:text-teal-400 shadow-md shadow-teal-500/60 transition duration-500 ease-in-out',
+                    'rounded-sm border border-teal-300 outline outline-1 p-2 py-3 inline-flex items.center justify.center gap-2 first-letter:capitalize leading-5 focus:text-teal-400 hover:text-teal-400 shadow-md shadow-teal-500/60 transition duration-500 ease-in-out',
                     ' hover:bg-teal-700 text-teal-400 border-0 hover:text-teal-200 focus:ring-teal-400' =>
                         !$customStyling && $primary,
                     'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>

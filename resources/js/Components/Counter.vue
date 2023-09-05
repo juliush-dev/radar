@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div>
         <div @click="count++" class="p-8 border border-teal-200">{{ count }}</div>
     </div>
 </template>

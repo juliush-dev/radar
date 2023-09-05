@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PriorKnowledgeSeeder extends Seeder
+class KnowledgeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

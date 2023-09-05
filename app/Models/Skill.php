@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class KnowHow extends Model
+class Skill extends Model
 {
     use HasFactory, HasUuids;
 
@@ -29,8 +29,8 @@ class KnowHow extends Model
         return $this->morphOne(Contribution::class, 'contribution');
     }
 
-    public function requiredPriorKnowledge(): HasMany
+    public function requiredKnowledge(): HasMany
     {
-        return $this->hasMany(PriorKnowledge::class);
+        return $this->hasMany(Knowledge::class);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class PriorKnowledge extends Model
+class Knowledge extends Model
 {
     use HasFactory, HasUuids;
     public function contribution(): MorphOne
@@ -27,9 +27,9 @@ class PriorKnowledge extends Model
         return $this->hasMany(KnowledgeProficiency::class);
     }
 
-    public function KnowHowRequiringIt(): BelongsTo
+    public function SkillRequiringIt(): BelongsTo
     {
-        return $this->belongsTo(KnowHow::class, 'required_by_know_how_id');
+        return $this->belongsTo(Skill::class, 'required_by_skill_id');
     }
 
     public function requiredLearningMaterials(): HasMany

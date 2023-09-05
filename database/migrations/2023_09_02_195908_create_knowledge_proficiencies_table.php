@@ -19,7 +19,7 @@ return new class extends Migration
                 array_column(Assessment::cases(), 'value'),
             );
             $table->foreignUuid('author_id');
-            $table->foreignUuid('assessing_prior_knowledge');
+            $table->foreignUuid('assessing_knowledge');
             $table->timestamps();
         });
     }
