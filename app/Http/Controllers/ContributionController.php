@@ -28,41 +28,11 @@ class ContributionController extends Controller
      */
     public function index()
     {
-        $userId = Auth::user()->id;
-        $contributedSkills = Skill::whereHas('contribution', function ($query) use ($userId) {
-            $query->where(
-                'contributor_id',
-                $userId,
-            );
-        })->get();
-
-        $contributedTeachers = Teacher::whereHas('contribution', function ($query) use ($userId) {
-            $query->where(
-                'contributor_id',
-                $userId,
-            );
-        })->get();
-        $contributedSubjects = Subject::whereHas('contribution', function ($query) use ($userId) {
-            $query->where(
-                'contributor_id',
-                $userId,
-            );
-        })->get();
-
-        $contributedKnowledge = Knowledge::whereHas('contribution', function ($query) use ($userId) {
-            $query->where(
-                'contributor_id',
-                $userId,
-            );
-        })->get();
-
-        $contributedLearningMaterials = LearningMaterial::whereHas('contribution', function ($query) use ($userId) {
-            $query->where(
-                'contributor_id',
-                $userId,
-            );
-        })->get();
-
+        $contributedSkills = new \App\Tables\Contribution\Skills();
+        $contributedTeachers = new \App\Tables\Contribution\Teachers();
+        $contributedSubjects = new \App\Tables\Contribution\Subjects();
+        $contributedKnowledge = new \App\Tables\Contribution\Knowledge();
+        $contributedLearningMaterials = new \App\Tables\Contribution\LearningMaterials();
         $publicApprovedSkillAvailable =
             Skill::whereHas('contribution', function ($query) {
                 $query->where(
