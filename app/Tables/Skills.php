@@ -2,7 +2,10 @@
 
 namespace App\Tables;
 
+use App\Enums\ModificationRequestState;
+use App\Enums\ModificationType;
 use App\Models\Skill;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ProtoneMedia\Splade\AbstractTable;
@@ -37,7 +40,31 @@ class Skills extends AbstractTable
      */
     public function for()
     {
-        return Skill::query();
+        $publicCondition =
+            function ($query) {
+                $query->whereHas(
+                    'modificationRequests',
+                    function (Builder $query) {
+                        $query->latest('created_at')->whereIn(
+                            'modification_type',
+                            [
+                                ModificationType::Update->value,
+                                ModificationType::CreateAndMakePublic->value,
+                                ModificationType::MakePublic->value,
+                            ]
+                        )->where(
+                            'modification_request_state',
+                            ModificationRequestState::Approved->value
+                        );
+                    }
+                );
+            };
+
+        $publicSkills = Skill::whereHas(
+            'contribution',
+            $publicCondition,
+        )->get();
+        return $publicSkills;
     }
 
     /**
@@ -49,14 +76,10 @@ class Skills extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
-            ->withGlobalSearch(columns: ['id'])
-            ->column('id', sortable: true);
-
-        // ->searchInput()
-        // ->selectFilter()
-        // ->withGlobalSearch()
-
-        // ->bulkAction()
-        // ->export()
+            ->withGlobalSearch(columns: ['title'])
+            ->column('title')
+            ->column('group')
+            ->column('years levels covering it')
+            ->column('field covered by it');
     }
 }

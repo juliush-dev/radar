@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\KnowledgeProficiency;
+use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class KnowledgeProficiencyPolicy
+class TopicPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class KnowledgeProficiencyPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, KnowledgeProficiency $knowledgeProficiency): bool
+    public function view(User $user, Topic $priorTopic): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class KnowledgeProficiencyPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, KnowledgeProficiency $knowledgeProficiency): bool
+    public function update(User $user, Topic $priorTopic): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class KnowledgeProficiencyPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, KnowledgeProficiency $knowledgeProficiency): bool
+    public function delete(User $user, Topic $priorTopic): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class KnowledgeProficiencyPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, KnowledgeProficiency $knowledgeProficiency): bool
+    public function restore(User $user, Topic $priorTopic): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class KnowledgeProficiencyPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, KnowledgeProficiency $knowledgeProficiency): bool
+    public function forceDelete(User $user, Topic $priorTopic): bool
     {
         //
     }

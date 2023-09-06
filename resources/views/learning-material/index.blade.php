@@ -29,11 +29,11 @@
                                         d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
                                 </svg>
 
-                                <span class="underline underline-offset-4">new Knowledge</span>
+                                <span class="underline underline-offset-4">new Topic</span>
                             </x-nav-link>
                         @endif
 
-                        @if ($publicApprovedKnowledgeAvailable || $contributedKnowledge->count() > 0)
+                        @if ($publicApprovedTopicAvailable || $contributedTopics->count() > 0)
                             <x-nav-link :href="route('skill.create')" type="call-to-action">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="inline w-6 h-6">
@@ -55,10 +55,7 @@
                     </div>
                 </x-splade-dropdown>
             </div>
-            @if (
-                $contributedSkills->count() == 0 &&
-                    $contributedKnowledge->count() == 0 &&
-                    $contributedLearningMaterials->count() == 0)
+            @if ($contributedSkills->count() == 0 && $contributedTopics->count() == 0 && $contributedLearningMaterials->count() == 0)
                 <div class="h-full flex items.center justify-center">
                     <div
                         class="my-auto w-1/2 text-xl flex gap-5 items.center p-5 border border-slate-500/60 rounded-sm shadow shadow-teal-800">
@@ -102,11 +99,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                                             </svg>
-                                            <label class="my-auto">Knowledge group covering it:</label>
+                                            <label class="my-auto">Topic group covering it:</label>
                                         </div>
                                         <div class="flex gap-2 items.center my-auto">
                                             <span
-                                                class="my-auto px-2 py-1 text-xs rounded bg-teal-900/60 text-teal-600">{{ $skill->knowledge_group_covering_it }}</span>
+                                                class="my-auto px-2 py-1 text-xs rounded bg-teal-900/60 text-teal-600">{{ $skill->topic_group_covering_it }}</span>
                                         </div>
                                     </div>
                                     <div class="flex gap-2 items.center">

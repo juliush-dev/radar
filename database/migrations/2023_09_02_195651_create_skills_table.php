@@ -1,7 +1,7 @@
 <?php
 
-use App\Enums\KnowledgeField;
-use App\Enums\KnowledgeGroup;
+use App\Enums\TopicField;
+use App\Enums\TopicGroup;
 use App\Enums\YearLevel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,15 +18,15 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->set(
                 'fields_covered_by_it',
-                array_column(KnowledgeField::cases(), 'value',)
+                array_column(TopicField::cases(), 'value',)
             );
             $table->set(
                 'years_levels_covering_it',
                 array_column(YearLevel::cases(), 'value'),
             );
             $table->enum(
-                'knowledge_group_covering_it',
-                array_column(KnowledgeGroup::cases(), 'value'),
+                'topic_group_covering_it',
+                array_column(TopicGroup::cases(), 'value'),
             )->nullable();
             $table->timestamps();
         });

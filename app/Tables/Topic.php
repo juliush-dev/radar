@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\SpladeTable;
 
-class Knowledge extends AbstractTable
+class Topic extends AbstractTable
 {
     /**
      * Create a new instance.
@@ -35,7 +35,7 @@ class Knowledge extends AbstractTable
      */
     public function for()
     {
-        return \App\Models\Knowledge::query();
+        return \App\Models\Topic::query();
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\KnowledgeField;
-use App\Enums\KnowledgeGroup;
+use App\Enums\TopicField;
+use App\Enums\TopicGroup;
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
 use App\Enums\Source;
@@ -15,7 +15,7 @@ use App\Models\Contribution;
 use App\Models\Skill;
 use App\Models\LearningMaterial;
 use App\Models\ModificationRequest;
-use App\Models\Knowledge;
+use App\Models\Topic;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
@@ -169,26 +169,26 @@ class ContributionController extends Controller
             $pendingCondition,
         )->count();
 
-        // knowledge
-        $contributedKnowledge = Knowledge::whereRelation(
+        // topic
+        $contributedTopics = Topic::whereRelation(
             'contribution',
             'contributor_id',
             $user_id
         )->count();
-        $contributedKnowledgePublished = Knowledge::whereHas(
+        $contributedTopicsPublished = Topic::whereHas(
             'contribution',
             $publicCondition,
         )->count();
-        $contributedKnowledgePrivate = Knowledge::whereHas(
+        $contributedTopicsPrivate = Topic::whereHas(
             'contribution',
             $privateCondition,
         )->count();
-        $contributedKnowledgeApproved = Knowledge::whereHas(
+        $contributedTopicsApproved = Topic::whereHas(
             'contribution',
             $approvedCondition,
         )->count();
 
-        $contributedKnowledgePending = Knowledge::whereHas(
+        $contributedTopicsPending = Topic::whereHas(
             'contribution',
             $pendingCondition,
         )->count();
@@ -240,12 +240,12 @@ class ContributionController extends Controller
                 'contributedSubjectsApproved' => $contributedSubjectsApproved,
                 'contributedSubjectsPending' => $contributedSubjectsPending,
 
-                // knowledge
-                'contributedKnowledge' => $contributedKnowledge,
-                'contributedKnowledgePublished' => $contributedKnowledgePublished,
-                'contributedKnowledgePrivate' => $contributedKnowledgePrivate,
-                'contributedKnowledgeApproved' => $contributedKnowledgeApproved,
-                'contributedKnowledgePending' => $contributedKnowledgePending,
+                // topic
+                'contributedTopics' => $contributedTopics,
+                'contributedTopicsPublished' => $contributedTopicsPublished,
+                'contributedTopicsPrivate' => $contributedTopicsPrivate,
+                'contributedTopicsApproved' => $contributedTopicsApproved,
+                'contributedTopicsPending' => $contributedTopicsPending,
 
                 // learning materials
                 'contributedLearningMaterials' => $contributedLearningMaterials,

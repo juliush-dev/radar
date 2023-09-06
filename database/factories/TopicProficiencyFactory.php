@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\KnowledgeProficiency>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TopicProficiency>
  */
-class KnowledgeProficiencyFactory extends Factory
+class TopicProficiencyFactory extends Factory
 {
     /**
      * Define the model's default state.

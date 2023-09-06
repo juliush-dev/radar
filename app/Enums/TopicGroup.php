@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 
-enum KnowledgeGroup: string
+enum TopicGroup: string
 {
     case Group_1 = 'group_1';
     case Group_2 = 'group_2';

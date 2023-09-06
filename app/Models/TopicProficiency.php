@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class KnowledgeProficiency extends Model
+class TopicProficiency extends Model
 {
     use HasFactory, HasUuids;
 
@@ -16,8 +16,8 @@ class KnowledgeProficiency extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function assessingKnowledge(): BelongsTo
+    public function assessingTopic(): BelongsTo
     {
-        return $this->belongsTo(Knowledge::class, 'assessing_knowledge_id');
+        return $this->belongsTo(Topic::class, 'assessing_topic_id');
     }
 }

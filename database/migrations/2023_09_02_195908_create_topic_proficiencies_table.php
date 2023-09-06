@@ -12,14 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('knowledge_proficiencies', function (Blueprint $table) {
+        Schema::create('topic_proficiencies', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->enum(
                 'assessment',
                 array_column(Assessment::cases(), 'value'),
             );
             $table->foreignUuid('author_id');
-            $table->foreignUuid('assessing_knowledge');
+            $table->foreignUuid('assessing_topic');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('knowledge_proficiencies');
+        Schema::dropIfExists('topic_proficiencies');
     }
 };

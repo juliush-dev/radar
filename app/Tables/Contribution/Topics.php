@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\SpladeTable;
 
-class Knowledge extends AbstractTable
+class Topics extends AbstractTable
 {
     /**
      * Create a new instance.
@@ -36,7 +36,7 @@ class Knowledge extends AbstractTable
      */
     public function for()
     {
-        return \App\Models\Knowledge::whereHas('contribution', function ($query) {
+        return \App\Models\Topic::whereHas('contribution', function ($query) {
             $query->where(
                 'contributor_id',
                 Auth::user()->id,

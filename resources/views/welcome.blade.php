@@ -8,7 +8,7 @@
                 <x-authentication />
             </div>
             <x-nav-link :href="route('skill.index')" type="call-to-action">
-                Acquire these skills before it is too late
+                Take me to the skills board
             </x-nav-link>
         </div>
     </div>

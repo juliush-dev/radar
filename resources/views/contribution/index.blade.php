@@ -9,8 +9,8 @@
                     :private="$contributedTeachersPrivate" :approved="$contributedTeachersApproved" :pending="$contributedTeachersPending" />
                 <x-layouts.contribution-dashboard-card label="subjects" type="subject" :total="$contributedSubjects"
                     :published="$contributedSubjectsPublished" :private="$contributedSubjectsPrivate" :approved="$contributedSubjectsApproved" :pending="$contributedSubjectsPending" />
-                <x-layouts.contribution-dashboard-card label="knowledge" type="knowledge" :total="$contributedKnowledge"
-                    :published="$contributedKnowledgePublished" :private="$contributedKnowledgePrivate" :approved="$contributedKnowledgeApproved" :pending="$contributedKnowledgePending" />
+                <x-layouts.contribution-dashboard-card label="topic" type="topic" :total="$contributedTopics"
+                    :published="$contributedTopicsPublished" :private="$contributedTopicsPrivate" :approved="$contributedTopicsApproved" :pending="$contributedTopicsPending" />
                 <x-layouts.contribution-dashboard-card label="learning materials" type="learning-material"
                     :total="$contributedLearningMaterials" :published="$contributedLearningMaterialsPublished" :private="$contributedLearningMaterialsPrivate" :approved="$contributedLearningMaterialsApproved" :pending="$contributedLearningMaterialsPending" />
             </div>

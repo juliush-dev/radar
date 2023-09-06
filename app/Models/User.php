@@ -46,9 +46,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function priorKnowledgeAssessments(): HasMany
+    public function topicAssessments(): HasMany
     {
-        return $this->hasMany(KnowledgeProficiency::class);
+        return $this->hasMany(TopicProficiency::class);
     }
 
     public function contributions(): HasMany

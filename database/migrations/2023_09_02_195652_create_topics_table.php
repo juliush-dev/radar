@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\KnowledgeField;
+use App\Enums\TopicField;
 use App\Enums\YearLevel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('knowledge', function (Blueprint $table) {
+        Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('covered_by_subject_id');
             $table->foreignUuid('required_by_skill_id');
@@ -22,8 +22,8 @@ return new class extends Migration
                 array_column(YearLevel::cases(), 'value'),
             );
             $table->set(
-                'knowledge_field',
-                array_column(KnowledgeField::cases(), 'value'),
+                'topic_field',
+                array_column(TopicField::cases(), 'value'),
             );
             $table->timestamps();
         });
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('knowledge');
+        Schema::dropIfExists('topics');
     }
 };

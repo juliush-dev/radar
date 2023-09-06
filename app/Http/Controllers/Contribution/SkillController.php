@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contribution;
 
-use App\Enums\KnowledgeField;
-use App\Enums\KnowledgeGroup;
+use App\Enums\TopicField;
+use App\Enums\TopicGroup;
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
 use App\Enums\Source;
@@ -24,7 +24,7 @@ class SkillController extends Controller
      */
     public function index()
     {
-        $contributedSkills = Skills::class;
+        $contributedSkills = new Skills;
         return view('contribution.skill.index', ['contributedSkills' => $contributedSkills]);
     }
 
@@ -48,14 +48,14 @@ class SkillController extends Controller
         $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
 
 
-        $knowledgeFields = KnowledgeField::cases();
-        $knowledgeFieldsOptions = array_column($knowledgeFields, 'value');
-        $knowledgeFieldsOptions = array_reduce($knowledgeFieldsOptions, $getKeyValuePair, []);
+        $topicFields = TopicField::cases();
+        $topicFieldsOptions = array_column($topicFields, 'value');
+        $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
 
 
-        $knowledgeGroups = KnowledgeGroup::cases();
-        $knowledgeGroupsOptions = array_column($knowledgeGroups, 'value');
-        $knowledgeGroupsOptions = array_reduce($knowledgeGroupsOptions, $getKeyValuePair, []);
+        $topicGroups = TopicGroup::cases();
+        $topicGroupsOptions = array_column($topicGroups, 'value');
+        $topicGroupsOptions = array_reduce($topicGroupsOptions, $getKeyValuePair, []);
 
         $modificationsTypes = [ModificationType::CreateAndMakePrivate, ModificationType::CreateAndMakePublic];
         $modificationsTypesOptions = array_column($modificationsTypes, 'value');
@@ -66,8 +66,8 @@ class SkillController extends Controller
             [
                 'sourcesOptions' => $sourcesOptions,
                 'yearsLevelsOptions' => $yearsLevelsOptions,
-                'knowledgeFieldsOptions' => $knowledgeFieldsOptions,
-                'knowledgeGroupsOptions' => $knowledgeGroupsOptions,
+                'topicFieldsOptions' => $topicFieldsOptions,
+                'topicGroupsOptions' => $topicGroupsOptions,
                 'modificationsTypesOptions' => $modificationsTypesOptions,
             ]
         );
@@ -83,7 +83,7 @@ class SkillController extends Controller
                 $skill = Skill::create([
                     'fields_covered_by_it' => implode(",", $request->input('fields_covered_by_it')),
                     'years_levels_covering_it' => implode(",", $request->input('years_levels_covering_it')),
-                    'knowledge_group_covering_it' => implode("", [$request->enum('knowledge_group_covering_it', KnowledgeGroup::class)?->value]),
+                    'topic_group_covering_it' => implode("", [$request->enum('topic_group_covering_it', TopicGroup::class)?->value]),
                 ]);
 
                 $contribution = $skill->contribution()->create(

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\KnowledgeField;
-use App\Enums\KnowledgeGroup;
+use App\Enums\TopicField;
+use App\Enums\TopicGroup;
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
 use App\Enums\Source;
@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateSkillRequest;
 use App\Models\ModificationRequest;
 use App\Models\Skill;
 use App\Tables\Contribution\Skills;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -24,6 +25,10 @@ class SkillController extends Controller
      */
     public function index()
     {
+
+        return view('skill.index', [
+            // 'publicSkills' => $publicSkills,
+        ]);
     }
 
     /**

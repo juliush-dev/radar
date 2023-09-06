@@ -1,7 +1,7 @@
 <x-layouts.app>
-    <x-splade-modal max-width="2xl" class="bg-transparent">
-        <div class="">
-            <h1 class="text-xl mb-8 first-letter:uppercase flex items.center gap-2">
+    <x-splade-modal max-width="2xl">
+        <div class="bg-slate-800 p-6 min-h-screen shadow-md shadow-teal-500">
+            <h1 class="text-2xl mb-8 first-letter:uppercase flex items.center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -9,11 +9,10 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
                 </svg>
-
-                Skill
+                New Skill
             </h1>
             <x-splade-form action="{{ route('contribution.skill.store') }}" class="flex flex-col gap-8">
-                <x-splade-input name="title" label="Which Skill?" placeholder="The student should be able to ..." />
+                <x-splade-input name="title" label="Description" placeholder="The student should be able to ..." />
                 <div class="p-3 rounded-md border border-slate-500">
                     <x-splade-group class="mb-4" name="source" label="Where did you get this info from?" inline>
                         @foreach ($sourcesOptions as $key => $value)
@@ -29,9 +28,9 @@
                 <x-splade-select label="Which years of the training cover the subjects about this skill?"
                     name="years_levels_covering_it" :options="$yearsLevelsOptions" multiple />
                 <x-splade-select label="Which fields of the training does this skill covers?"
-                    name="fields_covered_by_it" :options="$knowledgeFieldsOptions" multiple />
-                <x-splade-select class="text-slate-800" label="Which knowledge group covers this skill?"
-                    name="knowledge_group_covering_it" :options="$knowledgeGroupsOptions" />
+                    name="fields_covered_by_it" :options="$topicFieldsOptions" multiple />
+                <x-splade-select class="text-slate-800" label="Which topic group covers this skill?"
+                    name="topic_group_covering_it" :options="$topicGroupsOptions" />
 
                 <x-splade-select class="text-slate-800" label="Decide for the visibility of this contribution"
                     name="modification_type" :options="$modificationsTypesOptions" />

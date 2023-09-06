@@ -6,7 +6,7 @@
                 {{ $skill->contribution->title }} <br>
                 {{ $skill->fields_covered_by_it }} <br>
                 {{ $skill->years_levels_covering_it }} <br>
-                {{ $skill->knowledge_group_covering_it }} <br>
+                {{ $skill->topic_group_covering_it }} <br>
             @endforeach
         @else
             <div class="h-full flex flex-col items.center justify-center gap-8">

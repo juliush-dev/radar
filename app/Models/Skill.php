@@ -21,7 +21,7 @@ class Skill extends Model
     protected $fillable = [
         'fields_covered_by_it',
         'years_levels_covering_it',
-        'knowledge_group_covering_it',
+        'topic_group_covering_it',
     ];
 
     public function contribution(): MorphOne
@@ -29,8 +29,8 @@ class Skill extends Model
         return $this->morphOne(Contribution::class, 'contribution');
     }
 
-    public function requiredKnowledge(): HasMany
+    public function requiredTopic(): HasMany
     {
-        return $this->hasMany(Knowledge::class);
+        return $this->hasMany(Topic::class);
     }
 }

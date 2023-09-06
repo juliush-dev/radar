@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKnowledgeRequest;
-use App\Http\Requests\UpdateKnowledgeRequest;
-use App\Models\Knowledge;
+use App\Http\Requests\StoreTopicRequest;
+use App\Http\Requests\UpdateTopicRequest;
+use App\Models\Topic;
 
-class KnowledgeController extends Controller
+class TopicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,26 +35,26 @@ class KnowledgeController extends Controller
         // $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
 
 
-        // $knowledgeFields = KnowledgeField::cases();
-        // $knowledgeFieldsOptions = array_column($knowledgeFields, 'value');
-        // $knowledgeFieldsOptions = array_reduce($knowledgeFieldsOptions, $getKeyValuePair, []);
+        // $topicFields = TopicField::cases();
+        // $topicFieldsOptions = array_column($topicFields, 'value');
+        // $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
 
 
-        // $knowledgeGroups = KnowledgeGroup::cases();
-        // $knowledgeGroupsOptions = array_column($knowledgeGroups, 'value');
-        // $knowledgeGroupsOptions = array_reduce($knowledgeGroupsOptions, $getKeyValuePair, []);
+        // $topicGroups = TopicGroup::cases();
+        // $topicGroupsOptions = array_column($topicGroups, 'value');
+        // $topicGroupsOptions = array_reduce($topicGroupsOptions, $getKeyValuePair, []);
 
         // $modificationsTypes = [ModificationType::CreateAndMakePrivate, ModificationType::CreateAndMakePublic];
         // $modificationsTypesOptions = array_column($modificationsTypes, 'value');
         // $modificationsTypesOptions = array_reduce($modificationsTypesOptions, $getKeyValuePair, []);
 
         // return view(
-        //     'knowledge.create',
+        //     'topic.create',
         //     [
         //         'sourcesOptions' => $sourcesOptions,
         //         'yearsLevelsOptions' => $yearsLevelsOptions,
-        //         'knowledgeFieldsOptions' => $knowledgeFieldsOptions,
-        //         'knowledgeGroupsOptions' => $knowledgeGroupsOptions,
+        //         'topicFieldsOptions' => $topicFieldsOptions,
+        //         'topicGroupsOptions' => $topicGroupsOptions,
         //         'modificationsTypesOptions' => $modificationsTypesOptions,
         //     ]
         // );
@@ -63,7 +63,7 @@ class KnowledgeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKnowledgeRequest $request)
+    public function store(StoreTopicRequest $request)
     {
         //
     }
@@ -71,7 +71,7 @@ class KnowledgeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Knowledge $priorKnowledge)
+    public function show(Topic $priorTopic)
     {
         //
     }
@@ -79,7 +79,7 @@ class KnowledgeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Knowledge $priorKnowledge)
+    public function edit(Topic $priorTopic)
     {
         //
     }
@@ -87,7 +87,7 @@ class KnowledgeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateKnowledgeRequest $request, Knowledge $priorKnowledge)
+    public function update(UpdateTopicRequest $request, Topic $priorTopic)
     {
         //
     }
@@ -95,7 +95,7 @@ class KnowledgeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Knowledge $priorKnowledge)
+    public function destroy(Topic $priorTopic)
     {
         //
     }

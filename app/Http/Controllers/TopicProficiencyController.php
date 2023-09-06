@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKnowledgeProficiencyRequest;
-use App\Http\Requests\UpdateKnowledgeProficiencyRequest;
-use App\Models\KnowledgeProficiency;
+use App\Http\Requests\StoreTopicProficiencyRequest;
+use App\Http\Requests\UpdateTopicProficiencyRequest;
+use App\Models\TopicProficiency;
 
-class KnowledgeProficiencyController extends Controller
+class TopicProficiencyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class KnowledgeProficiencyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKnowledgeProficiencyRequest $request)
+    public function store(StoreTopicProficiencyRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class KnowledgeProficiencyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(KnowledgeProficiency $knowledgeProficiency)
+    public function show(TopicProficiency $topicProficiency)
     {
         //
     }
@@ -43,7 +43,7 @@ class KnowledgeProficiencyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(KnowledgeProficiency $knowledgeProficiency)
+    public function edit(TopicProficiency $topicProficiency)
     {
         //
     }
@@ -51,7 +51,7 @@ class KnowledgeProficiencyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateKnowledgeProficiencyRequest $request, KnowledgeProficiency $knowledgeProficiency)
+    public function update(UpdateTopicProficiencyRequest $request, TopicProficiency $topicProficiency)
     {
         //
     }
@@ -59,7 +59,7 @@ class KnowledgeProficiencyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(KnowledgeProficiency $knowledgeProficiency)
+    public function destroy(TopicProficiency $topicProficiency)
     {
         //
     }

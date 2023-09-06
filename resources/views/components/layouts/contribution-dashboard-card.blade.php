@@ -3,7 +3,7 @@
         {{ $total }}
         {{ $label }}
     </div>
-    <div class="flex flex-wrap gap-5 text-sm">
+    <div class="flex flex-wrap gap-5 text-sm items.center">
         <div class="p-1 {{ $approved > 0 ? 'text-green-300' : 'text-white/60' }} rounded-md capitalize">
             <span class="font-medium">{{ $approved }}</span>
             Approved

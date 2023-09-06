@@ -1,7 +1,7 @@
 @php($isActive = request()->routeIs(empty($action) ? $resource : $resource . '.' . $action) || str_starts_with(Route::currentRouteName(), $resource))
 <x-splade-toggle :data="$isActive">
     <div class="flex flex-col gap-2">
-        <div class="flex gap-2">
+        <div class="flex gap-2 my-auto">
 
             <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$post ? 'post' : 'get'" :href="route(empty($action) ? $resource : $resource . '.' . $action)"
                 :type="$type">

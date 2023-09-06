@@ -16,8 +16,8 @@ class LearningMaterial extends Model
         return $this->morphOne(Contribution::class, 'contribution');
     }
 
-    public function priorKnowledge(): BelongsTo
+    public function priorTopic(): BelongsTo
     {
-        return $this->belongsTo(Knowledge::class, 'required_for_knowledge_id');
+        return $this->belongsTo(Topic::class, 'required_for_topic_id');
     }
 }

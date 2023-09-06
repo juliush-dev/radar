@@ -19,9 +19,9 @@
                 <x-splade-select label="Which years of the training cover the subjects about this skill?"
                     name="years_levels_covering_it" :options="$yearsLevelsOptions" multiple />
                 <x-splade-select label="Which fields of the training does this skill covers?"
-                    name="fields_covered_by_it" :options="$knowledgeFieldsOptions" multiple />
-                <x-splade-select class="text-slate-800" label="Which knowledge group covers this skill?"
-                    name="knowledge_group_covering_it" :options="$knowledgeGroupsOptions" />
+                    name="fields_covered_by_it" :options="$topicFieldsOptions" multiple />
+                <x-splade-select class="text-slate-800" label="Which topic group covers this skill?"
+                    name="topic_group_covering_it" :options="$topicGroupsOptions" />
 
                 <x-splade-select class="text-slate-800" label="Decide for the visibility of this skill"
                     name="modification_type" :options="$modificationsTypesOptions" />

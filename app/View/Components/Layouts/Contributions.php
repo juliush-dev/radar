@@ -16,7 +16,7 @@ class Contributions extends Component
         public string $type = '',
         public string $label = '',
         public string $actionLabel = '',
-        public string $tableClass = '',
+        public mixed $table,
     ) {
         //
     }
