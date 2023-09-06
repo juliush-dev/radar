@@ -1,3 +1,3 @@
 <x-layouts.app>
-    <x-layouts.contributions contribution="skills" resouce="skill" :table="$contributedSkills" />
+    <x-layouts.contributions type="skill" label="skills" action-label="New skill" :table-class="$contributedSkills" />
 </x-layouts.app>

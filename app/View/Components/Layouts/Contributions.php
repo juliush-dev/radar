@@ -13,9 +13,10 @@ class Contributions extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $contribution,
-        public string $resource,
-        public AbstractTable $table,
+        public string $type = '',
+        public string $label = '',
+        public string $actionLabel = '',
+        public string $tableClass = '',
     ) {
         //
     }

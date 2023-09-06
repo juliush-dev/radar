@@ -10,5 +10,5 @@ enum ModificationType: string
     case MakePrivate = 'make private';
     case MakePublic = 'make public';
     case Update = 'update';
-    case Delate = 'delete';
+    case Delete = 'delete';
 }

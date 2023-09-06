@@ -6,19 +6,22 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class NavigationLink extends Component
+class ContributionDashboardCard extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $resource = '',
-        public string $action = '',
+        public string $type = '',
         public string $label = '',
         public string $iconPath = '',
-        public string $openAs = '',
-        public string $type = '',
-        public bool $post = false
+        public int $total = 0,
+        public int $published = 0,
+        public int $private = 0,
+        public int $approved = 0,
+        public int $pending = 0,
+        public int $rejected = 0,
+
     ) {
         //
     }
@@ -28,6 +31,6 @@ class NavigationLink extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.navigation-link');
+        return view('components.layouts.contribution-dashboard-card');
     }
 }

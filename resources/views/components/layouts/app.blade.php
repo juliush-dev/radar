@@ -1,10 +1,10 @@
-<div class="h-screen flex justify-center items-center text-ellipsis p-8 gap-10 flex-wrap">
+<div class="h-screen flex justify-center items-center text-ellipsis p-8 gap-10">
     @auth
-        <section class="h-full w-1/4">
+        <section class="h-full w-1/4 flex-nowrap whitespace-nowrap shrink-0">
             @include('left-panel')
         </section>
     @endauth
-    <main class="h-full grow">
+    <main class="h-full grow overflow-hidden">
         {{ $slot }}
     </main>
     @isset($rightPanel)

@@ -41,21 +41,28 @@ Route::middleware('splade')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::get('/contributions', [ContributionController::class, 'index'])->middleware(['verified'])->name('contribution.index');
-        Route::get('/skills/new', [SkillController::class, 'create'])->name('skill.create');
-        Route::post('/skills/new', [SkillController::class, 'store'])->name('skill.store');
-
-        Route::get('/teachers/new', [TeacherController::class, 'create'])->name('teacher.create');
-        Route::post('/teachers/new', [TeacherController::class, 'store'])->name('teacher.store');
-
-        Route::get('/subjects/new', [SubjectController::class, 'create'])->name('subject.create');
-        Route::post('/subjects/new', [SubjectController::class, 'store'])->name('subject.store');
-
-        Route::get('/knowledge/new', [KnowledgeController::class, 'create'])->name('knowledge.create');
-        Route::post('/knowledge/new', [KnowledgeController::class, 'store'])->name('knowledge.store');
 
 
-        Route::get('/learning-materials/new', [LearningMaterialController::class, 'create'])->name('learning-material.create');
-        Route::post('/learning-materials/new', [LearningMaterialController::class, 'store'])->name('learning-material.store');
+        Route::get('/contributions/skills', [App\Http\Controllers\Contribution\SkillController::class, 'index'])->name('contribution.skill.index');
+        Route::get('/contributions/teachers', [App\Http\Controllers\Contribution\TeacherController::class, 'index'])->name('contribution.teacher.index');
+        Route::get('/contributions/subjects', [App\Http\Controllers\Contribution\SubjectController::class, 'index'])->name('contribution.subject.index');
+        Route::get('/contributions/knowledge', [App\Http\Controllers\Contribution\KnowledgeController::class, 'index'])->name('contribution.knowledge.index');
+        Route::get('/contributions/learning-materials', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'index'])->name('contribution.learning-material.index');
+
+        Route::get('/contributions/skills/new', [App\Http\Controllers\Contribution\SkillController::class, 'create'])->name('contribution.skill.create');
+        Route::get('/contributions/teachers/new', [App\Http\Controllers\Contribution\TeacherController::class, 'create'])->name('contribution.teacher.create');
+        Route::get('/contributions/subjects/new', [App\Http\Controllers\Contribution\SubjectController::class, 'create'])->name('contribution.subject.create');
+        Route::get('/contributions/knowledge/new', [App\Http\Controllers\Contribution\KnowledgeController::class, 'create'])->name('contribution.knowledge.create');
+        Route::get('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'create'])->name('contribution.learning-material.create');
+
+        Route::post('/contributions/skills/new', [App\Http\Controllers\Contribution\SkillController::class, 'store'])->name('contribution.skill.store');
+        Route::post('/contributions/teachers/new', [App\Http\Controllers\Contribution\TeacherController::class, 'store'])->name('contribution.teacher.store');
+        Route::post('/contributions/subjects/new', [App\Http\Controllers\Contribution\SubjectController::class, 'store'])->name('contribution.subject.store');
+        Route::post('/contributions/knowledge/new', [App\Http\Controllers\Contribution\KnowledgeController::class, 'store'])->name('contribution.knowledge.store');
+        Route::post('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'store'])->name('contribution.learning-material.store');
+
+
+
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

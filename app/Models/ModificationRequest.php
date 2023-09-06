@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ModificationRequest extends Model
@@ -16,8 +17,8 @@ class ModificationRequest extends Model
         'modification_request_state',
         'modification_type',
     ];
-    public function contribution(): HasOne
+    public function contribution(): BelongsTo
     {
-        return $this->hasOne(Contribution::class);
+        return $this->BelongsTo(Contribution::class);
     }
 }

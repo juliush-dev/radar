@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('contributions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('contributor_id');
-            $table->foreignUuid('modification_request_id');
             $table->uuid('contribution_id');
             $table->string('contribution_type');
             $table->enum(
