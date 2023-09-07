@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('teacher_id');
             $table->string('description');
             $table->set(
                 'year_levels_covered_by_it',

@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ModificationRequestState;
+use App\Enums\ModificationType;
+use App\Enums\Visibility;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
+use App\Models\Skill;
+use App\Models\Subject;
 use App\Models\Topic;
 
 class TopicController extends Controller
@@ -19,45 +24,46 @@ class TopicController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Skill $skill)
     {
-        // $getKeyValuePair = function ($acc, $value) {
-        //     $acc[$value] = $value;
-        //     return $acc;
-        // };
+        $getKeyValuePair = function ($acc, $value) {
+            $acc[$value] = $value;
+            return $acc;
+        };
 
-        // $sources = Source::cases();
-        // $sourcesOptions = array_column($sources, 'value');
-        // $sourcesOptions = array_reduce($sourcesOptions, $getKeyValuePair, []);
+        $yearsLevelsOptions = explode(",", $skill->years_levels_covering_it);
+        $yearsLevelsOptionsPair = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
 
-        // $yearsLevels = YearLevel::cases();
-        // $yearsLevelsOptions = array_column($yearsLevels, 'value');
-        // $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
+        $fieldsOptions = explode(",", $skill->fields_covered_by_it);
+        $fieldsOptionsPair = array_reduce($fieldsOptions, $getKeyValuePair, []);
+        $subjects = Subject::whereHas(
+            'contribution',
+            function ($query) {
+                $query->where('visibility', Visibility::Public->value)
+                    ->whereHas('modificationRequests', function ($query) {
+                        $query->latest('created_at')
+                            ->whereIn('modification_type', [
+                                ModificationType::Create->value,
+                                ModificationType::Update->value,
+                            ])->where(
+                                'modification_request_state',
+                                ModificationRequestState::Approved->value
+                            );
+                    });
+            }
+        )->get();
+        $subjectsOptionsPair = $subjects->reduce(function ($acc, $subjcet) {
+            $acc['id'] = $subjcet->id;
+            $acc['title'] = $subjcet->contribution->title;
+            return $acc;
+        }, []);
 
-
-        // $topicFields = TopicField::cases();
-        // $topicFieldsOptions = array_column($topicFields, 'value');
-        // $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
-
-
-        // $topicGroups = TopicGroup::cases();
-        // $topicGroupsOptions = array_column($topicGroups, 'value');
-        // $topicGroupsOptions = array_reduce($topicGroupsOptions, $getKeyValuePair, []);
-
-        // $modificationsTypes = [ModificationType::CreateAndMakePrivate, ModificationType::CreateAndMakePublic];
-        // $modificationsTypesOptions = array_column($modificationsTypes, 'value');
-        // $modificationsTypesOptions = array_reduce($modificationsTypesOptions, $getKeyValuePair, []);
-
-        // return view(
-        //     'topic.create',
-        //     [
-        //         'sourcesOptions' => $sourcesOptions,
-        //         'yearsLevelsOptions' => $yearsLevelsOptions,
-        //         'topicFieldsOptions' => $topicFieldsOptions,
-        //         'topicGroupsOptions' => $topicGroupsOptions,
-        //         'modificationsTypesOptions' => $modificationsTypesOptions,
-        //     ]
-        // );
+        return view('topic.create', [
+            'yearsLevelsOptionsPair' => $yearsLevelsOptionsPair,
+            'fieldsOptionsPair' => $fieldsOptionsPair,
+            'subjectsOptionsPair' => $subjectsOptionsPair,
+            'skill' => $skill,
+        ]);
     }
 
     /**

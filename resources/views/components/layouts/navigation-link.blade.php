@@ -1,9 +1,20 @@
-@php($isActive = request()->routeIs(empty($action) ? $resource : $resource . '.' . $action) || str_starts_with(Route::currentRouteName(), $resource))
+@php
+    $routeName = empty($action) ? $resource : $resource . '.' . $action;
+    $isActive = request()->routeIs($routeName) || str_starts_with(Route::currentRouteName(), $resource);
+    $route = isset($actionArgs) ? route($routeName, $actionArgs) : ($route = route($routeName));
+    // if (isset($actionArgs)) {
+    //     $route = ;
+    //     $actionArgs = null;
+    // } else {
+    //     ;
+    // }
+@endphp
+
 <x-splade-toggle :data="$isActive">
     <div class="flex flex-col gap-2">
         <div class="flex gap-2 my-auto">
 
-            <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$post ? 'post' : 'get'" :href="route(empty($action) ? $resource : $resource . '.' . $action)"
+            <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$post ? 'post' : 'get'" :href="$route"
                 :type="$type">
                 @if (strlen($iconPath) > 0)
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

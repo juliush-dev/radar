@@ -7,6 +7,7 @@ use App\Enums\TopicGroup;
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
 use App\Enums\Source;
+use App\Enums\Visibility;
 use App\Enums\YearLevel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSkillRequest;
@@ -39,10 +40,6 @@ class SkillController extends Controller
             return $acc;
         };
 
-        $sources = Source::cases();
-        $sourcesOptions = array_column($sources, 'value');
-        $sourcesOptions = array_reduce($sourcesOptions, $getKeyValuePair, []);
-
         $yearsLevels = YearLevel::cases();
         $yearsLevelsOptions = array_column($yearsLevels, 'value');
         $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
@@ -57,18 +54,12 @@ class SkillController extends Controller
         $topicGroupsOptions = array_column($topicGroups, 'value');
         $topicGroupsOptions = array_reduce($topicGroupsOptions, $getKeyValuePair, []);
 
-        $modificationsTypes = [ModificationType::CreateAndMakePrivate, ModificationType::CreateAndMakePublic];
-        $modificationsTypesOptions = array_column($modificationsTypes, 'value');
-        $modificationsTypesOptions = array_reduce($modificationsTypesOptions, $getKeyValuePair, []);
-
         return view(
             'contribution.skill.create',
             [
-                'sourcesOptions' => $sourcesOptions,
                 'yearsLevelsOptions' => $yearsLevelsOptions,
                 'topicFieldsOptions' => $topicFieldsOptions,
                 'topicGroupsOptions' => $topicGroupsOptions,
-                'modificationsTypesOptions' => $modificationsTypesOptions,
             ]
         );
     }
@@ -90,21 +81,19 @@ class SkillController extends Controller
                     [
                         'contributor_id' => Auth::user()->id,
                         "title" => $request->input('title'),
-                        "source" => $request->input('source'),
-                        "link" => $request->enum('source', Source::class) == Source::InternetPage ? $request->input('link') : null,
+                        "visibility" => $request->input('visibility'),
                     ]
                 );
 
                 $contribution->modificationRequests()->create(
                     [
-                        'reason' => null,
                         'modification_request_state' => ModificationRequestState::Pending->value,
-                        'modification_type' => $request->enum("modification_type", ModificationType::class)?->value,
+                        'modification_type' => ModificationType::Create->value,
                     ]
                 );
             }
         );
-        Toast::title('New Skill successfuly added to contributions!')->autoDismiss(15);
+        Toast::title('New Skill successfuly submitted for contribution!')->autoDismiss(15);
         return redirect()->route('contribution.skill.index');
     }
 

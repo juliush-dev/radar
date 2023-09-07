@@ -4,6 +4,7 @@ namespace App\Tables;
 
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
+use App\Enums\Visibility;
 use App\Models\Skill;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -42,22 +43,22 @@ class Skills extends AbstractTable
     {
         $publicCondition =
             function ($query) {
-                $query->whereHas(
-                    'modificationRequests',
-                    function (Builder $query) {
-                        $query->latest('created_at')->whereIn(
-                            'modification_type',
-                            [
-                                ModificationType::Update->value,
-                                ModificationType::CreateAndMakePublic->value,
-                                ModificationType::MakePublic->value,
-                            ]
-                        )->where(
-                            'modification_request_state',
-                            ModificationRequestState::Approved->value
-                        );
-                    }
-                );
+                $query->where('visibility', Visibility::Public->value)
+                    ->whereHas(
+                        'modificationRequests',
+                        function (Builder $query) {
+                            $query->latest('created_at')->whereIn(
+                                'modification_type',
+                                [
+                                    ModificationType::Update->value,
+                                    ModificationType::Create->value,
+                                ]
+                            )->where(
+                                'modification_request_state',
+                                ModificationRequestState::Approved->value
+                            );
+                        }
+                    );
             };
 
         $publicSkills = Skill::whereHas(

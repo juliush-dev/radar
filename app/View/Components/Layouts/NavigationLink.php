@@ -14,6 +14,7 @@ class NavigationLink extends Component
     public function __construct(
         public string $resource = '',
         public string $action = '',
+        public mixed $actionArgs = null,
         public string $label = '',
         public string $iconPath = '',
         public string $openAs = '',

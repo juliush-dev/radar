@@ -37,13 +37,12 @@ class Subjects extends AbstractTable
      */
     public function for()
     {
-        return
-            Subject::whereHas('contribution', function ($query) {
-                $query->where(
-                    'contributor_id',
-                    Auth::user()->id,
-                );
-            })->get();
+        return Subject::whereHas('contribution', function ($query) {
+            $query->where(
+                'contributor_id',
+                Auth::user()->id,
+            );
+        })->get();
     }
 
     /**
@@ -55,14 +54,13 @@ class Subjects extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
-            ->withGlobalSearch(columns: ['id'])
-            ->column('id', sortable: true);
-
-        // ->searchInput()
-        // ->selectFilter()
-        // ->withGlobalSearch()
-
-        // ->bulkAction()
-        // ->export()
+            ->withGlobalSearch(columns: ['title'])
+            ->column('title')
+            ->column('description')
+            ->column('teached by')
+            ->column('year levels it covers')
+            ->column('actual visibility')
+            ->column('request')
+            ->column('request State');
     }
 }

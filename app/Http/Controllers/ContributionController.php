@@ -2,26 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\TopicField;
-use App\Enums\TopicGroup;
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
-use App\Enums\Source;
 use App\Enums\Visibility;
-use App\Enums\YearLevel;
 use App\Http\Requests\StoreContributionRequest;
 use App\Http\Requests\UpdateContributionRequest;
 use App\Models\Contribution;
 use App\Models\Skill;
 use App\Models\LearningMaterial;
-use App\Models\ModificationRequest;
 use App\Models\Topic;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use ProtoneMedia\Splade\Facades\Toast;
 
 class ContributionController extends Controller
 {
@@ -34,6 +27,7 @@ class ContributionController extends Controller
         $publicCondition =
             function ($query) use ($user_id) {
                 $query->where('contributor_id', $user_id)
+                    ->where('visibility', Visibility::Public->value)
                     ->whereHas(
                         'modificationRequests',
                         function (Builder $query) {
@@ -41,8 +35,7 @@ class ContributionController extends Controller
                                 'modification_type',
                                 [
                                     ModificationType::Update->value,
-                                    ModificationType::CreateAndMakePublic->value,
-                                    ModificationType::MakePublic->value,
+                                    ModificationType::Create->value,
                                 ]
                             )->where(
                                 'modification_request_state',
@@ -52,28 +45,6 @@ class ContributionController extends Controller
                     );
             };
 
-        $privateCondition =  function ($query) use ($user_id) {
-            $query->where('contributor_id', $user_id)
-                ->whereHas(
-                    'modificationRequests',
-                    function (Builder $query) {
-                        $query->latest('created_at')->whereIn(
-                            'modification_type',
-                            [
-                                ModificationType::Update->value,
-                                ModificationType::CreateAndMakePrivate->value,
-                                ModificationType::MakePrivate->value,
-                            ]
-                        )->whereIn(
-                            'modification_request_state',
-                            [
-                                ModificationRequestState::Approved->value,
-                                ModificationRequestState::Rejected->value,
-                            ]
-                        );
-                    }
-                );
-        };
 
         $approvedCondition =  function ($query) use ($user_id) {
             $query->where('contributor_id', $user_id)
@@ -110,38 +81,11 @@ class ContributionController extends Controller
             'contribution',
             $publicCondition,
         )->count();
-        $contributedSkillsPrivate = Skill::whereHas(
-            'contribution',
-            $privateCondition,
-        )->count();
         $contributedSkillsApproved = Skill::whereHas(
             'contribution',
             $approvedCondition,
         )->count();
         $contributedSkillsPending = Skill::whereHas(
-            'contribution',
-            $pendingCondition,
-        )->count();
-
-        $contributedTeachers = Teacher::whereRelation(
-            'contribution',
-            'contributor_id',
-            $user_id
-        )->count();
-        $contributedTeachersPublished = Teacher::whereHas(
-            'contribution',
-            $publicCondition,
-        )->count();
-        $contributedTeachersPrivate = Teacher::whereHas(
-            'contribution',
-            $privateCondition,
-        )->count();
-        $contributedTeachersApproved = Teacher::whereHas(
-            'contribution',
-            $approvedCondition,
-        )->count();
-
-        $contributedTeachersPending = Teacher::whereHas(
             'contribution',
             $pendingCondition,
         )->count();
@@ -154,10 +98,6 @@ class ContributionController extends Controller
         $contributedSubjectsPublished = Subject::whereHas(
             'contribution',
             $publicCondition,
-        )->count();
-        $contributedSubjectsPrivate = Subject::whereHas(
-            'contribution',
-            $privateCondition,
         )->count();
         $contributedSubjectsApproved = Subject::whereHas(
             'contribution',
@@ -179,10 +119,6 @@ class ContributionController extends Controller
             'contribution',
             $publicCondition,
         )->count();
-        $contributedTopicsPrivate = Topic::whereHas(
-            'contribution',
-            $privateCondition,
-        )->count();
         $contributedTopicsApproved = Topic::whereHas(
             'contribution',
             $approvedCondition,
@@ -203,10 +139,6 @@ class ContributionController extends Controller
             'contribution',
             $publicCondition,
         )->count();
-        $contributedLearningMaterialsPrivate = LearningMaterial::whereHas(
-            'contribution',
-            $privateCondition,
-        )->count();
         $contributedLearningMaterialsApproved = LearningMaterial::whereHas(
             'contribution',
             $approvedCondition,
@@ -222,35 +154,24 @@ class ContributionController extends Controller
             [
                 'contributedSkills' => $contributedSkills,
                 'contributedSkillsPublished' => $contributedSkillsPublished,
-                'contributedSkillsPrivate' => $contributedSkillsPrivate,
                 'contributedSkillsApproved' => $contributedSkillsApproved,
                 'contributedSkillsPending' => $contributedSkillsPending,
-
-                // teachers
-                'contributedTeachers' => $contributedTeachers,
-                'contributedTeachersPublished' => $contributedTeachersPublished,
-                'contributedTeachersPrivate' => $contributedTeachersPrivate,
-                'contributedTeachersApproved' => $contributedTeachersApproved,
-                'contributedTeachersPending' => $contributedTeachersPending,
 
                 // subjects
                 'contributedSubjects' => $contributedSubjects,
                 'contributedSubjectsPublished' => $contributedSubjectsPublished,
-                'contributedSubjectsPrivate' => $contributedSubjectsPrivate,
                 'contributedSubjectsApproved' => $contributedSubjectsApproved,
                 'contributedSubjectsPending' => $contributedSubjectsPending,
 
                 // topic
                 'contributedTopics' => $contributedTopics,
                 'contributedTopicsPublished' => $contributedTopicsPublished,
-                'contributedTopicsPrivate' => $contributedTopicsPrivate,
                 'contributedTopicsApproved' => $contributedTopicsApproved,
                 'contributedTopicsPending' => $contributedTopicsPending,
 
                 // learning materials
                 'contributedLearningMaterials' => $contributedLearningMaterials,
                 'contributedLearningMaterialsPublished' => $contributedLearningMaterialsPublished,
-                'contributedLearningMaterialsPrivate' => $contributedLearningMaterialsPrivate,
                 'contributedLearningMaterialsApproved' => $contributedLearningMaterialsApproved,
                 'contributedLearningMaterialsPending' => $contributedLearningMaterialsPending,
             ],

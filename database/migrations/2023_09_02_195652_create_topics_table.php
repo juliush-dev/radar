@@ -21,7 +21,7 @@ return new class extends Migration
                 'year_teached_at',
                 array_column(YearLevel::cases(), 'value'),
             );
-            $table->set(
+            $table->enum(
                 'topic_field',
                 array_column(TopicField::cases(), 'value'),
             );

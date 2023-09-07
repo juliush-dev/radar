@@ -38,8 +38,13 @@ Route::middleware('splade')->group(function () {
     });
 
     Route::get('/skills', [SkillController::class, 'index'])->name('skill.index');
+    Route::get('/skills/{skill}', [SkillController::class, 'show'])->name('skill.show');
 
     Route::middleware('auth')->group(function () {
+
+        Route::get('/skills/{skill}/topics/new', [TopicController::class, 'create'])->name('topic.create');
+        Route::post('/skills/{skill}/topics/new', [TopicController::class, 'create'])->name('topic.store');
+
         Route::get('/contributions', [ContributionController::class, 'index'])->middleware(['verified'])->name('contribution.index');
 
 

@@ -17,7 +17,6 @@ class ContributionDashboardCard extends Component
         public string $iconPath = '',
         public int $total = 0,
         public int $published = 0,
-        public int $private = 0,
         public int $approved = 0,
         public int $pending = 0,
         public int $rejected = 0,

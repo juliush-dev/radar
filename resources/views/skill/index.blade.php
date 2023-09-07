@@ -1,24 +1,12 @@
 <x-layouts.app>
-    <div class="h-full bg-slate-900/60 p-8 rounded-md shadow-2xl">
-
-        @if ($skills->count() > 0)
-            @foreach ($skills as $skill)
-                {{ $skill->contribution->title }} <br>
-                {{ $skill->fields_covered_by_it }} <br>
-                {{ $skill->years_levels_covering_it }} <br>
-                {{ $skill->topic_group_covering_it }} <br>
+    <x-layouts.contributions label="Skills Board" type="skill" actionLabel="Submit a new skill"
+        action-icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
+        <div class="grid grid-cols-3 gap-6">
+            @foreach ($publicSkills as $skill)
+                <x-nav-link :href="route('skill.show', $skill)" type='call-to-action'>
+                    <x-layouts.skill :skill="$skill" />
+                </x-nav-link>
             @endforeach
-        @else
-            <div class="h-full flex flex-col items.center justify-center gap-8">
-                <p class="text-xl text-slate-400 text-center">
-                    Look like an empty board? 😳
-                </p>
-                <div class="text-center">
-                    <x-nav-link :href="route('contribution.index')" type="call-to-action">
-                        Submit a new information
-                    </x-nav-link>
-                </div>
-            </div>
-        @endif
-    </div>
+        </div>
+    </x-layouts.contributions>
 </x-layouts.app>

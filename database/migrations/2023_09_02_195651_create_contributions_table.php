@@ -23,11 +23,6 @@ return new class extends Migration
                 array_column(Visibility::cases(), 'value'),
             );
             $table->string("title");
-            $table->enum(
-                'source',
-                array_column(Source::cases(), 'value'),
-            );
-            $table->string("link")->nullable();
             $table->timestamps();
         });
     }

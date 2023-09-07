@@ -16,10 +16,6 @@
             <span class="font-medium">{{ $published }}</span>
             Published
         </div>
-        <div class="p-1  {{ $private > 0 ? 'text-red-400' : 'text-white/60' }} rounded-md capitalize">
-            <span class="font-medium">{{ $private }}</span>
-            Private
-        </div>
         <x-layouts.navigation-link open-as="slideover" :resource="'contribution.' . $type" action="create" :label="'create new ' . $type"
             icon-path="M12 6v12m6-6H6" />
     </div>

@@ -29,7 +29,7 @@ class Skill extends Model
         return $this->morphOne(Contribution::class, 'contribution');
     }
 
-    public function requiredTopic(): HasMany
+    public function requiredTopics(): HasMany
     {
         return $this->hasMany(Topic::class);
     }

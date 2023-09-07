@@ -6,17 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Contributions extends Component
+class MainContent extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(
-        public string $type = '',
-        public string $label = '',
-        public string $actionLabel = '',
-        public string $actionIcon = '',
-    ) {
+    public function __construct()
+    {
+        //
     }
 
     /**
@@ -24,6 +21,6 @@ class Contributions extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.contributions');
+        return view('components.layouts.main-content');
     }
 }

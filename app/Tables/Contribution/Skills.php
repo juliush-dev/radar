@@ -55,18 +55,12 @@ class Skills extends AbstractTable
     {
         $table
             ->withGlobalSearch(columns: ['title'])
-            ->column('title', sortable: true)
-            ->column('group', sortable: true)
-            ->column('years levels covering it', sortable: true)
-            ->column('field covered by it', sortable: true)
-            ->column('state', sortable: true)
-            ->column('Submitted at', sortable: true);
-
-        // ->searchInput()
-        // ->selectFilter()
-        // ->withGlobalSearch()
-
-        // ->bulkAction()
-        // ->export()
+            ->column('title')
+            ->column('group')
+            ->column('years levels covering it')
+            ->column('field covered by it')
+            ->column('actual visibility')
+            ->column('request')
+            ->column('request State');
     }
 }
