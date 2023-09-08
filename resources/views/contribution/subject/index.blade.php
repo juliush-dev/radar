@@ -11,7 +11,6 @@
                         <tr class="border-b border-teal-900">
                             <td class="p-6">{{ $r->contribution->title }}</td>
                             <td class="p-6">{{ $r->description }}</td>
-                            <td class="p-6">{{ $r->teacher->salutation }} {{ $r->teacher->name }}</td>
                             <td class="p-6">{{ $r->year_levels_covered_by_it }}</td>
                             @php
                                 $visibility = $r->contribution->visibility;

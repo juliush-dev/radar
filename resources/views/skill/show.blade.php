@@ -8,4 +8,20 @@
                 icon-path="M4.745 3A23.933 23.933 0 003 12c0 3.183.62 6.22 1.745 9M19.5 3c.967 2.78 1.5 5.817 1.5 9s-.533 6.22-1.5 9M8.25 8.885l1.444-.89a.75.75 0 011.105.402l2.402 7.206a.75.75 0 001.104.401l1.445-.889m-8.25.75l.213.09a1.687 1.687 0 002.062-.617l4.45-6.676a1.688 1.688 0 012.062-.618l.213.09" />
         </div>
     </x-layouts.main-content>
+    <x-slot:right-panel>
+        <div class="flex flex-col gap-6">
+            <x-layouts.navigation-link class="w-full" type="call-to-action" resource="skill" action="index"
+                label="Back to Skills board" icon-path="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+            <h1 class="text-2xl capitalize">Skills quick navigation</h1>
+            @foreach ($publicSkills as $skill)
+                @php
+                    // dd(route('skill.show', $skill));
+                    $isActive = request()->url() == route('skill.show', $skill);
+                @endphp
+                <x-nav-link :active="$isActive" :href="route('skill.show', $skill)" type='call-to-action'>
+                    <x-layouts.skill :skill="$skill" />
+                </x-nav-link>
+            @endforeach
+        </div>
+    </x-slot>
 </x-layouts.app>

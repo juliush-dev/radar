@@ -54,8 +54,22 @@ class Skills extends AbstractTable
                                     ModificationType::Create->value,
                                 ]
                             )->where(
-                                'modification_request_state',
-                                ModificationRequestState::Approved->value
+                                function ($query) {
+                                    $query->where(
+                                        'modification_request_state',
+                                        ModificationRequestState::Approved->value
+                                    );
+                                    if (Auth::check()) {
+                                        $query->orWhere(
+                                            function ($query) {
+                                                $query->where(
+                                                    'modification_request_state',
+                                                    ModificationRequestState::Pending->value
+                                                )->where('contributor_id', Auth::user()->id);
+                                            }
+                                        );
+                                    }
+                                }
                             );
                         }
                     );

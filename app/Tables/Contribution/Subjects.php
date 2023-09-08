@@ -57,7 +57,6 @@ class Subjects extends AbstractTable
             ->withGlobalSearch(columns: ['title'])
             ->column('title')
             ->column('description')
-            ->column('teached by')
             ->column('year levels it covers')
             ->column('actual visibility')
             ->column('request')

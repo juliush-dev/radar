@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateTopicRequest;
 use App\Models\Skill;
 use App\Models\Subject;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Auth;
 
 class TopicController extends Controller
 {
@@ -36,27 +37,54 @@ class TopicController extends Controller
 
         $fieldsOptions = explode(",", $skill->fields_covered_by_it);
         $fieldsOptionsPair = array_reduce($fieldsOptions, $getKeyValuePair, []);
-        $subjects = Subject::whereHas(
-            'contribution',
-            function ($query) {
-                $query->where('visibility', Visibility::Public->value)
-                    ->whereHas('modificationRequests', function ($query) {
-                        $query->latest('created_at')
-                            ->whereIn('modification_type', [
-                                ModificationType::Create->value,
-                                ModificationType::Update->value,
-                            ])->where(
-                                'modification_request_state',
-                                ModificationRequestState::Approved->value
-                            );
-                    });
-            }
-        )->get();
+        $subjects = Subject::where(function ($query) use ($skill) {
+            $query->where(function ($query) use ($skill) {
+                foreach (explode(",", $skill->years_levels_covering_it) as $y) {
+                    $query->orWhereRaw('FIND_IN_SET(?, year_levels_covered_by_it)', [$y]);
+                }
+            })
+                ->whereHas(
+                    'contribution',
+                    function ($query) {
+                        $query->where('contributor_id', Auth::user()->id)
+                            ->whereNot('visibility', Visibility::Disabled->value)
+                            ->whereHas('modificationRequests', function ($query) {
+                                $query->latest('created_at')
+                                    ->whereIn('modification_type', [
+                                        ModificationType::Create->value,
+                                        ModificationType::Update->value,
+                                    ])->whereIn(
+                                        'modification_request_state',
+                                        [
+                                            ModificationRequestState::Pending->value,
+                                            ModificationRequestState::Approved->value,
+                                        ]
+                                    );
+                            })->orWhere(function ($query) {
+                                $query->whereNot('contributor_id', Auth::user()->id)
+                                    ->where('visibility', Visibility::Public->value)
+                                    ->whereHas('modificationRequests', function ($query) {
+                                        $query->latest('created_at')
+                                            ->whereIn('modification_type', [
+                                                ModificationType::Create->value,
+                                                ModificationType::Update->value,
+                                            ])->where(
+                                                'modification_request_state',
+                                                ModificationRequestState::Approved->value
+                                            );
+                                    });
+                            });
+                    }
+                );
+        })->get();
         $subjectsOptionsPair = $subjects->reduce(function ($acc, $subjcet) {
-            $acc['id'] = $subjcet->id;
-            $acc['title'] = $subjcet->contribution->title;
+            $acc[] = [
+                'id' => $subjcet->id,
+                'title' => $subjcet->contribution->title
+            ];
             return $acc;
         }, []);
+        // dd($subjectsOptionsPair);
 
         return view('topic.create', [
             'yearsLevelsOptionsPair' => $yearsLevelsOptionsPair,

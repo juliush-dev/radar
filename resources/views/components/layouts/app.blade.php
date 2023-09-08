@@ -8,7 +8,7 @@
         {{ $slot }}
     </main>
     @isset($rightPanel)
-        <section class="h-full w-1/4">
+        <section class="h-full w-1/4 bg-slate-900/60 p-8 rounded-md shadow-2xl overflow-y-auto">
             {{ $rightPanel ?? '' }}
         </section>
     @endisset

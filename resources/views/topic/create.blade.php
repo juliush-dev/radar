@@ -9,20 +9,27 @@
                 </svg>
                 New Topic
             </h1>
-            {{--
-            'yearsLevelsOptions' => $yearsLevelsOptions,
-            'subjects' => $subjects,
-            'skill' => $skill,
-             --}}
             <x-splade-form action="{{ route('topic.store', $skill) }}" class="flex flex-col gap-8">
                 <x-splade-input name="title" label="Title" />
                 <x-splade-select class="text-slate-800" label="Year teached at" name="year_teached_at"
                     :options="$yearsLevelsOptionsPair" />
-                <x-splade-select class="text-slate-800" label="Subject" name="covered_by_subject_id" :options="$subjectsOptionsPair"
-                    option-label="title" option-value="id" />
+                <div class="flex flex-col gap-1">
+                    <x-splade-select class="text-slate-800" label="Subject" name="covered_by_subject_id"
+                        :options="$subjectsOptionsPair" option-label="title" option-value="id" />
+                    <x-splade-transition enter="transition-opacity duration-75" class="flex justify-end"
+                        v-show="form.title.length > 3 && form.covered_by_subject_id.length == 0">
+                        <x-layouts.navigation-link open-as="modal" type="call-to-action" resource="subject"
+                            :action-args="$skill" action="create" label="Create new Subject to add"
+                            icon-path="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                    </x-splade-transition>
+                </div>
                 <x-splade-select class="text-slate-800" label="Field" name="topic_field" :options="$fieldsOptionsPair" />
                 <div class="flex justify-end mt-5">
-                    <x-splade-submit label="Submit it" />
+
+                    <x-splade-transition
+                        v-show="form.title.length > 3 && form.covered_by_subject_id.length > 0 && form.topic_field.length > 0 && form.year_teached_at.length > 0">
+                        <x-splade-submit label="Submit it" />
+                    </x-splade-transition>
                 </div>
             </x-splade-form>
         </div>

@@ -14,8 +14,6 @@
                 <x-splade-input name="description" label="Description" placeholder="A good description" />
                 <x-splade-select class="text-slate-800" label="Year levels covered by this subject"
                     name="year_levels_covered_by_it" :options="$yearsLevelsOptions" multiple />
-                <x-splade-select class="text-slate-800" label="By which teacher is this subject dispensed this year?"
-                    name="teacher_id" :options="$teachersOptions" option-label="name" option-value="id" />
                 <div class="flex justify-end mt-5">
                     <x-splade-submit label="Submit it" />
                 </div>

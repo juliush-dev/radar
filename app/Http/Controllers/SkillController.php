@@ -40,7 +40,14 @@ class SkillController extends Controller
      */
     public function show(Skill $skill)
     {
-        return view('skill.show', ['skill' => $skill]);
+        $skillsIndex = new Skills;
+        return view(
+            'skill.show',
+            [
+                'skill' => $skill,
+                'publicSkills' => $skillsIndex->for(),
+            ]
+        );
     }
 
     /**
