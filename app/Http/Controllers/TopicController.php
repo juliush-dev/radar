@@ -84,7 +84,6 @@ class TopicController extends Controller
             ];
             return $acc;
         }, []);
-        // dd($subjectsOptionsPair);
 
         return view('topic.create', [
             'yearsLevelsOptionsPair' => $yearsLevelsOptionsPair,
@@ -99,7 +98,7 @@ class TopicController extends Controller
      */
     public function store(StoreTopicRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

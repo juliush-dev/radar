@@ -15,16 +15,14 @@ return new class extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('covered_by_subject_id');
-            $table->foreignUuid('required_by_skill_id');
             $table->set(
                 'year_teached_at',
                 array_column(YearLevel::cases(), 'value'),
-            );
+            )->nullable();
             $table->enum(
                 'topic_field',
                 array_column(TopicField::cases(), 'value'),
-            );
+            )->nullable();
             $table->timestamps();
         });
     }

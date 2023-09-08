@@ -19,7 +19,7 @@ class Topic extends Model
     }
     public function subjectCoveringIt(): HasOne
     {
-        return $this->hasOne(Subject::class, 'covered_by_subject_id');
+        return $this->hasOne(SubjectCoveringTopic::class);
     }
 
     public function studentsAssessments(): HasMany
@@ -29,11 +29,11 @@ class Topic extends Model
 
     public function SkillRequiringIt(): BelongsTo
     {
-        return $this->belongsTo(Skill::class, 'required_by_skill_id');
+        return $this->belongsTo(SkillRequirement::class);
     }
 
     public function learningMaterials(): HasMany
     {
-        return $this->hasMany(LearningMaterial::class);
+        return $this->hasMany(TopicLearningMaterial::class);
     }
 }

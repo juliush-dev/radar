@@ -19,11 +19,11 @@ return new class extends Migration
             $table->set(
                 'fields_covered_by_it',
                 array_column(TopicField::cases(), 'value',)
-            );
+            )->nullable();
             $table->set(
                 'years_levels_covering_it',
                 array_column(YearLevel::cases(), 'value'),
-            );
+            )->nullable();
             $table->enum(
                 'topic_group_covering_it',
                 array_column(TopicGroup::cases(), 'value'),

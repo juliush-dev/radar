@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class LearningMaterial extends Model
@@ -16,8 +17,8 @@ class LearningMaterial extends Model
         return $this->morphOne(Contribution::class, 'contribution');
     }
 
-    public function priorTopic(): BelongsTo
+    public function topic(): HasOne
     {
-        return $this->belongsTo(Topic::class, 'required_for_topic_id');
+        return $this->hasOne(TopicLearningMaterial::class);
     }
 }

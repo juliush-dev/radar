@@ -23,4 +23,9 @@ class Subject extends Model
     {
         return $this->morphOne(Contribution::class, 'contribution');
     }
+
+    public function topicCoveredByIt(): HasOne
+    {
+        return $this->hasOne(SubjectCoveringTopic::class);
+    }
 }

@@ -31,6 +31,6 @@ class Skill extends Model
 
     public function requiredTopics(): HasMany
     {
-        return $this->hasMany(Topic::class);
+        return $this->hasMany(SkillRequirement::class);
     }
 }
