@@ -18,7 +18,7 @@ return new class extends Migration
             $table->set(
                 'year_levels_covered_by_it',
                 array_column(YearLevel::cases(), 'value'),
-            )->nullable();
+            );
             $table->timestamps();
         });
     }

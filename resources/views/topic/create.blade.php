@@ -9,7 +9,7 @@
                 </svg>
                 New Topic
             </h1>
-            <x-splade-form action="{{ route('topic.store', $skill) }}" submit-on-change background debounce="500"
+            <x-splade-form action="{{ route('topic.store', $skill) }}" submit-on-change background debounce="50"
                 class="flex flex-col gap-8">
                 <x-splade-input name="title" label="Title" />
             </x-splade-form>

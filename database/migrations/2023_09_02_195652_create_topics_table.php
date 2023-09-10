@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->set(
-                'year_teached_at',
+                'years_teached_at',
                 array_column(YearLevel::cases(), 'value'),
-            )->nullable();
+            );
             $table->enum(
                 'topic_field',
                 array_column(TopicField::cases(), 'value'),
-            )->nullable();
+            );
             $table->timestamps();
         });
     }

@@ -1,5 +1,7 @@
 @php
     $routeName = empty($action) ? $resource : $resource . '.' . $action;
+    $postActions = ['update', 'delete', 'store'];
+    $method = in_array($action, $postActions) ? 'post' : 'get';
     $route = isset($actionArgs) ? route($routeName, $actionArgs) : ($route = route($routeName));
     $isActive = $type == 'call-to-action' ? false : request()->routeIs($routeName) || request()->url() == $route || str_starts_with(Route::currentRouteName(), $resource);
 @endphp
@@ -8,7 +10,7 @@
     <div class="flex flex-col gap-2">
         <div class="flex gap-2 my-auto">
 
-            <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$post ? 'post' : 'get'" :href="$route"
+            <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$method" :href="$route"
                 :type="$type" {{ $attributes }}>
                 @if (strlen($iconPath) > 0)
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

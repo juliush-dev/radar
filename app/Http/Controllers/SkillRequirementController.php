@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSkillRequiremntRequest;
-use App\Http\Requests\UpdateSkillRequiremntRequest;
-use App\Models\SkillRequiremnt;
+use App\Http\Requests\StoreSkillRequirementRequest;
+use App\Http\Requests\UpdateSkillRequirementRequest;
+use App\Models\SkillRequirement;
 
-class SkillRequiremntController extends Controller
+class SkillRequirementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class SkillRequiremntController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSkillRequiremntRequest $request)
+    public function store(StoreSkillRequirementRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class SkillRequiremntController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SkillRequiremnt $skillRequiremnt)
+    public function show(SkillRequirement $skillRequiremnt)
     {
         //
     }
@@ -43,7 +43,7 @@ class SkillRequiremntController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SkillRequiremnt $skillRequiremnt)
+    public function edit(SkillRequirement $skillRequiremnt)
     {
         //
     }
@@ -51,7 +51,7 @@ class SkillRequiremntController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSkillRequiremntRequest $request, SkillRequiremnt $skillRequiremnt)
+    public function update(UpdateSkillRequirementRequest $request, SkillRequirement $skillRequiremnt)
     {
         //
     }
@@ -59,7 +59,7 @@ class SkillRequiremntController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SkillRequiremnt $skillRequiremnt)
+    public function destroy(SkillRequirement $skillRequiremnt)
     {
         //
     }

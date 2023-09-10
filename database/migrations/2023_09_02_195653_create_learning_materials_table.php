@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum(
                 "learning_material_type",
                 array_column(LearningMaterialType::cases(), 'value'),
-            )->nullable();
+            );
             $table->timestamps();
         });
     }
