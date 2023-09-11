@@ -81,7 +81,7 @@ class SkillController extends Controller
                     [
                         'contributor_id' => Auth::user()->id,
                         "title" => $request->input('title'),
-                        "visibility" => $request->input('visibility'),
+                        "visibility" => Visibility::Public->value,
                     ]
                 );
 

@@ -2,6 +2,7 @@
 
 namespace App\Tables\Contribution;
 
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ProtoneMedia\Splade\AbstractTable;
@@ -36,7 +37,7 @@ class Topics extends AbstractTable
      */
     public function for()
     {
-        return \App\Models\Topic::whereHas('contribution', function ($query) {
+        return Topic::whereHas('contribution', function ($query) {
             $query->where(
                 'contributor_id',
                 Auth::user()->id,
@@ -53,14 +54,12 @@ class Topics extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
-            ->withGlobalSearch(columns: ['id'])
-            ->column('id', sortable: true);
-
-        // ->searchInput()
-        // ->selectFilter()
-        // ->withGlobalSearch()
-
-        // ->bulkAction()
-        // ->export()
+            ->withGlobalSearch(columns: ['title'])
+            ->column('title')
+            ->column('years teached at')
+            ->column('field it belongs to')
+            ->column('actual visibility')
+            ->column('request')
+            ->column('request State');
     }
 }

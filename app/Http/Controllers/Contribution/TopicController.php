@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers\Contribution;
 
+use App\Enums\ModificationRequestState;
+use App\Enums\ModificationType;
+use App\Enums\TopicField;
+use App\Enums\Visibility;
+use App\Enums\YearLevel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
 use App\Models\Topic;
+use App\Tables\Contribution\Topics;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class TopicController extends Controller
 {
@@ -14,7 +23,8 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        $contributedTopics = new Topics;
+        return view('contribution.topic.index', ['contributedTopics' => $contributedTopics]);
     }
 
     /**
@@ -22,43 +32,28 @@ class TopicController extends Controller
      */
     public function create()
     {
-        // $getKeyValuePair = function ($acc, $value) {
-        //     $acc[$value] = $value;
-        //     return $acc;
-        // };
+        $getKeyValuePair = function ($acc, $value) {
+            $acc[$value] = $value;
+            return $acc;
+        };
 
-        // $sources = Source::cases();
-        // $sourcesOptions = array_column($sources, 'value');
-        // $sourcesOptions = array_reduce($sourcesOptions, $getKeyValuePair, []);
-
-        // $yearsLevels = YearLevel::cases();
-        // $yearsLevelsOptions = array_column($yearsLevels, 'value');
-        // $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
+        $yearsLevels = YearLevel::cases();
+        $yearsLevelsOptions = array_column($yearsLevels, 'value');
+        $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
 
 
-        // $topicFields = TopicField::cases();
-        // $topicFieldsOptions = array_column($topicFields, 'value');
-        // $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
+        $topicFields = TopicField::cases();
+        $topicFieldsOptions = array_column($topicFields, 'value');
+        $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
 
 
-        // $topicGroups = TopicGroup::cases();
-        // $topicGroupsOptions = array_column($topicGroups, 'value');
-        // $topicGroupsOptions = array_reduce($topicGroupsOptions, $getKeyValuePair, []);
-
-        // $modificationsTypes = [ModificationType::CreateAndMakePrivate, ModificationType::CreateAndMakePublic];
-        // $modificationsTypesOptions = array_column($modificationsTypes, 'value');
-        // $modificationsTypesOptions = array_reduce($modificationsTypesOptions, $getKeyValuePair, []);
-
-        // return view(
-        //     'topic.create',
-        //     [
-        //         'sourcesOptions' => $sourcesOptions,
-        //         'yearsLevelsOptions' => $yearsLevelsOptions,
-        //         'topicFieldsOptions' => $topicFieldsOptions,
-        //         'topicGroupsOptions' => $topicGroupsOptions,
-        //         'modificationsTypesOptions' => $modificationsTypesOptions,
-        //     ]
-        // );
+        return view(
+            'contribution.topic.create',
+            [
+                'yearsLevelsOptions' => $yearsLevelsOptions,
+                'topicFieldsOptions' => $topicFieldsOptions,
+            ]
+        );
     }
 
     /**
@@ -66,7 +61,31 @@ class TopicController extends Controller
      */
     public function store(StoreTopicRequest $request)
     {
-        //
+        DB::transaction(
+            function () use ($request) {
+                $topic = Topic::create([
+                    'years_teached_at' => implode(",", $request->input('years_teached_at')),
+                    'topic_field' =>  $request->input('topic_field'),
+                ]);
+
+                $contribution = $topic->contribution()->create(
+                    [
+                        'contributor_id' => Auth::user()->id,
+                        "title" => $request->input('title'),
+                        "visibility" => Visibility::Public->value,
+                    ]
+                );
+
+                $contribution->modificationRequests()->create(
+                    [
+                        'modification_request_state' => ModificationRequestState::Pending->value,
+                        'modification_type' => ModificationType::Create->value,
+                    ]
+                );
+            }
+        );
+        Toast::title('New Topic successfuly submitted for contribution!')->autoDismiss(15);
+        return redirect()->route('contribution.topic.index');
     }
 
     /**

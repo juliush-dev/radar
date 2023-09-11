@@ -13,6 +13,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class Topic extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $fillable = [
+        'topic_field',
+        'years_teached_at',
+    ];
+
     public function contribution(): MorphOne
     {
         return $this->morphOne(Contribution::class, 'contribution');

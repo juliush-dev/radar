@@ -54,14 +54,11 @@ class LearningMaterials extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
-            ->withGlobalSearch(columns: ['id'])
-            ->column('id', sortable: true);
-
-        // ->searchInput()
-        // ->selectFilter()
-        // ->withGlobalSearch()
-
-        // ->bulkAction()
-        // ->export()
+            ->withGlobalSearch(columns: ['title'])
+            ->column('title')
+            ->column('type')
+            ->column('actual visibility')
+            ->column('request')
+            ->column('request State');
     }
 }

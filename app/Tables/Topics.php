@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\SpladeTable;
 
-class Topic extends AbstractTable
+class Topics extends AbstractTable
 {
     /**
      * Create a new instance.

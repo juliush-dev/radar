@@ -69,6 +69,8 @@ Route::middleware('splade')->group(function () {
         Route::post('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'store'])->name('contribution.learning-material.store');
 
 
+        Route::get('/{skill}/skill-requirements', [App\Http\Controllers\SkillRequirementController::class, 'index'])->name('skill-requirement.index');
+        Route::post('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'store'])->name('skill-requirement.store');
 
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

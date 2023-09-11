@@ -1,4 +1,4 @@
-<div class="w-full">
+<div {{ $attributes->merge(['class' => 'w-full']) }}>
     <div class="flex gap-0 grow">
         <div class="flex p-3 gap-2 border-r border-teal-900">
             @foreach (explode(',', $skill->years_levels_covering_it) as $yearLevel)

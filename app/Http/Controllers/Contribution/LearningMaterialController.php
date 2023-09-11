@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningMaterialRequest;
 use App\Http\Requests\UpdateLearningMaterialRequest;
 use App\Models\LearningMaterial;
+use App\Tables\Contribution\LearningMaterials;
 
 class LearningMaterialController extends Controller
 {
@@ -14,7 +15,8 @@ class LearningMaterialController extends Controller
      */
     public function index()
     {
-        //
+        $contributedLearningMaterials = new LearningMaterials;
+        return view('contribution.learning-material.index', ['contributedLearningMaterials' => $contributedLearningMaterials]);
     }
 
     /**

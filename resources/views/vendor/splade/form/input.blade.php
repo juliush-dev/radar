@@ -30,7 +30,8 @@
                         fn($attributes) => $attributes->merge([
                             'v-model' => $vueModel(),
                         ]),
-                    ) }} />
+                    ) }}
+                autofocus />
 
             @if ($append)
                 <span :class="{ 'opacity-50': inputScope.disabled && @json(!$alwaysEnableAppend) }"
