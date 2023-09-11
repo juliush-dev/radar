@@ -61,6 +61,7 @@ class Skills extends AbstractTable
             ->column('field covered by it')
             ->column('actual visibility')
             ->column('request')
-            ->column('request State');
+            ->column('request State')
+            ->column('Topics');
     }
 }

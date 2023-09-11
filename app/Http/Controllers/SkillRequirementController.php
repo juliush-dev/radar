@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ModificationRequestState;
+use App\Enums\ModificationType;
+use App\Enums\Visibility;
 use App\Http\Requests\StoreSkillRequirementRequest;
 use App\Http\Requests\UpdateSkillRequirementRequest;
 use App\Models\Skill;
 use App\Models\SkillRequirement;
 use App\Models\Topic;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class SkillRequirementController extends Controller
 {
@@ -18,22 +24,64 @@ class SkillRequirementController extends Controller
     {
 
         $requirements = $skill->requiredTopics;
-        $requiredTopics = $requirements->map(fn ($requirement) => Topic::find($requirement->topic_id));
-        $ids = $requirements->map(fn ($requirement) => $requirement->topic_id)->all();
-        $topicsOptions = Topic::whereNotIn('id', $ids)->get();
+        $requiredTopics = Topic::whereIn('id', $requirements->map(fn ($r) => $r->topic_id)->toArray())->get();
         return view('skill-requirement.index', [
             'skill' => $skill,
             'requiredTopics' => $requiredTopics,
-            'topicsOptions' => $topicsOptions,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Skill $skill)
     {
-        //
+        $publicCondition =
+            function ($query) use ($skill) {
+                $query->where('visibility', Visibility::Public->value)
+                    ->whereHas(
+                        'modificationRequests',
+                        function (Builder $query) use ($skill) {
+                            $query->latest('created_at')->whereIn(
+                                'modification_type',
+                                [
+                                    ModificationType::Update->value,
+                                    ModificationType::Create->value,
+                                ]
+                            )
+                                ->whereNotIn('id', Topic::whereIn('id', $skill->requiredTopics->pluck('topic_id'))->get()->pluck('id'))
+                                ->where(
+                                    function ($query) use ($skill) {
+                                        $query->where(
+                                            'modification_request_state',
+                                            ModificationRequestState::Approved->value
+                                        );
+                                        if (Auth::check()) {
+                                            $query->orWhere(
+                                                function ($query) use ($skill) {
+                                                    $query->where('visibility', Visibility::Public->value)
+                                                        ->where(
+                                                            'modification_request_state',
+                                                            ModificationRequestState::Pending->value
+                                                        )->where('contributor_id', Auth::user()->id)
+                                                        ->whereNotIn('id', Topic::whereIn('id', $skill->requiredTopics->pluck('topic_id'))->get()->pluck('id'));
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                        }
+                    );
+            };
+
+        $publicTopics = Topic::whereHas(
+            'contribution',
+            $publicCondition,
+        )->get();
+        return view('skill-requirement.create', [
+            'skill' => $skill,
+            'topicsOptions' => $publicTopics,
+        ]);
     }
 
     /**
@@ -43,12 +91,16 @@ class SkillRequirementController extends Controller
     {
         DB::transaction(
             function () use ($request, $skill) {
-                $skillRequiremnt = new  SkillRequirement;
-                $skillRequiremnt->skill_id = $skill->id;
-                $skillRequiremnt->topic_id = $request->input('topics')[0];
-                $skillRequiremnt->save();
+                foreach ($request->input('topics') as $topicId) {
+                    $skillRequiremnt = new  SkillRequirement;
+                    $skillRequiremnt->skill_id = $skill->id;
+                    $skillRequiremnt->topic_id = $topicId;
+                    $skillRequiremnt->save();
+                }
             }
         );
+        Toast::title(collect($request->input('topics'))->count() . ' Topic(s) successfuly added to' . $skill->contribution->title)->autoDismiss(15);
+        return redirect()->route('contribution.skill.index');
     }
 
     /**

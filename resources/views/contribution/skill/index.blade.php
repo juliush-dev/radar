@@ -45,7 +45,7 @@
                                 {{ $modificationType }}
                             </td>
                             @php
-
+                                
                                 $modificationRequestState = $r->contribution
                                     ->modificationRequests()
                                     ->latest()
@@ -64,6 +64,11 @@
                             <td class="p-6 capitalize {{ $modificationRequestStateClass }}">
                                 {{ $modificationRequestState }}
                             </td>
+                            <td>
+                                <x-layouts.navigation-link open-as='slideover' resource="skill-requirement"
+                                    action="index" :action-args="$r" label="{{ $r->requiredTopics->count() }} Topics"
+                                    icon-path="M4.745 3A23.933 23.933 0 003 12c0 3.183.62 6.22 1.745 9M19.5 3c.967 2.78 1.5 5.817 1.5 9s-.533 6.22-1.5 9M8.25 8.885l1.444-.89a.75.75 0 011.105.402l2.402 7.206a.75.75 0 001.104.401l1.445-.889m-8.25.75l.213.09a1.687 1.687 0 002.062-.617l4.45-6.676a1.688 1.688 0 012.062-.618l.213.09" />
+                            </td>
                             <td class="p-6 capitalize">
                                 <x-splade-dropdown>
                                     <x-slot:trigger>
@@ -79,10 +84,12 @@
                                             </span>
                                         </x-splade-button>
                                     </x-slot>
+
                                     <div class="whitespace-nowrap shadow-md bg-slate-800 p-4 rounded-md">
                                         <x-layouts.navigation-link open-as='slideover' resource="skill-requirement"
-                                            action="index" :action-args="$r" label="Topics teaching this skill"
-                                            icon-path="M7.875 14.25l1.214 1.942a2.25 2.25 0 001.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 011.872 1.002l.164.246a2.25 2.25 0 001.872 1.002h2.092a2.25 2.25 0 001.872-1.002l.164-.246A2.25 2.25 0 0116.954 9h4.636M2.41 9a2.25 2.25 0 00-.16.832V12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 01.382-.632l3.285-3.832a2.25 2.25 0 011.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0021.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 002.25 2.25z" />
+                                            action="create" :action-args="$r" label="Select required topics"
+                                            type="call-to-action"
+                                            icon-path="M4.745 3A23.933 23.933 0 003 12c0 3.183.62 6.22 1.745 9M19.5 3c.967 2.78 1.5 5.817 1.5 9s-.533 6.22-1.5 9M8.25 8.885l1.444-.89a.75.75 0 011.105.402l2.402 7.206a.75.75 0 001.104.401l1.445-.889m-8.25.75l.213.09a1.687 1.687 0 002.062-.617l4.45-6.676a1.688 1.688 0 012.062-.618l.213.09" />
                                     </div>
                                 </x-splade-dropdown>
                             </td>

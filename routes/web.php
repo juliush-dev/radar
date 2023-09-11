@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\TopicController;
-use App\Http\Controllers\LearningMaterialController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,7 +68,9 @@ Route::middleware('splade')->group(function () {
 
 
         Route::get('/{skill}/skill-requirements', [App\Http\Controllers\SkillRequirementController::class, 'index'])->name('skill-requirement.index');
+        Route::get('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'create'])->name('skill-requirement.create');
         Route::post('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'store'])->name('skill-requirement.store');
+        Route::post('/skill-requirements/{skill-requirements}/delete', [App\Http\Controllers\SkillRequirementController::class, 'delete'])->name('skill-requirement.delete');
 
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

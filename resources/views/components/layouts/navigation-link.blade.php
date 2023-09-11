@@ -14,7 +14,7 @@
                 :type="$type" {{ $attributes }}>
                 @if (strlen($iconPath) > 0)
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="my-auto w-6 h-6 {{ $isActive ? 'text-teal-400' : '' }}">
+                        stroke="currentColor" class="my-auto w-5 h-5 {{ $isActive ? 'text-teal-400' : '' }}">
                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $iconPath }}" />
                     </svg>
                 @endif
