@@ -10,7 +10,30 @@
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+    <style>
+        * {
+            --sb-track-color: #232E33;
+            --sb-thumb-color: teal;
+            --sb-size: 10px;
 
+            scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+        }
+
+        *::-webkit-scrollbar {
+            width: var(--sb-size)
+        }
+
+        *::-webkit-scrollbar-track {
+            background: var(--sb-track-color);
+            border-radius: 10px;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: var(--sb-thumb-color);
+            border-radius: 10px;
+
+        }
+    </style>
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
     @spladeHead

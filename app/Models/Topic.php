@@ -33,9 +33,9 @@ class Topic extends Model
         return $this->hasMany(TopicProficiency::class);
     }
 
-    public function SkillRequiringIt(): BelongsTo
+    public function skillsRequiringIt(): HasMany
     {
-        return $this->belongsTo(SkillRequirement::class);
+        return $this->hasMany(SkillRequirement::class);
     }
 
     public function learningMaterials(): HasMany

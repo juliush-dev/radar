@@ -70,8 +70,12 @@ Route::middleware('splade')->group(function () {
         Route::get('/{skill}/skill-requirements', [App\Http\Controllers\SkillRequirementController::class, 'index'])->name('skill-requirement.index');
         Route::get('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'create'])->name('skill-requirement.create');
         Route::post('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'store'])->name('skill-requirement.store');
-        Route::post('/skill-requirements/{skill-requirements}/delete', [App\Http\Controllers\SkillRequirementController::class, 'delete'])->name('skill-requirement.delete');
+        Route::post('/skill-requirements/delete', [App\Http\Controllers\SkillRequirementController::class, 'delete'])->name('skill-requirement.delete');
 
+        Route::get('/{topic}/topic-subjects/new', [App\Http\Controllers\SubjectCoveringTopicController::class, 'create'])->name('topic-subject.create');
+        Route::get('/topic-subjects/{topic-subject}/edit', [App\Http\Controllers\SubjectCoveringTopicController::class, 'edit'])->name('topic-subject.edit');
+        Route::post('/{topic}/topic-subjects/new', [App\Http\Controllers\SubjectCoveringTopicController::class, 'store'])->name('topic-subject.store');
+        Route::post('/topic-subjects/delete', [App\Http\Controllers\SubjectCoveringTopicController::class, 'delete'])->name('topic-subject.delete');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

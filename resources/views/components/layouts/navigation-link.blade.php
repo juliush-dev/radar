@@ -1,7 +1,7 @@
 @php
     $routeName = empty($action) ? $resource : $resource . '.' . $action;
     $postActions = ['update', 'delete', 'store'];
-    $method = in_array($action, $postActions) ? 'post' : 'get';
+    $method = in_array($action, $postActions) || $resource == 'logout' ? 'post' : 'get';
     $route = isset($actionArgs) ? route($routeName, $actionArgs) : ($route = route($routeName));
     $isActive = $type == 'call-to-action' ? false : request()->routeIs($routeName) || request()->url() == $route || str_starts_with(Route::currentRouteName(), $resource);
 @endphp

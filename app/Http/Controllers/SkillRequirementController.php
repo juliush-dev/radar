@@ -49,7 +49,6 @@ class SkillRequirementController extends Controller
                                     ModificationType::Create->value,
                                 ]
                             )
-                                ->whereNotIn('id', Topic::whereIn('id', $skill->requiredTopics->pluck('topic_id'))->get()->pluck('id'))
                                 ->where(
                                     function ($query) use ($skill) {
                                         $query->where(
@@ -74,10 +73,20 @@ class SkillRequirementController extends Controller
                     );
             };
 
-        $publicTopics = Topic::whereHas(
-            'contribution',
-            $publicCondition,
-        )->get();
+        $publicTopics = Topic::whereNotIn('id', Topic::whereIn('id', $skill->requiredTopics->pluck('topic_id'))->get()->pluck('id')->toArray())
+            ->where(function ($query) use ($skill) {
+                foreach (explode(",", $skill->years_levels_covering_it) as $y) {
+                    $query->orWhereRaw('FIND_IN_SET(?, years_teached_at)', [$y]);
+                }
+            })->where(function ($query) use ($skill) {
+                foreach (explode(",", $skill->fields_covered_by_it) as $f) {
+                    $query->orWhereRaw('FIND_IN_SET(?, topic_field)', [$f]);
+                }
+            })
+            ->whereHas(
+                'contribution',
+                $publicCondition,
+            )->get();
         return view('skill-requirement.create', [
             'skill' => $skill,
             'topicsOptions' => $publicTopics,

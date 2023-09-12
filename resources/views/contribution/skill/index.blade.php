@@ -13,6 +13,11 @@
                             <td class="p-6">{{ $r->topic_group_covering_it }}</td>
                             <td class="p-6">{{ $r->years_levels_covering_it }}</td>
                             <td class="p-6">{{ $r->fields_covered_by_it }}</td>
+                            <td class="p-6">
+                                <x-layouts.navigation-link open-as='slideover' resource="skill-requirement" action="index"
+                                    :action-args="$r" label="{{ $r->requiredTopics->count() }} Topics"
+                                    icon-path="M4.745 3A23.933 23.933 0 003 12c0 3.183.62 6.22 1.745 9M19.5 3c.967 2.78 1.5 5.817 1.5 9s-.533 6.22-1.5 9M8.25 8.885l1.444-.89a.75.75 0 011.105.402l2.402 7.206a.75.75 0 001.104.401l1.445-.889m-8.25.75l.213.09a1.687 1.687 0 002.062-.617l4.45-6.676a1.688 1.688 0 012.062-.618l.213.09" />
+                            </td>
                             @php
                                 $visibility = $r->contribution->visibility;
                                 $visibilityEnum = App\Enums\Visibility::class;
@@ -45,7 +50,7 @@
                                 {{ $modificationType }}
                             </td>
                             @php
-                                
+
                                 $modificationRequestState = $r->contribution
                                     ->modificationRequests()
                                     ->latest()
@@ -63,11 +68,6 @@
                             @endphp
                             <td class="p-6 capitalize {{ $modificationRequestStateClass }}">
                                 {{ $modificationRequestState }}
-                            </td>
-                            <td>
-                                <x-layouts.navigation-link open-as='slideover' resource="skill-requirement"
-                                    action="index" :action-args="$r" label="{{ $r->requiredTopics->count() }} Topics"
-                                    icon-path="M4.745 3A23.933 23.933 0 003 12c0 3.183.62 6.22 1.745 9M19.5 3c.967 2.78 1.5 5.817 1.5 9s-.533 6.22-1.5 9M8.25 8.885l1.444-.89a.75.75 0 011.105.402l2.402 7.206a.75.75 0 001.104.401l1.445-.889m-8.25.75l.213.09a1.687 1.687 0 002.062-.617l4.45-6.676a1.688 1.688 0 012.062-.618l.213.09" />
                             </td>
                             <td class="p-6 capitalize">
                                 <x-splade-dropdown>

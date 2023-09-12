@@ -58,6 +58,7 @@ class Topics extends AbstractTable
             ->column('title')
             ->column('years teached at')
             ->column('field it belongs to')
+            ->column('Subject')
             ->column('actual visibility')
             ->column('request')
             ->column('request State');

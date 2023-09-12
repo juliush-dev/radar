@@ -10,14 +10,14 @@
 
                 Contributions dashboard
             </h1>
-            <div class="grid grid-cols-2 gap-4">
-                <x-layouts.contribution-dashboard-card label="skills" type="skill" :total="$contributedSkills" :published="$contributedSkillsPublished"
-                    :approved="$contributedSkillsApproved" :pending="$contributedSkillsPending" />
-                <x-layouts.contribution-dashboard-card label="subjects" type="subject" :total="$contributedSubjects"
+            <div class="grid grid-cols-2 gap-8">
+                <x-layouts.contribution-dashboard-card label="skill(s)" type="skill" :total="$contributedSkills"
+                    :published="$contributedSkillsPublished" :approved="$contributedSkillsApproved" :pending="$contributedSkillsPending" />
+                <x-layouts.contribution-dashboard-card label="subject(s)" type="subject" :total="$contributedSubjects"
                     :published="$contributedSubjectsPublished" :approved="$contributedSubjectsApproved" :pending="$contributedSubjectsPending" />
-                <x-layouts.contribution-dashboard-card label="topic" type="topic" :total="$contributedTopics" :published="$contributedTopicsPublished"
-                    :approved="$contributedTopicsApproved" :pending="$contributedTopicsPending" />
-                <x-layouts.contribution-dashboard-card label="learning materials" type="learning-material"
+                <x-layouts.contribution-dashboard-card label="topic(s)" type="topic" :total="$contributedTopics"
+                    :published="$contributedTopicsPublished" :approved="$contributedTopicsApproved" :pending="$contributedTopicsPending" />
+                <x-layouts.contribution-dashboard-card label="learning material(s)" type="learning-material"
                     :total="$contributedLearningMaterials" :published="$contributedLearningMaterialsPublished" :approved="$contributedLearningMaterialsApproved" :pending="$contributedLearningMaterialsPending" />
             </div>
         </div>

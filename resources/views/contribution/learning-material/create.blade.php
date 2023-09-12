@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-splade-modal max-width="2xl" class="shadow-md shadow-teal-400 bg-stone-950/60">
+    <x-splade-modal class="shadow-md shadow-teal-400 bg-stone-950/60">
         <div>
             <h1 class="text-xl mb-8 first-letter:uppercase">Skill required to pass the IHK exam</h1>
             <x-splade-form action="{{ route('skill.store') }}" class="flex flex-col gap-8">
