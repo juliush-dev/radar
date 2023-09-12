@@ -13,7 +13,7 @@
     <style>
         * {
             --sb-track-color: #232E33;
-            --sb-thumb-color: teal;
+            --sb-thumb-color: amber;
             --sb-size: 10px;
 
             scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
@@ -39,7 +39,7 @@
     @spladeHead
 </head>
 
-<body class="font-sans antialiased h-screen flex flex-col text-slate-400 bg-slate-800">
+<body class="font-sans antialiased h-screen flex flex-col">
     @splade
 </body>
 

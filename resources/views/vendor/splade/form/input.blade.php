@@ -16,7 +16,7 @@
 
             <input
                 {{ $attributes->except(['v-if', 'v-show', 'v-for', 'class'])->class([
-                        'bg-slate-300 block w-full border-0 focus:border-teal-200 focus:bg-teal-900 focus:ring focus:ring-teal-200 focus:ring-opacity-50 disabled:opacity-50 disabled:bg-gray-50 disabled:cursor-not-allowed',
+                        'bg-slate-300 block w-full border-0 focus:border-amber-200 focus:bg-amber-900 focus:ring focus:ring-amber-200 focus:ring-opacity-50 disabled:opacity-50 disabled:bg-gray-50 disabled:cursor-not-allowed',
                         'rounded-md' => !$append && !$prepend,
                         'min-w-0 flex-1 rounded-none' => $append || $prepend,
                         'rounded-l-md' => $append && !$prepend,

@@ -2,7 +2,7 @@
     <label class="flex items-center text-slate-400">
         <input
             {{ $attributes->except(['v-if', 'v-show', 'class'])->class(
-                    'bg-slate-800 border-teal-500 rounded-full border-gray-300 text-teal-600 shadow-sm focus:border-teal-300 focus:ring focus:ring-teal-200 focus:ring-opacity-50 disabled:opacity-50',
+                    'bg-slate-800 border-amber-500 rounded-full border-gray-300 text-amber-600 shadow-sm focus:border-amber-300 focus:ring focus:ring-amber-200 focus:ring-opacity-50 disabled:opacity-50',
                 )->merge([
                     'name' => $name,
                     'value' => $value,

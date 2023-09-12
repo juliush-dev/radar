@@ -1,4 +1,4 @@
-<div class="p-4 flex flex-col gap-5 shadow rounded shadow-teal-800">
+<div class="p-4 flex flex-col gap-5 shadow rounded shadow-amber-800">
     <div class="flex gap-5 text-3xl font-medium capitalize items.center whitespace-nowrap">
         {{ $total }}
         {{ $label }}
@@ -12,7 +12,7 @@
             <span class="font-medium">{{ $pending }}</span>
             Pending
         </div>
-        <div class="p-1 {{ $published > 0 ? 'text-teal-400' : 'text-white/60' }} rounded-md capitalize">
+        <div class="p-1 {{ $published > 0 ? 'text-amber-400' : 'text-white/60' }} rounded-md capitalize">
             <span class="font-medium">{{ $published }}</span>
             Published
         </div>

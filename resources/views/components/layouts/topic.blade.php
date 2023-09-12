@@ -1,6 +1,6 @@
-<div {{ $attributes->merge(['class' => 'w-full border rounded-md border-teal-900']) }}>
+<div {{ $attributes->merge(['class' => 'w-full border rounded-md border-amber-900']) }}>
     <div class="flex gap-0 grow">
-        <div class="flex p-3 gap-2 border-r border-teal-900">
+        <div class="flex p-3 gap-2 border-r border-amber-900">
             @foreach (explode(',', $topic->years_teached_at) as $yearLevel)
                 {{ $yearLevel }}
             @endforeach
@@ -8,14 +8,14 @@
         <div class="p-3">
             {{ $topic->topic_field }}
         </div>
-        <div class="p-3 border-l border-teal-900">
+        <div class="p-3 border-l border-amber-900">
             {{ $topic->subjectCoveringIt->subject->contribution->title }}
         </div>
     </div>
-    <div class="p-3 text-xl font-medium border border-teal-900 border-x-0">
+    <div class="p-3 text-xl font-medium border border-amber-900 border-x-0">
         {{ $topic->contribution->title }}
     </div>
-    <div class="p-3 border-b border-teal-900 flex gap-2 itemce.center">
+    <div class="p-3 border-b border-amber-900 flex gap-2 itemce.center">
         <span>Proficiency: </span>
         <div class="flex gap-1 items.center">
             @for ($i = 0; $i < 6; $i++)

@@ -9,7 +9,7 @@
             @if ($component->for->resource->count() > 0)
                 <x-slot name="body">
                     @foreach ($component->for->resource as $r)
-                        <tr class="border-b border-teal-900">
+                        <tr class="border-b border-amber-900">
                             <td class="p-6">{{ $r->contribution->title }}</td>
                             <td class="p-6">{{ $r->learning_material_type }}</td>
                             @php
@@ -18,7 +18,7 @@
                                 $visibilityClass = '';
                                 switch ($visibility) {
                                     case $visibilityEnum::Public->value:
-                                        $visibilityClass = 'text-teal-300';
+                                        $visibilityClass = 'text-amber-300';
                                         break;
                                     case $visibility::Private->value:
                                         $visibilityClass = 'text-amber-300';
@@ -44,7 +44,7 @@
                                 {{ $modificationType }}
                             </td>
                             @php
-
+                                
                                 $modificationRequestState = $r->contribution
                                     ->modificationRequests()
                                     ->latest()
@@ -53,7 +53,7 @@
                                 $modificationRequestStateClass = '';
                                 switch ($modificationRequestState) {
                                     case $modificatonStateEnum::Approved->value:
-                                        $modificationRequestStateClass = 'text-teal-300';
+                                        $modificationRequestStateClass = 'text-amber-300';
                                         break;
                                     case $modificatonStateEnum::Pending->value:
                                         $modificationRequestStateClass = 'text-yellow-300';

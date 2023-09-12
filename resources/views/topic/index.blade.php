@@ -8,7 +8,7 @@
                         <x-splade-button>Add a new contribution</x-splade-button>
                     </x-slot:trigger>
                     <div
-                        class="whitespace-nowrap py-5 px-5 rounded-sm bg-slate-900/95 shadow-sm shadow-teal-300 flex flex-col gap-2 w-64">
+                        class="whitespace-nowrap py-5 px-5 rounded-sm bg-slate-900/95 shadow-sm shadow-amber-300 flex flex-col gap-2 w-64">
                         <x-nav-link slideover :href="route('skill.create')" type="call-to-action">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -58,9 +58,9 @@
             @if ($contributedSkills->count() == 0 && $contributedTopics->count() == 0 && $contributedLearningMaterials->count() == 0)
                 <div class="h-full flex items.center justify-center">
                     <div
-                        class="my-auto w-1/2 text-xl flex gap-5 items.center p-5 border border-slate-500/60 rounded-sm shadow shadow-teal-800">
+                        class="my-auto w-1/2 text-xl flex gap-5 items.center p-5 border border-slate-500/60 rounded-sm shadow shadow-amber-800">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-11 h-11 my-auto text-teal-200">
+                            stroke="currentColor" class="w-11 h-11 my-auto text-amber-200">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
@@ -79,8 +79,8 @@
                     <div class="grid grid-cols-2 gap-4">
                         @foreach ($contributedSkills as $skill)
                             <div
-                                class="flex flex-col gap-3 rounded border border-teal-900 hover:shadow hover:shadow-teal-500 hover:bg-teal-700/5  p-3 transition duration-300">
-                                <h3 class="text-md flex gap-2 text-yellow-300/50 group-hover:text-teal-400">
+                                class="flex flex-col gap-3 rounded border border-amber-900 hover:shadow hover:shadow-amber-500 hover:bg-amber-700/5  p-3 transition duration-300">
+                                <h3 class="text-md flex gap-2 text-yellow-300/50 group-hover:text-amber-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -103,7 +103,7 @@
                                         </div>
                                         <div class="flex gap-2 items.center my-auto">
                                             <span
-                                                class="my-auto px-2 py-1 text-xs rounded bg-teal-900/60 text-teal-600">{{ $skill->topic_group_covering_it }}</span>
+                                                class="my-auto px-2 py-1 text-xs rounded bg-amber-900/60 text-amber-600">{{ $skill->topic_group_covering_it }}</span>
                                         </div>
                                     </div>
                                     <div class="flex gap-2 items.center">
@@ -121,7 +121,7 @@
                                             @endphp
                                             @foreach ($yearLevels as $yearLevel)
                                                 <span
-                                                    class="my-auto px-2 py-1 text-xs rounded bg-teal-900/60 text-teal-600">{{ $yearLevel }}</span>
+                                                    class="my-auto px-2 py-1 text-xs rounded bg-amber-900/60 text-amber-600">{{ $yearLevel }}</span>
                                             @endforeach
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@
                                             @endphp
                                             @foreach ($fields as $field)
                                                 <span
-                                                    class="my-auto px-2 py-1 text-xs rounded bg-teal-900/60 text-teal-600">{{ $field }}</span>
+                                                    class="my-auto px-2 py-1 text-xs rounded bg-amber-900/60 text-amber-600">{{ $field }}</span>
                                             @endforeach
                                         </div>
                                     </div>

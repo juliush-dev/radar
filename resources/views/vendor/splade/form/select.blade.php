@@ -11,7 +11,7 @@
                 <div v-bind:class="{ 'opacity-50': select.loading }">
                     <select
                         {{ $attributes->except(['v-if', 'v-show', 'class'])->class([
-                                'bg-slate-500 text-slate-300 text-md block w-full rounded-md border-0  shadow-sm focus:border-teal-200 focus:ring focus:ring-teal-900 focus:ring-opacity-50 disabled:opacity-50',
+                                'bg-slate-500 text-slate-300 text-md block w-full rounded-md border-0  shadow-sm focus:border-amber-200 focus:ring focus:ring-amber-900 focus:ring-opacity-50 disabled:opacity-50',
                             ])->merge([
                                 'multiple' => $multiple,
                                 'name' => $name,
@@ -30,7 +30,7 @@
 
                 <div class="absolute inset-0 w-full h-full" v-if="select.loading">
                     <div class="flex flex-row items-center justify-center w-full h-full">
-                        <svg class="animate-spin mr-3 h-5 w-5 text-teal-500" xmlns="http://www.w3.org/2000/svg"
+                        <svg class="animate-spin mr-3 h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10"
                                 stroke="currentColor" stroke-width="4" />

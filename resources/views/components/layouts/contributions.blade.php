@@ -8,7 +8,7 @@
         {{ $label }}
     </h1>
 
-    <div class="absolute bottom-0 right-0 p-8">
+    <div class="absolute bottom-0 right-0">
         <x-layouts.navigation-link :resource="'contribution.' . $type" :label="$actionLabel" open-as="slideover" action="create"
             type="call-to-action" iconPath="{{ strlen($actionIcon) > 0 ? $actionIcon : 'M12 6v12m6-6H6' }}" />
     </div>

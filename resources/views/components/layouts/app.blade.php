@@ -1,6 +1,6 @@
 <div class="h-screen flex justify-center items-center text-ellipsis p-4 gap-3">
     @isset($rightPanel)
-        <section class="h-full w-1/4 bg-slate-900/60 p-8 rounded-md shadow-2xl overflow-y-hidden">
+        <section class="h-full w-1/4 p-8 rounded-md shadow-2xl overflow-y-hidden">
             {{ $rightPanel ?? '' }}
         </section>
     @endisset

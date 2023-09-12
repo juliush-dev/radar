@@ -4,7 +4,7 @@
     <button
         {{ $attributes->class([
                 'border rounded-sm shadow-sm font-normal py-1 px-4 focus:outline-none focus:ring focus:ring-opacity-50  transition-colors duration-700',
-                'outline outline-2 outline-teal-500 hover:bg-teal-700 text-teal-400 border-0 hover:text-teal-200 focus:ring-teal-400' =>
+                'outline outline-2 outline-amber-500 hover:bg-amber-700 text-amber-400 border-0 hover:text-amber-200 focus:ring-amber-400' =>
                     !$customStyling && $primary,
                 'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>
                     !$customStyling && $danger,
