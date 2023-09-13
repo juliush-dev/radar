@@ -11,7 +11,7 @@ class Skill extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public \App\Models\Skill $skill)
+    public function __construct(public \App\Models\Skill $skill, public bool $expanded = false)
     {
         //
     }
