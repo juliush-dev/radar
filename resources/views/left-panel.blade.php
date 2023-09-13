@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-8 h-full p-8 rounded-md shadow-2xl">
+<div class="flex flex-col gap-8 h-full">
     <div class="flex gap-3 items-center">
         <div class="w-12 h-12 rounded-full overflow-hidden">
             <img src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
@@ -9,7 +9,7 @@
             <Link class=" text-sm underline underline-offset-2">Edit profile</Link>
         </div>
     </div>
-    <hr class="border-amber-900">
+    <hr class="border-teal-600">
     <div class="flex flex-col gap-5">
         <x-layouts.navigation-link resource="skill" action="index" label="Skills board"
             icon-path="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />

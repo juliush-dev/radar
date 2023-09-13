@@ -1,5 +1,5 @@
 <thead>
-    <tr class="border-b border-amber-900">
+    <tr class="border-b border-emerald-900">
         @if ($hasBulkActions = $table->hasBulkActions())
             <th width="64" class="px-6 py-3 text-xs text-white">
                 @include('splade::table.select-rows-dropdown')
@@ -24,7 +24,7 @@ px-6
 
                     @if ($column->sortable)
                         <svg aria-hidden="true"
-                            class="w-3 h-3 ml-2 @if ($column->sorted) text-amber-500 @else text-gray-400 @endif"
+                            class="w-3 h-3 ml-2 @if ($column->sorted) text-green-500 @else text-teal-600 @endif"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                             @if (!$column->sorted)
                                 <path fill="currentColor"

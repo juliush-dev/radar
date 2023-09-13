@@ -2,8 +2,8 @@
     <x-slot:button>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"
             :class="{
-                'text-gray-400': !table.columnsAreToggled,
-                'text-green-400': table.columnsAreToggled,
+                'text-teal-600': !table.columnsAreToggled,
+                'text-teal-600': table.columnsAreToggled,
             }">
             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
             <path fill-rule="evenodd"
@@ -13,22 +13,22 @@
     </x-slot:button>
 
     <div class="px-2">
-        <ul class="divide-y divide-gray-200">
+        <ul class="divide-y divide-emerald-200">
             @foreach ($table->columns() as $column)
                 @if (!$column->canBeHidden)
                     @continue
                 @endif
 
                 <li class="py-2 flex items-center justify-between">
-                    <p class="text-sm text-gray-900">
+                    <p class="text-sm text-green-900">
                         {{ $column->label }}
                     </p>
 
                     <button type="button"
-                        class="ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-amber-500"
+                        class="ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-emerald-500"
                         :class="{
                             'bg-green-500': table.columnIsVisible(@js($column->key)),
-                            'bg-gray-200': !table.columnIsVisible(@js($column->key)),
+                            'bg-green-200': !table.columnIsVisible(@js($column->key)),
                         }"
                         :aria-pressed="table.columnIsVisible(@js($column->key))"
                         aria-labelledby="toggle-column-{{ $column->key }}"

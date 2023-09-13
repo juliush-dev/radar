@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->set(
-                'years_teached_at',
+            $table->enum(
+                'year_teached_at',
                 array_column(YearLevel::cases(), 'value'),
             );
             $table->enum(

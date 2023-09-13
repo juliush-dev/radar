@@ -41,7 +41,7 @@ Route::middleware('splade')->group(function () {
     Route::middleware('auth')->group(function () {
 
         Route::get('/skills/{skill}/topics/new', [TopicController::class, 'create'])->name('topic.create');
-        Route::post('/skills/{skill}/topics/new', [TopicController::class, 'create'])->name('topic.store');
+        Route::post('/skills/{skill}/topics/new', [TopicController::class, 'store'])->name('topic.store');
         Route::get('/skills/{skill}/subjects/new', [SubjectController::class, 'create'])->name('subject.create');
         Route::post('/skills/{skill}/subjects/new', [SubjectController::class, 'store'])->name('subject.store');
 

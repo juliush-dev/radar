@@ -11,12 +11,12 @@ class SkillRequirement extends Model
 {
     use HasFactory, HasUuids;
 
-    public function skills(): BelongsTo
+    public function skill(): BelongsTo
     {
         return $this->BelongsTo(Skill::class);
     }
 
-    public function topics(): BelongsTo
+    public function topic(): BelongsTo
     {
         return $this->BelongsTo(Topic::class);
     }

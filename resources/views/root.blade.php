@@ -12,10 +12,9 @@
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
     <style>
         * {
-            --sb-track-color: #232E33;
-            --sb-thumb-color: amber;
-            --sb-size: 10px;
-
+            --sb-track-color: #f1f5f7;
+            --sb-thumb-color: #eef0f1;
+            --sb-size: 5px;
             scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
         }
 
@@ -25,7 +24,7 @@
 
         *::-webkit-scrollbar-track {
             background: var(--sb-track-color);
-            border-radius: 10px;
+            border-radius: 5px;
         }
 
         *::-webkit-scrollbar-thumb {

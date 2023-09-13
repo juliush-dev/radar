@@ -8,7 +8,7 @@
             @if ($component->for->resource->count() > 0)
                 <x-slot name="body">
                     @foreach ($component->for->resource as $r)
-                        <tr class="border-b border-amber-900">
+                        <tr class="border-b border-emerald-900">
                             <td class="p-6">{{ $r->contribution->title }}</td>
                             <td class="p-6">{{ $r->learning_material_type }}</td>
                             @php
@@ -17,10 +17,10 @@
                                 $visibilityClass = '';
                                 switch ($visibility) {
                                     case $visibilityEnum::Public->value:
-                                        $visibilityClass = 'text-amber-300';
+                                        $visibilityClass = 'text-teal-600';
                                         break;
                                     case $visibility::Private->value:
-                                        $visibilityClass = 'text-amber-300';
+                                        $visibilityClass = 'text-teal-600';
                                         break;
                                     case $visibility::Disabled->value:
                                         $visibilityClass = 'text-red-300';
@@ -52,7 +52,7 @@
                                 $modificationRequestStateClass = '';
                                 switch ($modificationRequestState) {
                                     case $modificatonStateEnum::Approved->value:
-                                        $modificationRequestStateClass = 'text-amber-300';
+                                        $modificationRequestStateClass = 'text-teal-600';
                                         break;
                                     case $modificatonStateEnum::Pending->value:
                                         $modificationRequestStateClass = 'text-yellow-300';

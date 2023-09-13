@@ -29,7 +29,7 @@
                     <div {{ $attributes->class('bg-transparent min-h-screen relative') }}>
                         <div v-if="modal.closeButton" class="absolute top-0 right-0 pt-3 pr-3">
                             <button dusk="close-modal-button" @click="modal.close" type="button"
-                                class="text-gray-400 hover:text-gray-500">
+                                class="text-teal-600 hover:text-green-500">
                                 <span class="sr-only">Close</span>
                                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">

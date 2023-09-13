@@ -2,16 +2,16 @@
     <x-splade-component is="transition" appear show="toast.show">
         <x-splade-component is="transition" child after-leave="toast.emitDismiss">
             <div @class([
-                'p-4 pointer-events-auto border-l-4 shadow-md min-w-[240px]',
-                'bg-green-50 border-green-400' => $isSuccess,
+                'p-4 bg-white pointer-events-auto border-l-4 shadow-md min-w-[240px]',
+                'bg-green-50 border-emerald-400' => $isSuccess,
                 'bg-yellow-50 border-yellow-400' => $isWarning,
                 'bg-red-50 border-red-400' => $isDanger,
-                'bg-amber-50 border-amber-400' => $isInfo,
+                'bg-green-50 border-emerald-400' => $isInfo,
             ])>
                 <div class="flex">
                     <div class="flex-shrink-0">
                         @if ($isSuccess)
-                            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            <svg class="h-5 w-5 text-teal-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd"
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -32,7 +32,7 @@
                                     clip-rule="evenodd" />
                             </svg>
                         @elseif($isInfo)
-                            <svg class="h-5 w-5 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            <svg class="h-5 w-5 text-teal-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd"
                                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -43,10 +43,10 @@
                     <div class="ml-3 break-words">
                         <h3 @class([
                             'text-sm font-medium',
-                            'text-green-800' => $isSuccess,
+                            'text-teal-600' => $isSuccess,
                             'text-orange-800' => $isWarning,
                             'text-red-800' => $isDanger,
-                            'text-amber-800' => $isInfo,
+                            'text-teal-600' => $isInfo,
                         ])>
                             {!! nl2br(e($title ?: $message)) !!}
                         </h3>
@@ -57,7 +57,7 @@
                                 'text-green-700' => $isSuccess,
                                 'text-orange-700' => $isWarning,
                                 'text-red-700' => $isDanger,
-                                'text-amber-700' => $isInfo,
+                                'text-green-700' => $isInfo,
                             ])>
                                 <p>{!! nl2br(e($message)) !!}</p>
                             </div>
@@ -68,10 +68,10 @@
                         <div class="-mx-1.5 -my-1.5">
                             <button type="button" @click.prevent="toast.setShow(false)" @class([
                                 'inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2',
-                                'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600' => $isSuccess,
+                                'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-emerald-50 focus:ring-emerald-600' => $isSuccess,
                                 'bg-orange-50 text-orange-500 hover:bg-orange-100 focus:ring-offset-orange-50 focus:ring-orange-600' => $isWarning,
                                 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600' => $isDanger,
-                                'bg-amber-50 text-amber-500 hover:bg-amber-100 focus:ring-offset-amber-50 focus:ring-amber-600' => $isInfo,
+                                'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-emerald-50 focus:ring-emerald-600' => $isInfo,
                             ])>
                                 <span class="sr-only">Dismiss Toast</span>
                                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"

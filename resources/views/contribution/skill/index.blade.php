@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-layouts.contributions type="skill" label="skills" action-label="New skill"
+    <x-layouts.contributions type="skill" label="skills"
         action-icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
         <x-splade-table :for="$contributedSkills" pagination-scroll="head">
             <x-slot:empty-state>
@@ -8,7 +8,7 @@
             @if ($component->for->resource->count() > 0)
                 <x-slot name="body">
                     @foreach ($component->for->resource as $r)
-                        <tr class="border-b border-amber-900">
+                        <tr class="border-b border-emerald-900">
                             <td class="p-6">{{ $r->contribution->title }}</td>
                             <td class="p-6">{{ $r->topic_group_covering_it }}</td>
                             <td class="p-6">{{ $r->years_levels_covering_it }}</td>
@@ -24,10 +24,10 @@
                                 $visibilityClass = '';
                                 switch ($visibility) {
                                     case $visibilityEnum::Public->value:
-                                        $visibilityClass = 'text-amber-300';
+                                        $visibilityClass = 'text-teal-600';
                                         break;
                                     case $visibility::Private->value:
-                                        $visibilityClass = 'text-amber-300';
+                                        $visibilityClass = 'text-teal-600';
                                         break;
                                     case $visibility::Disabled->value:
                                         $visibilityClass = 'text-red-300';
@@ -59,7 +59,7 @@
                                 $modificationRequestStateClass = '';
                                 switch ($modificationRequestState) {
                                     case $modificatonStateEnum::Approved->value:
-                                        $modificationRequestStateClass = 'text-amber-300';
+                                        $modificationRequestStateClass = 'text-teal-600';
                                         break;
                                     case $modificatonStateEnum::Pending->value:
                                         $modificationRequestStateClass = 'text-yellow-300';
@@ -98,6 +98,5 @@
                 </x-slot>
             @endif
         </x-splade-table>
-
     </x-layouts.contributions>
 </x-layouts.app>

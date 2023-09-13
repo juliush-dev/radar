@@ -1,6 +1,6 @@
 <x-layouts.app>
     <x-splade-modal>
-        <div class="relative bg-slate-800 p-6 min-h-screen shadow-md shadow-amber-500">
+        <div class="relative bg-slate-800 p-6 min-h-screen shadow-md shadow-emerald-500">
             <x-layouts.skill :skill="$skill" class="mb-5" />
             <x-splade-form action="{{ route('skill-requirement.delete') }}" class="flex flex-col gap-8">
                 <x-splade-group name="skills_requirements" label="choose the topics to remove from the list">

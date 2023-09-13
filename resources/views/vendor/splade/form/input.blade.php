@@ -9,18 +9,18 @@
         <div class="flex rounded-md shadow-sm">
             @if ($prepend)
                 <span :class="{ 'opacity-25': inputScope.disabled && @json(!$alwaysEnablePrepend) }"
-                    class="inline-flex items-center px-3 rounded-l-md border border-t-0 border-b-0 border-l-0 border-gray-300 bg-slate-300 text-gray-900">
+                    class="inline-flex items-center px-3">
                     {!! $prepend !!}
                 </span>
             @endif
 
             <input
                 {{ $attributes->except(['v-if', 'v-show', 'v-for', 'class'])->class([
-                        'bg-slate-300 block w-full border-0 focus:border-amber-200 focus:bg-amber-900 focus:ring focus:ring-amber-200 focus:ring-opacity-50 disabled:opacity-50 disabled:bg-gray-50 disabled:cursor-not-allowed',
-                        'rounded-md' => !$append && !$prepend,
+                        'bg-slate-100 block w-full border-0  disabled:opacity-50 disabled:bg-slate-50 disabled:cursor-not-allowed',
+                        'rounded' => !$append && !$prepend,
                         'min-w-0 flex-1 rounded-none' => $append || $prepend,
-                        'rounded-l-md' => $append && !$prepend,
-                        'rounded-r-md' => !$append && $prepend,
+                        'rounded' => $append && !$prepend,
+                        'rounded' => !$append && $prepend,
                     ])->merge([
                         'name' => $name,
                         'type' => $type,
@@ -30,12 +30,11 @@
                         fn($attributes) => $attributes->merge([
                             'v-model' => $vueModel(),
                         ]),
-                    ) }}
-                autofocus />
+                    ) }} />
 
             @if ($append)
                 <span :class="{ 'opacity-50': inputScope.disabled && @json(!$alwaysEnableAppend) }"
-                    class="inline-flex items-center px-3 rounded-r-md border border-t-0 border-b-0 border-r-0 border-gray-300 bg-gray-50 text-gray-900">
+                    class="inline-flex items-center px-3 rounded-r-md border border-t-0 border-b-0 border-r-0">
                     {!! $append !!}
                 </span>
             @endif

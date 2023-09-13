@@ -8,9 +8,13 @@ use App\Enums\Visibility;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
 use App\Models\Skill;
+use App\Models\SkillRequirement;
 use App\Models\Subject;
+use App\Models\SubjectCoveringTopic;
 use App\Models\Topic;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class TopicController extends Controller
 {
@@ -96,9 +100,46 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTopicRequest $request)
+    public function store(StoreTopicRequest $request, Skill $skill)
     {
-        dd($request->all());
+        DB::transaction(
+            function () use ($request, $skill) {
+
+                $topicId = null;
+                if (!$request->has('topic')) {
+                    $topic = Topic::create([
+                        'year_teached_at' =>  $request->input('years_teached_at'),
+                        'topic_field' =>  $request->input('topic_field'),
+                    ]);
+                    $topicId = $topic->id;
+                    $contribution = $topic->contribution()->create(
+                        [
+                            'contributor_id' => Auth::user()->id,
+                            "title" => $request->input('title'),
+                            "visibility" => Visibility::Public->value,
+                        ]
+                    );
+                    $contribution->modificationRequests()->create(
+                        [
+                            'modification_request_state' => ModificationRequestState::Pending->value,
+                            'modification_type' => ModificationType::Create->value,
+                        ]
+                    );
+                    $topicSubject = new SubjectCoveringTopic;
+                    $topicSubject->subject_id = $request->input('subject');
+                    $topicSubject->topic_id = $topicId;
+                    $topicSubject->save();
+                } else {
+                    $topicId = $request->input('topic');
+                }
+                $skillRequirement = new SkillRequirement;
+                $skillRequirement->skill_id = $skill->id;
+                $skillRequirement->topic_id = $topicId;
+                $skillRequirement->save();
+            }
+        );
+        Toast::title('New Topic successfuly added!')->autoDismiss(15);
+        return redirect()->route('skill.index');
     }
 
     /**

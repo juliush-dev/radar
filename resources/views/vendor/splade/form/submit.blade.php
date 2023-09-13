@@ -4,11 +4,11 @@
     <button
         {{ $attributes->class([
                 'border rounded-sm shadow-sm font-normal py-1 px-4 focus:outline-none focus:ring focus:ring-opacity-50  transition-colors duration-700',
-                'outline outline-2 outline-amber-500 hover:bg-amber-700 text-amber-400 border-0 hover:text-amber-200 focus:ring-amber-400' =>
+                'outline outline-2 outline-emerald-500 hover:bg-teal-700 text-teal-600 border-0 hover:text-teal-200 focus:ring-emerald-400' =>
                     !$customStyling && $primary,
                 'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>
                     !$customStyling && $danger,
-                'bg-white hover:bg-gray-100 text-gray-700 border-gray-300 focus:border-indigo-300 focus:ring-indigo-200' =>
+                'bg-white hover:bg-teal-100 text-teal-700 border-teal-500 focus:border-teal-500 focus:ring-emerald-200' =>
                     !$customStyling && $secondary,
             ])->merge([
                 'type' => $type,
@@ -18,7 +18,7 @@
         @else
             <div class="flex flex-row items-center justify-center">
                 <svg v-if="@js($spinner) && form.processing"
-                    class="animate-spin mr-3 h-5 w-5 @if ($secondary) text-gray-700 @endif"
+                    class="animate-spin mr-3 h-5 w-5 @if ($secondary) text-teal-700 @endif"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                         stroke-width="4" />

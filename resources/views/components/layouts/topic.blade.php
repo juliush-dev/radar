@@ -1,32 +1,71 @@
-<div {{ $attributes->merge(['class' => 'w-full border rounded-md border-amber-900']) }}>
-    <div class="flex gap-0 grow">
-        <div class="flex p-3 gap-2 border-r border-amber-900">
-            @foreach (explode(',', $topic->years_teached_at) as $yearLevel)
-                {{ $yearLevel }}
-            @endforeach
+<div {{ $attributes->merge(['class' => 'w-full']) }}>
+    <div class="flex gap-0 grow text-slate-500 border border-slate-300">
+        <div class="flex px-6 py-3 gap-2 border-r border-slate-300">
+            {{ $topic->year_teached_at }}
         </div>
-        <div class="p-3">
+        <div class="px-6 py-3">
             {{ $topic->topic_field }}
         </div>
-        <div class="p-3 border-l border-amber-900">
+        <div class="flex px-6 py-3 gap-2 border-l border-slate-300">
             {{ $topic->subjectCoveringIt->subject->contribution->title }}
         </div>
-    </div>
-    <div class="p-3 text-xl font-medium border border-amber-900 border-x-0">
-        {{ $topic->contribution->title }}
-    </div>
-    <div class="p-3 border-b border-amber-900 flex gap-2 itemce.center">
-        <span>Proficiency: </span>
-        <div class="flex gap-1 items.center">
+        <div class="flex px-6 py-3 gap-2 border-l border-slate-300 justify-end ml-auto">
             @for ($i = 0; $i < 6; $i++)
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6 {{ $i < 4 ? 'text-amber-300' : '' }}">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+                    stroke="currentColor" class="w-6 h-6 {{ $i < 4 ? 'text-orange-300' : '' }}">
+                    <path stroke-linecap="round" stroke-linejoin="round" fill="currentColor"
+                        d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                 </svg>
             @endfor
         </div>
     </div>
+    <div class="relative bg-slate-100 px-6 py-3 text-md font-medium border border-slate-300 rounded-ss-sm flex gap-2 transition-shadow duration-200 text-slate-500"
+        v-bind:class="data.focusedTopic == '{{ $topic->id }}' ? 'bg-teal-500/20 text-slate-800' : ''"
+        @click="data.focusedTopic == '{{ $topic->id }}' ? data.focusedTopic = null :  data.focusedTopic = '{{ $topic->id }}'">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>
+
+        <span>
+            {{ $topic->contribution->title }}
+        </span>
+
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6 ml-auto transition-all duration-500"
+            v-bind:class="data.focusedTopic == '{{ $topic->id }}' ? 'rotate-180 text-teal-600' : ''">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+
+        <div class="absolute right-1/2 -top-3 flex gap-2 ml-auto">
+            <div class="rounded-sm border border-slate-300 flex gap-2 px-3 py-0.5 bg-slate-50 opacity-75">
+                <span class="text-sm">{{ $topic->learningMaterials->count() }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="black" class="w-4 h-4 translate-y-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+            </div>
+
+            <x-splade-transition show="data.focusedTopic == '{{ $topic->id }}'" animation="slide-right">
+                <x-layouts.navigation-link
+                    class="rounded-sm border border-slate-300 flex gap-2 px-3 py-0.5 bg-slate-50 opacity-75 no-underline ml-auto"
+                    small resource="skill" action="index" label="upload learning material" icon-path="" />
+            </x-splade-transition>
+
+
+        </div>
+
+        {{--  --}}
+    </div>
+
+    <x-splade-transition show="data.focusedTopic == '{{ $topic->id }}'" animation="slide-left"
+        enter="transition-opacity duration-200" leave="transition-opacity duration-200" class="px-6 py-3">
+        {{-- @foreach ($skill->requiredTopics as $requiredTopic)
+            <x-layouts.topic :topic="$requiredTopic->topic" />
+        @endforeach --}}
+        dsds
+    </x-splade-transition>
+
 </div>

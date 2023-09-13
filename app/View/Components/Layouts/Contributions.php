@@ -14,7 +14,6 @@ class Contributions extends Component
     public function __construct(
         public string $type = '',
         public string $label = '',
-        public string $actionLabel = '',
         public string $actionIcon = '',
     ) {
     }

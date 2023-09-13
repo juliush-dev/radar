@@ -1,18 +1,18 @@
-<div class="p-4 flex flex-col gap-5 shadow rounded shadow-amber-800">
-    <div class="flex gap-5 text-3xl font-medium capitalize items.center whitespace-nowrap">
+<div class="p-4 flex flex-col gap-3 shadow border rounded">
+    <div class="flex gap-5 text-xl font-semibold capitalize items.center whitespace-nowrap">
         {{ $total }}
         {{ $label }}
     </div>
     <div class="flex flex-wrap gap-5 text-sm items.center">
-        <div class="p-1 {{ $approved > 0 ? 'text-green-300' : 'text-white/60' }} rounded-md capitalize">
+        <div class="p-1 {{ $approved > 0 ? 'text-teal-600' : 'text-slate-800/60' }} rounded-md capitalize">
             <span class="font-medium">{{ $approved }}</span>
             Approved
         </div>
-        <div class="p-1 {{ $pending > 0 ? 'text-yellow-400' : 'text-white/60' }} rounded-md capitalize">
+        <div class="p-1 {{ $pending > 0 ? 'text-yellow-400' : 'text-slate-800/60' }} rounded-md capitalize">
             <span class="font-medium">{{ $pending }}</span>
             Pending
         </div>
-        <div class="p-1 {{ $published > 0 ? 'text-amber-400' : 'text-white/60' }} rounded-md capitalize">
+        <div class="p-1 {{ $published > 0 ? 'text-teal-600' : 'text-slate-800/60' }} rounded-md capitalize">
             <span class="font-medium">{{ $published }}</span>
             Published
         </div>
