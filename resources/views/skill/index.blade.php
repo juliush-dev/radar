@@ -22,7 +22,7 @@
                     Add new skill
                 </x-splade-button>
                 <x-splade-modal name="refund-info">
-                    <x-skill-form class="p-6" :action="route('contribution.skill.store')" :groups-options="\App\Enums\TopicGroup::asOptions()" :fields-options="\App\Enums\TopicField::asOptions()"
+                    <x-skill-form class="p-6 shadow-md" :action="route('contribution.skill.store')" :groups-options="\App\Enums\TopicGroup::asOptions()" :fields-options="\App\Enums\TopicField::asOptions()"
                         :years-options="\App\Enums\YearLevel::asOptions()" />
                 </x-splade-modal>
             </div>

@@ -5,7 +5,7 @@
         @forelse ($publicTopics as $topic)
             <x-topic :topic="$topic" class="grow-1" />
         @empty
-            <div class="text-xl flex gap-5 flex-col items.center justify-center">
+            <div class="text-xl h-full py-auto flex gap-5 flex-col items.center justify-center">
                 <p class="text-center">No published topics for now.</p>
                 @if (!auth()->check())
                     <x-layouts.navigation-link class="mx-auto" type="call-to-action" resource="login"
