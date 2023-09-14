@@ -14,7 +14,7 @@ use App\Models\Contribution;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\TopicSubject;
-use App\Tables\Contribution\Topics;
+use App\Tables\Topics;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;

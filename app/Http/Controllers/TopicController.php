@@ -42,7 +42,11 @@ class TopicController extends Controller
         $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
 
         $publicSubjects = Contribution::where('contribution_type', Subject::class)
-            ->where('contributor_id', Auth::user()->id)
+            ->where(function ($query) {
+                if (Auth::check()) {
+                    $query->where('contributor_id', Auth::user()->id);
+                }
+            })
             ->where('visibility', Visibility::Public->value)
             ->orWhere(function ($query) {
                 $query->where('visibility', Visibility::Public->value)
