@@ -13,6 +13,7 @@ use App\Models\LearningMaterial;
 use App\Models\Topic;
 use App\Models\Subject;
 use App\Models\Teacher;
+use App\Tables\Contributions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
@@ -148,10 +149,11 @@ class ContributionController extends Controller
             'contribution',
             $pendingCondition,
         )->count();
-
+        $contributions = Contributions::class;
         return view(
             'contribution.index',
             [
+                'contributions' => $contributions,
                 'contributedSkills' => $contributedSkills,
                 'contributedSkillsPublished' => $contributedSkillsPublished,
                 'contributedSkillsApproved' => $contributedSkillsApproved,

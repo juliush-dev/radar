@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
+use App\Enums\TopicField;
 use App\Enums\Visibility;
+use App\Enums\YearLevel;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
+use App\Models\Contribution;
 use App\Models\Skill;
-use App\Models\SkillRequirement;
+use App\Models\SkillTopic;
 use App\Models\Subject;
-use App\Models\SubjectCoveringTopic;
+use App\Models\TopicSubject;
 use App\Models\Topic;
+use App\Tables\Topics;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -23,7 +27,38 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        $getKeyValuePair = function ($acc, $value) {
+            $acc[$value] = $value;
+            return $acc;
+        };
+
+        $yearsLevels = YearLevel::cases();
+        $yearsLevelsOptions = array_column($yearsLevels, 'value');
+        $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
+
+
+        $topicFields = TopicField::cases();
+        $topicFieldsOptions = array_column($topicFields, 'value');
+        $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
+
+        $publicSubjects = Contribution::where('contribution_type', Subject::class)
+            ->where('contributor_id', Auth::user()->id)
+            ->where('visibility', Visibility::Public->value)
+            ->orWhere(function ($query) {
+                $query->where('visibility', Visibility::Public->value)
+                    ->whereHas('modificationRequests', function ($query) {
+                        $query->where('modification_request_state', ModificationRequestState::Approved->value);
+                    });
+            })
+            ->get()->pluck('title', 'contribution_id');
+
+        $topicsIndex = new Topics;
+        return view('topic.index', [
+            'publicTopics' => $topicsIndex->for(),
+            'yearsLevelsOptions' => $yearsLevelsOptions,
+            'topicFieldsOptions' => $topicFieldsOptions,
+            'publicSubjects' => $publicSubjects,
+        ]);
     }
 
     /**
@@ -125,35 +160,42 @@ class TopicController extends Controller
                             'modification_type' => ModificationType::Create->value,
                         ]
                     );
-                    $topicSubject = new SubjectCoveringTopic;
+                    $topicSubject = new TopicSubject;
                     $topicSubject->subject_id = $request->input('subject');
                     $topicSubject->topic_id = $topicId;
                     $topicSubject->save();
                 } else {
                     $topicId = $request->input('topic');
                 }
-                $skillRequirement = new SkillRequirement;
+                $skillRequirement = new SkillTopic;
                 $skillRequirement->skill_id = $skill->id;
                 $skillRequirement->topic_id = $topicId;
                 $skillRequirement->save();
             }
         );
         Toast::title('New Topic successfuly added!')->autoDismiss(15);
-        return redirect()->route('skill.index');
+        return redirect()->route('skill.show', $skill);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Topic $priorTopic)
+    public function show(Skill $skill, Topic $topic)
     {
-        //
+        return view(
+            'topic.show',
+            [
+                'skill' => $skill,
+                'topic' => $topic,
+                // 'publicSkills' => $skillsIndex->for(),
+            ]
+        );
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Topic $priorTopic)
+    public function edit(Topic $topic)
     {
         //
     }
@@ -161,7 +203,7 @@ class TopicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTopicRequest $request, Topic $priorTopic)
+    public function update(UpdateTopicRequest $request, Topic $topic)
     {
         //
     }
@@ -169,7 +211,7 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Topic $priorTopic)
+    public function destroy(Topic $topic)
     {
         //
     }

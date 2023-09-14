@@ -26,6 +26,6 @@ class Subject extends Model
 
     public function topicCoveredByIt(): HasOne
     {
-        return $this->hasOne(SubjectCoveringTopic::class);
+        return $this->hasOne(TopicSubject::class);
     }
 }

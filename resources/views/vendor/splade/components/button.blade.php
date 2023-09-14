@@ -2,10 +2,12 @@
 
 <SpladeButton {{ $attributes->only(['v-bind:spinner', ':spinner']) }}>
     <template #default="button">
-        <{{ $type === 'link' ? 'Link' : 'button' }} :disabled="button.spinner"
+        <{{ $type === 'link' || $type === 'call-to-action-link' ? 'Link' : 'button' }} :disabled="button.spinner"
             {{ $attributes->class([
-                    'p-2 text-sm inline-flex items.center justify.center gap-2 first-letter:capitalize leading-5 shadow-sm transition duration-500 ease-in-out',
-                    ' hover:bg-teal-200' => !$customStyling && $primary,
+                    'p-2 text-sm inline-flex items.center justify.center gap-2 first-letter:capitalize leading-5 transition duration-500 ease-in-out',
+                    'hover:bg-teal-200' => !$customStyling && $primary,
+                    'text-white bg-teal-500 p-2 text-sm hover:bg-teal-600 shadow-md hover:shadow-xl' =>
+                        $type === 'call-to-action' || $type == 'call-to-action-link',
                     'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>
                         !$customStyling && $danger,
                     'bg-white hover:bg-green-100 text-green-700 border-teal-500 focus:border-teal-500 focus:ring-emerald-200' =>
@@ -16,7 +18,7 @@
             @else
                 <div class="flex flex-row items-center justify-center">
                     <svg v-if="button.spinner"
-                        class="animate-spin mr-3 h-5 w-5 @if ($secondary) text-green-700 @endif"
+                        class="animate-spin mr-3 h-5 w-5 @if ($secondary) text-teal-700 @endif"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4" />
@@ -29,6 +31,6 @@
                     </span>
                 </div>
             @endif
-            </{{ $type === 'link' ? 'Link' : 'button' }}>
+            </{{ $type === 'link' || $type === 'call-to-action-link' ? 'Link' : 'button' }}>
     </template>
 </SpladeButton>

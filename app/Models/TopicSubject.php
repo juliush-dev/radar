@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SubjectCoveringTopic extends Model
+class TopicSubject extends Model
 {
     use HasFactory, HasUuids;
-    protected $table = 'subject_covering_topic';
+    protected $table = 'topic_subject';
     public function subject(): BelongsTo
     {
         return $this->BelongsTo(Subject::class);

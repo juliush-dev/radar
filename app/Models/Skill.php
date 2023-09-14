@@ -34,9 +34,9 @@ class Skill extends Model
         return $this->morphOne(Contribution::class, 'contribution');
     }
 
-    public function requiredTopics(): HasMany
+    public function skillTopics(): HasMany
     {
-        return $this->hasMany(SkillRequirement::class);
+        return $this->hasMany(SkillTopic::class);
     }
     public function topicsYearsOptions()
     {
@@ -117,7 +117,7 @@ class Skill extends Model
     public function topicsOptions()
     {
         $topicsOptions = Topic::whereIn('year_teached_at', explode(",", $this->years_levels_covering_it))
-            ->whereNotIn('id', $this->requiredTopics->pluck('topic_id'))
+            ->whereNotIn('id', $this->skillTopics->pluck('topic_id'))
             ->whereHas(
                 'contribution',
                 function ($query) {

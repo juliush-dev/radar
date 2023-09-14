@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Layouts;
+namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -30,6 +30,6 @@ class ContributionDashboardCard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.contribution-dashboard-card');
+        return view('components.contribution-dashboard-card');
     }
 }

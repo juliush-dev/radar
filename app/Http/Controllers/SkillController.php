@@ -6,7 +6,6 @@ use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use App\Models\Skill;
 use App\Tables\Skills;
-use ProtoneMedia\Splade\SpladeTable;
 
 class SkillController extends Controller
 {
@@ -40,12 +39,10 @@ class SkillController extends Controller
      */
     public function show(Skill $skill)
     {
-        $skillsIndex = new Skills;
         return view(
             'skill.show',
             [
                 'skill' => $skill,
-                'publicSkills' => $skillsIndex->for(),
             ]
         );
     }

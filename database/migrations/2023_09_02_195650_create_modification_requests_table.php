@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('modification_requests', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('contribution_id');
+            $table->foreignUuid('contribution_id')->constrained()->cascadeOnDelete();
             $table->uuid('contribution_edit_id')->nullable(); //only set if the modification requests if of type edit
             $table->string("reason")->nullable();
             $table->enum(

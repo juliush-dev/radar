@@ -1,6 +1,6 @@
 <x-layouts.app>
     <x-auth-card>
-        <div class="font-medium text-xl mb-8 capitalize">Contributor registration form</div>
+        <div class="font-medium text-xl mb-8 capitalize text-teal-600">Contributor registration form</div>
         <x-splade-form action="{{ route('register') }}" class="space-y-4">
             <x-splade-input id="name" type="text" name="name" :label="__('Name')" required autofocus />
             <x-splade-input id="email" type="email" name="email" :label="__('Email')" required />

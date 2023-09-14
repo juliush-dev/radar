@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Enums\ModificationRequestState;
 use App\Enums\ModificationType;
 use App\Enums\Visibility;
-use App\Http\Requests\StoreSubjectCoveringTopicRequest;
-use App\Http\Requests\UpdateSubjectCoveringTopicRequest;
+use App\Http\Requests\StoreTopicSubjectRequest;
+use App\Http\Requests\UpdateTopicSubjectRequest;
 use App\Models\Subject;
-use App\Models\SubjectCoveringTopic;
+use App\Models\TopicSubject;
 use App\Models\Topic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;
 
-class SubjectCoveringTopicController extends Controller
+class TopicSubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -84,11 +84,11 @@ class SubjectCoveringTopicController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubjectCoveringTopicRequest $request, Topic $topic)
+    public function store(StoreTopicSubjectRequest $request, Topic $topic)
     {
         DB::transaction(
             function () use ($request, $topic) {
-                $topicSubject = new  SubjectCoveringTopic;
+                $topicSubject = new  TopicSubject;
                 $topicSubject->topic_id = $topic->id;
                 $topicSubject->subject_id = $request->subject;
                 $topicSubject->save();
@@ -101,7 +101,7 @@ class SubjectCoveringTopicController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SubjectCoveringTopic $subjectCoveringTopic)
+    public function show(TopicSubject $subjectCoveringTopic)
     {
         //
     }
@@ -109,7 +109,7 @@ class SubjectCoveringTopicController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SubjectCoveringTopic $subjectCoveringTopic)
+    public function edit(TopicSubject $subjectCoveringTopic)
     {
         //
     }
@@ -117,7 +117,7 @@ class SubjectCoveringTopicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSubjectCoveringTopicRequest $request, SubjectCoveringTopic $subjectCoveringTopic)
+    public function update(UpdateTopicSubjectRequest $request, TopicSubject $subjectCoveringTopic)
     {
         //
     }
@@ -125,7 +125,7 @@ class SubjectCoveringTopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SubjectCoveringTopic $subjectCoveringTopic)
+    public function destroy(TopicSubject $subjectCoveringTopic)
     {
         //
     }

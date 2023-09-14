@@ -1,18 +1,22 @@
 <?php
 
-namespace App\View\Components\Layouts;
+namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Skill extends Component
+class TopicForm extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public \App\Models\Skill $skill, public bool $expanded = false)
-    {
+    public function __construct(
+        public string $action,
+        public $yearsOptions = [],
+        public $fieldsOptions = [],
+        public $subjectsOptions = [],
+    ) {
         //
     }
 
@@ -21,6 +25,6 @@ class Skill extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.skill');
+        return view('components.topic-form');
     }
 }

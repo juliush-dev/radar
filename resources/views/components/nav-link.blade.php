@@ -5,9 +5,9 @@
     $active = $active ?? false;
     $classes = $active ? 'text-teal-600 underline underline-offset-2' : 'text-slate-800';
     $classes .= $active == true && $type == 'call-to-action' ? ' bg-teal-600' : '';
-    $classes .= $type == 'call-to-action' ? ' text-white bg-teal-500 p-2  text-sm hover:bg-teal-600 shadow-sm' : ' hover:text-teal-500  underline underline-offset-2';
+    $classes .= $type == 'call-to-action' ? ' text-white bg-teal-500 p-2  text-sm hover:bg-teal-600 shadow-md hover:shadow-xl' : ' hover:text-teal-500  underline underline-offset-2';
     $classes .= ' rounded-sm inline-flex items.center justify.center gap-2 capitalize leading-5 transition duration-500 ease-in-out';
-    $classes .= $small ?? false ? ' text-sm' : '';
+    $classes .= $small ?? false ? ' text-xs' : '';
 @endphp
 
 <{{ $as }} {{ $attributes->class($classes) }}>

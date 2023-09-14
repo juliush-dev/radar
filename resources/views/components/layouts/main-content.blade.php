@@ -1,3 +1,3 @@
-    <div class="flex flex-col gap-6 h-full">
+    <div class="flex flex-col h-full relative">
         {{ $slot }}
     </div>

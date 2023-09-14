@@ -2,7 +2,7 @@
     <x-auth-card>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" />
-        <div class="font-medium text-xl mb-8 capitalize">Login form</div>
+        <div class="font-medium text-xl mb-8 capitalize text-teal-600">Login form</div>
         <x-splade-form action="{{ route('login') }}" class="space-y-4">
             <!-- Email Address -->
             <x-splade-input id="email" type="email" name="email" :label="__('Email')" required autofocus />

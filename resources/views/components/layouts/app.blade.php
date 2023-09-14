@@ -5,12 +5,12 @@
         </section>
     @endisset
 
-    <main class="h-full grow overflow-hidden p-8">
+    <main class="h-full grow overflow-hidden">
         {{ $slot }}
     </main>
 
     @auth
-        <section class="h-full w-1/4 flex-nowrap whitespace-nowrap shrink-0 p-8 bg-slate-50">
+        <section class="h-full w-1/5 flex-nowrap whitespace-nowrap shrink-0 p-6 bg-slate-50">
             @include('left-panel')
         </section>
     @endauth

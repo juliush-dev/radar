@@ -3,9 +3,9 @@
         action-icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
         {{-- <div class="grid grid-cols-1 gap-6 items-baseline max-h-full overflow-y-auto p-6"> --}}
         @forelse ($publicSkills as $skill)
-            <x-layouts.skill :skill="$skill" class="grow-1" />
+            <x-skill :skill="$skill" class="grow-1" />
         @empty
-            <div class="text-xl flex gap-5 flex-col items.center justify-center">
+            <div class="text-xl flex gap-5 pt-auto h-full flex-col items.center justify-center">
                 <p class="text-center">No published skill for now.</p>
                 @if (!auth()->check())
                     <x-layouts.navigation-link class="mx-auto" type="call-to-action" resource="login"
@@ -17,14 +17,15 @@
         {{-- </div> --}}
 
         @if (auth()->check())
-            <x-splade-form :action="route('contribution.skill.store')" class="flex flex-col gap-6">
-                <h1 class="text-xl">🙂 Add a new skill</h1>
-                <x-splade-input name="title" label="Skill" />
-                <x-splade-select name="topic_group_covering_it" label="group" :options="\App\Enums\TopicGroup::asOptions()" />
-                <x-splade-select name="fields_covered_by_it" label="fields" :options="\App\Enums\TopicField::asOptions()" multiple />
-                <x-splade-select name="years_levels_covering_it" label="years" :options="\App\Enums\YearLevel::asOptions()" multiple />
-                <x-splade-submit>Submit</x-splade-submit>
-            </x-splade-form>
+            <div class="w-full flex flex-col gap-4">
+                <x-splade-button href="#refund-info" type="call-to-action-link" class="w-fit ml-auto">
+                    Add new skill
+                </x-splade-button>
+                <x-splade-modal name="refund-info">
+                    <x-skill-form class="p-6" :action="route('contribution.skill.store')" :groups-options="\App\Enums\TopicGroup::asOptions()" :fields-options="\App\Enums\TopicField::asOptions()"
+                        :years-options="\App\Enums\YearLevel::asOptions()" />
+                </x-splade-modal>
+            </div>
         @endif
     </x-layouts.contributions>
 </x-layouts.app>

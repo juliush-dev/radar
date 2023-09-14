@@ -83,7 +83,7 @@ class SubjectController extends Controller
             }
         );
         Toast::title('New Subject successfuly submitted for contribution!')->autoDismiss(15);
-        return redirect()->route('contribution.subject.index');
+        return redirect()->route('contribution.index');
     }
 
     /**

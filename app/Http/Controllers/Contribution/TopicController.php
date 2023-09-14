@@ -10,7 +10,10 @@ use App\Enums\YearLevel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
+use App\Models\Contribution;
+use App\Models\Subject;
 use App\Models\Topic;
+use App\Models\TopicSubject;
 use App\Tables\Contribution\Topics;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -46,12 +49,23 @@ class TopicController extends Controller
         $topicFieldsOptions = array_column($topicFields, 'value');
         $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
 
-
+        $publicSubjects = Contribution::where('contribution_type', Subject::class)
+            ->where('contributor_id', Auth::user()->id)
+            ->where('visibility', Visibility::Public->value)
+            ->orWhere(function ($query) {
+                $query->where('visibility', Visibility::Public->value)
+                    ->whereHas('modificationRequests', function ($query) {
+                        $query->where('modification_request_state', ModificationRequestState::Approved->value);
+                    });
+            })
+            ->get()->pluck('title', 'contribution_id');
+        dd($publicSubjects);
         return view(
             'contribution.topic.create',
             [
                 'yearsLevelsOptions' => $yearsLevelsOptions,
                 'topicFieldsOptions' => $topicFieldsOptions,
+                'publicSubjects' => $publicSubjects,
             ]
         );
     }
@@ -64,7 +78,7 @@ class TopicController extends Controller
         DB::transaction(
             function () use ($request) {
                 $topic = Topic::create([
-                    'years_teached_at' => implode(",", $request->input('years_teached_at')),
+                    'year_teached_at' => $request->input('years_teached_at'),
                     'topic_field' =>  $request->input('topic_field'),
                 ]);
 
@@ -82,16 +96,21 @@ class TopicController extends Controller
                         'modification_type' => ModificationType::Create->value,
                     ]
                 );
+
+                $topicSubject = new TopicSubject;
+                $topicSubject->topic_id = $topic->id;
+                $topicSubject->subject_id = $request->subject_id;
+                $topicSubject->save();
             }
         );
         Toast::title('New Topic successfuly submitted for contribution!')->autoDismiss(15);
-        return redirect()->route('contribution.topic.index');
+        return redirect()->route('contribution.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Topic $priorTopic)
+    public function show(Topic $topic)
     {
         //
     }
@@ -99,7 +118,7 @@ class TopicController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Topic $priorTopic)
+    public function edit(Topic $topic)
     {
         //
     }
@@ -107,7 +126,7 @@ class TopicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTopicRequest $request, Topic $priorTopic)
+    public function update(UpdateTopicRequest $request, Topic $topic)
     {
         //
     }
@@ -115,7 +134,7 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Topic $priorTopic)
+    public function destroy(Topic $topic)
     {
         //
     }

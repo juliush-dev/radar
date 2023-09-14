@@ -36,7 +36,10 @@ Route::middleware('splade')->group(function () {
     });
 
     Route::get('/skills', [SkillController::class, 'index'])->name('skill.index');
+    Route::get('/topics', [TopicController::class, 'index'])->name('topic.index');
     Route::get('/skills/{skill}', [SkillController::class, 'show'])->name('skill.show');
+    Route::get('/skills/{skill}/topics/{topic}', [TopicController::class, 'show'])->name('skill.topic.show');
+    Route::get('/topics/{topic}', [TopicController::class, 'show'])->name('topic.show');
 
     Route::middleware('auth')->group(function () {
 
@@ -44,6 +47,8 @@ Route::middleware('splade')->group(function () {
         Route::post('/skills/{skill}/topics/new', [TopicController::class, 'store'])->name('topic.store');
         Route::get('/skills/{skill}/subjects/new', [SubjectController::class, 'create'])->name('subject.create');
         Route::post('/skills/{skill}/subjects/new', [SubjectController::class, 'store'])->name('subject.store');
+
+
 
         Route::get('/contributions', [ContributionController::class, 'index'])->middleware(['verified'])->name('contribution.index');
 
@@ -63,19 +68,22 @@ Route::middleware('splade')->group(function () {
         Route::post('/contributions/skills/new', [App\Http\Controllers\Contribution\SkillController::class, 'store'])->name('contribution.skill.store');
         Route::post('/contributions/teachers/new', [App\Http\Controllers\Contribution\TeacherController::class, 'store'])->name('contribution.teacher.store');
         Route::post('/contributions/subjects/new', [App\Http\Controllers\Contribution\SubjectController::class, 'store'])->name('contribution.subject.store');
-        Route::post('/contributions/topic/new', [App\Http\Controllers\Contribution\TopicController::class, 'store'])->name('contribution.topic.store');
+        Route::get('/contributions/subjects/{subject}', [App\Http\Controllers\Contribution\SubjectController::class, 'show'])->name('contribution.subject.show');
+        Route::post('/contributions/topics/new', [App\Http\Controllers\Contribution\TopicController::class, 'store'])->name('contribution.topic.store');
+        Route::get('/contributions/topics/{topic}', [App\Http\Controllers\Contribution\TopicController::class, 'show'])->name('contribution.topic.show');
         Route::post('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'store'])->name('contribution.learning-material.store');
+        Route::get('/contributions/learning-materials/{learning-material}', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'show'])->name('contribution.learning-material.show');
 
 
-        Route::get('/{skill}/skill-requirements', [App\Http\Controllers\SkillRequirementController::class, 'index'])->name('skill-requirement.index');
-        Route::get('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'create'])->name('skill-requirement.create');
-        Route::post('/{skill}/skill-requirements/new', [App\Http\Controllers\SkillRequirementController::class, 'store'])->name('skill-requirement.store');
-        Route::post('/skill-requirements/delete', [App\Http\Controllers\SkillRequirementController::class, 'delete'])->name('skill-requirement.delete');
+        Route::get('/{skill}/skill-topics', [App\Http\Controllers\SkillTopicController::class, 'index'])->name('skill-topic.index');
+        Route::get('/{skill}/skill-topics/new', [App\Http\Controllers\SkillTopicController::class, 'create'])->name('skill-topic.create');
+        Route::post('/{skill}/skill-topics/new', [App\Http\Controllers\SkillTopicController::class, 'store'])->name('skill-topic.store');
+        Route::post('/skill-topics/delete', [App\Http\Controllers\SkillTopicController::class, 'delete'])->name('skill-topic.delete');
 
-        Route::get('/{topic}/topic-subjects/new', [App\Http\Controllers\SubjectCoveringTopicController::class, 'create'])->name('topic-subject.create');
-        Route::get('/topic-subjects/{topic-subject}/edit', [App\Http\Controllers\SubjectCoveringTopicController::class, 'edit'])->name('topic-subject.edit');
-        Route::post('/{topic}/topic-subjects/new', [App\Http\Controllers\SubjectCoveringTopicController::class, 'store'])->name('topic-subject.store');
-        Route::post('/topic-subjects/delete', [App\Http\Controllers\SubjectCoveringTopicController::class, 'delete'])->name('topic-subject.delete');
+        Route::get('/{topic}/topic-subjects/new', [App\Http\Controllers\TopicSubjectController::class, 'create'])->name('topic-subject.create');
+        Route::get('/topic-subjects/{topic-subject}/edit', [App\Http\Controllers\TopicSubjectController::class, 'edit'])->name('topic-subject.edit');
+        Route::post('/{topic}/topic-subjects/new', [App\Http\Controllers\TopicSubjectController::class, 'store'])->name('topic-subject.store');
+        Route::post('/topic-subjects/delete', [App\Http\Controllers\TopicSubjectController::class, 'delete'])->name('topic-subject.delete');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -1,7 +1,7 @@
 <x-layouts.app>
     <x-splade-modal>
         <div class="relative bg-slate-800 p-6 min-h-screen shadow-md shadow-emerald-500">
-            {{-- <x-layouts.skill :skill="$skill" /> --}}
+            {{-- <x-skill :skill="$skill" /> --}}
             <x-splade-form action="{{ route('topic-subject.store', $topic) }}" class="flex flex-col gap-8">
                 <x-splade-group name="subject" label="choose the subject to add to this topic">
                     @foreach ($subjectsOptions as $option)

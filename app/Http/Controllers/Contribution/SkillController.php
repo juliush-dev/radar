@@ -94,7 +94,7 @@ class SkillController extends Controller
             }
         );
         Toast::title('New Skill successfuly submitted for contribution!')->autoDismiss(15);
-        return redirect()->route('contribution.skill.index');
+        return redirect()->route('contribution.index');
     }
 
     /**

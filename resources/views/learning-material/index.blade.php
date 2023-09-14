@@ -44,7 +44,7 @@
                                 {{ $modificationType }}
                             </td>
                             @php
-                                
+
                                 $modificationRequestState = $r->contribution
                                     ->modificationRequests()
                                     ->latest()
@@ -56,7 +56,7 @@
                                         $modificationRequestStateClass = 'text-teal-600';
                                         break;
                                     case $modificatonStateEnum::Pending->value:
-                                        $modificationRequestStateClass = 'text-yellow-300';
+                                        $modificationRequestStateClass = 'text-yellow-600';
                                         break;
                                 }
                             @endphp

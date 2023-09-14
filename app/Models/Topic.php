@@ -25,7 +25,7 @@ class Topic extends Model
     }
     public function subjectCoveringIt(): HasOne
     {
-        return $this->hasOne(SubjectCoveringTopic::class);
+        return $this->hasOne(TopicSubject::class);
     }
 
     public function studentsAssessments(): HasMany
@@ -35,7 +35,7 @@ class Topic extends Model
 
     public function skillsRequiringIt(): HasMany
     {
-        return $this->hasMany(SkillRequirement::class);
+        return $this->hasMany(SkillTopic::class);
     }
 
     public function learningMaterials(): HasMany

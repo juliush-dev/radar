@@ -1,6 +1,10 @@
 <x-layouts.app>
     <x-layouts.contributions type="subject" label="subjects" action-label="Submit a new subject"
         action-icon="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z">
+        <x-layouts.navigation-link open-as="modal" type="call-to-action" resource="contribution.subject" action="create"
+            label="Submit new Subject"
+            icon-path="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"
+            class="ml-auto" />
         <x-splade-table :for="$contributedSubjects" pagination-scroll="head">
             <x-slot:empty-state>
                 <p class="p-6">No Contributions found!</p>
@@ -44,7 +48,7 @@
                                 {{ $modificationType }}
                             </td>
                             @php
-                                
+
                                 $modificationRequestState = $r->contribution
                                     ->modificationRequests()
                                     ->latest()
@@ -56,7 +60,7 @@
                                         $modificationRequestStateClass = 'text-teal-600';
                                         break;
                                     case $modificatonStateEnum::Pending->value:
-                                        $modificationRequestStateClass = 'text-yellow-300';
+                                        $modificationRequestStateClass = 'text-yellow-600';
                                         break;
                                 }
                             @endphp
@@ -68,8 +72,5 @@
                 </x-slot>
             @endif
         </x-splade-table>
-        <x-layouts.navigation-link open-as="modal" type="call-to-action" resource="contribution.subject" action="create"
-            label="Subjects"
-            icon-path="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
     </x-layouts.contributions>
 </x-layouts.app>
