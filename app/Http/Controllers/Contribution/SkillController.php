@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use App\Models\Skill;
-use App\Tables\Contribution\Skills;
+use App\Tables\Skills;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;

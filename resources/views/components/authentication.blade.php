@@ -12,7 +12,7 @@
                 <span class="mx-4 text-sm">or</span>
                 @if (Route::has('register'))
                     <x-nav-link href="{{ route('register') }}" small>
-                        Become a contributor
+                        Create an account
                     </x-nav-link>
                 @endif
             @endauth

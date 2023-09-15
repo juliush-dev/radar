@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTopicProficiencyRequest;
-use App\Http\Requests\UpdateTopicProficiencyRequest;
-use App\Models\TopicProficiency;
+use App\Http\Requests\StoreUserAssessmentRequest;
+use App\Http\Requests\UpdateUserAssessmentRequest;
+use App\Models\UserAssessment;
 
-class TopicProficiencyController extends Controller
+class UserAssessmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class TopicProficiencyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTopicProficiencyRequest $request)
+    public function store(StoreUserAssessmentRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class TopicProficiencyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TopicProficiency $topicProficiency)
+    public function show(UserAssessment $userAssessment)
     {
         //
     }
@@ -43,7 +43,7 @@ class TopicProficiencyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TopicProficiency $topicProficiency)
+    public function edit(UserAssessment $userAssessment)
     {
         //
     }
@@ -51,7 +51,7 @@ class TopicProficiencyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTopicProficiencyRequest $request, TopicProficiency $topicProficiency)
+    public function update(UpdateUserAssessmentRequest $request, UserAssessment $userAssessment)
     {
         //
     }
@@ -59,7 +59,7 @@ class TopicProficiencyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TopicProficiency $topicProficiency)
+    public function destroy(UserAssessment $userAssessment)
     {
         //
     }

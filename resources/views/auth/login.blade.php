@@ -13,11 +13,11 @@
             <div class="flex items-center justify-end gap-5">
                 @if (Route::has('password.request'))
                     <x-nav-link href="{{ route('password.request') }}" small>
-                        {{ __('Forgot your password ?') }}
+                        Reset password
                     </x-nav-link>
                 @endif
                 <x-nav-link href="{{ route('register') }}" small>
-                    {{ __('New here ?') }}
+                    Create new account
                 </x-nav-link>
                 <x-splade-submit class="ml-3" :label="__('Log in')" />
             </div>

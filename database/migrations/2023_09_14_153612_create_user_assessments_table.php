@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Assessment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topic_proficiencies', function (Blueprint $table) {
+        Schema::create('user_assessments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum(
-                'assessment',
-                array_column(Assessment::cases(), 'value'),
-            );
-            $table->foreignUuid('author_id');
-            $table->foreignUuid('assessing_topic');
+            $table->enum('score', [1, 2, 3, 4, 5]);
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('topic_proficiencies');
+        Schema::dropIfExists('user_assessments');
     }
 };

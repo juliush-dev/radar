@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\TopicProficiency;
 use App\Models\User;
+use App\Models\UserAssessment;
 use Illuminate\Auth\Access\Response;
 
-class TopicProficiencyPolicy
+class UserAssessmentPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class TopicProficiencyPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, TopicProficiency $topicProficiency): bool
+    public function view(User $user, UserAssessment $userAssessment): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class TopicProficiencyPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, TopicProficiency $topicProficiency): bool
+    public function update(User $user, UserAssessment $userAssessment): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class TopicProficiencyPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, TopicProficiency $topicProficiency): bool
+    public function delete(User $user, UserAssessment $userAssessment): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class TopicProficiencyPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, TopicProficiency $topicProficiency): bool
+    public function restore(User $user, UserAssessment $userAssessment): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class TopicProficiencyPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, TopicProficiency $topicProficiency): bool
+    public function forceDelete(User $user, UserAssessment $userAssessment): bool
     {
         //
     }

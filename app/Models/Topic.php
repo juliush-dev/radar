@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\View\Components\Assessment;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,9 +29,9 @@ class Topic extends Model
         return $this->hasOne(TopicSubject::class);
     }
 
-    public function studentsAssessments(): HasMany
+    public function assessments(): HasMany
     {
-        return $this->hasMany(TopicProficiency::class);
+        return $this->hasMany(Assessment::class);
     }
 
     public function skillsRequiringIt(): HasMany

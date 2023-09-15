@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TopicProficiency extends Model
+class UserAssessment extends Model
 {
     use HasFactory, HasUuids;
 
-    public function author(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function assessingTopic(): BelongsTo
+    public function topic(): BelongsTo
     {
-        return $this->belongsTo(Topic::class, 'assessing_topic_id');
+        return $this->belongsTo(Topic::class);
     }
 }

@@ -10,7 +10,7 @@
     </main>
 
     @auth
-        <section class="h-full w-1/5 flex-nowrap whitespace-nowrap shrink-0 p-6 bg-slate-50">
+        <section class="h-full w-1/5 flex-nowrap whitespace-nowrap shrink-0 p-6 bg-slate-100 shadow">
             @include('left-panel')
         </section>
     @endauth
