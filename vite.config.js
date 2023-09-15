@@ -18,9 +18,9 @@ export default defineConfig({
             },
         }),
     ],
-    server: {
-        host: "172.22.110.73",
-    },
+    // server: {
+    //     host: "172.22.110.73",
+    // },
     ssr: {
         noExternal: ["vue", "@protonemedia/laravel-splade"],
     },

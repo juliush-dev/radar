@@ -68,12 +68,19 @@ Route::middleware('splade')->group(function () {
         Route::post('/contributions/skills/new', [App\Http\Controllers\Contribution\SkillController::class, 'store'])->name('contribution.skill.store');
         Route::post('/contributions/teachers/new', [App\Http\Controllers\Contribution\TeacherController::class, 'store'])->name('contribution.teacher.store');
         Route::post('/contributions/subjects/new', [App\Http\Controllers\Contribution\SubjectController::class, 'store'])->name('contribution.subject.store');
-        Route::get('/contributions/subjects/{subject}', [App\Http\Controllers\Contribution\SubjectController::class, 'show'])->name('contribution.subject.show');
+
         Route::post('/contributions/topics/new', [App\Http\Controllers\Contribution\TopicController::class, 'store'])->name('contribution.topic.store');
-        Route::get('/contributions/topics/{topic}', [App\Http\Controllers\Contribution\TopicController::class, 'show'])->name('contribution.topic.show');
         Route::post('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'store'])->name('contribution.learning-material.store');
+
+        Route::get('/contributions/skills/{skill}', [App\Http\Controllers\Contribution\SkillController::class, 'show'])->name('contribution.skill.show');
+        Route::get('/contributions/topics/{topic}', [App\Http\Controllers\Contribution\TopicController::class, 'show'])->name('contribution.topic.show');
+        Route::get('/contributions/subjects/{subject}', [App\Http\Controllers\Contribution\SubjectController::class, 'show'])->name('contribution.subject.show');
         Route::get('/contributions/learning-materials/{learning-material}', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'show'])->name('contribution.learning-material.show');
 
+        Route::post('/contributions/skills/{skill}', [App\Http\Controllers\Contribution\SkillController::class, 'destroy'])->name('contribution.skill.delete');
+        Route::post('/contributions/topics/{topic}', [App\Http\Controllers\Contribution\TopicController::class, 'destroy'])->name('contribution.topic.delete');
+        Route::post('/contributions/subjects/{subject}', [App\Http\Controllers\Contribution\SubjectController::class, 'destroy'])->name('contribution.subject.delete');
+        Route::post('/contributions/learning-materials/{learning-material}', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'destroy'])->name('contribution.learning-material.delete');
 
         Route::get('/{skill}/skill-topics', [App\Http\Controllers\SkillTopicController::class, 'index'])->name('skill-topic.index');
         Route::get('/{skill}/skill-topics/new', [App\Http\Controllers\SkillTopicController::class, 'create'])->name('skill-topic.create');

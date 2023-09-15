@@ -13,7 +13,7 @@ use App\Http\Requests\UpdateSubjectRequest;
 use App\Models\ModificationRequest;
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Tables\Contribution\Subjects;
+use App\Tables\Subjects;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;

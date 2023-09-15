@@ -102,7 +102,9 @@ class SkillController extends Controller
      */
     public function show(Skill $skill)
     {
-        //
+        return view('contribution.skill.show', [
+            'skill' => $skill
+        ]);
     }
 
     /**

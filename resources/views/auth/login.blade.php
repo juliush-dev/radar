@@ -17,7 +17,7 @@
                     </x-nav-link>
                 @endif
                 <x-nav-link href="{{ route('register') }}" small>
-                    Create new account
+                    Create an account
                 </x-nav-link>
                 <x-splade-submit class="ml-3" :label="__('Log in')" />
             </div>
