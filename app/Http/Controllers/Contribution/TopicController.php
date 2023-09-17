@@ -59,7 +59,6 @@ class TopicController extends Controller
                     });
             })
             ->get()->pluck('title', 'contribution_id');
-        dd($publicSubjects);
         return view(
             'contribution.topic.create',
             [
@@ -78,7 +77,7 @@ class TopicController extends Controller
         DB::transaction(
             function () use ($request) {
                 $topic = Topic::create([
-                    'year_teached_at' => $request->input('years_teached_at'),
+                    'year_teached_at' => $request->input('year_teached_at'),
                     'topic_field' =>  $request->input('topic_field'),
                 ]);
 
@@ -97,14 +96,16 @@ class TopicController extends Controller
                     ]
                 );
 
-                $topicSubject = new TopicSubject;
-                $topicSubject->topic_id = $topic->id;
-                $topicSubject->subject_id = $request->subject_id;
-                $topicSubject->save();
+                if ($request->input('subject') != null) {
+                    $topicSubject = new TopicSubject;
+                    $topicSubject->topic_id = $topic->id;
+                    $topicSubject->subject_id = Subject::find($request->input('subject'))->id;
+                    $topicSubject->save();
+                }
             }
         );
-        Toast::title('New Topic successfuly submitted for contribution!')->autoDismiss(15);
-        return redirect()->route('contribution.index');
+        Toast::title('New Topic successfuly submitted for contribution!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
     /**
@@ -112,7 +113,9 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        //
+        return view('contribution.topic.show', [
+            'topic' => $topic
+        ]);
     }
 
     /**
@@ -120,7 +123,29 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        //
+        $getKeyValuePair = function ($acc, $value) {
+            $acc[$value] = $value;
+            return $acc;
+        };
+
+        $yearsLevels = YearLevel::cases();
+        $yearsLevelsOptions = array_column($yearsLevels, 'value');
+        $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
+
+
+        $topicFields = TopicField::cases();
+        $topicFieldsOptions = array_column($topicFields, 'value');
+        $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
+
+        return view(
+            'contribution.topic.edit',
+            [
+                'topic' => $topic,
+                'yearsOptions' => $yearsLevelsOptions,
+                'fieldsOptions' => $topicFieldsOptions,
+                // 'subjectsOptions' => $topic->subjectsOptions(),
+            ]
+        );
     }
 
     /**
@@ -128,7 +153,28 @@ class TopicController extends Controller
      */
     public function update(UpdateTopicRequest $request, Topic $topic)
     {
-        //
+        DB::transaction(
+            function () use ($request, $topic) {
+                $topic->year_teached_at = $request->input('year_teached_at');
+                $topic->topic_field = $request->input('topic_field');
+                $topic->save();
+                $contribution = $topic->contribution;
+                $contribution->title = $request->input('title');
+
+                $contribution->save();
+
+                $topicSubject = $topic->subjectCoveringIt ?? new TopicSubject;
+                if ($request->input('subject') != null) {
+                    $topicSubject->topic_id = $topic->id;
+                    $topicSubject->subject_id = Subject::find($request->input('subject'))->id;
+                    $topicSubject->save();
+                } else {
+                    $topicSubject->delete();
+                }
+            }
+        );
+        Toast::title('Topic successfuly updated!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
     /**

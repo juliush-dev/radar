@@ -14,18 +14,5 @@
                 @endif
             </div>
         @endforelse
-        {{-- </div> --}}
-
-        @if (auth()->check())
-            <div class="w-full flex flex-col gap-4">
-                <x-splade-button href="#refund-info" type="call-to-action-link" class="w-fit ml-auto">
-                    Add new skill
-                </x-splade-button>
-                <x-splade-modal name="refund-info">
-                    <x-skill-form class="p-6 shadow-md" :action="route('contribution.skill.store')" :groups-options="\App\Enums\TopicGroup::asOptions()" :fields-options="\App\Enums\TopicField::asOptions()"
-                        :years-options="\App\Enums\YearLevel::asOptions()" />
-                </x-splade-modal>
-            </div>
-        @endif
     </x-layouts.contributions>
 </x-layouts.app>

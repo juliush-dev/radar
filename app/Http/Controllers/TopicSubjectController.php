@@ -94,7 +94,7 @@ class TopicSubjectController extends Controller
                 $topicSubject->save();
             }
         );
-        Toast::title('Subject successfuly added to ' . $topic->contribution->title)->autoDismiss(15);
+        Toast::title('Subject successfuly added to ' . $topic->contribution->title)->autoDismiss(15)->centerBottom();
         return redirect()->route('contribution.topic.index');
     }
 

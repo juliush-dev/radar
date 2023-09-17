@@ -7,7 +7,7 @@
                 <div class="uppercase text-center text-5xl font-light">radar</div>
                 <x-authentication />
             </div>
-            <x-nav-link :href="route('skill.index')" type="call-to-action">
+            <x-nav-link :href="route('skills.index')" type="call-to-action">
                 Open the skills board
             </x-nav-link>
         </div>

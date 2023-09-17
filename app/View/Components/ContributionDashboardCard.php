@@ -20,6 +20,7 @@ class ContributionDashboardCard extends Component
         public int $approved = 0,
         public int $pending = 0,
         public int $rejected = 0,
+        public bool $hideAction = false,
 
     ) {
         //

@@ -13,6 +13,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
 use App\Models\Skill;
+use App\Models\SkillTopic;
+use App\Models\Topic;
 use App\Tables\Skills;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -57,9 +59,9 @@ class SkillController extends Controller
         return view(
             'contribution.skill.create',
             [
-                'yearsLevelsOptions' => $yearsLevelsOptions,
-                'topicFieldsOptions' => $topicFieldsOptions,
-                'topicGroupsOptions' => $topicGroupsOptions,
+                'yearsOptions' => $yearsLevelsOptions,
+                'fieldsOptions' => $topicFieldsOptions,
+                'groupsOptions' => $topicGroupsOptions,
             ]
         );
     }
@@ -91,10 +93,20 @@ class SkillController extends Controller
                         'modification_type' => ModificationType::Create->value,
                     ]
                 );
+
+                if (count($request->input('topics', [])) > 0) {
+                    $topics = collect($request->input('topics'));
+                    $topics->each(function ($topic) use ($skill) {
+                        $skillTopic = new SkillTopic;
+                        $skillTopic->skill_id = $skill->id;
+                        $skillTopic->topic_id = $topic;
+                        $skillTopic->save();
+                    });
+                }
             }
         );
-        Toast::title('New Skill successfuly submitted for contribution!')->autoDismiss(15);
-        return redirect()->route('contribution.index');
+        Toast::title('New Skill successfuly submitted for contribution!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
     /**
@@ -112,6 +124,33 @@ class SkillController extends Controller
      */
     public function edit(Skill $skill)
     {
+        $getKeyValuePair = function ($acc, $value) {
+            $acc[$value] = $value;
+            return $acc;
+        };
+
+        $yearsLevels = YearLevel::cases();
+        $yearsLevelsOptions = array_column($yearsLevels, 'value');
+        $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
+
+
+        $topicFields = TopicField::cases();
+        $topicFieldsOptions = array_column($topicFields, 'value');
+        $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
+
+
+        $topicGroups = TopicGroup::cases();
+        $topicGroupsOptions = array_column($topicGroups, 'value');
+        $topicGroupsOptions = array_reduce($topicGroupsOptions, $getKeyValuePair, []);
+        return view(
+            'contribution.skill.edit',
+            [
+                'skill' => $skill,
+                'yearsOptions' => $yearsLevelsOptions,
+                'fieldsOptions' => $topicFieldsOptions,
+                'groupsOptions' => $topicGroupsOptions,
+            ]
+        );
     }
 
     /**
@@ -119,7 +158,30 @@ class SkillController extends Controller
      */
     public function update(UpdateSkillRequest $request, Skill $skill)
     {
-        //
+        DB::transaction(
+            function () use ($request, $skill) {
+                $skill->fields_covered_by_it = implode(",", $request->input('fields_covered_by_it'));
+                $skill->years_levels_covering_it = implode(",", $request->input('years_levels_covering_it'));
+                $skill->topic_group_covering_it = $request->enum('topic_group_covering_it', TopicGroup::class)?->value;
+                $skill->save();
+                $contribution = $skill->contribution;
+                $contribution->title = $request->input('title');
+                $contribution->save();
+
+                SkillTopic::destroy(SkillTopic::where('skill_id', $skill->id)->whereNotIn('topic_id', $request->input('topics', []))->pluck('id'));
+                $topics = collect($request->input('topics', []));
+                $topics->each(function ($topic) use ($skill) {
+                    if (SkillTopic::where('skill_id', $skill->id)->where('topic_id', $topic)->first() == null) {
+                        $skillTopic = new SkillTopic;
+                        $skillTopic->skill_id = $skill->id;
+                        $skillTopic->topic_id = $topic;
+                        $skillTopic->save();
+                    }
+                });
+            }
+        );
+        Toast::title('Skill successfuly updated!')->autoDismiss(6)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
     /**

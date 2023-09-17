@@ -16,7 +16,9 @@
             <span class="font-medium">{{ $published }}</span>
             Published
         </div>
-        <x-layouts.navigation-link type="call-to-action" open-as="modal" :resource="'contribution.' . $type" action="create"
-            :label="'create new ' . $type" />
+        @if (!$hideAction)
+            <x-layouts.navigation-link type="call-to-action" open-as="modal" :resource="'contributions.' . $type" action="create"
+                :label="'create new ' . $type" />
+        @endif
     </div>
 </div>

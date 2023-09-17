@@ -117,41 +117,45 @@ class Skill extends Model
     public function topicsOptions()
     {
         $topicsOptions = Topic::whereIn('year_teached_at', explode(",", $this->years_levels_covering_it))
-            ->whereNotIn('id', $this->skillTopics->pluck('topic_id'))
-            ->whereHas(
-                'contribution',
-                function ($query) {
-                    $query->where('contributor_id', Auth::user()->id)
-                        ->whereNot('visibility', Visibility::Disabled->value)
-                        ->whereHas('modificationRequests', function ($query) {
-                            $query->latest('created_at')
-                                ->whereIn('modification_type', [
-                                    ModificationType::Create->value,
-                                    ModificationType::Update->value,
-                                ])->whereIn(
-                                    'modification_request_state',
-                                    [
-                                        ModificationRequestState::Pending->value,
-                                        ModificationRequestState::Approved->value,
-                                    ]
-                                );
-                        })->orWhere(function ($query) {
-                            $query->whereNot('contributor_id', Auth::user()->id)
-                                ->where('visibility', Visibility::Public->value)
-                                ->whereHas('modificationRequests', function ($query) {
-                                    $query->latest('created_at')
-                                        ->whereIn('modification_type', [
-                                            ModificationType::Create->value,
-                                            ModificationType::Update->value,
-                                        ])->where(
-                                            'modification_request_state',
-                                            ModificationRequestState::Approved->value
-                                        );
-                                });
-                        });
-                }
-            )->get();
-        $topicsOptionsPair = $topicsOptions->reduce(function ($acc, $topic) {
+            ->whereIn('topic_field', explode(",", $this->fields_covered_by_it));
+        // if ($this->id != null) {
+        //     $topicsOptions->whereNotIn('id', $this->skillTopics->pluck('topic_id'));
+        // }
+        $topicsOptions = $topicsOptions->whereHas(
+            'contribution',
+            function ($query) {
+                $query->where('contributor_id', Auth::user()->id)
+                    ->whereNot('visibility', Visibility::Disabled->value)
+                    ->whereHas('modificationRequests', function ($query) {
+                        $query->latest('created_at')
+                            ->whereIn('modification_type', [
+                                ModificationType::Create->value,
+                                ModificationType::Update->value,
+                            ])->whereIn(
+                                'modification_request_state',
+                                [
+                                    ModificationRequestState::Pending->value,
+                                    ModificationRequestState::Approved->value,
+                                ]
+                            );
+                    })->orWhere(function ($query) {
+                        $query->whereNot('contributor_id', Auth::user()->id)
+                            ->where('visibility', Visibility::Public->value)
+                            ->whereHas('modificationRequests', function ($query) {
+                                $query->latest('created_at')
+                                    ->whereIn('modification_type', [
+                                        ModificationType::Create->value,
+                                        ModificationType::Update->value,
+                                    ])->where(
+                                        'modification_request_state',
+                                        ModificationRequestState::Approved->value
+                                    );
+                            });
+                    });
+            }
+        )->get();
+        $topicsOptionsPair = $topicsOptions;
+        $topicsOptionsPair = $topicsOptionsPair->reduce(function ($acc, $topic) {
             array_push($acc, [
                 'id' => $topic->id,
                 'title' => $topic->contribution->title

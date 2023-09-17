@@ -16,6 +16,7 @@ use App\Models\Teacher;
 use App\Tables\Contributions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class ContributionController extends Controller
 {
@@ -180,49 +181,38 @@ class ContributionController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function approve(Contribution $contribution)
     {
+        $modificationRequest = $contribution->modificationRequests->first();
+        $modificationRequest->modification_request_state = ModificationRequestState::Approved->value;
+        $modificationRequest->save();
+        Toast::title('Contribution approved!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreContributionRequest $request)
+
+    public function reject(Contribution $contribution)
     {
+        $modificationRequest = $contribution->modificationRequests->first();
+        $modificationRequest->modification_request_state = ModificationRequestState::Rejected->value;
+        $modificationRequest->save();
+        Toast::title('Contribution rejected!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contribution $contribution)
+    public function publish(Contribution $contribution)
     {
-        //
+        $contribution->visibility = Visibility::Public->value;
+        $contribution->save();
+        Toast::title('Contribution published!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Contribution $contribution)
+    public function hide(Contribution $contribution)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateContributionRequest $request, Contribution $contribution)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Contribution $contribution)
-    {
-        //
+        $contribution->visibility = Visibility::Disabled->value;
+        $contribution->save();
+        Toast::title('Contribution hiden!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 }

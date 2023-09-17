@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-layouts.contributions type="skill" label="skills Board"
+    <x-layouts.contributions label="Topics Board"
         action-icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
         {{-- <div class="grid grid-cols-1 gap-6 items-baseline max-h-full overflow-y-auto p-6"> --}}
         @forelse ($publicTopics as $topic)
@@ -14,18 +14,5 @@
                 @endif
             </div>
         @endforelse
-        {{-- </div> --}}
-
-        @if (auth()->check())
-            <div class="w-full flex flex-col gap-4">
-                <x-splade-button href="#refund-info" type="call-to-action-link" class="w-fit ml-auto">
-                    Add new topic
-                </x-splade-button>
-                <x-splade-modal name="refund-info">
-                    <x-topic-form class="p-6" action="route('contribution.topic.store')" :years-options="$yearsLevelsOptions"
-                        :fields-options="$topicFieldsOptions" :subjects-options="$publicSubjects" />
-                </x-splade-modal>
-            </div>
-        @endif
     </x-layouts.contributions>
 </x-layouts.app>

@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-splade-modal class="shadow-md p-6">
+    <x-splade-modal close-explicitly class="shadow-md p-6 max-w-md mx-auto">
         <h1 class="text-2xl mb-8 first-letter:uppercase flex items.center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-10 h-10">
@@ -8,7 +8,7 @@
             </svg>
             New Topic
         </h1>
-        <x-splade-form action="{{ route('topic.store', $skill) }}" submit-on-change background debounce="50"
+        <x-splade-form action="{{ route('skills.topics.store', $skill) }}" submit-on-change background debounce="50"
             class="flex flex-col gap-8">
             <x-splade-input name="title" label="Title" />
         </x-splade-form>

@@ -64,10 +64,10 @@ class Contributions extends AbstractTable
             ->column('modificationRequests.modification_request_state', 'state')
             ->rowModal(function (Contribution $contribution) {
                 $route = match ($contribution->contribution_type) {
-                    Skill::class => route('contribution.skill.show', Skill::find($contribution->contribution_id)),
-                    Topic::class => route('contribution.topic.show', Topic::find($contribution->contribution_id)),
-                    Subject::class => route('contribution.subject.show', Subject::find($contribution->contribution_id)),
-                    default => route('contribution.learning-material.show', LearningMaterial::find($contribution->contribution_id)),
+                    Skill::class => route('contributions.skills.show', Skill::find($contribution->contribution_id)),
+                    Topic::class => route('contributions.topics.show', Topic::find($contribution->contribution_id)),
+                    Subject::class => route('contributions.subjects.show', Subject::find($contribution->contribution_id)),
+                    default => route('contributions.learning-materials.show', LearningMaterial::find($contribution->contribution_id)),
                 };
                 return $route;
             });

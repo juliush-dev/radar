@@ -1,19 +1,19 @@
-<tbody class="divide-y divide-emerald-200 bg-white">
+<tbody class="shadow-sm rounded-md divide-y divide-slate-200 bg-white">
     @forelse($table->resource as $itemKey => $item)
         <tr
             :class="{
                 'bg-green-50': table.striped && @js($itemKey) % 2,
-                'hover:bg-green-100': table.striped,
-                'hover:bg-green-50': !table.striped
+                'hover:bg-teal-100': table.striped,
+                'hover:bg-teal-100': !table.striped,
             }">
             @if ($hasBulkActions = $table->hasBulkActions())
-                <td width="64" class="text-xs px-6 py-4">
+                <td width="64" class="text-xs px-6 py-4 max-w-0 overflow-auto">
                     @php $itemPrimaryKey = $table->findPrimaryKey($item) @endphp
 
                     <input @change="(e) => table.setSelectedItem(@js($itemPrimaryKey), e.target.checked)"
                         :checked="table.itemIsSelected(@js($itemPrimaryKey))"
                         :disabled="table.allItemsFromAllPagesAreSelected"
-                        class="rounded border-teal-500 text-teal-600 shadow-sm focus:border-teal-500 focus:ring focus:ring-emerald-200 focus:ring-opacity-50 disabled:opacity-50"
+                        class="rounded border-teal-500 shadow-sm focus:border-teal-500 focus:ring focus:ring-emerald-200 focus:ring-opacity-50 disabled:opacity-50"
                         name="table-row-bulk-action" type="checkbox" value="{{ $itemPrimaryKey }}" />
                 </td>
             @endif
@@ -25,15 +25,15 @@
 pr-6
 @else
 px-6
-@endif py-4 @if ($column->highlight)
-text-green-900 font-medium
+@endif py-4 max-w-0 overflow-auto @if ($column->highlight)
+text-slate-900 font-medium
 @else
-text-green-500
+text-slate-800
 @endif @if ($table->rowLinks->has($itemKey))
 cursor-pointer
 @endif {{ $column->classes }}">
                     <div
-                        class="flex flex-row items-center @if ($column->alignment == 'right') justify-end @elseif($column->alignment == 'center') justify-center @else justify-start @endif">
+                        class="flex flex-row items-center @if ($column->alignment == 'right') justify-end @elseif($column->alignment == 'center') justify-center @else justify-start @endif @if (!$loop->first) capitalize @endif">
                         @isset(${'spladeTableCell' . $column->keyHash()})
                             {{ ${'spladeTableCell' . $column->keyHash()}($item, $itemKey) }}
                         @else
@@ -49,7 +49,7 @@ cursor-pointer
                 @if (isset($emptyState) && !!$emptyState)
                     {{ $emptyState }}
                 @else
-                    <p class="text-green-700 px-6 py-12 font-medium text-sm text-center">
+                    <p class="text-teal-700 px-6 py-12 font-medium text-sm text-center">
                         {{ __('There are no items to show.') }}
                     </p>
                 @endif

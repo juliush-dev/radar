@@ -27,14 +27,19 @@
             $route = '';
             if ($expanded) {
                 if ($skill != null) {
-                    $route = route('skill.show', $skill);
+                    $route = route('skills.show', $skill);
                 } else {
-                    $route = route('topic.index');
+                    $route = route('topics.index');
                 }
             } elseif ($skill != null) {
-                $route = route('skill.topic.show', ['skill' => $skill, 'topic' => $topic]);
+                $route = route(
+                    'skill-topics.show',
+                    \App\Models\SkillTopic::where('skill_id', $skill->id)
+                        ->where('topic_id', $topic->id)
+                        ->first(),
+                );
             } else {
-                $route = route('topic.show', $topic);
+                $route = route('topics.show', $topic);
             }
         @endphp
         <x-splade-button type="link" :href="$route"

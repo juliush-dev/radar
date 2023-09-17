@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\ContributionController;
-use App\Http\Controllers\TopicController;
-use App\Http\Controllers\SkillController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SubjectController;
+use App\Models\Skill;
+use App\Models\Topic;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use ProtoneMedia\Splade\Facades\Toast;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,66 +35,52 @@ Route::middleware('splade')->group(function () {
         return view('welcome');
     });
 
-    Route::get('/skills', [SkillController::class, 'index'])->name('skill.index');
-    Route::get('/topics', [TopicController::class, 'index'])->name('topic.index');
-    Route::get('/skills/{skill}', [SkillController::class, 'show'])->name('skill.show');
-    Route::get('/skills/{skill}/topics/{topic}', [TopicController::class, 'show'])->name('skill.topic.show');
-    Route::get('/topics/{topic}', [TopicController::class, 'show'])->name('topic.show');
-
+    Route::resource('skills', App\Http\Controllers\SkillController::class)->only(['show', 'index']);
+    Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['show', 'index']);
+    Route::resource('skill-topics', App\Http\Controllers\SkillTopicController::class)->only(['show']);
+    //App\Http\Controllers\ContributionController
     Route::middleware('auth')->group(function () {
-
-        Route::get('/skills/{skill}/topics/new', [TopicController::class, 'create'])->name('topic.create');
-        Route::post('/skills/{skill}/topics/new', [TopicController::class, 'store'])->name('topic.store');
-        Route::get('/skills/{skill}/subjects/new', [SubjectController::class, 'create'])->name('subject.create');
-        Route::post('/skills/{skill}/subjects/new', [SubjectController::class, 'store'])->name('subject.store');
-
-
-
-        Route::get('/contributions', [ContributionController::class, 'index'])->middleware(['verified'])->name('contribution.index');
-
-
-        Route::get('/contributions/skills', [App\Http\Controllers\Contribution\SkillController::class, 'index'])->name('contribution.skill.index');
-        Route::get('/contributions/teachers', [App\Http\Controllers\Contribution\TeacherController::class, 'index'])->name('contribution.teacher.index');
-        Route::get('/contributions/subjects', [App\Http\Controllers\Contribution\SubjectController::class, 'index'])->name('contribution.subject.index');
-        Route::get('/contributions/topic', [App\Http\Controllers\Contribution\TopicController::class, 'index'])->name('contribution.topic.index');
-        Route::get('/contributions/learning-materials', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'index'])->name('contribution.learning-material.index');
-
-        Route::get('/contributions/skills/new', [App\Http\Controllers\Contribution\SkillController::class, 'create'])->name('contribution.skill.create');
-        Route::get('/contributions/teachers/new', [App\Http\Controllers\Contribution\TeacherController::class, 'create'])->name('contribution.teacher.create');
-        Route::get('/contributions/subjects/new', [App\Http\Controllers\Contribution\SubjectController::class, 'create'])->name('contribution.subject.create');
-        Route::get('/contributions/topic/new', [App\Http\Controllers\Contribution\TopicController::class, 'create'])->name('contribution.topic.create');
-        Route::get('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'create'])->name('contribution.learning-material.create');
-
-        Route::post('/contributions/skills/new', [App\Http\Controllers\Contribution\SkillController::class, 'store'])->name('contribution.skill.store');
-        Route::post('/contributions/teachers/new', [App\Http\Controllers\Contribution\TeacherController::class, 'store'])->name('contribution.teacher.store');
-        Route::post('/contributions/subjects/new', [App\Http\Controllers\Contribution\SubjectController::class, 'store'])->name('contribution.subject.store');
-
-        Route::post('/contributions/topics/new', [App\Http\Controllers\Contribution\TopicController::class, 'store'])->name('contribution.topic.store');
-        Route::post('/contributions/learning-materials/new', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'store'])->name('contribution.learning-material.store');
-
-        Route::get('/contributions/skills/{skill}', [App\Http\Controllers\Contribution\SkillController::class, 'show'])->name('contribution.skill.show');
-        Route::get('/contributions/topics/{topic}', [App\Http\Controllers\Contribution\TopicController::class, 'show'])->name('contribution.topic.show');
-        Route::get('/contributions/subjects/{subject}', [App\Http\Controllers\Contribution\SubjectController::class, 'show'])->name('contribution.subject.show');
-        Route::get('/contributions/learning-materials/{learning-material}', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'show'])->name('contribution.learning-material.show');
-
-        Route::post('/contributions/skills/{skill}', [App\Http\Controllers\Contribution\SkillController::class, 'destroy'])->name('contribution.skill.delete');
-        Route::post('/contributions/topics/{topic}', [App\Http\Controllers\Contribution\TopicController::class, 'destroy'])->name('contribution.topic.delete');
-        Route::post('/contributions/subjects/{subject}', [App\Http\Controllers\Contribution\SubjectController::class, 'destroy'])->name('contribution.subject.delete');
-        Route::post('/contributions/learning-materials/{learning-material}', [App\Http\Controllers\Contribution\LearningMaterialController::class, 'destroy'])->name('contribution.learning-material.delete');
-
-        Route::get('/{skill}/skill-topics', [App\Http\Controllers\SkillTopicController::class, 'index'])->name('skill-topic.index');
-        Route::get('/{skill}/skill-topics/new', [App\Http\Controllers\SkillTopicController::class, 'create'])->name('skill-topic.create');
-        Route::post('/{skill}/skill-topics/new', [App\Http\Controllers\SkillTopicController::class, 'store'])->name('skill-topic.store');
-        Route::post('/skill-topics/delete', [App\Http\Controllers\SkillTopicController::class, 'delete'])->name('skill-topic.delete');
-
-        Route::get('/{topic}/topic-subjects/new', [App\Http\Controllers\TopicSubjectController::class, 'create'])->name('topic-subject.create');
-        Route::get('/topic-subjects/{topic-subject}/edit', [App\Http\Controllers\TopicSubjectController::class, 'edit'])->name('topic-subject.edit');
-        Route::post('/{topic}/topic-subjects/new', [App\Http\Controllers\TopicSubjectController::class, 'store'])->name('topic-subject.store');
-        Route::post('/topic-subjects/delete', [App\Http\Controllers\TopicSubjectController::class, 'delete'])->name('topic-subject.delete');
-
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::resource('subjects', App\Http\Controllers\SubjectController::class)->only(['show', 'index']);
+        Route::resource('learning-materials', App\Http\Controllers\LearningMaterialController::class)->only(['show', 'index']);
+        Route::resource('contributions', App\Http\Controllers\ContributionController::class)->only(['index']);
+        Route::name('contributions.')->group(function () {
+            Route::prefix('/contributions')->group(function () {
+                Route::controller(App\Http\Controllers\ContributionController::class)->group(function () {
+                    Route::post('/{contribution}/approve', 'approve')->name('approve');
+                    Route::post('/{contribution}/reject', 'reject')->name('reject');
+                    Route::post('/{contribution}/publish', 'publish')->name('publish');
+                    Route::post('/{contribution}/hide', 'hide')->name('hide');
+                });
+                Route::resource('skills', App\Http\Controllers\Contribution\SkillController::class);
+                Route::resource('topics', App\Http\Controllers\Contribution\TopicController::class);
+                Route::resource('subjects', App\Http\Controllers\Contribution\SubjectController::class);
+                Route::resource('learning-materials', App\Http\Controllers\Contribution\LearningMaterialController::class);
+            });
+        });
+        Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
+        Route::get('/api/topics/{skill?}', function (Request $request, Skill $skill = null) {
+            if ($skill == null) {
+                $skill = new Skill;
+            }
+            $skill->fields_covered_by_it = $request->query('fields');
+            $skill->years_levels_covering_it = $request->query('years');
+            if ($skill->fields_covered_by_it == 0 || $skill->years_levels_covering_it == 0) {
+                return [];
+            } else {
+                return $skill->topicsOptions();
+            }
+        })->name("topics.options");
+        Route::get('/api/subjects/{topic?}', function (Request $request, Topic $topic = null) {
+            if ($topic == null) {
+                $topic = new Topic;
+            }
+            $topic->year_teached_at = $request->query('year');
+            if ($topic->year_teached_at == 0) {
+                return [];
+            } else {
+                return $topic->subjectsOptions();
+            }
+        })->name("subjects.options");
     });
 
     require __DIR__ . '/auth.php';

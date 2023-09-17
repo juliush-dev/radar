@@ -1,23 +1,18 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Layouts;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SkillForm extends Component
+class ContributionActionsCard extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(
-        public $action = '',
-        public $groupsOptions = '',
-        public $fieldsOptions = '',
-        public $yearsOptions = '',
-
-    ) {
+    public function __construct()
+    {
         //
     }
 
@@ -26,6 +21,6 @@ class SkillForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.skill-form');
+        return view('components.layouts.contribution-actions-card');
     }
 }

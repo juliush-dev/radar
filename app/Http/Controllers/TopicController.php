@@ -177,8 +177,8 @@ class TopicController extends Controller
                 $skillRequirement->save();
             }
         );
-        Toast::title('New Topic successfuly added!')->autoDismiss(15);
-        return redirect()->route('skill.show', $skill);
+        Toast::title('New Topic successfuly added!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('skills.show', $skill);
     }
 
     /**

@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('url');
             $table->enum(
                 "learning_material_type",
                 array_column(LearningMaterialType::cases(), 'value'),

@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-splade-modal>
+    <x-splade-modal close-explicitly class="max-w-md mx-auto">
         <div class="bg-slate-800 p-6 min-h-screen shadow-md shadow-emerald-500">
             <h1 class="text-2xl mb-8 first-letter:uppercase flex items.center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

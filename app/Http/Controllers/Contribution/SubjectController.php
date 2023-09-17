@@ -82,8 +82,8 @@ class SubjectController extends Controller
                 );
             }
         );
-        Toast::title('New Subject successfuly submitted for contribution!')->autoDismiss(15);
-        return redirect()->route('contribution.index');
+        Toast::title('New Subject successfuly submitted for contribution!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
     /**
@@ -91,7 +91,9 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        return view('contribution.subject.show', [
+            'subject' => $subject
+        ]);
     }
 
     /**
@@ -99,7 +101,22 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        //
+        $getKeyValuePair = function ($acc, $value) {
+            $acc[$value] = $value;
+            return $acc;
+        };
+
+        $yearsLevels = YearLevel::cases();
+        $yearsLevelsOptions = array_column($yearsLevels, 'value');
+        $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
+
+        return view(
+            'contribution.subject.edit',
+            [
+                'subject' => $subject,
+                'yearsOptions' => $yearsLevelsOptions,
+            ]
+        );
     }
 
     /**
@@ -107,7 +124,19 @@ class SubjectController extends Controller
      */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
-        //
+        DB::transaction(
+            function () use ($request, $subject) {
+                $subject->description = $request->input('description');
+                $subject->year_levels_covered_by_it = implode(",", $request->input('year_levels_covered_by_it'));
+                $subject->save();
+
+                $contribution = $subject->contribution;
+                $contribution->title = $request->input('title');
+                $contribution->save();
+            }
+        );
+        Toast::title('Subject successfuly updated!')->autoDismiss(15)->centerBottom();
+        return redirect()->route('contributions.index');
     }
 
     /**

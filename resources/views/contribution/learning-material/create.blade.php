@@ -1,8 +1,8 @@
 <x-layouts.app>
-    <x-splade-modal class="shadow-md shadow-emerald-400 bg-green-950/60">
+    <x-splade-modal close-explicitly class="shadow-md shadow-emerald-400 bg-green-950/60 max-w-md mx-auto">
         <div>
             <h1 class="text-xl mb-8 first-letter:uppercase">Skill required to pass the IHK exam</h1>
-            <x-splade-form action="{{ route('skill.store') }}" class="flex flex-col gap-8">
+            <x-splade-form action="{{ route('skills.store') }}" class="flex flex-col gap-8">
                 <x-splade-input name="title" label="Which Skill?" placeholder="The student should be able to ..." />
                 <div class="p-3 rounded-md border border-slate-500">
                     <x-splade-group class="mb-4" name="source" label="Where did you get this info from?" inline>

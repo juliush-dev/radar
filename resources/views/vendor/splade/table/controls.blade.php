@@ -1,4 +1,5 @@
-<div class="flex flex-row sm:justify-end mb-3 px-4 sm:px-0 -mr-2 sm:-mr-3">
+<div
+    class="flex flex-row sm:justify-end mb-3 sm:px-0 -mr-2 sm:-mr-3 sticky top-0 bg-white w-full z-20 shadow p-4 py-2 rounded-md">
     @if ($table->hasExports() || $table->hasBulkActions())
         <div class="order-1 mr-2 sm:mr-3" v-if="table.hasSelectedItems || @js($table->hasExports())">
             @include('splade::table.bulk-actions-exports')
@@ -12,7 +13,7 @@
     @endif
 
     @if ($table->searchInputs('global'))
-        <div class="w-full order-3 flex-grow mr-2 sm:mr-3">
+        <div class="w-full order-3 flex-grow mr-2 sm:mr-3 pl-4">
             @include('splade::table.global-search')
         </div>
     @endif

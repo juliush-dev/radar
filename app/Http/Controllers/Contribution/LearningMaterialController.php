@@ -29,25 +29,9 @@ class LearningMaterialController extends Controller
      */
     public function create()
     {
-        // get public topic
-        // $topicsOptions = Topic::whereHas('contribution', function ($query) {
-        //     $query->whereHas('modificationRequest', function ($query) {
-        //         $query->whereIn('modification_type', [ModificationType::Update->value, ModificationType::Create->value])
-        //             ->where(function ($query) {
-        //                 $query->where('modification_request_state', ModificationRequestState::Approved->value);
-        //                 if (Auth::check()) {
-        //                     $query->orWhere('contributor_id', Auth::user()->id);
-        //                 }
-        //             });
-        //     });
-        // });
-
-        // return view(
-        //     'contribution.skill.create',
-        //     [
-        //         'topicsOptions' => $topicsOptions,
-        //     ]
-        // );
+        return view(
+            'contribution.learning-material.create'
+        );
     }
 
     /**
@@ -63,7 +47,9 @@ class LearningMaterialController extends Controller
      */
     public function show(LearningMaterial $learningMaterial)
     {
-        //
+        return view('contribution.learning-material.show', [
+            'learningMaterial' => $learningMaterial
+        ]);
     }
 
     /**

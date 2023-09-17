@@ -2,7 +2,7 @@
     :js-choices-options="{!! $jsChoicesOptions() !!}" :multiple="@js($multiple)" :placeholder="@js($placeholderOption()?->toArray() ?: false)"
     v-model="{{ $vueModel() }}" :dusk="@js($attributes->get('dusk'))" :remote-url="{!! $remoteUrl ?: 'null' !!}"
     :remote-root="@js($remoteRoot ?: null)" :option-value="@js($optionValue)" :option-label="@js($optionLabel)"
-    :select-first-remote-option="@js($selectFirstRemoteOption)" :reset-on-new-remote-url="@js($resetOnNewRemoteUrl)">
+    :="@js($selectFirstRemoteOption)" :reset-on-new-remote-url="@js($resetOnNewRemoteUrl)">
     <template #default="{!! $scope !!}">
         <label class="block" v-bind:class="{ 'pointer-events-none': select.loading }">
             @includeWhen($label, 'splade::form.label', ['label' => $label])

@@ -10,10 +10,7 @@
                 required />
 
             <div class="flex items-center justify-end gap-5">
-                <x-nav-link href="{{ route('login') }}" small>
-                    {{ __('Already registered ?') }}
-                </x-nav-link>
-
+                <x-authentication />
                 <x-splade-submit class="ml-4" :label="__('Register')" />
             </div>
         </x-splade-form>

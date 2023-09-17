@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <x-splade-modal>
+    <x-splade-modal close-explicitly class="max-w-md mx-auto">
         <x-splade-form action="{{ route('skill-topic.delete') }}" class="flex flex-col gap-8">
             <x-splade-group name="skills_requirements" label="choose the topics to remove from the list">
                 @foreach ($skillTopics as $requiredTopic)

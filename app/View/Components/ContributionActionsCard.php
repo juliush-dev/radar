@@ -6,16 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class TopicForm extends Component
+class ContributionActionsCard extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $action,
-        public $yearsOptions = [],
-        public $fieldsOptions = [],
-        public $subjectsOptions = [],
+        public $resource,
+        public $model,
     ) {
         //
     }
@@ -25,6 +23,6 @@ class TopicForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.topic-form');
+        return view('components.contribution-actions-card');
     }
 }

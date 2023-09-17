@@ -13,8 +13,8 @@
                     {{ $skill->topic_group_covering_it }}
                 </div>
             </div>
-            <x-splade-button type="link" :href="$expanded ? route('skill.index') : route('skill.show', $skill)"
-                class="relative w-full px-3 py-3 text-md font-medium border border-slate-300 rounded-ss-sm flex gap-2 transition-shadow duration-200 text-slate-500"
+            <x-splade-button type="link" :href="$expanded ? route('skills.index') : route('skills.show', $skill)"
+                class="relative w-full p-3 text-md font-medium border border-slate-300 rounded-ss-sm flex gap-2 transition-shadow duration-200 text-slate-500"
                 v-bind:class="data.expanded ? 'bg-teal-500 text-white' :  'bg-slate-100'">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
@@ -33,7 +33,7 @@
                     v-bind:class="data.expanded && 'rotate-180'">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
-                <div class="absolute right-1/2 -top-3 flex gap-2 ml-auto text-black">
+                <div class="absolute right-1/2 -top-5 flex gap-2 ml-auto text-black">
                     <div class="rounded-sm border border-slate-300 flex gap-2 px-3 py-0.5 bg-slate-50">
                         <span class="text-sm ">{{ $skill->skillTopics->count() }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -65,43 +65,6 @@
                         @foreach ($skill->skillTopics as $requiredTopic)
                             <x-topic :topic="$requiredTopic->topic" :skill="$skill" />
                         @endforeach
-                    @endif
-                    @if ($focusedTopic == null)
-                        <div class="flex gap-6 justify-between mt-4">
-                            @php
-                                $topicsOptions = $skill->topicsOptions();
-                            @endphp
-                            @if (count($topicsOptions) > 0)
-                                <div class="w-full flex flex-col gap-4">
-                                    <div>
-                                        <x-splade-button href="#topic-select" type="call-to-action-link"
-                                            class="w-fit ml-auto">
-                                            Select a topic to add
-                                        </x-splade-button>
-                                    </div>
-                                    <x-splade-modal name="topic-select">
-                                        <x-splade-form :action="route('topic.store', $skill)" class="flex flex-col gap-6 p-6 shadow-md">
-                                            <x-splade-select label="Select a topic" name="topic"
-                                                placeholder="Select topic to add" option-label="title" option-value="id"
-                                                :options="$skill->topicsOptions()" />
-                                            <div class="text-right">
-                                                <x-splade-submit>Add selected topic</x-splade-submit>
-                                            </div>
-                                        </x-splade-form>
-                                    </x-splade-modal>
-                                </div>
-                                <span class="shrink font-medium self-baseline text-xl w-1/3 text-center">Or</span>
-                            @endif
-                            <div class="w-full flex flex-col gap-4">
-                                <x-splade-button href="#topic-new" type="call-to-action-link" class="w-fit ml-auto">
-                                    Create a new topic to add
-                                </x-splade-button>
-                                <x-splade-modal name="topic-new">
-                                    <x-topic-form class="p-6" :action="route('topic.store', $skill)" :years-options="$skill->topicsYearsOptions()" :fields-options="$skill->topicsFieldsOptions()"
-                                        :subjects-options="$skill->topicsSubjectsOptions()" />
-                                </x-splade-modal>
-                            </div>
-                        </div>
                     @endif
                 </x-splade-transition>
             @endif
