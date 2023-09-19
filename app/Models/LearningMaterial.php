@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class LearningMaterial extends Model
 {
     use HasFactory, HasUuids;
-    public function contribution(): MorphOne
+
+    public function author(): BelongsTo
     {
-        return $this->morphOne(Contribution::class, 'contribution');
+        return $this->belongsTo(User::class, 'autor_id');
     }
 
-    public function topic(): HasOne
+    public function topic(): BelongsTo
     {
-        return $this->hasOne(TopicLearningMaterial::class);
+        return $this->belongTo(Topic::class);
     }
 }

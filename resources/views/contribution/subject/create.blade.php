@@ -9,10 +9,10 @@
             New Subject
         </h1>
         <x-splade-form action="{{ route('contributions.subjects.store') }}" class="flex flex-col gap-8">
-            <x-splade-input name="title" label="Title" placeholder="SD1" />
-            <x-splade-input name="description" label="Description" placeholder="A good description" />
-            <x-splade-select class="text-slate-800" label="Years" name="year_levels_covered_by_it" :options="$yearsLevelsOptions"
-                multiple />
+            <x-splade-input name="title" label="Title" />
+            <x-splade-input name="alternati" label="Alternative" />
+            <x-splade-select class="text-slate-800" label="Years" name="years" :options="\App\Models\Year::all()->pluck('label', 'id')" multiple />
+            <x-splade-select class="text-slate-800" label="Field" name="fields" :options="\App\Models\Field::all()->pluck('title', 'id')" multiple />
             <div class="flex justify-end mt-5">
                 <x-splade-submit label="Submit it" />
             </div>

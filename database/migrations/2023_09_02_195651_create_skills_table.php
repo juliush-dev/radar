@@ -16,18 +16,8 @@ return new class extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->set(
-                'fields_covered_by_it',
-                array_column(TopicField::cases(), 'value',)
-            );
-            $table->set(
-                'years_levels_covering_it',
-                array_column(YearLevel::cases(), 'value'),
-            );
-            $table->enum(
-                'topic_group_covering_it',
-                array_column(TopicGroup::cases(), 'value'),
-            );
+            $table->string('title');
+            $table->foreignUuid('group_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

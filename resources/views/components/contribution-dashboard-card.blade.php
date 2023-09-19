@@ -17,7 +17,7 @@
             Published
         </div>
         @if (!$hideAction)
-            <x-layouts.navigation-link type="call-to-action" open-as="modal" :resource="'contributions.' . $type" action="create"
+            <x-layouts.navigation-link :$openAs type="call-to-action" :resource="'contributions.' . $type" action="create"
                 :label="'create new ' . $type" />
         @endif
     </div>

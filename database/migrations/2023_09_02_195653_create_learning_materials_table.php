@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\LearningMaterialType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('url');
-            $table->enum(
-                "learning_material_type",
-                array_column(LearningMaterialType::cases(), 'value'),
-            );
+            $table->string('title');
+            $table->string('path');
+            $table->string('mime_type');
+            $table->string('approval_status');
+            $table->string('alternative')->nullable();
+            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

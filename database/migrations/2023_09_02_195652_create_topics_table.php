@@ -1,7 +1,5 @@
 <?php
 
-use App\Enums\TopicField;
-use App\Enums\YearLevel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,14 +13,9 @@ return new class extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum(
-                'year_teached_at',
-                array_column(YearLevel::cases(), 'value'),
-            );
-            $table->enum(
-                'topic_field',
-                array_column(TopicField::cases(), 'value'),
-            );
+            $table->string('title');
+            $table->foreignUuid('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('skill_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

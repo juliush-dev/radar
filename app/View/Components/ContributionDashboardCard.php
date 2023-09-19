@@ -21,6 +21,7 @@ class ContributionDashboardCard extends Component
         public int $pending = 0,
         public int $rejected = 0,
         public bool $hideAction = false,
+        public string $openAs = '',
 
     ) {
         //
