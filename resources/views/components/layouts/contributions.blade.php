@@ -32,7 +32,7 @@
             <x-authentication />
         </div>
     </div>
-    <div class="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 p-6 pb-0 xl:px-20 pt-0 relative">
+    <div class="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 relative">
         {{ $slot }}
     </div>
 </x-layouts.main-content>

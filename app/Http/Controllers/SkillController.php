@@ -156,7 +156,7 @@ class SkillController extends Controller
                 }
 
                 $newTopicDocuments = $request->file("documents_topic_{$index}");
-                foreach ($newTopicDocuments as $index => $document) {
+                foreach ($newTopicDocuments ?? [] as $index => $document) {
                     $newLearningMaterial = new LearningMaterial;
                     $newLearningMaterial->topic_id = $topic->id;
                     $newLearningMaterial->approval_status = ApprovalStatus::Pending->value;
