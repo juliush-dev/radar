@@ -13,7 +13,7 @@
     <style>
         * {
             --sb-track-color: #f1f5f7;
-            --sb-thumb-color: #c8efea;
+            --sb-thumb-color: #cccccc;
             --sb-size: 5px;
             scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
         }

@@ -160,7 +160,7 @@ class SkillController extends Controller
                     $newLearningMaterial = new LearningMaterial;
                     $newLearningMaterial->topic_id = $topic->id;
                     $newLearningMaterial->approval_status = ApprovalStatus::Pending->value;
-                    $newLearningMaterial->path = $document->store('avatars');
+                    $newLearningMaterial->path = $document->store('public');
                     $newLearningMaterial->title = $document->getClientOriginalName();
                     $newLearningMaterial->mime_type = $document->extension();
                     $newLearningMaterial->alternative = $document->hashName();

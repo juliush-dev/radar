@@ -1,5 +1,5 @@
 <x-layouts.main-content>
-    <div class="flex gap-6 justify-between shadow p-6 xl:px-20">
+    <div class="flex gap-6 justify-between p-6 xl:px-20 shadow">
         <div class="flex gap-6 items-center">
             <h1 class="text-2xl text-teal-600 flex gap-2 items.center capitalize flex-nowrap">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
