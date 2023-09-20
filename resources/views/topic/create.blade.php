@@ -1,16 +1,103 @@
-<x-layouts.app>
-    <x-splade-modal close-explicitly class="shadow-md p-6 max-w-md mx-auto">
-        <h1 class="text-2xl mb-8 first-letter:uppercase flex items.center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-10 h-10">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
-            </svg>
-            New Topic
-        </h1>
-        <x-splade-form action="{{ route('skills.topics.store', $skill) }}" submit-on-change background debounce="50"
-            class="flex flex-col gap-8">
-            <x-splade-input name="title" label="Title" />
-        </x-splade-form>
-    </x-splade-modal>
+<x-layouts.app active-page="New Topic"
+    icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
+    @php($yearsOptions = $ent->asOptions('\App\Enums\Year'))
+    @php($fieldsOptions = $qrt->fieldsAsOptions())
+    @php($subjectsOptions = $qrt->subjectsAsOptions())
+    <x-splade-form :action="route('topics.store')" class="mx-auto h-screen  p-6 lg:p-20" default="{
+        newSubject: [],
+        newFields: [],
+    }">
+        <topic v-slot="topic" :form="form" v-bind:years-options="@js($yearsOptions)"
+            :fields-options="@js($fieldsOptions)" :subjects-options="@js($subjectsOptions)">
+            <div class="h-full">
+                <div class="flex">
+                    <section class="px-6 w-full border-r border-teal-400 flex flex-col gap-6">
+                        <h1 class="text-xl mb-4">New Topic</h1>
+                        <x-splade-textarea name="name" label="Title" />
+                        <x-splade-select name="year" label="Year">
+                            <option v-for="option in topic.yearsOptions" v-bind:key="option.id"
+                                v-bind:value="option.label">
+                                @{{ option.label }}
+                            </option>
+                        </x-splade-select>
+                        <x-splade-select name="subject" label="Subject" placeholder="Choose or create a new one">
+                            <option v-for="option in topic.subjectsOptions" v-bind:key="option.id"
+                                v-bind:value="option.id">
+                                @{{ option.label }}
+                            </option>
+                        </x-splade-select>
+                        <x-splade-select name="fields" label="Fields" placeholder="Choose or create a new one"
+                            multiple>
+                            <option v-for="option in topic.subjectsOptions" v-bind:key="option.id"
+                                v-bind:value="option.label">
+                                @{{ option.label }}
+                            </option>
+                        </x-splade-select>
+                        <x-splade-select name="skill" label="Skill" placeholder="Choose or create a new one">
+                            <option v-for="option in topic.fieldsOptions" v-bind:key="option.id"
+                                v-bind:value="option.label">
+                                @{{ option.label }}
+                            </option>
+                        </x-splade-select>
+                        <div class="mt-10">
+                            <x-splade-submit class="w-full">Save topic</x-splade-submit>
+                        </div>
+                    </section>
+                    <section class="px-6 w-full border-r border-teal-400 flex flex-col gap-6">
+                        <h1 class="text-xl mb-4">New Subject</h1>
+                        <div class="h-full overflow-y-auto flex flex-col gap-6">
+                            <div v-for="subject in form.newSubject" class="flex flex-col gap-6 ">
+                                <x-splade-input v-model="subject.title" label="title" />
+                                <x-splade-input v-model="subject.abbreviation" label="Abbreviation" />
+                                <x-splade-select v-model="subject.years" label="Years">
+                                    <option v-for="option in topic.yearsOptions" v-bind:key="option.id"
+                                        v-bind:value="option.label">
+                                        @{{ option.label }}
+                                    </option>
+                                </x-splade-select>
+                            </div>
+                        </div>
+                        <x-splade-button v-if="form.newSubject.length == 0" type="call-to-action"
+                            @click.prevent="topic.newSubject">
+                            Add new Subject
+                        </x-splade-button>
+                        <x-splade-button v-if="form.newSubject.length > 0" type="call-to-action"
+                            @click.prevent="topic.removeNewSubject">
+                            Remove new Subject
+                        </x-splade-button>
+                    </section>
+                    <section class="px-6 h-full w-full border-r border-teal-400 flex flex-col gap-6">
+                        <h1 class="text-xl mb-4">New Fields</h1>
+                        <div class="h-full overflow-y-auto flex flex-col gap-6">
+                            <div v-for="(field, index) in form.newFields" class="flex flex-col gap-6"
+                                v-bind:key="index">
+                                <x-splade-input v-model="field.title" label="title" />
+                                <x-splade-select v-model="field.years" label="Years">
+                                    <option v-for="option in topic.yearsOptions" v-bind:key="option.id"
+                                        v-bind:value="option.label">
+                                        @{{ option.label }}
+                                    </option>
+                                </x-splade-select>
+                                <x-splade-button type="call-to-action" @click.prevent="topic.removeField(index)">
+                                    Remove this Field
+                                </x-splade-button>
+                            </div>
+                        </div>
+                        <x-splade-button type="call-to-action" @click.prevent="topic.newField">
+                            Add new Field
+                        </x-splade-button>
+                    </section>
+                    <section class="px-6 w-full flex flex-col gap-6">
+                        <h1 class="text-xl mb-4">New Skills</h1>
+                        <div class="h-full overflow-y-auto flex flex-col gap-6">
+
+                        </div>
+                        <x-splade-button type="call-to-action" @click.prevent="topic.newField">
+                            Add new Skill
+                        </x-splade-button>
+                    </section>
+                </div>
+            </div>
+        </topic>
+    </x-splade-form>
 </x-layouts.app>

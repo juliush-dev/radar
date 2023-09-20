@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\View\Components\Assessment;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Topic extends Model
 {
@@ -28,6 +26,11 @@ class Topic extends Model
     public function skill(): BelongsTo
     {
         return $this->belongsTo(Skill::class);
+    }
+
+    public function previousTopic(): BelongsTo
+    {
+        return $this->belongsTo(Topic::class, 'previous_topic_id');
     }
 
     public function fields(): HasMany

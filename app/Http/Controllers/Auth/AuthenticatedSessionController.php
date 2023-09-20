@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect(route('skills.index'));
+        return redirect(route('topics.index'));
     }
 
     /**

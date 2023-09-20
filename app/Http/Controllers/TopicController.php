@@ -2,196 +2,185 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ModificationRequestState;
-use App\Enums\ModificationType;
-use App\Enums\TopicField;
-use App\Enums\Visibility;
-use App\Enums\YearLevel;
-use App\Http\Requests\StoreTopicRequest;
-use App\Http\Requests\UpdateTopicRequest;
-use App\Models\Contribution;
+use App\Enums\ApprovalStatus;
+use App\Models\Field;
+use App\Models\FieldYear;
+use App\Models\Group;
+use App\Models\LearningMaterial;
 use App\Models\Skill;
-use App\Models\SkillTopic;
+use App\Models\SkillField;
+use App\Models\SkillGroup;
+use App\Models\SkillYear;
 use App\Models\Subject;
-use App\Models\TopicSubject;
+use App\Models\SubjectYear;
 use App\Models\Topic;
+use App\Models\TopicField;
+use App\Models\TopicYear;
+use App\Services\EnumTransformer;
+use App\Services\QueryResultTransformer;
+use App\Services\RadarQuery;
 use App\Tables\Topics;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;
 
 class TopicController extends Controller
 {
+    public function __construct(private RadarQuery $cq)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $getKeyValuePair = function ($acc, $value) {
-            $acc[$value] = $value;
-            return $acc;
-        };
-
-        $yearsLevels = YearLevel::cases();
-        $yearsLevelsOptions = array_column($yearsLevels, 'value');
-        $yearsLevelsOptions = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
-
-
-        $topicFields = TopicField::cases();
-        $topicFieldsOptions = array_column($topicFields, 'value');
-        $topicFieldsOptions = array_reduce($topicFieldsOptions, $getKeyValuePair, []);
-
-        $publicSubjects = Contribution::where('contribution_type', Subject::class)
-            ->where(function ($query) {
-                if (Auth::check()) {
-                    $query->where('contributor_id', Auth::user()->id);
-                }
-            })
-            ->where('visibility', Visibility::Public->value)
-            ->orWhere(function ($query) {
-                $query->where('visibility', Visibility::Public->value)
-                    ->whereHas('modificationRequests', function ($query) {
-                        $query->where('modification_request_state', ModificationRequestState::Approved->value);
-                    });
-            })
-            ->get()->pluck('title', 'contribution_id');
-
-        $topicsIndex = new Topics;
+        $topics = new Topics($this->cq);
         return view('topic.index', [
-            'publicTopics' => $topicsIndex->for(),
-            'yearsLevelsOptions' => $yearsLevelsOptions,
-            'topicFieldsOptions' => $topicFieldsOptions,
-            'publicSubjects' => $publicSubjects,
+            'topics' => $topics->for(),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Skill $skill)
+    public function create(EnumTransformer $ent, QueryResultTransformer $qrt)
     {
-        $getKeyValuePair = function ($acc, $value) {
-            $acc[$value] = $value;
-            return $acc;
-        };
-
-        $yearsLevelsOptions = explode(",", $skill->years_levels_covering_it);
-        $yearsLevelsOptionsPair = array_reduce($yearsLevelsOptions, $getKeyValuePair, []);
-
-        $fieldsOptions = explode(",", $skill->fields_covered_by_it);
-        $fieldsOptionsPair = array_reduce($fieldsOptions, $getKeyValuePair, []);
-        $subjects = Subject::where(function ($query) use ($skill) {
-            $query->where(function ($query) use ($skill) {
-                foreach (explode(",", $skill->years_levels_covering_it) as $y) {
-                    $query->orWhereRaw('FIND_IN_SET(?, year_levels_covered_by_it)', [$y]);
-                }
-            })
-                ->whereHas(
-                    'contribution',
-                    function ($query) {
-                        $query->where('contributor_id', Auth::user()->id)
-                            ->whereNot('visibility', Visibility::Disabled->value)
-                            ->whereHas('modificationRequests', function ($query) {
-                                $query->latest('created_at')
-                                    ->whereIn('modification_type', [
-                                        ModificationType::Create->value,
-                                        ModificationType::Update->value,
-                                    ])->whereIn(
-                                        'modification_request_state',
-                                        [
-                                            ModificationRequestState::Pending->value,
-                                            ModificationRequestState::Approved->value,
-                                        ]
-                                    );
-                            })->orWhere(function ($query) {
-                                $query->whereNot('contributor_id', Auth::user()->id)
-                                    ->where('visibility', Visibility::Public->value)
-                                    ->whereHas('modificationRequests', function ($query) {
-                                        $query->latest('created_at')
-                                            ->whereIn('modification_type', [
-                                                ModificationType::Create->value,
-                                                ModificationType::Update->value,
-                                            ])->where(
-                                                'modification_request_state',
-                                                ModificationRequestState::Approved->value
-                                            );
-                                    });
-                            });
-                    }
-                );
-        })->get();
-        $subjectsOptionsPair = $subjects->reduce(function ($acc, $subjcet) {
-            $acc[] = [
-                'id' => $subjcet->id,
-                'title' => $subjcet->contribution->title
-            ];
-            return $acc;
-        }, []);
-
         return view('topic.create', [
-            'yearsLevelsOptionsPair' => $yearsLevelsOptionsPair,
-            'fieldsOptionsPair' => $fieldsOptionsPair,
-            'subjectsOptionsPair' => $subjectsOptionsPair,
-            'skill' => $skill,
+            'ent' => $ent,
+            'qrt' => $qrt
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTopicRequest $request, Skill $skill)
+    public function store(Request $request)
     {
-        DB::transaction(
-            function () use ($request, $skill) {
 
-                $topicId = null;
-                if (!$request->has('topic')) {
-                    $topic = Topic::create([
-                        'year_teached_at' =>  $request->input('years_teached_at'),
-                        'topic_field' =>  $request->input('topic_field'),
-                    ]);
-                    $topicId = $topic->id;
-                    $contribution = $topic->contribution()->create(
-                        [
-                            'contributor_id' => Auth::user()->id,
-                            "title" => $request->input('title'),
-                            "visibility" => Visibility::Public->value,
-                        ]
-                    );
-                    $contribution->modificationRequests()->create(
-                        [
-                            'modification_request_state' => ModificationRequestState::Pending->value,
-                            'modification_type' => ModificationType::Create->value,
-                        ]
-                    );
-                    $topicSubject = new TopicSubject;
-                    $topicSubject->subject_id = $request->input('subject');
-                    $topicSubject->topic_id = $topicId;
-                    $topicSubject->save();
-                } else {
-                    $topicId = $request->input('topic');
-                }
-                $skillRequirement = new SkillTopic;
-                $skillRequirement->skill_id = $skill->id;
-                $skillRequirement->topic_id = $topicId;
-                $skillRequirement->save();
+        DB::transaction(function () use ($request) {
+
+            $title = $request->input('title');
+            $group = $request->input('group');
+            $newGroup = $request->input('newGroup');
+            $years = $request->input('years');
+            $fields = $request->input('fields');
+            $newFields = $request->input('newFields');
+            $newTopics = $request->input('newTopics');
+
+            $skill = new Skill;
+            $skill->title = $title;
+            if ($group) {
+                $skill->group_id = $group;
+            } elseif ($newGroup) {
+                $group = new Group;
+                $group->title = $newGroup;
+                $group->save();
+                $skill->group_id = $group->id;
             }
-        );
-        Toast::title('New Topic successfuly added!')->autoDismiss(15)->centerBottom();
-        return redirect()->route('skills.show', $skill);
+            $skill->save();
+            foreach ($years as $value) {
+                $skillYear = new SkillYear;
+                $skillYear->skill_id = $skill->id;
+                $skillYear->year = $value;
+                $skillYear->save();
+            }
+
+            foreach ($fields ?? [] as $field) {
+                $skillField = new SkillField;
+                $skillField->skill_id = $skill->id;
+                $skillField->field_id = $field;
+                $skillField->save();
+            }
+
+            foreach ($newFields ?? [] as $index => $newField) {
+                $newFieldIndex = intval($index);
+                $field = new Field;
+                $field->title = $newField['title'];
+                $field->save();
+                $newFields[$newFieldIndex]['id'] = $field->id;
+                $newFieldYears = $newField['years'];
+                foreach ($newFieldYears as $year) {
+                    $fieldYear = new FieldYear;
+                    $fieldYear->field_id = $field->id;
+                    $fieldYear->year = $years[intval($year)];
+                    $fieldYear->save();
+                }
+                $skillField = new SkillField;
+                $skillField->skill_id = $skill->id;
+                $skillField->field_id = $field->id;
+                $skillField->save();
+            }
+
+            foreach ($newTopics ?? [] as $index => $newTopic) {
+                $topic = new Topic;
+                $topic->title = $newTopic['title'];
+                if (is_array($newTopic['subject'])) {
+                    $newSubject = $newTopic['subject'][0];
+                    $subject = new Subject;
+                    $subject->title = $newSubject['title'];
+                    $subject->abbreviation = $newSubject['abbreviation'];
+                    $subject->save();
+                    $newSubjectYears = $newSubject['years'];
+                    foreach ($newSubjectYears as $year) {
+                        $subjectYear = new SubjectYear;
+                        $subjectYear->subject_id = $subject->id;
+                        $subjectYear->year = $years[intval($year)];
+                        $subjectYear->save();
+                    }
+                    $topic->subject_id = $subject->id;
+                } else {
+                    $topic->subject_id = $newTopic['subject'];
+                }
+                $topic->skill_id = $skill->id;
+                $topic->save();
+
+                foreach ($topic['years'] as $year) {
+                    $topicYear = new TopicYear;
+                    $topicYear->topic_id = $topic->id;
+                    $topicYear->year = $years[intval($year)];
+                    $topicYear->save();
+                }
+
+                foreach ($newTopic['fields'] ?? [] as $index) {
+                    if (is_numeric($index)) {
+                        $topicField = new TopicField;
+                        $topicField->topic_id = $topic->id;
+                        $topicField->field_id = $newFields[intval($index)]['id'];
+                        $topicField->save();
+                    } else {
+                        $topicField = new TopicField;
+                        $topicField->topic_id = $topic->id;
+                        $topicField->field_id = $index;
+                        $topicField->save();
+                    }
+                }
+
+                $newTopicDocuments = $request->file("documents_topic_{$index}");
+                foreach ($newTopicDocuments ?? [] as $index => $document) {
+                    $newLearningMaterial = new LearningMaterial;
+                    $newLearningMaterial->topic_id = $topic->id;
+                    $newLearningMaterial->approval_status = ApprovalStatus::Pending->value;
+                    $newLearningMaterial->path = $document->store('public');
+                    $newLearningMaterial->title = $document->getClientOriginalName();
+                    $newLearningMaterial->mime_type = $document->extension();
+                    $newLearningMaterial->alternative = $document->hashName();
+                    $newLearningMaterial->save();
+                }
+            }
+        });
+        Toast::title('Skill sucessfuly saved!');
+        return redirect()->route('topics.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Skill $skill, Topic $topic)
+    public function show(Skill $skill)
     {
         return view(
-            'topic.show',
+            'skill.show',
             [
                 'skill' => $skill,
-                'topic' => $topic,
-                // 'publicSkills' => $skillsIndex->for(),
             ]
         );
     }
@@ -199,15 +188,14 @@ class TopicController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Topic $topic)
+    public function edit(Skill $skill)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTopicRequest $request, Topic $topic)
+    public function update(Request $request, Skill $skill)
     {
         //
     }
@@ -215,7 +203,7 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Topic $topic)
+    public function destroy(Skill $skill)
     {
         //
     }

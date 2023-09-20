@@ -16,7 +16,7 @@ class NavigationLink extends Component
         public string $action = '',
         public mixed $actionArgs = null,
         public string $label = '',
-        public string $iconPath = '',
+        public string $icon = '',
         public string $openAs = '',
         public string $type = '',
         public bool $post = false

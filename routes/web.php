@@ -32,13 +32,12 @@ Route::middleware('splade')->group(function () {
 
     Route::get('/', function () {
         return view('welcome');
-    });
+    })->name('welcome');
 
-    Route::resource('skills', App\Http\Controllers\SkillController::class)->only(['index']);
+    Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index']);
     //App\Http\Controllers\ContributionController
     Route::middleware('auth')->group(function () {
-        Route::resource('skills', App\Http\Controllers\SkillController::class)->except(['show', 'index']);
-        Route::resource('learning-materials', App\Http\Controllers\LearningMaterialController::class)->except(['show']);
+        Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
         Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
     });
 
