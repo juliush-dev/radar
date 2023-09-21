@@ -1,4 +1,4 @@
-<SpladeFile :form="form" :field="{{ $formKey() }}" :multiple="@js($multiple)"
+<SpladeFile :form="form" :field="@js($formKey())" :multiple="@js($multiple)"
     :placeholder="@js($placeholder)" :filepond="@js($filepondOptions())" :js-filepond-options="{!! $jsFilepondOptions() !!}"
     :server="@js($server)" :preview="@js($preview)" :accept="@js($accept)"
     :existing-suffix="@js($existingSuffix)" :order-suffix="@js($orderSuffix)" :min-file-size="@js($minSize)"

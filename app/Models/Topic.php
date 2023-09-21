@@ -43,6 +43,11 @@ class Topic extends Model
         return $this->hasMany(TopicYear::class);
     }
 
+    public function skills(): HasMany
+    {
+        return $this->hasMany(TopicSkill::class);
+    }
+
     public function learningMaterials(): HasMany
     {
         return $this->hasMany(LearningMaterial::class);

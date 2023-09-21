@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
-            $table->foreignUuid('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('subject_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignUuid('skill_id')->nullable();
             $table->foreignUuid('previous_topic_id')->nullable();
             $table->timestamps();

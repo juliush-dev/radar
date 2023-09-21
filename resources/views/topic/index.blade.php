@@ -15,10 +15,10 @@
             @endif
         </div>
     @else
-        <div class="flex gap-4 px-20 pb-0  w-full h-full overflow-auto">
-            {{-- @foreach ($topics as $skill)
-            <x-topic :skill="$skill" class="grow-1" />
-        @endforeach --}}
+        <div class="columns-sm space-y-6 mx-auto gap-6 p-6">
+            @foreach ($topics as $topic)
+                <x-topic :topic="$topic" />
+            @endforeach
         </div>
     @endif
 

@@ -2,18 +2,12 @@
 export default {
      props: {
         form: Object,
-        yearsOptions: Object,
-        fieldsOptions: Object,
-        subjectsOptions: Object,
     },
-
-    beforeCreate(){
-        this.form.name = 'Julius';
-        console.log(this.form.yearsOptions);
+    data() {
+        return {
+            activeTab: null,
+        }
     },
-    activated (){
-    },
-
     methods: {
          newGroup () {
             this.form.$all.newGroup = '';
@@ -25,41 +19,59 @@ export default {
             console.log(this.form.$all);
         },
         newField () {
-            this.form.$all.newFields.push({ title: '', years: []});
-            console.log(this.form.$all);
+            this.form.$all.newFields.push({ title: '', code: '', years: []});
+            this.activeTab = 'fields';
         },
-        removeField (index) {
-            this.form.$all.newFields.splice(index, 1);
-            console.log(this.form.$all);
+        removeField (index = null) {
+            if(isNaN(index)){
+                this.form.$all.newFields = [];
+            }else{
+                this.form.$all.newFields.splice(index, 1);
+            }
+            this.resetActiveTab();
         },
          newSubject () {
-            this.form.$all.newSubject.push({ title: '', abbreviation: '', years: [] });
+            this.form.$all.newSubject = { title: 'New', abbreviation: '', years: [] };
+            this.form.$all.subject = null;
+            this.activeTab = 'subject';
         },
         removeNewSubject () {
-            this.form.$all.newSubject.splice(0, 1);
+            this.form.$all.newSubject = null;
+            this.resetActiveTab();
         },
-        yearLabel (yearId) {
-            for (const yearIndex in this.yearsOptions) {
-                if (this.yearsOptions[yearIndex].id == yearId) {
-                    return this.yearsOptions[yearIndex].label;
-                }
+        newSkill () {
+            this.form.$all.newSkills.push({ title: '', group: '', newGroup: '', years: [], fields: [] });
+            this.activeTab = 'skills';
+        },
+        removeSkill (index = null) {
+            if (isNaN(index)) {
+                this.form.$all.newSkills = [];
+            } else {
+                this.form.$all.newSkills.splice(index, 1);
             }
-            console.log(this.form.$all);
+            this.resetActiveTab();
+
+        },
+        resetActiveTab(){
+            if (this.form.$all.newSkills.length == 0 && this.form.$all.newFields.length == 0 && this.form.$all.newSubject == null){
+                this.activeTab = null;
+            }
+        },
+        setActiveTab(tab){
+            this.activeTab = tab;
         },
     },
     render () {
         return this.$slots.default({
             form: this.form,
-            newGroup: this.newGroup,
             newSubject: this.newSubject,
-            removeNewGroup: this.removeNewGroup,
+            removeNewSubject: this.removeNewSubject,
             newField: this.newField,
             removeField: this.removeField,
-            removeNewSubject: this.removeNewSubject,
-            yearLabel: this.yearLabel,
-            yearsOptions: this.yearsOptions,
-            fieldsOptions: this.fieldsOptions,
-            subjectsOptions: this.subjectsOptions,
+            newSkill: this.newSkill,
+            removeSkill: this.removeSkill,
+            activeTab: this.activeTab,
+            setActiveTab: this.setActiveTab,
         });
     },
 };
