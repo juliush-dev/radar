@@ -61,10 +61,10 @@ class TopicController extends Controller
         DB::transaction(function () use ($request) {
 
             $title = $request->input('title');
-            $years = $request->input('years');
+            $years = $request->input('years', []);
             $subject = $request->input('subject');
-            $fields = $request->input('fields');
-            $skills = $request->input('skills');
+            $fields = $request->input('fields', []);
+            $skills = $request->input('skills', []);
 
             $newSubject = $request->input('newSubject');
             $newFields = $request->input('newFields');
@@ -118,6 +118,9 @@ class TopicController extends Controller
                         $field = new Field;
                         $field->title = $newField['title'];
                         $field->save();
+                        if (!is_array($fields)) {
+                            $fields = [];
+                        }
                         array_push($fields, $field->id);
                         $years = $newField['years'];
                         if (is_array($years) && count($years) > 0) {
@@ -148,16 +151,16 @@ class TopicController extends Controller
                     foreach ($newSkills as $newSkill) {
                         $skill = new Skill;
                         $skill->title = $newSkill['title'];
-                        if ($newSkill['group']) {
+                        if (isset($newSkill['group'])) {
                             $skill->group_id = $newSkill['group'];
-                        } elseif ($newSkill['newGroup']) {
+                        } elseif (isset($newSkill['newGroup'])) {
                             $group = new Group;
                             $group->title = $newSkill['newGroup'];
                             $group->save();
                             $skill->group_id = $group->id;
                         }
                         $skill->save();
-                        $skillFields = $newSkill['fields'];
+                        $skillFields = $newSkill['fields'] ?? [];
                         if (is_array($skillFields) && count($skillFields) > 0) {
                             array_push($fields, ...$skillFields);
                         }

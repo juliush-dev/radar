@@ -15,7 +15,7 @@
             @endif
         </div>
     @else
-        <div class="columns-sm space-y-6 mx-auto gap-6 p-6">
+        <div class="mx-auto grid grid-cols-4 gap-6 p-6">
             @foreach ($topics as $topic)
                 <x-topic :topic="$topic" />
             @endforeach
