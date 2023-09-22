@@ -19,7 +19,8 @@ class NavigationLink extends Component
         public string $icon = '',
         public string $openAs = '',
         public string $type = '',
-        public bool $post = false
+        public bool $post = false,
+        public bool $dropdown = true
     ) {
         //
     }

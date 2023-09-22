@@ -23,7 +23,7 @@
             <x-authentication />
         </div>
     </section>
-    <div class="w-full h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 relative">
+    <div @preserveScroll('mainView') class="w-full h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 relative">
         {{ $slot }}
     </div>
 </div>

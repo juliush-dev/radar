@@ -15,7 +15,8 @@
             @endif
         </div>
     @else
-        <div class="mx-auto grid grid-cols-4 gap-6 p-6">
+        <div class="topics mx-auto columns-1 md:columns-2 lg:columns-3 break-before-all space-y-8 p-8 gap-8"
+            @preserveScroll('topicsGallery')>
             @foreach ($topics as $topic)
                 <x-topic :topic="$topic" />
             @endforeach

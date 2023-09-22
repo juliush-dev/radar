@@ -33,10 +33,12 @@ Route::middleware('splade')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
-
+    Route::get('/topics/learning-materials/{learningMaterial}/download', [App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'])->name('topics.learning-materials.download');
     Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index']);
-    //App\Http\Controllers\ContributionController
     Route::middleware('auth')->group(function () {
+        Route::post('/topics/{topic}/learning-materials/upload', [App\Http\Controllers\TopicController::class, 'uploadLearningMaterial'])->name('topics.learning-materials.upload');
+        Route::post('/topics/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('topics.learning-materials.remove');
+        Route::post('/topics/{topic}/assess', [App\Http\Controllers\TopicController::class, 'assess'])->name('topics.assess');
         Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
         Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
     });

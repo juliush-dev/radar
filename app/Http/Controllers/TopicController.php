@@ -16,12 +16,14 @@ use App\Models\Topic;
 use App\Models\TopicField;
 use App\Models\TopicSkill;
 use App\Models\TopicYear;
+use App\Models\UserTopicAssessment;
 use App\Services\EnumTransformer;
 use App\Services\QueryResultTransformer;
 use App\Services\RadarQuery;
 use App\Tables\Topics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\Splade\Facades\Toast;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -39,6 +41,31 @@ class TopicController extends Controller
         return view('topic.index', [
             'topics' => $topics->for(),
         ]);
+    }
+    public function downloadLearningMaterial(Request $r, LearningMaterial $learningMaterial)
+    {
+        return Storage::download($learningMaterial->path, $learningMaterial->title);
+    }
+
+    public function removeLearningMaterial(LearningMaterial $learningMaterial)
+    {
+        $learningMaterial->delete();
+        Toast::title('Learning material sucessfuly removed!')->autoDismiss(8);
+        return redirect()->route('topics.index');
+    }
+
+    public function uploadLearningMaterial(Request $request, Topic $topic)
+    {
+        $lms = $request->file('newLearningMaterials');
+        if (is_array($lms) && count($lms) > 0) {
+            foreach ($lms as $lm) {
+                $this->uploadLm($lm, $topic);
+            }
+        } elseif ($lms != null) {
+            $this->uploadLm($lms, $topic);
+        }
+        Toast::title('New learning materials sucessfuly uploaded!')->autoDismiss(8);
+        return redirect()->route('topics.index');
     }
 
     /**
@@ -192,12 +219,16 @@ class TopicController extends Controller
                 }
             }
         });
-        Toast::title('Skill sucessfuly saved!');
+        Toast::title('Skill sucessfuly saved!')->autoDismiss(8);
         return redirect()->route('topics.index');
     }
 
     private function uploadLm($lm, $topic)
     {
+        if (empty($lm) || $lm == "") {
+            Toast::danger('A problem occured during file upload');
+            return;
+        }
         $learningMaterial = new LearningMaterial;
         $learningMaterial->topic_id = $topic->id;
         $learningMaterial->title = $lm->getClientOriginalName();
@@ -219,6 +250,25 @@ class TopicController extends Controller
                 'skill' => $skill,
             ]
         );
+    }
+    public function assess(Request $request, Topic $topic)
+    {
+        DB::transaction(function () use ($request, $topic) {
+            $assessment = new UserTopicAssessment;
+            $assessment->user_id = auth()->user()->id;
+            $assessment->topic_id = $topic->id;
+            $actualAssessment = UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $assessment->topic_id)->first();
+            if ($actualAssessment) {
+                UserTopicAssessment::where('user_id', $assessment->user_id)
+                    ->where('topic_id', $assessment->topic_id)
+                    ->update(['assessment' => $request->input('assessment')]);
+            } else {
+                $assessment->assessment = $request->input('assessment');
+                $assessment->save();
+            }
+        });
+        Toast::title('New assessment saved')->autoDismiss(8);
+        return redirect()->route('topics.index');
     }
 
     /**

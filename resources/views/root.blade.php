@@ -33,19 +33,13 @@
             border-radius: 10px;
 
         }
-
-        body {
-            background-color: #edfffb;
-            background-image: linear-gradient(#f8f8f8 1px, transparent 1px), linear-gradient(to right, #f9faff 1px, #f8fdfc 1px);
-            background-size: 20px 20px;
-        }
     </style>
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
     @spladeHead
 </head>
 
-<body class="font-sans antialiased h-screen flex flex-col">
+<body class="font-sans antialiased h-screen flex flex-col text-teal-950 relative">
     @splade
 </body>
 

@@ -1,8 +1,9 @@
 @php
     $routeName = empty($action) ? $resource : $resource . '.' . $action;
+    $isInlineLink = str_starts_with($routeName, '#');
     $postActions = ['update', 'destroy', 'store', 'reject', 'publish', 'approve', 'hide'];
-    $method = in_array($action, $postActions) || $resource == 'logout' ? 'post' : 'get';
-    $route = isset($actionArgs) ? route($routeName, $actionArgs) : ($route = route($routeName));
+    $method = (in_array($action, $postActions) || $resource == 'logout' ? 'post' : $isInlineLink) ? '' : 'get';
+    $route = isset($actionArgs) ? ($isInlineLink ? $routeName : route($routeName, $actionArgs)) : ($isInlineLink ? $routeName : route($routeName));
     $isActive = $type == 'call-to-action' ? false : request()->routeIs($routeName);
     // || request()->url() == $route || str_starts_with(Route::currentRouteName(), $resource);
 @endphp
@@ -10,7 +11,6 @@
 <x-splade-toggle :data="$isActive">
     <div class="flex flex-col gap-2">
         <div class="flex gap-2 my-auto">
-
             <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$method" :href="$route"
                 :type="$type" {{ $attributes }}>
                 @if (strlen($icon) > 0)
@@ -33,11 +33,15 @@
             @endif
         </div>
         @if (strlen($slot) > 0)
-            <x-splade-transition enter='duration-300' show="toggled">
-                <div class="flex flex-col gap-4 border-l border-teal-500 pl-4 ml-3 pt-4 border-dashed">
-                    {{ $slot }}
-                </div>
-            </x-splade-transition>
-        @endif
+            @if ($dorpdown)
+                <x-splade-transition enter='duration-300' show="toggled">
+                    <div class="flex flex-col gap-4 border-l border-teal-500 pl-4 ml-3 pt-4 border-dashed">
+            @endif
+            {{ $slot }}
+            @if ($dropdown)
+    </div>
+    </x-splade-transition>
+    @endif
+    @endif
     </div>
 </x-splade-toggle>

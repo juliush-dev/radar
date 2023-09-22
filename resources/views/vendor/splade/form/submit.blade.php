@@ -3,7 +3,7 @@
 <div @class($wrapperClass)>
     <button
         {{ $attributes->class([
-                'rounded-sm border-0 bg-teal-500  text-white shadow-sm font-normal py-1 px-4 transition-colors',
+                'rounded-sm w-full border-0 bg-teal-500  text-white shadow-sm font-normal py-1 px-4 transition-colors',
                 'hover:bg-teal-600' => !$customStyling && $primary,
                 'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>
                     !$customStyling && $danger,

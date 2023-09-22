@@ -18,9 +18,9 @@ class Topic extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function assessment(): HasOne
+    public function assessments(): HasMany
     {
-        return $this->hasOne(UserTopicAssessment::class);
+        return $this->hasMany(UserTopicAssessment::class);
     }
 
     public function skill(): BelongsTo

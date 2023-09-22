@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserTopicAssessment extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
+
 
     public function user(): BelongsTo
     {
