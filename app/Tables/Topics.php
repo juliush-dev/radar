@@ -2,7 +2,6 @@
 
 namespace App\Tables;
 
-use App\Models\Skill;
 use App\Models\Topic;
 use App\Services\RadarQuery;
 use Illuminate\Http\Request;

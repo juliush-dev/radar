@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 class RadarQuery
 {
 
+    public function __construct(private EnumTransformer $ent)
+    {
+    }
     public function groups()
     {
         return Group::all();
@@ -26,5 +29,15 @@ class RadarQuery
     public function subjects()
     {
         return Subject::all();
+    }
+
+    public function skills()
+    {
+        return Skill::all();
+    }
+
+    public function years()
+    {
+        return $this->ent->asOptions('App\Enums\Year');
     }
 }

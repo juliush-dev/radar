@@ -1,4 +1,4 @@
-<div class="h-screen flex flex-col items-center text-ellipsis">
+<div class="h-screen flex flex-col gap-8 items-center text-ellipsis">
     <section class="flex gap-6 justify-between p-6 xl:px-20 shadow w-full">
         <div class="flex gap-6 items-center">
             <h1 class="text-2xl text-teal-600 flex gap-2 items.center capitalize flex-nowrap">
@@ -23,7 +23,10 @@
             <x-authentication />
         </div>
     </section>
-    <div @preserveScroll('mainView') class="w-full h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 relative">
+    @if ($contentHeader)
+        {{ $contentHeader }}
+    @endif
+    <div @preserveScroll('mainView')>
         {{ $slot }}
     </div>
 </div>

@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TopicController extends Controller
 {
-    public function __construct(private RadarQuery $cq)
+    public function __construct(private RadarQuery $rq)
     {
     }
     /**
@@ -37,7 +37,16 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = new Topics($this->cq);
+        $topics = new Topics($this->rq);
+        return view('topic.index', [
+            'topics' => $topics->for(),
+            'rq' => $this->rq,
+        ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $topics = new Topics($this->rq);
         return view('topic.index', [
             'topics' => $topics->for(),
         ]);
@@ -71,11 +80,10 @@ class TopicController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(EnumTransformer $ent, QueryResultTransformer $qrt)
+    public function create()
     {
         return view('topic.create', [
-            'ent' => $ent,
-            'qrt' => $qrt
+            'rq' => $this->rq
         ]);
     }
 
@@ -238,19 +246,6 @@ class TopicController extends Controller
         $learningMaterial->path = $lm->store('public');
         $learningMaterial->save();
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Skill $skill)
-    {
-        return view(
-            'skill.show',
-            [
-                'skill' => $skill,
-            ]
-        );
-    }
     public function assess(Request $request, Topic $topic)
     {
         DB::transaction(function () use ($request, $topic) {
@@ -274,14 +269,14 @@ class TopicController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Skill $skill)
+    public function edit(Topic $topic)
     {
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Skill $skill)
+    public function update(Request $request, Topic $topic)
     {
         //
     }
@@ -289,7 +284,7 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Skill $skill)
+    public function destroy(Topic $topic)
     {
         //
     }

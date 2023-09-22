@@ -1,6 +1,8 @@
 <x-layouts.app active-page="Topics gallery"
     icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
-
+    <x-slot:content-header>
+        <x-topics-filter :years="$rq->years()" :subjects="$rq->subjects()" :fields="$rq->fields()" :skills="$rq->skills()" />
+    </x-slot>
     @if ($topics->count() == 0)
         <div class="flex flex-col justify-center items-center w-full h-full">
             <p class="font-mono text-xl mb-4">The gallery looks empty</p>
@@ -15,7 +17,7 @@
             @endif
         </div>
     @else
-        <div class="topics mx-auto columns-1 md:columns-2 lg:columns-3 break-before-all space-y-8 p-8 gap-8"
+        <div class="topics mx-auto columns-1 md:columns-2 lg:columns-3 break-before-all space-y-8 px-8 gap-8"
             @preserveScroll('topicsGallery')>
             @foreach ($topics as $topic)
                 <x-topic :topic="$topic" />
