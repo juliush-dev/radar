@@ -1,5 +1,5 @@
 <div class="w-full px-20 group">
-    <div class="flex gap-0 bg-slate-100 hover:shadow rounded-full">
+    <div class="flex gap-2 bg-slate-100 rounded-full">
         <h1 class="text-slate-500 text-xl p-2 flex gap-2 items-center">
             <span class="bg-slate-50 p-3 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -9,12 +9,19 @@
                 </svg>
             </span>
         </h1>
-        <div class="flex gap-4 p-2 items-center">
+        <div class="flex p-2 items-center w-full">
             {{-- BySubject, ByYears, ByFields, BySkill, ByFirstLetter --}}
-            <x-splade-form :action="route('topics.filter')" submit-on-change class="flex gap-4">
-                <x-splade-select name="subject" :options="$subjects" option-value="id" option-label="title" />
-                <x-splade-select name="year" :options="$years" option-value="id" option-label="title" />
-                <x-splade-select name="skill" :options="$skills" option-value="id" option-label="title" />
+            <x-splade-form method="get" preserve-scroll submit-on-change :default="[
+                'subject' => request()->query('subject'),
+                'year' => request()->query('year'),
+                'skill' => request()->query('skill'),
+            ]" class="flex w-full gap-6">
+                <x-splade-select class="w-48" placeholder="Subject" name="subject" :options="$subjects" option-value="id"
+                    option-label="title" />
+                <x-splade-select class="w-48" placeholder="Year" name="year" :options="$years" option-value="id"
+                    option-label="title" />
+                <x-splade-select class="w-48" placeholder="Skill" name="skill" :options="$skills" option-value="id"
+                    option-label="title" />
                 {{-- <x-splade-select name="skill" :options="$skills" option-value="id" option-label="label" /> --}}
             </x-splade-form>
         </div>

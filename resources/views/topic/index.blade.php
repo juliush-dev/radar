@@ -17,12 +17,14 @@
             @endif
         </div>
     @else
-        <div class="topics mx-auto columns-1 md:columns-2 lg:columns-3 break-before-all space-y-8 px-8 gap-8"
+        {{-- <x-splade-rehydrate on="team-member-added"> --}}
+        <div class="topics mx-auto w-fit columns-1 md:columns-2 lg:columns-3 break-before-all space-y-8 px-8 gap-8"
             @preserveScroll('topicsGallery')>
             @foreach ($topics as $topic)
                 <x-topic :topic="$topic" />
             @endforeach
         </div>
+        {{-- </x-splade-rehydrate> --}}
     @endif
 
 </x-layouts.app>

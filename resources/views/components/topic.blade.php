@@ -121,12 +121,4 @@
                </x-splade-form>
            </section>
        </div>
-       @if (!Auth::check())
-           <x-splade-modal name="login-required" class="w-1/2 mx-auto">
-               <div class="p-8 mx-auto flex flex-col items-center justify-center gap-4">
-                   <h1 class="text-xl font-medium">Login required</h1>
-                   <x-layouts.navigation-link type="call-to-action" resource="login" label="Login and continue" />
-               </div>
-           </x-splade-modal>
-       @endif
    </div>

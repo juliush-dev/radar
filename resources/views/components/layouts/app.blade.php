@@ -23,10 +23,19 @@
             <x-authentication />
         </div>
     </section>
-    @if ($contentHeader)
+    @if (isset($contentHeader))
         {{ $contentHeader }}
     @endif
-    <div @preserveScroll('mainView')>
+    <div @preserveScroll('mainView') class="w-full grow">
         {{ $slot }}
     </div>
+    @if (!Auth::check())
+        <x-splade-modal name="login-required" class="w-1/2 mx-auto" position="center">
+            <div class="p-8 mx-auto flex flex-col items-center justify-center gap-4">
+                <h1 class="text-xl font-medium">Login required</h1>
+                <x-layouts.navigation-link type="call-to-action" resource="login" label="Login and continue" />
+            </div>
+        </x-splade-modal>
+    @endif
+
 </div>

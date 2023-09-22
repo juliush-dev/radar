@@ -34,7 +34,6 @@ Route::middleware('splade')->group(function () {
         return view('welcome');
     })->name('welcome');
     Route::get('/topics/learning-materials/{learningMaterial}/download', [App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'])->name('topics.learning-materials.download');
-    Route::get('/topics/filter', [App\Http\Controllers\TopicController::class, 'filter'])->name('topics.filter');
     Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index']);
     Route::middleware('auth')->group(function () {
         Route::post('/topics/{topic}/learning-materials/upload', [App\Http\Controllers\TopicController::class, 'uploadLearningMaterial'])->name('topics.learning-materials.upload');

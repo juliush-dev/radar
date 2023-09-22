@@ -4,13 +4,12 @@
     @php($fields = $rq->fields())
     @php($subjects = $rq->subjects())
     @php($skills = $rq->skills())
-    <x-splade-form :action="route('topics.store')"
-        class="mx-auto absolute bottom-1 top-0 right-0 left-0 overflow-hidden px-6 lg:px-20" :default="[
-            'newSubject' => null,
-            'newFields' => [],
-            'newSkills' => [],
-            'learningMaterials' => [],
-        ]">
+    <x-splade-form :action="route('topics.store')" class="mx-auto px-6 lg:px-20" :default="[
+        'newSubject' => null,
+        'newFields' => [],
+        'newSkills' => [],
+        'learningMaterials' => [],
+    ]">
         <topic v-slot="topic" :form="form">
             <div class="flex h-full">
                 <section class="relative mx-auto pt-6 w-1/2 h-full flex flex-col">

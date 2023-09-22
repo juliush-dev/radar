@@ -35,20 +35,17 @@ class TopicController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $topics = new Topics($this->rq);
         return view('topic.index', [
-            'topics' => $topics->for(),
+            'topics' => $this->rq->topics(
+                [
+                    'year' => $request->query('year'),
+                    'subject' => $request->query('subject'),
+                    'skill' => $request->query('skill'),
+                ]
+            ),
             'rq' => $this->rq,
-        ]);
-    }
-
-    public function filter(Request $request)
-    {
-        $topics = new Topics($this->rq);
-        return view('topic.index', [
-            'topics' => $topics->for(),
         ]);
     }
     public function downloadLearningMaterial(Request $r, LearningMaterial $learningMaterial)

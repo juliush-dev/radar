@@ -20,7 +20,7 @@
                 <x-nav-link href="{{ route('register') }}" small>
                     Create an account
                 </x-nav-link>
-                <x-splade-submit class="ml-3" :label="__('Log in')" />
+                <x-splade-submit :label="__('Log in')" />
             </div>
         </x-splade-form>
     </x-auth-card>

@@ -39,7 +39,7 @@
     @spladeHead
 </head>
 
-<body class="font-sans antialiased h-screen flex flex-col text-teal-950 relative backdrop-blur-sm">
+<body class="font-sans antialiased h-screen flex flex-col text-teal-800">
     @splade
 </body>
 

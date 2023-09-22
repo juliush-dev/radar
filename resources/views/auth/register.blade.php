@@ -12,7 +12,7 @@
 
             <div class="flex items-center justify-end gap-5">
                 <x-authentication />
-                <x-splade-submit class="ml-4" :label="__('Register')" />
+                <x-splade-submit :label="__('Register')" />
             </div>
         </x-splade-form>
     </x-auth-card>
