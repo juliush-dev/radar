@@ -3,21 +3,21 @@
     <x-auth-card>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" />
-        <div class="font-medium text-xl mb-8 capitalize text-teal-600">Login form</div>
+        <div class="font-medium text-xl mb-8 capitalize text-white text-center">Login form</div>
         <x-splade-form action="{{ route('login') }}" class="space-y-4">
             <!-- Email Address -->
-            <x-splade-input id="email" type="email" name="email" :label="__('Email')" required autofocus />
-            <x-splade-input id="password" type="password" name="password" :label="__('Password')" required
+            <x-splade-input class="text-white" id="email" type="email" name="email" :label="__('Email')" required
+                autofocus />
+            <x-splade-input class="text-white" id="password" type="password" name="password" :label="__('Password')" required
                 autocomplete="current-password" />
-            <x-splade-checkbox id="remember_me" name="remember" :label="__('Remember me')" />
-
+            <x-splade-checkbox class="text-white" id="remember_me" name="remember" :label="__('Remember me')" />
             <div class="flex items-center justify-end gap-5">
                 @if (Route::has('password.request'))
-                    <x-nav-link href="{{ route('password.request') }}" small>
+                    <x-nav-link class="text-white" href="{{ route('password.request') }}" small>
                         Reset password
                     </x-nav-link>
                 @endif
-                <x-nav-link href="{{ route('register') }}" small>
+                <x-nav-link class="text-white" href="{{ route('register') }}" small>
                     Create an account
                 </x-nav-link>
                 <x-splade-submit :label="__('Log in')" />

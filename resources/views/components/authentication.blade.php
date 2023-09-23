@@ -3,17 +3,7 @@
         <div class="flex items-center gap-6">
             @auth
                 <div class="flex gap-4 items-center justify-center">
-                    <div class="flex gap-2 items-center">
-                        <div class="w-12 h-12 rounded-full overflow-hidden shadow-lg  border border-teal-300">
-                            <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80"
-                                alt="Avatar" height="15px" width="auto" class="object-cover w-full h-full">
-                        </div>
-                        <x-nav-link href="{{ route('logout') }}" method="post">
-                            Profile
-                        </x-nav-link>
-                    </div>
-
-                    <x-nav-link href="{{ route('logout') }}" method="post" class="flex items-center gap-2">
+                    <x-nav-link href="{{ route('logout') }}" method="post" class="flex items-center gap-2 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5 my-auto">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -24,17 +14,19 @@
                 </div>
             @else
                 <div class="flex gap-4 items-center justify-center">
-                    <x-nav-link href="{{ route('login') }}" class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 my-auto">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                        </svg>
-                        Login
-                    </x-nav-link>
+                    @if (!Route::is('login') || Route::is('register'))
+                        <x-nav-link href="{{ route('login') }}" class="flex items-center gap-2 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 my-auto">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                            </svg>
+                            Login
+                        </x-nav-link>
+                    @endif
                     @if (!Route::is('register') && Route::has('register'))
-                        <span class="mx-4 my-auto">or</span>
-                        <x-nav-link href="{{ route('register') }}" class="flex items-center gap-2">
+                        <span class="mx-4 my-auto text-white">or</span>
+                        <x-nav-link href="{{ route('register') }}" class="mr-2 flex items-center gap-2 text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 my-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -43,6 +35,14 @@
                             Create an account
                         </x-nav-link>
                     @endif
+                </div>
+            @endauth
+            @auth
+                <div class="flex gap-2 items-center">
+                    <div class="w-8 h-8 -mb-0.5 rounded-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80"
+                            alt="Avatar" height="15px" width="auto" class="object-cover w-full h-full">
+                    </div>
                 </div>
             @endauth
         </div>

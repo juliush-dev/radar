@@ -4,7 +4,7 @@
     @php($fields = $rq->fields())
     @php($subjects = $rq->subjects())
     @php($skills = $rq->skills())
-    <x-splade-form :action="route('topics.store')" class="mx-auto px-6 lg:px-20" :default="[
+    <x-splade-form :action="route('topics.store')" class="mx-auto pb-20 px-6 lg:px-20" :default="[
         'newSubject' => null,
         'newFields' => [],
         'newSkills' => [],

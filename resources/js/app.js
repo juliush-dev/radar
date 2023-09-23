@@ -5,7 +5,6 @@ import Topic from "./Components/Topic.vue";
 
 import { createApp } from "vue/dist/vue.esm-bundler.js";
 import { renderSpladeApp, SpladePlugin } from "@protonemedia/laravel-splade";
-
 const el = document.getElementById("app");
 
 createApp({

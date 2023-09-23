@@ -39,7 +39,7 @@
     @spladeHead
 </head>
 
-<body class="font-sans antialiased h-screen flex flex-col text-teal-800">
+<body class="@preserveScroll('mainView') font-sans antialiased flex flex-col text-teal-800 h-screen w-screen">
     @splade
 </body>
 
