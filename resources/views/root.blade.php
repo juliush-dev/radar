@@ -10,6 +10,10 @@
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <style>
         * {
             --sb-track-color: #f1f5f7;
@@ -33,13 +37,21 @@
             border-radius: 10px;
 
         }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #hero {
+            background-image: url('https://cdn.pixabay.com/photo/2016/09/23/11/05/feather-1689331_1280.png');
+        }
     </style>
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
     @spladeHead
 </head>
 
-<body class="@preserveScroll('mainView') font-sans antialiased flex flex-col text-teal-800 h-screen w-screen">
+<body @preserveScroll('mainView') class="font-sans antialiased h-screen">
     @splade
 </body>
 

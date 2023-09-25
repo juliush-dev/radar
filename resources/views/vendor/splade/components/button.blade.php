@@ -4,9 +4,9 @@
     <template #default="button">
         <{{ $type === 'link' || $type === 'call-to-action-link' ? 'Link' : 'button' }} :disabled="button.spinner"
             {{ $attributes->class([
-                    'p-2 text-sm inline-flex items.center justify.center gap-2 first-letter:capitalize leading-5 transition duration-500 ease-in-out',
+                    'rounded-md p-2 text-sm flex items.center justify.center gap-2 first-letter:capitalize leading-5 transition duration-500 ease-in-out',
                     'hover:bg-teal-200' => !$customStyling && $primary,
-                    'text-white bg-teal-500 p-2 text-sm hover:bg-teal-600 shadow-md hover:shadow-xl' =>
+                    'text-white bg-slate-800 p-2 text-sm hover:bg-slate-600 shadow-md hover:shadow-xl' =>
                         $type === 'call-to-action' || $type == 'call-to-action-link',
                     'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>
                         !$customStyling && $danger,

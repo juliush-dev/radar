@@ -37,15 +37,23 @@ class TopicController extends Controller
      */
     public function index(Request $request)
     {
+        $yearFilerValue = request()->query('year');
+        $subjectFilerValue = request()->query('subject');
+        $skillFilerValue = request()->query('skill');
+        $filterIsSet = array_reduce([$yearFilerValue, $subjectFilerValue, $subjectFilerValue], function ($acc, $value) {
+            $acc |= isset($value);
+            return $acc;
+        }, false);
         return view('topic.index', [
             'topics' => $this->rq->topics(
                 [
-                    'year' => $request->query('year'),
-                    'subject' => $request->query('subject'),
-                    'skill' => $request->query('skill'),
+                    'year' => $yearFilerValue,
+                    'subject' => $subjectFilerValue,
+                    'skill' => $skillFilerValue,
                 ]
             ),
             'rq' => $this->rq,
+            'filterIsSet' => $filterIsSet
         ]);
     }
     public function downloadLearningMaterial(Request $r, LearningMaterial $learningMaterial)
@@ -170,15 +178,6 @@ class TopicController extends Controller
                     }
                 }
 
-                if (is_array($skills) && count($skills) > 0) {
-                    foreach ($skills as $skill) {
-                        $topicSkill = new TopicSkill;
-                        $topicSkill->topic_id = $topic->id;
-                        $topicSkill->skill_id = $skill;
-                        $topicSkill->save();
-                    }
-                }
-
                 if (is_array($newSkills) && count($newSkills) > 0) {
                     foreach ($newSkills as $newSkill) {
                         $skill = new Skill;
@@ -192,6 +191,11 @@ class TopicController extends Controller
                             $skill->group_id = $group->id;
                         }
                         $skill->save();
+                        if (!is_array($skills)) {
+                            $skills = [];
+                        } else {
+                            array_push($skills, $skill->id);
+                        }
                         $skillFields = $newSkill['fields'] ?? [];
                         if (is_array($skillFields) && count($skillFields) > 0) {
                             array_push($fields, ...$skillFields);
@@ -214,6 +218,16 @@ class TopicController extends Controller
                         }
                     }
                 }
+
+                if (is_array($skills) && count($skills) > 0) {
+                    foreach ($skills as $skill) {
+                        $topicSkill = new TopicSkill;
+                        $topicSkill->topic_id = $topic->id;
+                        $topicSkill->skill_id = $skill;
+                        $topicSkill->save();
+                    }
+                }
+
                 $lms = $request->file('documents');
                 if (is_array($lms) && count($lms) > 0) {
                     foreach ($lms as $lm) {
@@ -283,6 +297,8 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
-        //
+        $topic->delete();
+        Toast::title('Topic deleted')->autoDismiss(8);
+        return redirect()->route('topics.index');
     }
 }

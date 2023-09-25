@@ -13,7 +13,7 @@
 
             <div class="flex items-center justify-end gap-5">
                 <x-authentication />
-                <x-splade-submit :label="__('Register')" />
+                <x-splade-submit class="bg-slate-800 hover:bg-slate-600 shadow-md" :label="__('Register')" />
             </div>
         </x-splade-form>
     </x-auth-card>
