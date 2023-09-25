@@ -3,7 +3,7 @@
         <div class="flex items-center gap-6">
             @auth
                 <div class="flex gap-4 items-center justify-center">
-                    <x-nav-link href="{{ route('logout') }}" method="post" class="flex items-center gap-2 text-white">
+                    <x-nav-link href="{{ route('logout') }}" method="post" class="flex items-center gap-2 ">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5 my-auto">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -15,7 +15,7 @@
             @else
                 <div class="flex gap-4 items-center justify-center">
                     @if (!Route::is('login') || Route::is('register'))
-                        <x-nav-link href="{{ route('login') }}" class="flex items-center gap-2 text-white">
+                        <x-nav-link href="{{ route('login') }}" class="flex items-center gap-2 ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 my-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -25,8 +25,8 @@
                         </x-nav-link>
                     @endif
                     @if (!Route::is('register') && Route::has('register'))
-                        <span class="mx-4 my-auto text-white">or</span>
-                        <x-nav-link href="{{ route('register') }}" class="mr-2 flex items-center gap-2 text-white">
+                        <span class="mx-4 my-auto">or</span>
+                        <x-nav-link href="{{ route('register') }}" class="mr-2 flex items-center gap-2 ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 my-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"

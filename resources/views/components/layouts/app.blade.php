@@ -1,19 +1,19 @@
     <div class="flex flex-col w-full h-screen relative">
-        @if (!Auth::check())
-            <x-splade-modal name="login-required" class="absolute w-1/2 mx-auto bg-slate-800/50" position="center">
+        @guest
+            <x-splade-modal name="login-required" class="absolute w-1/2 mx-auto bg-slate-800/80" position="center">
                 <div class="p-8 mx-auto flex flex-col items-center justify-center gap-4">
                     <h1 class="text-xl font-medium text-white">Login required</h1>
-                    <x-layouts.navigation-link class="text-white bg-slate-800" type="call-to-action" resource="login"
-                        label="Login and continue" />
+                    <x-layouts.navigation-link class="text-white bg-cyan-600 hover:bg-cyan-700" type="call-to-action"
+                        resource="login" label="Login and continue" />
                 </div>
             </x-splade-modal>
-        @endif
+        @endguest
         <div class="flex items-center gap-6 justify-between w-full bg-slate-800 text-white">
-            <div class="flex gap-2 items-center p-4">
+            <div class="flex gap-2 items-center p-4 py-2">
                 <span
-                    class="justify-center p-2 bg-white rounded-full text-slate-800 flex items.center capitalize flex-nowrap">
+                    class="justify-center p-1 bg-white rounded-full text-slate-800 flex items.center capitalize flex-nowrap">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
+                        stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="{{ strlen($icon) > 0 ? $icon : 'M12 6v12m6-6H6' }}" />
                     </svg>
@@ -34,9 +34,11 @@
             </div>
         </div>
         @if (isset($contentHeader))
-            {{ $contentHeader }}
+            <div class="bg-slate-700 text-white w-full py-4 min-h-fit">
+                {{ $contentHeader }}
+            </div>
         @endif
-        <div class="grow">
+        <div class="grow overflow-hidden relative">
             {{ $slot }}
         </div>
     </div>

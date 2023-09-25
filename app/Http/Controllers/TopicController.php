@@ -32,14 +32,16 @@ class TopicController extends Controller
     public function __construct(private RadarQuery $rq)
     {
     }
-    /**
-     * Display a listing of the resource.
-     */
+    public function show(Topic $topic)
+    {
+        return view('topic.show', ['topic' => $topic]);
+    }
+
     public function index(Request $request)
     {
-        $yearFilerValue = request()->query('year');
-        $subjectFilerValue = request()->query('subject');
-        $skillFilerValue = request()->query('skill');
+        $yearFilerValue = $request->query('year');
+        $subjectFilerValue = $request->query('subject');
+        $skillFilerValue = $request->query('skill');
         $filterIsSet = array_reduce([$yearFilerValue, $subjectFilerValue, $subjectFilerValue], function ($acc, $value) {
             $acc |= isset($value);
             return $acc;
@@ -61,11 +63,16 @@ class TopicController extends Controller
         return Storage::download($learningMaterial->path, $learningMaterial->title);
     }
 
-    public function removeLearningMaterial(LearningMaterial $learningMaterial)
+    public function removeLearningMaterial(Request $request, LearningMaterial $learningMaterial)
     {
+        $topic = $learningMaterial->topic;
         $learningMaterial->delete();
         Toast::title('Learning material sucessfuly removed!')->autoDismiss(8);
-        return redirect()->route('topics.index');
+        if ($request->query('stay')) {
+            return redirect()->route('topics.show', $topic);
+        } else {
+            return redirect()->route('topics.index');
+        }
     }
 
     public function uploadLearningMaterial(Request $request, Topic $topic)
@@ -79,7 +86,11 @@ class TopicController extends Controller
             $this->uploadLm($lms, $topic);
         }
         Toast::title('New learning materials sucessfuly uploaded!')->autoDismiss(8);
-        return redirect()->route('topics.index');
+        if ($request->query('stay')) {
+            return redirect()->route('topics.show', $topic);
+        } else {
+            return redirect()->route('topics.index');
+        }
     }
 
     /**
@@ -274,7 +285,11 @@ class TopicController extends Controller
             }
         });
         Toast::title('New assessment saved')->autoDismiss(8);
-        return redirect()->route('topics.index');
+        if ($request->query('stay')) {
+            return redirect()->route('topics.show', $topic);
+        } else {
+            return redirect()->route('topics.index');
+        }
     }
 
     /**
@@ -282,6 +297,13 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
+        return view(
+            'topic.edit',
+            [
+                'topic' => $topic,
+                'rq' => $this->rq
+            ]
+        );
     }
 
     /**

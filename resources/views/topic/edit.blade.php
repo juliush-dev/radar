@@ -6,6 +6,11 @@
     @php($skills = $rq->skills())
     <x-splade-form :action="route('topics.store')" class="overflow-auto p-6 absolute top-0 left-0 right-0 bottom-0.5 pb-20"
         :default="[
+            'title' => $topic->title,
+            'years' => $topic->years,
+            'subject' => $topic->subject,
+            'fields' => $topic->fields,
+            'skills' => $topic->skills,
             'newSubject' => null,
             'newFields' => [],
             'newSkills' => [],
@@ -82,15 +87,15 @@
                     <div class="flex justify-between">
                         <x-splade-button type="call-to-action"
                             class="w-fit text-center text-white bg-cyan-500 hover:bg-cyan-600">
-                            Save topic
+                            Save changes
                         </x-splade-button>
                         <Link href="{{ route('topics.index') }}"
                             class=" flex items-center justify-center w-fit px-4 rounded-md text-white bg-pink-500 align-middle">
-                        Cancel creation
+                        Cancel changes
                         </Link>
                     </div>
                 </section>
-                <div v-if="topic.activeTab != null" class="flex flex-col gap-4 w-1/2">
+                <div v-if="topic.activeTab != null" class="flex h-full overflow-hidden flex-col gap-4 w-1/2">
                     <div class="flex gap-0 w-full px-6">
                         <button v-show="form.newSubject != null" class="px-4 py-2 text-slate-500 cursor-pointer"
                             v-bind:class=" topic.activeTab == 'subject' && 'bg-slate-200 text-slate-900' "
@@ -102,15 +107,15 @@
                             v-bind:class=" topic.activeTab == 'skills' && 'bg-slate-200 text-slate-900' "
                             @click.prevent="topic.setActiveTab('skills')">New Skills (@{{ form.newSkills.length }})</button>
                     </div>
-                    <div class="flex flex-col w-full ">
+                    <div class="flex flex-col w-full h-full">
                         <section v-show="topic.activeTab == 'subject'"
-                            class="relative px-6 pb-2 w-full   flex flex-col">
-                            <div class="flex flex-col gap-6 pb-4">
+                            class="relative px-6 pb-2 w-full h-full  flex flex-col">
+                            <div class="h-full overflow-y-auto flex flex-col gap-6 pb-4">
                                 <div v-if="form.newSubject != null" class="flex flex-col gap-6 ">
                                     <x-splade-input v-model="form.newSubject.title" label="title" />
                                     <x-splade-input v-model="form.newSubject.abbreviation" label="Abbreviation" />
                                     <x-splade-select v-model="form.newSubject.years" :options="$years"
-                                        option-value="id" option-label="title" label="Years" multiple />
+                                        option-value="id" option-label="title" label="Years" />
                                 </div>
                                 <x-splade-button v-if="form.newSubject != null" type="call-to-action"
                                     @click.prevent="topic.removeNewSubject"
@@ -120,13 +125,13 @@
                             </div>
                         </section>
                         <section v-show="topic.activeTab == 'fields'"
-                            class="relative px-6 pb-20 w-full   flex flex-col">
+                            class="relative px-6 pb-20 w-full h-full  flex flex-col">
                             <x-splade-button v-if="form.newFields.length > 0" type="call-to-action"
                                 @click.prevent="topic.removeField"
                                 class="w-fit mb-4 bg-pink-500 hover:bg-pink-600 text-white">
                                 Remove all new fields
                             </x-splade-button>
-                            <div class="relative  overflow-y-auto flex flex-col gap-6 pb-2 pr-6">
+                            <div class="relative h-full overflow-y-auto flex flex-col gap-6 pb-2 pr-6">
                                 <div v-for="(field, index) in form.newFields" class="flex flex-col gap-6"
                                     v-bind:key="index">
                                     <x-splade-input v-model="field.title" label="title" />
@@ -141,13 +146,13 @@
                             </div>
                         </section>
                         <section v-show="topic.activeTab == 'skills'"
-                            class="relative px-6 pb-20 w-full  flex flex-col">
+                            class="relative px-6 pb-20 w-full h-full flex flex-col">
                             <x-splade-button v-if="form.newSkills.length > 0" type="call-to-action"
                                 @click.prevent="topic.removeSkill"
                                 class="w-fit mb-4 bg-pink-500 hover:bg-pink-600 text-white">
                                 Remove all new skills
                             </x-splade-button>
-                            <div class="flex flex-col gap-6 pb-4 pr-6">
+                            <div class="h-full overflow-y-auto flex flex-col gap-6 pb-4 pr-6">
                                 <div v-for="(skill, index) in form.newSkills" class="flex flex-col gap-6"
                                     v-bind:key="index">
                                     <x-splade-textarea v-model="skill.title" label="title" />

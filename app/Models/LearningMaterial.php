@@ -20,6 +20,6 @@ class LearningMaterial extends Model
 
     public function topic(): BelongsTo
     {
-        return $this->belongTo(Topic::class);
+        return $this->belongsTo(Topic::class);
     }
 }

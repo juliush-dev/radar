@@ -1,49 +1,36 @@
 <x-splade-toggle data="uploadFormOpened, lmsOpened">
     <div v-bind:class="(uploadFormOpened == true ||lmsOpened == true) && 'border-none'"
-        class="group bg-slate-700 text-white hover:bg-blue-600  w-full break-inside-avoid overflow-hidden flex flex-col relative topic transition-all duration-300">
-        <section class="relative w-full flex gap-6 justify-center">
+        class="drop-shadow-lg group text-slate-50 bg-gradient-to-br from-cyan-500  to-emerald-400 hover:to-emerald-500  w-full break-inside-avoid overflow-hidden flex flex-col relative topic transition-all duration-300">
+        <section class="relative w-full flex gap-6 justify-center text-white">
             <button @click.prevent="toggle('lmsOpened'); uploadFormOpened && toggle('uploadFormOpened');"
-                class="flex items-center justify-center p-2 bg-slate-800 hover:bg-slate-600 rounded-t-none opacity-0 group-hover:opacity-100 transition-all duration-200">
+                class="flex items-center justify-center p-2 bg-blue-500  hover:bg-blue-600 rounded-t-none opacity-5 group-hover:opacity-100 transition-all duration-300">
                 <svg v-show="lmsOpened" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-auto text-white">
+                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-auto ">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span v-show="lmsOpened == false"
-                    class="text-white px-2">{{ $topic->learningMaterials->count() }}</span>
+                <span v-show="lmsOpened == false" class=" px-2">{{ $topic->learningMaterials->count() }}</span>
             </button>
             <button @click.prevent="toggle('uploadFormOpened'); lmsOpened && toggle('lmsOpened')"
-                class="flex items-center justify-center p-2 bg-slate-800 rounded-t-none opacity-0 group-hover:opacity-100 hover:bg-slate-600 transition-all duration-300">
+                class="flex items-center justify-center p-2 bg-blue-500  hover:bg-blue-600 rounded-t-none opacity-5 group-hover:opacity-100 transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-5 h-5 mx-auto text-white">
+                    stroke="currentColor" class="w-5 h-5 mx-auto">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         v-bind:d=" uploadFormOpened ? 'M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z' :'M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5'" />
                 </svg>
             </button>
             @auth
-                <x-splade-form :action="route('login')">
-                    <button type="submit"
-                        class="flex justify-center items-center gap-2 text-white text-sm p-2 bg-slate-800 hover:bg-slate-600 rounded-t-none opacity-0 group-hover:opacity-100 transition-all duration-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                        </svg>
-                    </button>
-                </x-splade-form>
-                <x-splade-form method="delete" :action="route('topics.destroy', $topic)">
-                    <button type="submit"
-                        class="flex justify-center items-center gap-2 text-white text-sm p-2 bg-red-600 hover:bg-red-800 rounded-t-none opacity-0 group-hover:opacity-100 transition-all duration-1000">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                        </svg>
-                    </button>
-                </x-splade-form>
+                <x-layouts.navigation-link
+                    class="text-white bg-blue-500 hover:bg-blue-600 rounded-t-none opacity-5 group-hover:opacity-100 transition-all duration-300 px-2"
+                    resource="topics" action="edit" :action-args="$topic"
+                    icon="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                <x-layouts.navigation-link
+                    class="text-white bg-pink-500 hover:bg-pink-600 rounded-t-none opacity-5 group-hover:opacity-100 transition-all duration-300 px-2"
+                    resource="topics" action="destroy" :action-args="$topic"
+                    icon="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
             @endauth
         </section>
-        <div class="flex flex-col w-full grow justify-center items-center p-6 transition-all duration-500">
+        <div class="flex flex-col w-full grow justify-center items-center p-6 transition-all duration-300">
             <div class="space-y-3 my-auto w-full">
                 <div class="flex gap-2 justify-center">
                     @auth
@@ -56,10 +43,10 @@
                         @endphp
                         @for ($i = 1; $i <= 5; $i++)
                             <x-splade-form :action="route('topics.assess', $topic)" :default="['assessment' => $i]">
-                                <button type="submit">
+                                <button type="submit" class="peer">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor"
-                                        class="w-6 h-6 transition-all duration-300 {{ isset($topicAssessment) && isset($topicAssessment->assessment) && $i <= $topicAssessment->assessment ? 'fill-yellow-400 text-yellow-400 group-hover:fill-yellow-400' : '' }}">
+                                        class="w-6 h-6 transition-all {{ isset($topicAssessment) && isset($topicAssessment->assessment) && $i <= $topicAssessment->assessment ? 'fill-yellow-300 text-yellow-300 group-hover:fill-yellow-300' : 'hover:fill-yellow-300 hover:text-yellow-300' }}">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                                     </svg>
@@ -96,6 +83,10 @@
                         {{ $topic->subject->title }}
                     </p>
                 @endif
+                <hr class="mb-4 border-none">
+                <x-layouts.navigation-link
+                    class="text-sm opacity-5 group-hover:opacity-100 mx-auto underline underline-offset-2 transition-opacity duration-300"
+                    resource="topics" action="show" :action-args="$topic" label="Open detailed view" />
             </div>
         </div>
         <div class="mb-10">

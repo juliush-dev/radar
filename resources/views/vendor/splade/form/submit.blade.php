@@ -4,11 +4,7 @@
     <button
         {{ $attributes->class([
                 'rounded-sm w-full border-0 text-white shadow-sm font-normal py-1 px-4 transition-colors',
-                'hover:bg-teal-600' => !$customStyling && $primary,
-                'bg-red-500 hover:bg-red-700 text-white border-transparent focus:border-red-700 focus:ring-red-200' =>
-                    !$customStyling && $danger,
-                'bg-white hover:bg-teal-100 text-teal-700 border-teal-500 focus:border-teal-500 focus:ring-teal-200' =>
-                    !$customStyling && $secondary,
+                // 'hover:bg-teal-600' => !$customStyling && $primary,
             ])->merge([
                 'type' => $type,
             ])->when($name, fn($attr) => $attr->merge(['name' => $name, 'value' => $value])) }}>

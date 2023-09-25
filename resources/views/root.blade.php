@@ -42,8 +42,18 @@
             font-family: 'Inter', sans-serif;
         }
 
-        #hero {
+        #hero,
+        #auth-card {
             background-image: url('https://cdn.pixabay.com/photo/2016/09/23/11/05/feather-1689331_1280.png');
+            /* background-repeat: ; */
+        }
+
+        #topic {
+            /* background-image: rgba(255, 255, 255, 0.9), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative; */
         }
     </style>
     <!-- Scripts -->

@@ -34,7 +34,6 @@ Route::middleware('splade')->group(function () {
         return view('welcome');
     })->name('welcome');
     Route::get('/topics/learning-materials/{learningMaterial}/download', [App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'])->name('topics.learning-materials.download');
-    Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index']);
     Route::middleware('auth')->group(function () {
         Route::post('/topics/{topic}/learning-materials/upload', [App\Http\Controllers\TopicController::class, 'uploadLearningMaterial'])->name('topics.learning-materials.upload');
         Route::post('/topics/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('topics.learning-materials.remove');
@@ -42,6 +41,6 @@ Route::middleware('splade')->group(function () {
         Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
         Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
     });
-
+    Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index', 'show']);
     require __DIR__ . '/auth.php';
 });
