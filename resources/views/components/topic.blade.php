@@ -75,7 +75,7 @@
                         @endforeach
                     </p>
                 @endif
-                <p class="font-mono break-all p-2 uppercase text-center text-2xl">
+                <p class="font-medium break-all p-2 uppercase text-center text-xl">
                     {{ $topic->title }}
                 </p>
                 @if ($topic->subject)

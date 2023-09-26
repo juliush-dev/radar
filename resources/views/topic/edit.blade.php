@@ -7,10 +7,7 @@
     <x-splade-form :action="route('topics.store')" class="overflow-auto p-6 absolute top-0 left-0 right-0 bottom-0.5 pb-20"
         :default="[
             'title' => $topic->title,
-            'years' => $topic->years,
-            'subject' => $topic->subject,
-            'fields' => $topic->fields,
-            'skills' => $topic->skills,
+            'years' => [['id' => 'first year', 'title' => 'First year']],
             'newSubject' => null,
             'newFields' => [],
             'newSkills' => [],
@@ -19,11 +16,13 @@
         <topic v-slot="topic" :form="form">
             <div class="flex gap-6">
                 <section class="relative mx-auto pt-6 w-1/2 flex flex-col">
-                    <h1 class="text-2xl my-4">New Topic</h1>
+                    <h1 class="text-2xl my-4">Edit Topic</h1>
                     <div class="flex flex-col gap-6 mb-4">
                         <x-splade-textarea name="title" label="Title" />
-                        <x-splade-select name="years" label="Year" :options="$years" option-value="id"
-                            option-label="title" placeholder="Choose one" multiple />
+                        <select v-model="form.years" multiple>
+                            <option v-for="year in @js($years)" value="year.id" v-text="year.title" selected>
+                            </option>
+                        </select>
                         <div class="flex flex-col gap-2">
                             <x-splade-select v-if="form.newSubject == null" name="subject" label="Subject"
                                 :options="$subjects" option-value="id" option-label="title" placeholder="Choose or" />

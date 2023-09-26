@@ -24,20 +24,21 @@
                 <x-topics-filter :years="$rq->years()" :subjects="$rq->subjects()" :fields="$rq->fields()" :skills="$rq->skills()" />
             </div>
         </x-slot>
-        <div id="gallery"
-            class="h-full topics columns-1 sm:columns-2 lg:columns-4 p-6 gap-6 space-y-6 mx-auto overflow-y-auto"
-            @preserveScroll('topicsGallery')>
-            <Link href="{{ Auth::check() ? route('topics.create') : '#login-required' }}"
-                class="drop-shadow-lg h-[300px] bg-slate-100 hover:bg-slate-200 w-full break-inside-avoid border border-t-none flex items-center justify-center border-slate-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            </Link>
-            @foreach ($topics as $topic)
-                <x-topic :topic="$topic" />
-            @endforeach
+        <div class="h-full overflow-y-auto">
+            <div id="gallery" class="topics columns-1 sm:columns-2 lg:columns-4 p-6 gap-6 space-y-6 mx-auto"
+                @preserveScroll('topicsGallery')>
+                <Link href="{{ Auth::check() ? route('topics.create') : '#login-required' }}"
+                    class="drop-shadow-lg h-[300px] bg-slate-100 hover:bg-slate-200 w-full break-inside-avoid border border-t-none flex items-center justify-center border-slate-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                </Link>
+                @foreach ($topics as $topic)
+                    <x-topic :topic="$topic" />
+                @endforeach
 
+            </div>
         </div>
     @endif
 </x-layouts.app>

@@ -12,7 +12,7 @@ class EnumTransformer
                 $acc,
                 [
                     'id' => $item->value,
-                    'label' => ucfirst($item->value),
+                    'title' => ucfirst($item->value),
                 ]
             );
             return $acc;

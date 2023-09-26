@@ -11,7 +11,7 @@
         </div>
     </x-slot>
     <div id="hero" class="w-full h-full flex flex-col py-10 px-80 gap-20 justify-center">
-        <h1 class="text-slate-700 font-extrabold text-6xl tracking-tight text-center">
+        <h1 class="text-slate-700 font-extrabold text-5xl tracking-tight text-center">
             Access all the resources you need to ace your exams. All in one place</h1>
         <div>
             <h2 class="uppercase text-center text-8xl font-extralight text-slate-800 mb-4">radar</h2>
