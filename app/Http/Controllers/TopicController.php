@@ -297,11 +297,16 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
+        // dd($topic->subject->id);
         return view(
             'topic.edit',
             [
                 'topic' => $topic,
-                'rq' => $this->rq
+                'rq' => $this->rq,
+                'options' => [
+                    "be" => "Belgium",
+                    "nl" => "The Netherlands",
+                ]
             ]
         );
     }

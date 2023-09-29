@@ -75,11 +75,11 @@
                         @endforeach
                     </p>
                 @endif
-                <p class="font-medium break-all p-2 uppercase text-center text-xl">
+                <p class="font-medium break-all p-2 uppercase text-center text-md">
                     {{ $topic->title }}
                 </p>
                 @if ($topic->subject)
-                    <p class="ftext-slate-500 uppercase text-center text-sm">
+                    <p class="ftext-slate-500 uppercase text-center text-xs">
                         {{ $topic->subject->title }}
                     </p>
                 @endif

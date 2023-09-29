@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <x-splade-form method="patch" :action="route('profile.update')" :default="$user" class="mt-6 space-y-6" preserve-scroll>
+    <x-splade-form method="patch" :action="route('profile.update', $user)" :default="$user" class="mt-6 space-y-6" preserve-scroll>
         <x-splade-input id="name" name="name" type="text" :label="__('Name')" required autofocus
             autocomplete="name" />
         <x-splade-input id="email" name="email" type="email" :label="__('Email')" required autocomplete="email" />
@@ -34,7 +34,8 @@
         @endif
 
         <div class="flex items-center gap-4">
-            <x-splade-submit :label="__('Save')" />
+            <x-splade-submit class="bg-cyan-400 hover:bg-cyan-500 shadow hover:shadow-md transition duration-300"
+                :label="__('Save')" />
 
             @if (session('status') === 'profile-updated')
                 <p class="text-sm text-teal-600">

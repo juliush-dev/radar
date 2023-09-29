@@ -45,11 +45,11 @@
                     @endforeach
                 </p>
             @endif
-            <p class="font-medium break-all p-2 uppercase text-center text-xl">
+            <p class="font-medium break-all p-2 px-8 uppercase text-center text-md">
                 {{ $topic->title }}
             </p>
             @if ($topic->subject)
-                <p class="ftext-slate-500 uppercase text-center text-sm">
+                <p class="ftext-slate-500 uppercase text-center text-xs">
                     {{ $topic->subject->title }}
                 </p>
             @endif
@@ -64,6 +64,10 @@
                         </svg>
                     </button>
                 </x-splade-form>
+                <x-layouts.navigation-link
+                    class="text-white bg-blue-500 hover:bg-blue-600 h-[38px] w-[38px] rounded-t-none transition-all duration-300 px-2 absolute top-0 right-0"
+                    resource="topics" action="edit" :action-args="$topic"
+                    icon="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
             @endauth
         </main>
         <main class="max-h-full overflow-hidden px-6 flex flex-col w-full">
@@ -79,7 +83,7 @@
                     @foreach ($topic->learningMaterials as $lm)
                         @if (Illuminate\Support\Facades\Storage::disk('public')->exists($lm->alternative))
                             <x-splade-form method="get" :action="route('topics.learning-materials.download', $lm->id)" blob
-                                class="break-inside-avoid group flex flex-col justify-center items-center relative w-[350px] w-full">
+                                class="break-inside-avoid group flex flex-col justify-center items-center relative w-full">
                                 @if (in_array($lm->mime_type, array_column(\App\Enums\ImageMimeType::cases(), 'value')))
                                     <img src="{{ Illuminate\Support\Facades\Storage::url($lm->path) }}" alt=""
                                         srcset="" class="w-full" height="auto">

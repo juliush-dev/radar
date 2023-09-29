@@ -38,12 +38,14 @@
                 </div>
             @endauth
             @auth
-                <div class="flex gap-2 items-center">
-                    <div class="w-8 h-8 -mb-0.5 rounded-full overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80"
-                            alt="Avatar" height="15px" width="auto" class="object-cover w-full h-full">
+                <x-nav-link :href="route('profile.edit', Auth::user())">
+                    <div class="flex gap-2 items-center">
+                        <div class="w-8 h-8 -mb-0.5 rounded-full overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80"
+                                alt="Avatar" height="15px" width="auto" class="object-cover w-full h-full">
+                        </div>
                     </div>
-                </div>
+                </x-nav-link>
             @endauth
         </div>
     @endif

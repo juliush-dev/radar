@@ -5,7 +5,7 @@ export default {
     },
     data() {
         return {
-            activeTab: null,
+            activeTab: 'topic',
         }
     },
     methods: {
@@ -53,8 +53,14 @@ export default {
 
         },
         resetActiveTab(){
-            if (this.form.$all.newSkills.length == 0 && this.form.$all.newFields.length == 0 && this.form.$all.newSubject == null){
-                this.activeTab = null;
+            if(this.form.$all.newSkills.length > 0){
+                this.activeTab = 'skills';
+            }else if(this.form.$all.newFields.length > 0){
+                this.activeTab = 'fields';
+            }else if(this.form.$all.newSubject){
+                this.activeTab = 'subject';
+            }else{
+                this.activeTab = 'topic';
             }
         },
         setActiveTab(tab){
