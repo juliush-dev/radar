@@ -4,9 +4,10 @@
     :remote-root="@js($remoteRoot ?: null)" :option-value="@js($optionValue)" :option-label="@js($optionLabel)"
     :="@js($selectFirstRemoteOption)" :reset-on-new-remote-url="@js($resetOnNewRemoteUrl)">
     <template #default="{!! $scope !!}">
-        <label class="block" v-bind:class="{ 'pointer-events-none': select.loading }">
-            @includeWhen($label, 'splade::form.label', ['label' => $label])
-
+        <div class="mb-4">
+            <label class="block" v-bind:class="{ 'pointer-events-none': select.loading }">
+                @includeWhen($label, 'splade::form.label', ['label' => $label])
+            </label>
             <div class="relative">
                 <div v-bind:class="{ 'opacity-50': select.loading }">
                     <select
@@ -38,8 +39,7 @@
                     </div>
                 </div>
             </div>
-        </label>
-
+        </div>
         @includeWhen($help, 'splade::form.help', ['help' => $help])
         @includeWhen($showErrors, 'splade::form.error', ['name' => $validationKey()])
     </template>

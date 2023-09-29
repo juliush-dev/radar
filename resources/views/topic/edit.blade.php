@@ -1,11 +1,11 @@
-<x-layouts.app active-page="New Topic"
-    icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
+<x-layouts.app active-page="Edit Topic"
+    icon="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
     @php($years = $rq->years())
     @php($fields = $rq->fields())
     @php($subjects = $rq->subjects())
     @php($skills = $rq->skills())
-    <x-splade-form :action="route('topics.store')" class="overflow-hidden p-6 pb-0 absolute top-0 left-0 right-0 bottom-0.5"
-        :default="[
+    <x-splade-form :action="route('topics.update', $topic)" method="patch"
+        class="overflow-hidden p-6 pb-0 absolute top-0 left-0 right-0 bottom-0.5" :default="[
             'title' => $topic->title,
             'years' => $topic->years->pluck('year'),
             'subject' => $topic->subject->id,
@@ -21,7 +21,6 @@
         ]">
         <topic v-slot="topic" :form="form">
             <div class="relative mx-auto w-1/2 flex flex-col h-full overflow-hidden">
-                <h1 class="text-2xl mb-4">Edit Topic</h1>
                 <div class="flex gap-6">
                     <x-layouts.navigation-link class="text-slate-800 mb-4 self-start underline underline-offset-2"
                         resource="topics" action="show" :action-args="$topic" label="Open detailed view" />
@@ -45,12 +44,12 @@
                 </div>
                 <section v-show="topic.activeTab == 'topic'"
                     class="relative py-6 pr-6 overflow-y-auto w-full h-full flex flex-col">
-                    <x-splade-textarea name="title" label="Title" class="mb-6" />
+                    <x-splade-textarea required name="title" label="Title" class="mb-6" />
                     <x-splade-select name="years" label="Years" :options="$years" option-value="id"
                         option-label="title" placeholder="Choose or" class="mb-6" multiple />
                     <div class="flex flex-col gap-4">
-                        <x-splade-select v-if="form.newSubject == null" name="subject" label="Subject" :options="$subjects"
-                            option-value="id" option-label="title" placeholder="Choose or" />
+                        <x-splade-select required v-if="form.newSubject == null" name="subject" label="Subject"
+                            :options="$subjects" option-value="id" option-label="title" placeholder="Choose or" />
                         <x-splade-button v-if="form.newSubject == null" type="call-to-action"
                             @click.prevent="topic.newSubject"
                             class="w-fit ml-auto bg-amber-500 hover:bg-amber-600 text-white">
@@ -113,7 +112,7 @@
                             Save changes
                         </x-splade-button>
                         <Link href="{{ route('topics.index') }}"
-                            class=" flex items-center justify-center w-fit px-4 rounded-md text-white bg-pink-500 align-middle">
+                            class="flex items-center justify-center w-fit px-4 rounded-md text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
                         Cancel changes
                         </Link>
                     </div>

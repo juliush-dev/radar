@@ -17,15 +17,11 @@ use App\Models\TopicField;
 use App\Models\TopicSkill;
 use App\Models\TopicYear;
 use App\Models\UserTopicAssessment;
-use App\Services\EnumTransformer;
-use App\Services\QueryResultTransformer;
 use App\Services\RadarQuery;
-use App\Tables\Topics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\Splade\Facades\Toast;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TopicController extends Controller
 {
@@ -66,8 +62,9 @@ class TopicController extends Controller
     public function removeLearningMaterial(Request $request, LearningMaterial $learningMaterial)
     {
         $topic = $learningMaterial->topic;
+        Storage::delete($learningMaterial->path);
         $learningMaterial->delete();
-        Toast::title('Learning material sucessfuly removed!')->autoDismiss(8);
+        Toast::title('Learning material sucessfuly removed!')->autoDismiss(5);
         if ($request->query('stay')) {
             return redirect()->route('topics.show', $topic);
         } else {
@@ -85,7 +82,7 @@ class TopicController extends Controller
         } elseif ($lms != null) {
             $this->uploadLm($lms, $topic);
         }
-        Toast::title('New learning materials sucessfuly uploaded!')->autoDismiss(8);
+        Toast::title('New learning materials sucessfuly uploaded!')->autoDismiss(5);
         if ($request->query('stay')) {
             return redirect()->route('topics.show', $topic);
         } else {
@@ -127,12 +124,12 @@ class TopicController extends Controller
                 $topic->save();
 
                 if (is_array($years) && count($years) > 0) {
-                    foreach ($years as $year) {
+                    collect($years)->each(function ($year) use ($topic) {
                         $topicYear = new TopicYear;
                         $topicYear->topic_id = $topic->id;
                         $topicYear->year = $year;
                         $topicYear->save();
-                    }
+                    });
                 }
 
                 if ($subject) {
@@ -144,28 +141,30 @@ class TopicController extends Controller
                     $subject->abbreviation = $newSubject['abbreviation'];
                     $subject->save();
                     if (is_array($subject['years']) && count($subject['years']) > 0) {
-                        foreach ($subject['years'] as $year) {
+                        collect($subject['years'])->each(function ($year) use ($subject) {
                             $subjectYear = new SubjectYear;
                             $subjectYear->subject_id = $subject->id;
                             $subjectYear->year = $year;
                             $subjectYear->save();
-                        }
+                        });
                     }
                     $topic->subject_id = $subject->id;
                     $topic->save();
                 }
 
                 if (is_array($fields) && count($fields) > 0) {
-                    foreach ($fields as $field) {
-                        $topicField = new TopicField;
-                        $topicField->topic_id = $topic->id;
-                        $topicField->field_id = $field;
-                        $topicField->save();
-                    }
+                    collect($fields)->each(function ($field) use ($topic) {
+                        if (TopicField::where('topic_id', $topic->id)->where('field_id', $field)->doesntExist()) {
+                            $topicField = new TopicField;
+                            $topicField->topic_id = $topic->id;
+                            $topicField->field_id = $field;
+                            $topicField->save();
+                        }
+                    });
                 }
 
                 if (is_array($newFields) && count($newFields) > 0) {
-                    foreach ($newFields as $newField) {
+                    collect($newFields)->each(function ($newField) use ($topic, $fields) {
                         $field = new Field;
                         $field->title = $newField['title'];
                         $field->save();
@@ -175,18 +174,20 @@ class TopicController extends Controller
                         array_push($fields, $field->id);
                         $years = $newField['years'];
                         if (is_array($years) && count($years) > 0) {
-                            foreach ($years as $year) {
+                            collect($years)->each(function ($year) use ($field) {
                                 $fieldYear = new FieldYear;
                                 $fieldYear->field_id = $field->id;
                                 $fieldYear->year = $year;
                                 $fieldYear->save();
-                            }
+                            });
                         }
-                        $topicField = new TopicField;
-                        $topicField->topic_id = $topic->id;
-                        $topicField->field_id = $field->id;
-                        $topicField->save();
-                    }
+                        if (TopicField::where('topic_id', $topic->id)->where('field_id', $field->id)->doesntExist()) {
+                            $topicField = new TopicField;
+                            $topicField->topic_id = $topic->id;
+                            $topicField->field_id = $field->id;
+                            $topicField->save();
+                        }
+                    });
                 }
 
                 if (is_array($newSkills) && count($newSkills) > 0) {
@@ -204,53 +205,65 @@ class TopicController extends Controller
                         $skill->save();
                         if (!is_array($skills)) {
                             $skills = [];
-                        } else {
-                            array_push($skills, $skill->id);
                         }
+                        array_push($skills, $skill->id);
                         $skillFields = $newSkill['fields'] ?? [];
                         if (is_array($skillFields) && count($skillFields) > 0) {
                             array_push($fields, ...$skillFields);
                         }
                         if (is_array($fields) && count($fields) > 0) {
-                            foreach ($fields as $field) {
-                                $skillField = new SkillField;
-                                $skillField->skill_id = $skill->id;
-                                $skillField->field_id = $field;
-                                $skillField->save();
-                            }
+                            collect($fields)->each(function ($field) use ($skill) {
+                                if (SkillField::where('skill_id', $skill->id)->where('field_id', $field)->doesntExist()) {
+                                    $skillField = new SkillField;
+                                    $skillField->skill_id = $skill->id;
+                                    $skillField->field_id = $field;
+                                    $skillField->save();
+                                }
+                            });
                         }
                         if (is_array($newSkill['years']) && count($newSkill['years']) > 0) {
-                            foreach ($newSkill['years'] as $year) {
+                            collect($newSkill['years'])->each(function ($year) use ($skill) {
                                 $skillYear = new SkillYear;
                                 $skillYear->skill_id = $skill->id;
                                 $skillYear->year = $year;
                                 $skillYear->save();
-                            }
+                            });
                         }
                     }
                 }
 
                 if (is_array($skills) && count($skills) > 0) {
-                    foreach ($skills as $skill) {
-                        $topicSkill = new TopicSkill;
-                        $topicSkill->topic_id = $topic->id;
-                        $topicSkill->skill_id = $skill;
-                        $topicSkill->save();
-                    }
+                    collect($skills)->each(function ($skill) use ($topic) {
+                        if (TopicSkill::where('topic_id', $topic->id)->where('skill_id', $skill)->doesntExist()) {
+                            $topicSkill = new TopicSkill;
+                            $topicSkill->topic_id = $topic->id;
+                            $topicSkill->skill_id = $skill;
+                            $topicSkill->save();
+                        }
+                    });
                 }
 
                 $lms = $request->file('documents');
                 if (is_array($lms) && count($lms) > 0) {
-                    foreach ($lms as $lm) {
+                    collect($lms)->each(function ($lm) use ($topic) {
                         $this->uploadLm($lm, $topic);
-                    }
+                    });
                 } elseif ($lms != null) {
                     $this->uploadLm($lms, $topic);
                 }
             }
         });
-        Toast::title('Skill sucessfuly saved!')->autoDismiss(8);
+        Toast::title('Topic sucessfuly created!')->autoDismiss(5);
         return redirect()->route('topics.index');
+    }
+
+    private function updateLm($lm, $topic)
+    {
+        if (!empty($lm) || $lm != "") {
+            if (LearningMaterial::where('alternative', $lm->getClientOriginalName())->doesntExist()) {
+                $this->uploadLm($lm, $topic);
+            }
+        }
     }
 
     private function uploadLm($lm, $topic)
@@ -284,7 +297,7 @@ class TopicController extends Controller
                 $assessment->save();
             }
         });
-        Toast::title('New assessment saved')->autoDismiss(8);
+        Toast::title('New assessment saved')->autoDismiss(5);
         if ($request->query('stay')) {
             return redirect()->route('topics.show', $topic);
         } else {
@@ -297,7 +310,6 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        // dd($topic->subject->id);
         return view(
             'topic.edit',
             [
@@ -316,7 +328,175 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        //
+        DB::transaction(function () use ($request, $topic) {
+            $title = $request->input('title');
+            $years = $request->input('years', []);
+            $subject = $request->input('subject');
+            $fields = $request->input('fields', []);
+            $skills = $request->input('skills', []);
+
+            $newSubject = $request->input('newSubject');
+            $newFields = $request->input('newFields');
+            $newSkills = $request->input('newSkills');
+
+            if ($title) {
+                if ($topic->title != $title) {
+                    $topic->title = $title;
+                    $topic->save();
+                }
+
+                if (is_array($years) && count($years) > 0) {
+                    $topicYearsDeleted = $topic->years()->pluck('year')->diff($years);
+                    $topicYearsDeleted->each(function ($year) use ($topic) {
+                        TopicYear::where('topic_id', $topic->id)->where('year', $year)->delete();
+                    });
+                    $yearsAdded = collect($years)->diff($topic->years()->pluck('year'));
+                    $yearsAdded->each(function ($year) use ($topic) {
+                        $topicYear = new TopicYear;
+                        $topicYear->topic_id = $topic->id;
+                        $topicYear->year = $year;
+                        $topicYear->save();
+                    });
+                }
+                if ($subject) {
+                    if ($subject != $topic->subject) {
+                        $topic->subject_id = $subject;
+                        $topic->save();
+                    }
+                } elseif ($newSubject) {
+                    $subject = new Subject;
+                    $subject->title = $newSubject['title'];
+                    $subject->abbreviation = $newSubject['abbreviation'];
+                    $subject->save();
+                    if (is_array($subject['years']) && count($subject['years']) > 0) {
+                        collect($subject['years'])->each(function ($year) use ($subject) {
+                            $subjectYear = new SubjectYear;
+                            $subjectYear->subject_id = $subject->id;
+                            $subjectYear->year = $year;
+                            $subjectYear->save();
+                        });
+                    }
+                    $topic->subject_id = $subject->id;
+                    $topic->save();
+                }
+
+                if (is_array($fields) && count($fields) > 0) {
+                    $topicFieldsDeleted = $topic->fields()->pluck('field_id')->diff($fields);
+                    $topicFieldsDeleted->each(function ($field_id) use ($topic) {
+                        TopicField::where('topic_id', $topic->id)->where('field_id', $field_id)->delete();
+                    });
+                    $fieldsAdded = collect($fields)->diff($topic->fields()->pluck('field_id'));
+                    $fieldsAdded->each(function ($field) use ($topic) {
+                        if (TopicField::where('topic_id', $topic->id)->where('field_id', $field)->doesntExist()) {
+                            $topicField = new TopicField;
+                            $topicField->topic_id = $topic->id;
+                            $topicField->field_id = $field;
+                            $topicField->save();
+                        }
+                    });
+                } else {
+                    TopicField::where('topic_id', $topic->id)->delete();
+                }
+
+                if (is_array($newFields) && count($newFields) > 0) {
+                    foreach ($newFields as $newField) {
+                        $field = new Field;
+                        $field->title = $newField['title'];
+                        $field->save();
+                        if (!is_array($fields)) {
+                            $fields = [];
+                        }
+                        array_push($fields, $field->id);
+                        $years = $newField['years'];
+                        if (is_array($years) && count($years) > 0) {
+                            collect($years)->each(function ($year) use ($field) {
+                                $fieldYear = new FieldYear;
+                                $fieldYear->field_id = $field->id;
+                                $fieldYear->year = $year;
+                                $fieldYear->save();
+                            });
+                        }
+                        if (TopicField::where('topic_id', $topic->id)->where('field_id', $field->id)->doesntExist()) {
+                            $topicField = new TopicField;
+                            $topicField->topic_id = $topic->id;
+                            $topicField->field_id = $field->id;
+                            $topicField->save();
+                        }
+                    }
+                }
+
+                if (is_array($newSkills) && count($newSkills) > 0) {
+                    foreach ($newSkills as $newSkill) {
+                        $skill = new Skill;
+                        $skill->title = $newSkill['title'];
+                        if (isset($newSkill['group'])) {
+                            $skill->group_id = $newSkill['group'];
+                        } elseif (isset($newSkill['newGroup'])) {
+                            $group = new Group;
+                            $group->title = $newSkill['newGroup'];
+                            $group->save();
+                            $skill->group_id = $group->id;
+                        }
+                        $skill->save();
+                        if (!is_array($skills)) {
+                            $skills = [];
+                        }
+                        array_push($skills, $skill->id);
+                        $skillFields = $newSkill['fields'] ?? [];
+                        if (is_array($skillFields) && count($skillFields) > 0) {
+                            array_push($fields, ...$skillFields);
+                        }
+                        if (is_array($fields) && count($fields) > 0) {
+                            collect($fields)->each(function ($field) use ($skill) {
+                                if (SkillField::where('skill_id', $skill->id)->where('field_id', $field)->doesntExist()) {
+                                    $skillField = new SkillField;
+                                    $skillField->skill_id = $skill->id;
+                                    $skillField->field_id = $field;
+                                    $skillField->save();
+                                }
+                            });
+                        }
+                        if (is_array($newSkill['years']) && count($newSkill['years']) > 0) {
+                            collect($newSkill['years'])->each(function ($year) use ($skill) {
+                                $skillYear = new SkillYear;
+                                $skillYear->skill_id = $skill->id;
+                                $skillYear->year = $year;
+                                $skillYear->save();
+                            });
+                        }
+                    }
+                }
+
+                if (is_array($skills) && count($skills) > 0) {
+                    $topicSkillsDeleted = $topic->skills()->pluck('skill_id')->diff($skills);
+                    $topicSkillsDeleted->each(function ($skill_id) use ($topic) {
+                        TopicSkill::where('topic_id', $topic->id)->where('skill_id', $skill_id)->delete();
+                    });
+                    $skillsAdded = collect($skills)->diff($topic->skills()->pluck('skill_id'));
+                    $skillsAdded->each(function ($skill) use ($topic) {
+                        if (TopicSkill::where('topic_id', $topic->id)->where('skill_id', $skill)->doesntExist()) {
+                            $topicSkill = new TopicSkill;
+                            $topicSkill->topic_id = $topic->id;
+                            $topicSkill->skill_id = $skill;
+                            $topicSkill->save();
+                        }
+                    });
+                } else {
+                    TopicSkill::where('topic_id', $topic->id)->delete();
+                }
+
+                $lms = $request->file('documents');
+                if (is_array($lms) && count($lms) > 0) {
+                    foreach ($lms as $lm) {
+                        $this->updateLm($lm, $topic);
+                    }
+                } elseif ($lms != null) {
+                    $this->updateLm($lms, $topic);
+                }
+            }
+        });
+        Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
+        return redirect()->route('topics.index');
     }
 
     /**
@@ -324,8 +504,11 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
+        $topic->learningMaterials->each(function ($lm) {
+            Storage::delete($lm->path);
+        });
         $topic->delete();
-        Toast::title('Topic deleted')->autoDismiss(8);
+        Toast::title('Topic deleted')->autoDismiss(5);
         return redirect()->route('topics.index');
     }
 }
