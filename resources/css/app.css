@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@100;300;400;500&display=swap");
+
 * {
     --sb-track-color: #f1f5f7;
     --sb-thumb-color: rgba(255, 0, 255, 0.8);
@@ -23,13 +25,15 @@
     background: var(--sb-thumb-color);
     border-radius: 10px;
 }
-
-#hero {
-    /* background-image: url('https://cdn.pixabay.com/photo/2016/09/23/11/05/feather-1689331_1280.png'); */
-    /* background-repeat: ; */
+body {
+    font-family: "Montserrat", sans-serif;
 }
 
+p,
+span {
+    font-family: "Roboto", sans-serif;
+}
 .jodit-container {
-    border-radius: 0px !important;
-    border-color: rgba(255, 0, 255, 0.3) !important;
+    border-radius: 0px;
+    border-color: rgba(255, 0, 255, 0.3);
 }

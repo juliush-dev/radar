@@ -1,9 +1,9 @@
 <x-layouts.app :active-page="$skill->title" icon="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z">
-    <main class="h-full overflow-y-auto text-white py-6 px-80">
-        <h1 class="first-letter:uppercase text-xl mb-4 text-slate-300">
+    <main class="h-full overflow-y-auto dark:text-white text-slate-600 p-6 lg:px-80">
+        <h1 class="first-letter:uppercase text-xl mb-4 dark:text-slate-100">
             {{ $skill->title }}
         </h1>
-        <div class="text-sm flex items-center mb-4 gap-2">
+        <div class="text-sm flex items-center mb-4 gap-2 flex-wrap lg:flex-nowrap">
             @if ($skill->years->count() > 0)
                 <p class="font-light">
                     @foreach ($skill->years as $year)
@@ -17,14 +17,14 @@
         </div>
         <hr class="mb-8">
         @if ($skill->group)
-            <h2 class="text-2xl mb-4 text-slate-300">
+            <h2 class="text-2xl mb-4 dark:text-slate-100">
                 Group
             </h2>
             <p class="mb-8 text-lg">
                 {{ $skill->group->title }}
             </p>
         @endif
-        <h2 class="text-2xl mb-4 text-slate-300">
+        <h2 class="text-2xl mb-4 dark:text-slate-100">
             Fields
         </h2>
         <div class="mb-10 columns-1 space-y-6 w-full">

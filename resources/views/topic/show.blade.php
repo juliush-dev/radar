@@ -1,11 +1,11 @@
 <x-layouts.app :active-page="$topic->title"
     icon="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
-    <main class="h-full overflow-y-auto text-white py-6 px-80">
-        <h1 class="first-letter:uppercase text-xl mb-4 text-slate-300">
+    <main class="h-full overflow-y-auto dark:text-white text-slate-800 p-6 lg:px-80">
+        <h1 class="first-letter:uppercase text-xl mb-4 dark:text-slate-400">
             {{ $topic->title }}
         </h1>
-        <div class="text-sm flex items-center mb-4 gap-2">
-            <Link modal href="{{ route('subjects.edit', $topic->subject) }}" class="text-teal-300">
+        <div class="text-sm flex items-center mb-4 gap-2 flex-wrap lg:flex-nowrap">
+            <Link modal href="{{ route('subjects.edit', $topic->subject) }}" class="dark:text-teal-300 text-teal-500">
             {{ $topic->subject->title }}
             </Link>/
             @if ($topic->years->count() > 0)
@@ -57,7 +57,7 @@
         <h2 class="text-2xl mb-4">
             {{ $topic->learningMaterials->count() }} Learning materials
         </h2>
-        <div class="columns-3 space-y-3 w-full mb-8">
+        <div class="columns-1 lg:columns-3 space-y-4 gap-4 w-full mb-8">
             @foreach ($topic->learningMaterials as $lm)
                 @if (Illuminate\Support\Facades\Storage::disk('public')->exists($lm->alternative))
                     <x-splade-form method="get" :action="route('topics.learning-materials.download', $lm->id)" blob
@@ -67,7 +67,7 @@
                                 srcset="" class="w-full" height="auto">
                         @endif
                         <button type="submit"
-                            class="flex gap-2 justify-center text-white text-sm bg-fuchsia-500 hover:bg-fuchsia-500/60 transition-all duration-200 py-1 w-full px-2">
+                            class="flex gap-2 justify-center text-white text-sm bg-stone-500 hover:bg-stone-500/60 dark:bg-indigo-500 dark:hover:bg-indigo-500/60 transition-all duration-200 py-1 w-full px-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6 my-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"

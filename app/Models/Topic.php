@@ -18,6 +18,11 @@ class Topic extends Model
         return $this->belongsTo(Subject::class);
     }
 
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function assessments(): HasMany
     {
         return $this->hasMany(UserTopicAssessment::class);

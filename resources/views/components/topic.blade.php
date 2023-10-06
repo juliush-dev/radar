@@ -1,25 +1,24 @@
 <div
-    class="group break-inside-avoid w-full text-white shadow-sm shadow-fuchsia-400/50 hover:shadow-md hover:shadow-fuchsia-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
+    class="group break-inside-avoid w-full border border-violet-300 text-white shadow shadow-violet-400/80 dark:shadow-violet-400/50 hover:shadow-md hover:shadow-violet-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
     <Link href="{{ route('topics.show', $topic) }}"
-        class="text-lg first-letter:uppercase w-full text-fuchsia-300 group-hover:text-fuchsia-400 transition-colors duration-300">
+        class="text-lg first-letter:uppercase w-full text-violet-500 group-hover:text-violet-700 dark:text-violet-300 dark:group-hover:text-violet-400 transition-colors duration-300">
     <h1 class="mb-2">{{ $topic->title }}</h1>
     </Link>
-    <p class="font-normal text-sm mb-2">
-        <Link modal href="{{ route('subjects.edit', $topic->subject) }}" class="text-teal-300">
+    <p class="font-normal text-sm mb-2 text-slate-500 dark:text-slate-300">
+        <Link modal href="{{ route('subjects.edit', $topic->subject) }}" class="dark:text-teal-300 text-teal-500">
         {{ $topic->subject->title }}
         </Link>/
-        @if ($topic->years->count() > 0)
-            @foreach ($topic->years as $year)
-                <span class="first-letter:capitalize text-slate-300">{{ $year->year }}</span>
-                @if (!$loop->last)
-                    <span class="mx-1">-</span>
-                @endif
-            @endforeach
-        @endif
+        @foreach ($topic->years as $year)
+            <span
+                class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
+            @if (!$loop->last)
+                <span class="mx-1">-</span>
+            @endif
+        @endforeach
         <span class="mx-1">/</span>
-        <span class="text-slate-300">{{ $topic->learningMaterials->count() }} Lms</span>
+        <span class="dark:text-slate-300 text-slate-500">{{ $topic->learningMaterials->count() }} Lms</span>
     </p>
-    <div class="flex gap-2 text-white mb-4 text-sm">
+    <div class="flex gap-2 dark:text-white text-slate-500 mb-4 text-sm">
         @auth
             @php
                 $topicAssessment = $topic

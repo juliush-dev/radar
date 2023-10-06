@@ -93,7 +93,7 @@ class FieldController extends Controller
     public function store(Request $request)
     {
         $field = null;
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, &$field) {
             $field = new Field;
             $field->title = $request->input('title');
             $field->code = $request->input('code');

@@ -1,8 +1,7 @@
 <x-layouts.app active-page="Skills" icon="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z">
-    <div class="h-full overflow-hidden">
+    <div class="h-full overflow-y-auto">
         <x-skills-filter :years="$rq->years()" :groups="$rq->groups()" :fields="$rq->fields()" />
-        <div
-            class="space-y-6 lg:space-y-0 columns-1 lg:columns-3 w-full gap-0 mb-4 px-6 md:px-20 lg:px-32  mt-4 xl:mt-0">
+        <div class="space-y-4 columns-1 lg:columns-3 w-full mb-4 gap-4 px-6 lg:px-10">
             @foreach ($skills as $skill)
                 <x-skill :loop="$loop" :skill="$skill" />
             @endforeach
@@ -10,7 +9,7 @@
                 <p class="text-xl text-white">No skill matches the filter</p>
             @endif
         </div>
-        <div class="px-6 md:px-20 lg:px-32 ">
+        <div class="px-6 lg:px-10">
             <Link href="{{ Auth::check() ? route('skills.create') : '#login-required' }}"
                 class="text-sky-400 hover:text-sky-500">
             Add new skill

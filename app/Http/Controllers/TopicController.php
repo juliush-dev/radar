@@ -104,7 +104,7 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         $topic = null;
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, &$topic) {
 
             $title = $request->input('title');
             $years = $request->input('years', []);
@@ -116,6 +116,7 @@ class TopicController extends Controller
             if ($title) {
                 $topic = new Topic;
                 $topic->title = $title;
+                $topic->user_id = $request->user()->id;
                 $topic->save();
 
                 if (is_array($years) && count($years) > 0) {

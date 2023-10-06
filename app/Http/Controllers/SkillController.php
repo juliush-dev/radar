@@ -59,7 +59,7 @@ class SkillController extends Controller
     public function store(Request $request)
     {
         $skill = null;
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, &$skill) {
             $title = $request->input('title');
             $group = $request->input('group');
             $newGroup = $request->input('newGroup');
