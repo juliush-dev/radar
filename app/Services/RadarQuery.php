@@ -33,12 +33,6 @@ class RadarQuery
                 $filterConsidered = true;
                 $topics->where('subject_id', $filter['subject']);
             }
-            if (isset($filter['skill'])) {
-                $filterConsidered = true;
-                $topics->whereHas('skills', function (Builder $query) use ($filter) {
-                    $query->where('skill_id', $filter['skill']);
-                });
-            }
         }
         if ($filterConsidered) {
             $topics = $topics->get();
@@ -54,9 +48,28 @@ class RadarQuery
     }
 
 
-    public function fields()
+    public function fields($filter = [])
     {
-        return Field::all();
+        $fields = Field::query();
+        $filterConsidered = false;
+        if (count($filter) > 0) {
+            if (isset($filter['year'])) {
+                $filterConsidered = true;
+                $fields->whereHas('years', function (Builder $query) use ($filter) {
+                    $query->where('year', $filter['year']);
+                });
+            }
+            if (isset($filter['ids'])) {
+                $filterConsidered = true;
+                $fields->whereIn('id', $filter['ids']);
+            }
+        }
+        if ($filterConsidered) {
+            $fields = $fields->get();
+        } else {
+            $fields = Field::all();
+        }
+        return $fields;
     }
 
     public function subjects()
@@ -64,9 +77,34 @@ class RadarQuery
         return Subject::all();
     }
 
-    public function skills()
+    public function skills($filter = [])
     {
-        return Skill::all();
+        $skills = Skill::query();
+        $filterConsidered = false;
+        if (count($filter) > 0) {
+            if (isset($filter['year'])) {
+                $filterConsidered = true;
+                $skills->whereHas('years', function (Builder $query) use ($filter) {
+                    $query->where('year', $filter['year']);
+                });
+            }
+            if (isset($filter['group'])) {
+                $filterConsidered = true;
+                $skills->where('group_id', $filter['group']);
+            }
+            if (isset($filter['field'])) {
+                $filterConsidered = true;
+                $skills->whereHas('fields', function (Builder $query) use ($filter) {
+                    $query->where('field_id', $filter['field']);
+                });
+            }
+        }
+        if ($filterConsidered) {
+            $skills = $skills->get();
+        } else {
+            $skills = Skill::all();
+        }
+        return $skills;
     }
 
     public function years()

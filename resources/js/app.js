@@ -1,7 +1,11 @@
 import "./bootstrap";
 import "../css/app.css";
 import "@protonemedia/laravel-splade/dist/style.css";
+import "@protonemedia/laravel-splade/dist/style.css";
+import "../css/choices.scss";
 import Topic from "./Components/Topic.vue";
+import Skill from "./Components/Skill.vue";
+import "@protonemedia/laravel-splade/dist/jodit.css";
 
 import { createApp } from "vue/dist/vue.esm-bundler.js";
 import { renderSpladeApp, SpladePlugin } from "@protonemedia/laravel-splade";
@@ -16,6 +20,7 @@ createApp({
         progress_bar: true,
         components: {
             Topic,
+            Skill,
         },
     })
     .mount(el);

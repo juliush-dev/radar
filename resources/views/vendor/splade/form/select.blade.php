@@ -4,14 +4,14 @@
     :remote-root="@js($remoteRoot ?: null)" :option-value="@js($optionValue)" :option-label="@js($optionLabel)"
     :="@js($selectFirstRemoteOption)" :reset-on-new-remote-url="@js($resetOnNewRemoteUrl)">
     <template #default="{!! $scope !!}">
-        <div class="mb-4">
+        <div>
             <label class="block" v-bind:class="{ 'pointer-events-none': select.loading }">
                 @includeWhen($label, 'splade::form.label', ['label' => $label])
             </label>
             <div class="relative">
                 <div v-bind:class="{ 'opacity-50': select.loading }">
                     <select
-                        {{ $attributes->except(['v-if', 'v-show', 'class'])->class(['bg-slate-100 block w-full rounded-md disabled:opacity-50'])->merge([
+                        {{ $attributes->except(['v-if', 'v-show', 'class'])->class(['bg-slate-100 block w-full rounded-none disabled:opacity-50'])->merge([
                                 'multiple' => $multiple,
                                 'name' => $name,
                                 'v-model' => $choicesOptions() ? null : $vueModel(),

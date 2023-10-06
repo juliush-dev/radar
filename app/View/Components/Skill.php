@@ -13,8 +13,7 @@ class Skill extends Component
      */
     public function __construct(
         public \App\Models\Skill $skill,
-        public bool $expanded = false,
-        public $focusedTopic = null,
+        public $loop = null
     ) {
         //
     }

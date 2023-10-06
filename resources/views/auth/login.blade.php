@@ -3,7 +3,7 @@
     <x-auth-card>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" />
-        <div class="font-medium text-xl mb-8 capitalize text-center">Login form</div>
+        <div class="font-medium text-xl capitalize">Login form</div>
         <x-splade-form action="{{ route('login') }}" class="space-y-4">
             <!-- Email Address -->
             <x-splade-input id="email" type="email" name="email" :label="__('Email')" required autofocus />
@@ -11,6 +11,7 @@
                 autocomplete="current-password" />
             <x-splade-checkbox id="remember_me" name="remember" :label="__('Remember me')" />
             <div class="flex items-center justify-end gap-5">
+                <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="__('Log in')" />
                 @if (Route::has('password.request'))
                     <x-nav-link href="{{ route('password.request') }}" small>
                         Reset password
@@ -19,7 +20,6 @@
                 <x-nav-link href="{{ route('register') }}" small>
                     Create an account
                 </x-nav-link>
-                <x-splade-submit class="bg-cyan-500 hover:bg-cyan-600 shadow-md" :label="__('Log in')" />
             </div>
         </x-splade-form>
     </x-auth-card>

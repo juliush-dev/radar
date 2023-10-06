@@ -1,11 +1,8 @@
 @php $customStyling = $hasCustomStyling($attributes) @endphp
 
-<div @class($wrapperClass)>
+<div class="w-full">
     <button
-        {{ $attributes->class([
-                'rounded-sm w-full border-0 text-white shadow-sm font-normal py-1 px-4 transition-colors',
-                // 'hover:bg-teal-600' => !$customStyling && $primary,
-            ])->merge([
+        {{ $attributes->class(['rounded-none w-full border-0 text-white shadow-sm font-normal py-2 px-4 transition-colors'])->merge([
                 'type' => $type,
             ])->when($name, fn($attr) => $attr->merge(['name' => $name, 'value' => $value])) }}>
         @if (trim($slot))

@@ -1,10 +1,16 @@
 <?php
 
+use App\Enums\Year;
 use App\Http\Controllers\ProfileController;
+use App\Models\Field;
+use App\Models\FieldYear;
+use App\Models\Group;
 use App\Models\Skill;
 use App\Models\Topic;
+use App\Services\RadarQuery;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use ProtoneMedia\Splade\Facades\Toast;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +45,25 @@ Route::middleware('splade')->group(function () {
         Route::post('/topics/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('topics.learning-materials.remove');
         Route::post('/topics/{topic}/assess', [App\Http\Controllers\TopicController::class, 'assess'])->name('topics.assess');
         Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
+        Route::resource('skills', App\Http\Controllers\SkillController::class)->except(['show', 'index']);
         Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
+        Route::get('/groups/{group}/edit', function (Group $group) {
+            return view('group.edit', ['group' => $group]);
+        })->name('groups.edit');
+        Route::patch('/groups/{group}', function (Request $request, Group $group) {
+            $title = $request->input('title');
+            if ($title != $group->title) {
+                $group->title = $title;
+                $group->save();
+            }
+            Toast::title('Group sucessfuly updated!')->autoDismiss(5);
+            return redirect()->route('skills.index');
+        })->name('groups.update');
+        Route::resource('fields', App\Http\Controllers\FieldController::class)->except(['index', 'show']);;
+        Route::resource('subjects', App\Http\Controllers\SubjectController::class)->only(['edit', 'update']);
     });
+    Route::resource('fields', App\Http\Controllers\FieldController::class)->only(['index', 'show']);
     Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index', 'show']);
+    Route::resource('skills', App\Http\Controllers\SkillController::class)->only(['index', 'show']);
     require __DIR__ . '/auth.php';
 });

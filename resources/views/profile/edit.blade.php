@@ -1,20 +1,20 @@
-<x-layouts.app active-page="New Topic"
-    icon="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z">
+<x-layouts.app active-page="Profile update"
+    icon="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z">
     <div class="py-12 h-full overflow-y-auto">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+        <div class="w-fit mx-auto space-y-6 px-6 md:px-20 lg:px-32">
+            <div class="p-4 sm:p-8 bg-white shadow">
                 <div class="max-w-xl" dusk="update-profile-information">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 bg-white shadow">
                 <div class="max-w-xl" dusk="update-password">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 bg-white shadow">
                 <div class="max-w-xl" dusk="delete-user">
                     @include('profile.partials.delete-user-form')
                 </div>

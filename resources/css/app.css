@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    --sb-track-color: #f1f5f7;
+    --sb-thumb-color: rgba(255, 0, 255, 0.8);
+    --sb-size: 5px;
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+}
+
+*::-webkit-scrollbar {
+    width: var(--sb-size);
+    height: var(--sb-size);
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+}
+
+#hero {
+    /* background-image: url('https://cdn.pixabay.com/photo/2016/09/23/11/05/feather-1689331_1280.png'); */
+    /* background-repeat: ; */
+}
+
+.jodit-container {
+    border-radius: 0px !important;
+    border-color: rgba(255, 0, 255, 0.3) !important;
+}

@@ -11,12 +11,9 @@ export default {
     methods: {
          newGroup () {
             this.form.$all.newGroup = '';
-            console.log(this.form.$all);
-            console.log(this.yearsOptions);
         },
         removeNewGroup () {
             this.form.$all.newGroup = null;
-            console.log(this.form.$all);
         },
         newField () {
             this.form.$all.newFields.push({ title: '', code: '', years: []});
@@ -40,7 +37,7 @@ export default {
             this.resetActiveTab();
         },
         newSkill () {
-            this.form.$all.newSkills.push({ title: '', group: '', newGroup: '', years: [], fields: [] });
+            this.form.$all.newSkills.push({ title: null, group: null, newGroup: null, years: [], fields: [] });
             this.activeTab = 'skills';
         },
         removeSkill (index = null) {

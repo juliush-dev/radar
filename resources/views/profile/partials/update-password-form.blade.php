@@ -17,7 +17,8 @@
             autocomplete="new-password" />
 
         <div class="flex items-center gap-4">
-            <x-splade-submit class="bg-cyan-400 hover:bg-cyan-500 shadow hover:shadow-md transition duration-300"
+            <x-splade-submit
+                class="bg-fuchsia-500 rounded-none hover:bg-fuchsia-600 shadow hover:shadow-md transition duration-300"
                 :label="__('Save')" />
 
             @if (session('status') === 'password-updated')

@@ -5,7 +5,7 @@
     $active = $active ?? false;
     $classes = $active ? ' underline underline-offset-2' : '';
     // $classes .= $type == 'call-to-action' ? ' text-white p-2  text-sm  shadow-md hover:shadow-xl' : '';
-    $classes .= ' whitespace-nowrap rounded-sm inline-flex items.center justify.center gap-2 first-letter:uppercase leading-5 transition duration-500 ease-in-out';
+    $classes .= ' capitalize whitespace-nowrap rounded-sm inline-flex items.center justify.center gap-2 leading-5 transition duration-500 ease-in-out';
     $classes .= $small ?? false ? ' text-xs' : '';
 @endphp
 

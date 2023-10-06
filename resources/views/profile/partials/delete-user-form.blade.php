@@ -13,7 +13,7 @@
         'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
     )" :confirm-button="__('Delete Account')"
         require-password>
-        <x-splade-submit class="bg-pink-400 hover:bg-pink-500 shadow hover:shadow-md transition duration-300"
+        <x-splade-submit class="bg-red-400 hover:bg-red-500 shadow hover:shadow-md transition duration-300"
             :label="__('Delete Account')" />
     </x-splade-form>
 </section>

@@ -19,15 +19,15 @@
     <div
         {{ $attributes->class([
             'flex flex-col gap-2',
-            'transition-all duration-200 bg-cyan-500 ring ring-offset-1 ring-cyan-600/10 shadow-lg hover:bg-cyan-600 hover:shadow-md p-2 rounded py-3 w-fit' =>
+            'transition-all duration-200 bg-cyan-500  shadow-lg hover:bg-cyan-600 hover:shadow-md p-4 rounded-none py-0 w-fit' =>
                 $type == 'call-to-action',
         ]) }}>
-        <div class="flex gap-2 my-auto items-center justify-center">
+        <div class="flex gap-2 my-auto items-center justify-center py-2">
             <x-nav-link :active="$isActive" :modal="$openAs == 'modal'" :slideover="$openAs == 'slideover'" :method="$method" :href="$route"
                 :type="$type">
                 @if (strlen($icon) > 0)
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="my-auto w-5 h-5 mb-0.5">
+                        stroke="currentColor" class="my-auto w-4 h-4 mb-0.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icon }}" />
                     </svg>
                 @endif
