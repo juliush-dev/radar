@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ApprovalStatus;
 use App\Models\LearningMaterial;
 use App\Models\Subject;
 use App\Models\SubjectYear;
@@ -181,7 +180,6 @@ class TopicController extends Controller
         $learningMaterial->title = $lm->getClientOriginalName();
         $learningMaterial->mime_type = $lm->extension();
         $learningMaterial->alternative = $lm->hashName();
-        $learningMaterial->approval_status = ApprovalStatus::Pending->value;
         $learningMaterial->path = $lm->store('public');
         $learningMaterial->save();
     }
