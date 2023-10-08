@@ -1,6 +1,6 @@
     <x-splade-data remember="theme" local-storage store="theme" default="{ dark: false }" />
     <div class="w-full h-screen" v-bind:class="theme.dark && 'dark'">
-        <div class="flex flex-col w-full h-full relative bg-white dark:bg-slate-950 transition-all duration-500">
+        <div class="flex flex-col w-full h-full relative bg-white dark:bg-slate-800 transition-all duration-500">
             @guest
                 <x-splade-modal name="login-required"
                     class="absolute  w-4/5 md:w-1/2 mx-auto text-white bg-white dark:bg-slate-900 shadow shadow-fuchsia-400"
@@ -13,7 +13,7 @@
                 </x-splade-modal>
             @endguest
             <div
-                class="flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-6 justify-between w-full  text-slate-800 dark:text-white shadow shadow-fuchsia-200/30">
+                class="flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-6 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-50/5">
                 <div class="flex gap-2 items-center p-4 lg:py-2 lg:px-10 md:pb-0">
                     <span
                         class="justify-center p-1 bg-green-400 dark:bg-yellow-400 rounded-full text-slate-50 dark:text-slate-600 flex items.center capitalize flex-nowrap">
@@ -51,13 +51,22 @@
                             resource="fields" action="index" label="Fields"
                             icon="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
                     @endif
+                    @auth
+                        @if (!Route::is('dashboard.index'))
+                            @can('use-dashboard')
+                                <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600"
+                                    resource="dashboard" action="index" label="Dashboard"
+                                    icon="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                            @endcan
+                        @endif
+                    @endauth
                     <x-authentication />
                     <button @click="theme.dark = !theme.dark"
                         v-text="theme.dark ? '⚫ Turn light on' : '🟡 Turn light off'"
-                        class="whitespace-nowrap text-slate-600 dark:text-slate-200"></button>
+                        class="my-auto whitespace-nowrap text-slate-600 dark:text-slate-200"></button>
                 </div>
             </div>
-            <div class="grow overflow-hidden relative pb-6">
+            <div class="grow overflow-hidden relative">
                 {{ $slot }}
             </div>
         </div>

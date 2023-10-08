@@ -3,13 +3,12 @@
 @php($subjects = $rq->subjects())
 @php($skills = $rq->skills())
 <topic v-slot="topic" :form="form">
-    <div
-        class="sticky top-0 z-10 flex gap-0 bg-white border border-slate-200 dark:border-white w-full shadow-sm mb-4 pt-4">
+    <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-4">
         <button class="px-6 py-4 cursor-pointer"
-            v-bind:class=" topic.activeTab == 'topic' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-950'"
+            v-bind:class=" topic.activeTab == 'topic' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-800'"
             @click.prevent="topic.setActiveTab('topic')">Topic</button>
         <button v-show="form.newSubject != null" class="px-6 py-4 cursor-pointer"
-            v-bind:class=" topic.activeTab == 'subject' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-950'"
+            v-bind:class=" topic.activeTab == 'subject' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-800'"
             @click.prevent="topic.setActiveTab('subject')">New Subject</button>
     </div>
     <section v-show="topic.activeTab == 'topic'"
@@ -40,10 +39,10 @@
             placeholder="Choose or" multiple class="mb-4" />
         <x-splade-file label="Learning materials" name="documents[]" filepond preview multiple />
         <div class="flex justify-between my-6 gap-6">
-            <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="__('Create')" />
-            <Link href="{{ route('topics.index') }}"
+            <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="$actionLabel" />
+            <Link href="{{ $routeOnCancel }}"
                 class=" whitespace-nowrap flex items-center justify-center w-fit px-4 rounded-none text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
-            Cancel creation
+            Cancel
             </Link>
         </div>
     </section>

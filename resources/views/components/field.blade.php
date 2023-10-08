@@ -1,9 +1,9 @@
 <div
     class="overflow-hidden group break-inside-avoid w-full border border-pink-300 text-white shadow shadow-pink-400/80 dark:shadow-pink-400/50 hover:shadow-md hover:shadow-pink-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
-    <Link href="{{ route('fields.show', $field) }}"
+    <x-nav-link href="{{ route('fields.show', $field) }}"
         class="text-md first-letter:uppercase w-full text-pink-500 group-hover:text-pink-700 dark:text-pink-300 dark:group-hover:text-pink-400 transition-colors duration-300">
-    <h1 class="mb-2">{{ $field->title }}</h1>
-    </Link>
+        <h1 class="mb-2">{{ $field->title }}</h1>
+    </x-nav-link>
     <p class="font-normal text-sm mb-4 text-slate-500 dark:text-slate-300">
         <span class="capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">
             {{ $field->code }}
@@ -32,12 +32,14 @@
     @endif
     @if (Route::is('fields.index'))
         @auth
-            <section class="relative w-full flex gap-4 text-white">
-                <x-layouts.navigation-link open-as="modal" class="text-blue-400" label="edit" resource="fields"
-                    action="edit" :action-args="$field" />
-                <x-layouts.navigation-link class="text-red-400" label="delete" resource="fields" action="destroy"
-                    :action-args="$field" />
-            </section>
+            @canany(['update-field', 'delete-field'])
+                <section class="relative w-full flex gap-4 text-white">
+                    <x-layouts.navigation-link open-as="modal" class="text-blue-400" label="edit" resource="fields"
+                        action="edit" :action-args="$field" />
+                    <x-layouts.navigation-link class="text-red-400" label="delete" resource="fields" action="destroy"
+                        :action-args="$field" />
+                </section>
+            @endcanany
         @endauth
     @endif
 </div>

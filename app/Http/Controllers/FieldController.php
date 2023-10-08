@@ -7,6 +7,7 @@ use App\Models\Field;
 use App\Services\RadarQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use ProtoneMedia\Splade\Facades\Toast;
 
 class FieldController extends Controller
@@ -40,21 +41,28 @@ class FieldController extends Controller
 
     public function create()
     {
+        $this->authorize('create-field');
         return view('field.create', [
             'rq' => $this->rq
         ]);
     }
 
-    public function edit(Field $field)
+    public function edit(Request $request, Field $field)
     {
+        $this->authorize('update-field');
         return view('field.edit', [
             'field' => $field,
-            'rq' => $this->rq
+            'rq' => $this->rq,
+            'routeOnSuccess' => $request->input('routeOnSuccess'),
+            'routeOnCancel' => $request->input('routeOnCancel') ?? route('fields.index'),
         ]);
     }
 
     public function update(Request $request, Field $field)
     {
+        if (!Gate::allows('update-field')) {
+            abort(403);
+        }
         DB::transaction(function () use ($request, $field) {
             $title = $request->input('title');
             $code = $request->input('code');
@@ -92,6 +100,7 @@ class FieldController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create-field');
         $field = null;
         DB::transaction(function () use ($request, &$field) {
             $field = new Field;
@@ -114,6 +123,7 @@ class FieldController extends Controller
     }
     public function destroy(Field $field)
     {
+        $this->authorize('delete-field');
         $field->delete();
         Toast::title('field deleted')->autoDismiss(5);
         return redirect()->route('fields.index');

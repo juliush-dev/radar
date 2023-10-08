@@ -1,13 +1,7 @@
 <?php
 
-use App\Enums\Year;
 use App\Http\Controllers\ProfileController;
-use App\Models\Field;
-use App\Models\FieldYear;
 use App\Models\Group;
-use App\Models\Skill;
-use App\Models\Topic;
-use App\Services\RadarQuery;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -41,12 +35,23 @@ Route::middleware('splade')->group(function () {
     })->name('welcome');
     Route::get('/topics/learning-materials/{learningMaterial}/download', [App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'])->name('topics.learning-materials.download');
     Route::middleware('auth')->group(function () {
-        Route::post('/topics/{topic}/learning-materials/upload', [App\Http\Controllers\TopicController::class, 'uploadLearningMaterial'])->name('topics.learning-materials.upload');
-        Route::post('/topics/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('topics.learning-materials.remove');
-        Route::post('/topics/{topic}/assess', [App\Http\Controllers\TopicController::class, 'assess'])->name('topics.assess');
+        Route::prefix('topics')->name('topics.')->group(function () {
+            Route::post('/{topic}/learning-materials/upload', [App\Http\Controllers\TopicController::class, 'uploadLearningMaterial'])->name('learning-materials.upload');
+            Route::post('/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('learning-materials.remove');
+            Route::post('/{topic}/assess', [App\Http\Controllers\TopicController::class, 'assess'])->name('assess');
+            Route::post('/{topic}/block', [App\Http\Controllers\TopicController::class, 'publish'])->name('publish');
+            Route::post('/{topic}/unblock', [App\Http\Controllers\TopicController::class, 'unpublish'])->name('unpublish');
+            Route::post('/{topic}/apply-update', [App\Http\Controllers\TopicController::class, 'applyUpdate'])->name('apply-update');
+        });
+
         Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
         Route::resource('skills', App\Http\Controllers\SkillController::class)->except(['show', 'index']);
         Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
+
+        Route::post('/profile/{profile}/block', [App\Http\Controllers\ProfileController::class, 'block'])->name('profile.block');
+        Route::post('/profile/{profile}/unblock', [App\Http\Controllers\ProfileController::class, 'unblock'])->name('profile.unblock');
+
+
         Route::get('/groups/{group}/edit', function (Group $group) {
             return view('group.edit', ['group' => $group]);
         })->name('groups.edit');
@@ -59,11 +64,13 @@ Route::middleware('splade')->group(function () {
             Toast::title('Group sucessfuly updated!')->autoDismiss(5);
             return redirect()->route('skills.index');
         })->name('groups.update');
+
         Route::resource('fields', App\Http\Controllers\FieldController::class)->except(['index', 'show']);;
         Route::resource('subjects', App\Http\Controllers\SubjectController::class)->only(['edit', 'update']);
     });
     Route::resource('fields', App\Http\Controllers\FieldController::class)->only(['index', 'show']);
     Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index', 'show']);
     Route::resource('skills', App\Http\Controllers\SkillController::class)->only(['index', 'show']);
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
     require __DIR__ . '/auth.php';
 });

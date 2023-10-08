@@ -9,11 +9,13 @@
                 <p class="text-xl text-white">No skill matches the filter</p>
             @endif
         </div>
-        <div class="px-6 lg:px-10">
-            <Link href="{{ Auth::check() ? route('skills.create') : '#login-required' }}"
-                class="text-sky-400 hover:text-sky-500">
-            Add new skill
-            </Link>
-        </div>
+        @can('create-skill')
+            <div class="px-6 lg:px-10">
+                <Link href="{{ Auth::check() ? route('skills.create') : '#login-required' }}"
+                    class="text-sky-400 hover:text-sky-500">
+                Add new skill
+                </Link>
+            </div>
+        @endcan
     </div>
 </x-layouts.app>

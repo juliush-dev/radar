@@ -1,5 +1,5 @@
 <thead>
-    <tr class="border-b border-slate-200">
+    <tr class="border-b border-slate-200 bg-slate-100 dark:bg-slate-300">
         @if ($hasBulkActions = $table->hasBulkActions())
             <th width="64" class="px-6 py-3 text-xs">
                 @include('splade::table.select-rows-dropdown')
@@ -12,7 +12,7 @@
 pr-6
 @else
 px-6
-@endif py-3 text-left text-xs font-medium tracking-wide {{ $column->classes }}">
+@endif py-3 text-left font-medium tracking-wide {{ $column->classes }}">
                 @if ($column->sortable)
                     <a @click.exact.prevent="table.navigate(@js($sortByUrl = $sortBy($column)))" dusk="sort-{{ $column->key }}"
                         href="{{ $sortByUrl }}">
@@ -20,7 +20,7 @@ px-6
 
                 <span
                     class="flex flex-row items-center @if ($column->alignment == 'right') justify-end @elseif($column->alignment == 'center') justify-center @else justify-start @endif">
-                    <span class="uppercase">{{ $column->label }}</span>
+                    <span class="first-letter:uppercase">{{ $column->label }}</span>
 
                     @if ($column->sortable)
                         <svg aria-hidden="true"

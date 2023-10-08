@@ -2,13 +2,13 @@
     {{-- Previous Page Link --}}
     @if ($paginator->onFirstPage())
         <span
-            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-green-500 bg-white border border-teal-500 cursor-default leading-5 rounded-md">
+            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-fuchsia-500  bg-white  cursor-default leading-5 ">
             {!! __('pagination.previous') !!}
         </span>
     @else
         <a @click.exact.prevent="table.navigate(@js($paginationUrl = $paginator->previousPageUrl()), true)" dusk="pagination-simple-previous"
             href="{{ $paginationUrl }}" rel="prev"
-            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-green-700 bg-white border border-teal-500 leading-5 rounded-md hover:text-green-500 focus:outline-none focus:ring ring-emerald-300 focus:border-teal-500 active:bg-green-100 active:text-green-700 transition ease-in-out duration-150">
+            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-slate-500  bg-white leading-5 hover:text-slate-800 focus:outline-none focus:ring ring-slate-300  active:bg-fuchsia-100 active:text-sky-500 transition ease-in-out duration-150">
             {!! __('pagination.previous') !!}
         </a>
     @endif
@@ -19,12 +19,12 @@
     @if ($paginator->hasMorePages())
         <a @click.exact.prevent="table.navigate(@js($paginationUrl = $paginator->nextPageUrl()), true)" dusk="pagination-simple-next"
             href="{{ $paginationUrl }}" rel="next"
-            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-green-700 bg-white border border-teal-500 leading-5 rounded-md hover:text-green-500 focus:outline-none focus:ring ring-emerald-300 focus:border-teal-500 active:bg-green-100 active:text-green-700 transition ease-in-out duration-150">
+            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-fuchsia-700 bg-white  leading-5  hover:text-fuchsia-500 focus:outline-none active:bg-fuchsia-100 active:text-fuchsia-700 transition ease-in-out duration-150">
             {!! __('pagination.next') !!}
         </a>
     @else
         <span
-            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-green-500 bg-white border border-teal-500 cursor-default leading-5 rounded-md">
+            class="relative inline-flex items-center px-4 py-2 text-xs sm:text-sm font-medium text-fuchsia-500 bg-white  cursor-default leading-5 ">
             {!! __('pagination.next') !!}
         </span>
     @endif

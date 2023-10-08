@@ -14,9 +14,14 @@ return new class extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
-            $table->foreignUuid('subject_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('subject_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignUuid('skill_id')->nullable();
+            $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignUuid('previous_topic_id')->nullable();
+            $table->boolean('is_public')->default(false);
+            $table->boolean('is_update')->default(false);
+            $table->foreignUuid('update_topic_id')->nullable()->constrained('topics')->nullOnDelete();
+            $table->foreignUuid('updating_topic_id')->nullable()->constrained('topics')->nullOnDelete();
             $table->timestamps();
         });
     }

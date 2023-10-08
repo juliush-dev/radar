@@ -11,7 +11,6 @@ class UserTopicAssessment extends Model
 {
     use HasFactory;
 
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

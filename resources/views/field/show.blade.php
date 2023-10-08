@@ -29,12 +29,14 @@
             @endif
         </div>
         @auth
-            <section class="relative w-full flex gap-4 text-white">
-                <x-layouts.navigation-link class="text-blue-400" label="edit" resource="fields" action="edit"
-                    :action-args="$field" />
-                <x-layouts.navigation-link class="text-red-400" label="delete" resource="fields" action="destroy"
-                    :action-args="$field" />
-            </section>
+            @canany(['update-field', 'delete-field'])
+                <section class="relative w-full flex gap-4 text-white">
+                    <x-layouts.navigation-link class="text-blue-400" label="edit" resource="fields" action="edit"
+                        :action-args="$field" />
+                    <x-layouts.navigation-link class="text-red-400" label="delete" resource="fields" action="destroy"
+                        :action-args="$field" />
+                </section>
+            @endcanany
         @endauth
     </main>
 </x-layouts.app>

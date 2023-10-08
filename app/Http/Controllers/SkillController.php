@@ -11,6 +11,7 @@ use App\Models\SkillYear;
 use App\Services\RadarQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use ProtoneMedia\Splade\Facades\Toast;
 
 class SkillController extends Controller
@@ -48,6 +49,7 @@ class SkillController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-skill');
         return view('skill.create', [
             'rq' => $this->rq
         ]);
@@ -58,6 +60,7 @@ class SkillController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-field');
         $skill = null;
         DB::transaction(function () use ($request, &$skill) {
             $title = $request->input('title');
@@ -102,19 +105,23 @@ class SkillController extends Controller
     }
 
 
-    public function edit(Skill $skill)
+    public function edit(Request $request, Skill $skill)
     {
+        $this->authorize('update-field');
         return view(
             'skill.edit',
             [
                 'skill' => $skill,
                 'rq' => $this->rq,
+                'routeOnSuccess' => $request->input('routeOnSuccess'),
+                'routeOnCancel' => $request->input('routeOnCancel') ?? route('skills.index'),
             ]
         );
     }
 
     public function update(Request $request, Skill $skill)
     {
+        $this->authorize('update-field');
         DB::transaction(function () use ($request, $skill) {
             $title = $request->input('title');
             $group = $request->input('group');
@@ -179,6 +186,7 @@ class SkillController extends Controller
 
     public function destroy(Skill $skill)
     {
+        $this->authorize('delete-field');
         $skill->delete();
         Toast::title('skill deleted')->autoDismiss(5);
         return redirect()->route('skills.index');

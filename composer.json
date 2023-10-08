@@ -11,7 +11,8 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "protonemedia/laravel-splade-breeze": "^2.5",
-        "spatie/laravel-query-builder": "^5.5"
+        "spatie/laravel-query-builder": "^5.5",
+        "spatie/laravel-referer": "^1.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

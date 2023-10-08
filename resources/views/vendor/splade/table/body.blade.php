@@ -1,10 +1,10 @@
-<tbody class="shadow-sm rounded-md divide-y divide-slate-200 bg-white">
+<tbody class="shadow-sm divide-y divide-slate-200 bg-slate-50 dark:bg-slate-200">
     @forelse($table->resource as $itemKey => $item)
         <tr
             :class="{
-                'bg-green-50': table.striped && @js($itemKey) % 2,
-                'hover:bg-teal-100': table.striped,
-                'hover:bg-teal-100': !table.striped,
+                'bg-slate-50': table.striped && @js($itemKey) % 2,
+                'hover:bg-slate-200': table.striped,
+                'hover:bg-slate-200 dark:hover:bg-slate-300': !table.striped,
             }">
             @if ($hasBulkActions = $table->hasBulkActions())
                 <td width="64" class="text-xs px-6 py-4 max-w-0 overflow-auto">
@@ -49,7 +49,7 @@ cursor-pointer
                 @if (isset($emptyState) && !!$emptyState)
                     {{ $emptyState }}
                 @else
-                    <p class="text-teal-700 px-6 py-12 font-medium text-sm text-center">
+                    <p class="text-fuchsia-700 px-6 py-12 font-medium text-sm text-center">
                         {{ __('There are no items to show.') }}
                     </p>
                 @endif

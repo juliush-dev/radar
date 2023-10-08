@@ -12,8 +12,11 @@ class Field extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public ?RadarQuery $rq)
-    {
+    public function __construct(
+        public ?RadarQuery $rq,
+        public $actionLabel = 'save',
+        public $routeOnCancel = 'index',
+    ) {
         //
     }
 

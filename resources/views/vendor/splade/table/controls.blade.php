@@ -1,5 +1,4 @@
-<div
-    class="flex flex-row sm:justify-end mb-3 sm:px-0 -mr-2 sm:-mr-3 sticky top-0 bg-white w-full z-20 shadow p-4 py-2 rounded-md">
+<div class="flex flex-row mb-3 sticky top-0 w-full z-20 p-2 bg-white shadow dark:bg-slate-800">
     @if ($table->hasExports() || $table->hasBulkActions())
         <div class="order-1 mr-2 sm:mr-3" v-if="table.hasSelectedItems || @js($table->hasExports())">
             @include('splade::table.bulk-actions-exports')
@@ -19,9 +18,9 @@
     @endif
 
     <button v-show="@js($canResetTable()) || table.columnsAreToggled || table.hasForcedVisibleSearchInputs" type="button"
-        class="order-6 sm:order-4 ml-auto mr-2 sm:mr-3 bg-white border rounded-md shadow-sm px-2.5 sm:px-4 py-2 inline-flex justify-center text-sm font-medium text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 border-teal-500"
+        class="group order-6 sm:order-4 ml-auto mr-2 sm:mr-3 bg-pink-500 shadow-sm px-2.5 sm:px-4 py-2 inline-flex justify-center text-sm font-medium hover:bg-pink-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 border-pink-500 transition-all duration-300"
         @click.prevent="table.reset" dusk="reset-table">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                 clip-rule="evenodd" />
@@ -37,7 +36,7 @@
     @endif
 
     @if ($table->hasToggleableColumns())
-        <div class="order-5 sm:order-6 mr-2 sm:mr-3">
+        <div class="order-5 sm:order-6">
             @include('splade::table.columns')
         </div>
     @endif

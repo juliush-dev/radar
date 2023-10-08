@@ -5,8 +5,9 @@
             'newFields' => [],
             'newSkills' => [],
             'learningMaterials' => [],
+            'routeOnSuccess' => $routeOnSuccess,
         ]">
-            <x-forms.topic :$rq />
+            <x-forms.topic :$rq :route-on-cancel="$routeOnCancel" />
         </x-splade-form>
     </div>
 </x-layouts.app>

@@ -15,7 +15,7 @@ class LearningMaterial extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'autor_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function topic(): BelongsTo

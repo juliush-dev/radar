@@ -1,7 +1,26 @@
 <x-layouts.app :active-page="$topic->title"
     icon="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
     <main class="h-full overflow-y-auto dark:text-white text-slate-800 p-6 lg:px-80">
-        <h1 class="first-letter:uppercase text-xl mb-4 dark:text-slate-400">
+        <div class="flex gap-6 flex-wrap md:flex-nowrap mb-4">
+            @if ($topic->is_update || $topic->topicUpdating)
+                <span
+                    class="px-2 bg-pink-600 w-fit mb-2 font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
+                    @if ($topic->is_update)
+                        <span
+                            class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
+                    @endif
+                </span>
+            @endif
+
+            <x-splade-link :href="$referer"
+                class="ml-auto w-fit flex gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                </svg> Back to last page
+            </x-splade-link>
+        </div>
+        <h1 class="first-letter:uppercase text-xl mb-4 dark:text-slate-100">
             {{ $topic->title }}
         </h1>
         <div class="text-sm flex items-center mb-4 gap-2 flex-wrap lg:flex-nowrap">
@@ -54,6 +73,30 @@
         </div>
 
         <hr class="mb-8">
+        @can('update-topic', $topic)
+            @if ($topic->is_update)
+                <section class="mb-8 border border-pink-800 p-4">
+                    <h2 class="text-2xl mb-4">
+                        Will replace
+                    </h2>
+                    <x-splade-link :href="route('topics.show', $topic->topicToUpdate)"
+                        class="text-teal-600 hover:text-teal-700 dark:text-teal-400 transition-colors duration-300">
+                        {{ $topic->topicToUpdate->title }}
+                    </x-splade-link>
+                </section>
+            @endif
+            @if (!$topic->is_update && $topic->topicUpdating)
+                <section class="mb-8 border border-pink-800 p-4">
+                    <h2 class="text-2xl mb-4">
+                        Will be replaced by
+                    </h2>
+                    <x-splade-link :href="route('topics.show', $topic->topicUpdating)"
+                        class=" text-teal-600 hover:text-teal-700 dark:text-teal-400 transition-colors duration-300">
+                        {{ $topic->topicUpdating->title }}
+                    </x-splade-link>
+                </section>
+            @endif
+        @endcan
         <h2 class="text-2xl mb-4">
             {{ $topic->learningMaterials->count() }} Learning materials
         </h2>
@@ -110,11 +153,34 @@
             @endforeach
         </div>
         @auth
-            <section class="relative w-full flex gap-4 text-white">
-                <x-layouts.navigation-link class="text-blue-400" label="edit" resource="topics" action="edit"
-                    :action-args="$topic" />
-                <x-layouts.navigation-link class="text-red-400" label="delete" resource="topics" action="destroy"
-                    :action-args="$topic" />
+            <section class="relative w-full flex gap-4 text-white text-xs items-center">
+                @if ($topic->is_update && $topic->topicUpdating == null)
+                    @can('use-dashboard')
+                        <x-splade-link method="post" :href="route('topics.apply-update', $topic)"
+                            class="text-teal-500 hover:text-teal-600 dark:text-teal-200">
+                            Apply update
+                        </x-splade-link>
+                    @endcan
+                @endif
+                @can('update-topic', $topic)
+                    @if (!$topic->is_update && $topic->topicUpdating == null)
+                        <x-layouts.navigation-link class="text-blue-400" label="edit" resource="topics" action="edit"
+                            :action-args="$topic" />
+                    @endif
+                @endcan
+                @can('delete-topic', $topic)
+                    <x-layouts.navigation-link class="text-red-400" label="delete" resource="topics" action="destroy"
+                        :action-args="$topic" />
+                @endcan
+                @if ($topic->is_update || $topic->topicUpdating)
+                    <span
+                        class="ml-auto px-2 bg-pink-600 w-fit mb-2 font-mono text-sm dark:text-slate-200 my-auto grow-0">Volatile
+                        @if ($topic->is_update)
+                            <span
+                                class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
+                        @endif
+                    </span>
+                @endif
             </section>
         @endauth
     </main>

@@ -51,8 +51,13 @@ class User extends Authenticatable
         return $this->hasMany(UserTopicAssessment::class);
     }
 
-    public function contributions(): HasMany
+    public function topics(): HasMany
     {
-        return $this->hasMany(Contribution::class, 'contributor_id');
+        return $this->hasMany(Topic::class);
+    }
+
+    public function learningMaterials(): HasMany
+    {
+        return $this->hasMany(LearningMaterial::class);
     }
 }

@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Models\Field;
 use App\Models\Group;
+use App\Models\LearningMaterial;
 use App\Models\Skill;
 use App\Models\Subject;
 use App\Models\Topic;
+use App\Models\User;
+use App\Tables\Topics;
+use App\Tables\Users;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RadarQuery
 {
@@ -18,28 +20,54 @@ class RadarQuery
     {
     }
 
+    public function usersTable()
+    {
+        return Users::class;
+    }
+
+    public function topicsTable()
+    {
+        return Topics::class;
+    }
+
+    public function totalUsers()
+    {
+        return User::count();
+    }
+    public function totalSkills()
+    {
+        return Skill::count();
+    }
+    public function totalTopics()
+    {
+        return Topic::count();
+    }
+    public function totalLearningMaterials()
+    {
+        return LearningMaterial::count();
+    }
+
     public function topics($filter = [])
     {
-        $topics = Topic::query();
-        $filterConsidered = false;
-        if (count($filter) > 0) {
-            if (isset($filter['year'])) {
-                $filterConsidered = true;
-                $topics->whereHas('years', function (Builder $query) use ($filter) {
-                    $query->where('year', $filter['year']);
-                });
-            }
-            if (isset($filter['subject'])) {
-                $filterConsidered = true;
-                $topics->where('subject_id', $filter['subject']);
-            }
-        }
-        if ($filterConsidered) {
-            $topics = $topics->get();
+        $topics = Topic::where('is_public', 1);
+        if (isset($filter['author'])) {
+            $topics->orWhere('user_id', $filter['author']);
+            $topics->where(function ($query) {
+                $query->where('is_update', true)->whereNot('update_topic_id', null);
+                $query->orWhere('is_update', false)->where('updating_topic_id', null);
+            });
         } else {
-            $topics = Topic::all();
+            $topics->where('is_update', false);
         }
-        return $topics;
+        if (isset($filter['year'])) {
+            $topics->whereHas('years', function (Builder $query) use ($filter) {
+                $query->where('year', $filter['year']);
+            });
+        }
+        if (isset($filter['subject'])) {
+            $topics->where('subject_id', $filter['subject']);
+        }
+        return $topics->get();
     }
 
     public function groups()

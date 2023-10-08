@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('approval_status');
             $table->string('alternative')->nullable();
             $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

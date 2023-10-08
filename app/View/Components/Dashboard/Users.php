@@ -1,21 +1,18 @@
 <?php
 
-namespace App\View\Components\Forms;
+namespace App\View\Components\Dashboard;
 
-use App\Services\RadarQuery;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Skill extends Component
+class Users extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public ?RadarQuery $rq,
-        public $actionLabel = 'save',
-        public $routeOnCancel = 'index',
+        public $users
     ) {
         //
     }
@@ -25,6 +22,6 @@ class Skill extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.forms.skill');
+        return view('components.dashboard.users');
     }
 }

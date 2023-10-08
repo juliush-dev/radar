@@ -12,8 +12,9 @@
             }),
             'newSubject' => null,
             'learningMaterials' => [],
+            'routeOnSuccess' => $routeOnSuccess,
         ]">
-            <x-forms.topic :$rq />
+            <x-forms.topic :$rq action-label="Save changes" :route-on-cancel="$routeOnCancel" />
         </x-splade-form>
     </div>
 </x-layouts.app>

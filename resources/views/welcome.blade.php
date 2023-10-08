@@ -1,22 +1,20 @@
 <x-layouts.app
     icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
-    <div class="h-full flex flex-col overflow-y-auto overflow-x-hidden px-6 md:px-10 lg:px-80">
+    <div id="hero" class="h-full flex flex-col overflow-y-auto overflow-x-hidden px-6 md:px-10 lg:px-80 pb-8">
         <h5 class="font-medium text-sm p-4 py-6 text-center text-slate-600 dark:text-slate-400">
             Made with <a href="https://splade.dev/"
                 class="underline underline-offset-2 bg-pink-500 p-1 px-2 text-slate-100 dark:text-slate-200">
-                Laravel
-                Splade</a>
+                Laravel Splade </a>
         </h5>
-        <div id="hero"
-            class="w-full grow flex flex-col mb-4 text-slate-600 dark:text-slate-100 items-center justify-center">
+        <div class="w-full grow flex flex-col mb-4 text-slate-600 dark:text-slate-100 items-center justify-center">
             <h1
                 class="uppercase text-fuchsia-900 mb-4 dark:text-fuchsia-300 text-center text-3xl lg:text-5xl font-extralight">
-                radar
+                ScholarBox
             </h1>
-            <h2 class="uppercase text-lg lg:text-2xl tracking-tight text-center mb-4">
+            <h2 class="text-lg lg:text-2xl tracking-tight text-center mb-4">
                 All the resources you need to ace your exams!
             </h2>
-            <div class="mb-6 font-semibold text-center text-xl flex flex-wrap gap-6 items-center justify-center">
+            <div class="mb-6 font-medium lg:px-6 text-center text-xl flex flex-wrap gap-6 items-center justify-center">
                 <div
                     class="w-[280px] h-[180px] p-6 text-slate-950 bg-slate-50 shadow-lg shadow-fuchsia-400 backdrop-blur flex flex-col items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -25,7 +23,7 @@
                             d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                     </svg>
                     <h4 class="mb-4">Navigate</h4>
-                    <p class="text-sm font-normal first-letter:uppercase">
+                    <p class="text-sm first-letter:uppercase">
                         100+ of topics are waiting for you to explore.
                     </p>
                 </div>
@@ -37,7 +35,7 @@
                             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
                     <h4 class="mb-4">Download</h4>
-                    <p class="text-sm font-normal first-letter:uppercase">Learning materials at finger tips,
+                    <p class="text-sm first-letter:uppercase">Learning materials at finger tips,
                         just download and exploit them.</p>
                 </div>
                 <div
@@ -49,7 +47,7 @@
                     </svg>
 
                     <h4 class="mb-4">Share</h4>
-                    <p class="text-sm font-normal first-letter:uppercase">Want to contribute? Upload more
+                    <p class="text-sm first-letter:uppercase">Want to contribute? Upload more
                         learning materials to topics.</p>
                 </div>
                 <div
@@ -61,7 +59,7 @@
                     </svg>
 
                     <h4 class="mb-4">Evaluate</h4>
-                    <p class="text-sm font-normal first-letter:uppercase">
+                    <p class="text-sm first-letter:uppercase">
                         Evaluate yourself to focus on what you haven't mastered yet.
                     </p>
                 </div>

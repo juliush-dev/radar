@@ -20,12 +20,22 @@ class Topic extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function assessments(): HasMany
     {
         return $this->hasMany(UserTopicAssessment::class);
+    }
+
+    public function topicUpdating(): BelongsTo
+    {
+        return $this->belongsTo(Topic::class, 'updating_topic_id');
+    }
+
+    public function topicToUpdate(): BelongsTo
+    {
+        return $this->belongsTo(Topic::class, 'update_topic_id');
     }
 
     public function skill(): BelongsTo

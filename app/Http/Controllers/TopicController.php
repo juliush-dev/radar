@@ -3,13 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApprovalStatus;
-use App\Models\Field;
-use App\Models\FieldYear;
-use App\Models\Group;
 use App\Models\LearningMaterial;
-use App\Models\Skill;
-use App\Models\SkillField;
-use App\Models\SkillYear;
 use App\Models\Subject;
 use App\Models\SubjectYear;
 use App\Models\Topic;
@@ -20,8 +14,12 @@ use App\Models\UserTopicAssessment;
 use App\Services\RadarQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\Splade\Facades\Toast;
+use ProtoneMedia\Splade\FileUploads\HandleSpladeFileUploads;
+use ProtoneMedia\Splade\FileUploads\SpladeFile;
+use Facades\Spatie\Referer\Referer;
 
 class TopicController extends Controller
 {
@@ -30,7 +28,7 @@ class TopicController extends Controller
     }
     public function show(Topic $topic)
     {
-        return view('topic.show', ['topic' => $topic]);
+        return view('topic.show', ['topic' => $topic, 'referer' => Referer::get()]);
     }
 
     public function index(Request $request)
@@ -46,6 +44,7 @@ class TopicController extends Controller
                 [
                     'year' => $yearFilterValue,
                     'subject' => $subjectFilterValue,
+                    'author' => $request->user()?->id
                 ]
             ),
             'rq' => $this->rq,
@@ -59,6 +58,9 @@ class TopicController extends Controller
 
     public function removeLearningMaterial(Request $request, LearningMaterial $learningMaterial)
     {
+        if (!Gate::allows('delete-learning-material', $learningMaterial)) {
+            abort(403);
+        }
         $topic = $learningMaterial->topic;
         Storage::delete($learningMaterial->path);
         $learningMaterial->delete();
@@ -94,7 +96,9 @@ class TopicController extends Controller
     public function create()
     {
         return view('topic.create', [
-            'rq' => $this->rq
+            'rq' => $this->rq,
+            'routeOnSuccess' => 'show',
+            'routeOnCancel' => route('topics.index'),
         ]);
     }
 
@@ -113,79 +117,56 @@ class TopicController extends Controller
             $skills = $request->input('skills', []);
 
             $newSubject = $request->input('newSubject');
-            if ($title) {
-                $topic = new Topic;
-                $topic->title = $title;
-                $topic->user_id = $request->user()->id;
+            $topic = new Topic;
+            $topic->title = $title;
+            $topic->user_id = $request->user()->id;
+            $topic->save();
+
+            collect($years)->each(function ($year) use ($topic) {
+                $topicYear = new TopicYear;
+                $topicYear->topic_id = $topic->id;
+                $topicYear->year = $year;
+                $topicYear->save();
+            });
+
+            if ($subject) {
+                $topic->subject_id = $subject;
                 $topic->save();
-
-                if (is_array($years) && count($years) > 0) {
-                    collect($years)->each(function ($year) use ($topic) {
-                        $topicYear = new TopicYear;
-                        $topicYear->topic_id = $topic->id;
-                        $topicYear->year = $year;
-                        $topicYear->save();
-                    });
-                }
-
-                if ($subject) {
-                    $topic->subject_id = $subject;
-                    $topic->save();
-                } elseif ($newSubject) {
-                    $subject = new Subject;
-                    $subject->title = $newSubject['title'];
-                    $subject->abbreviation = $newSubject['abbreviation'];
-                    $subject->save();
-                    if (is_array($newSubject['years']) && count($newSubject['years']) > 0) {
-                        collect($newSubject['years'])->each(function ($year) use ($subject) {
-                            $subjectYear = new SubjectYear;
-                            $subjectYear->subject_id = $subject->id;
-                            $subjectYear->year = $year;
-                            $subjectYear->save();
-                        });
-                    }
-                    $topic->subject_id = $subject->id;
-                    $topic->save();
-                }
-                if (is_array($fields) && count($fields) > 0) {
-                    $fieldsAdded = collect($fields);
-                    $fieldsAdded->each(function ($field) use ($topic) {
-                        $topicField = new TopicField;
-                        $topicField->topic_id = $topic->id;
-                        $topicField->field_id = $field;
-                        $topicField->save();
-                    });
-                }
-                if (is_array($skills) && count($skills) > 0) {
-                    $skillsAdded = collect($skills);
-                    $skillsAdded->each(function ($skill) use ($topic) {
-                        $topicSkill = new TopicSkill;
-                        $topicSkill->topic_id = $topic->id;
-                        $topicSkill->skill_id = $skill;
-                        $topicSkill->save();
-                    });
-                }
-                $lms = $request->file('documents');
-                if (is_array($lms) && count($lms) > 0) {
-                    collect($lms)->each(function ($lm) use ($topic) {
-                        $this->uploadLm($lm, $topic);
-                    });
-                } elseif ($lms != null) {
-                    $this->uploadLm($lms, $topic);
-                }
+            } elseif ($newSubject) {
+                $subject = new Subject;
+                $subject->title = $newSubject['title'];
+                $subject->abbreviation = $newSubject['abbreviation'];
+                $subject->save();
+                collect($newSubject['years'])->each(function ($year) use ($subject) {
+                    $subjectYear = new SubjectYear;
+                    $subjectYear->subject_id = $subject->id;
+                    $subjectYear->year = $year;
+                    $subjectYear->save();
+                });
+                $topic->subject_id = $subject->id;
+                $topic->save();
             }
+            collect($fields)->each(function ($field) use ($topic) {
+                $topicField = new TopicField;
+                $topicField->topic_id = $topic->id;
+                $topicField->field_id = $field;
+                $topicField->save();
+            });
+            collect($skills)->each(function ($skill) use ($topic) {
+                $topicSkill = new TopicSkill;
+                $topicSkill->topic_id = $topic->id;
+                $topicSkill->skill_id = $skill;
+                $topicSkill->save();
+            });
+            HandleSpladeFileUploads::forRequest($request, 'documents');
+            $request->orderedSpladeFileUploads('documents')->each(function (SpladeFile $file) use ($topic, $request) {
+                if ($file->doesntExist()) {
+                    $this->uploadLm($file->upload, $topic);
+                }
+            });
         });
         Toast::title('Topic sucessfuly created!')->autoDismiss(5);
         return redirect()->route('topics.show', $topic);
-    }
-
-    private function updateLm($lm, $topic)
-    {
-        if (!empty($lm) || $lm != "") {
-            if (LearningMaterial::where('alternative', $lm->getClientOriginalName())->doesntExist()) {
-                $this->uploadLm($lm, $topic);
-            }
-        }
     }
 
     private function uploadLm($lm, $topic)
@@ -196,6 +177,7 @@ class TopicController extends Controller
         }
         $learningMaterial = new LearningMaterial;
         $learningMaterial->topic_id = $topic->id;
+        $learningMaterial->user_id = request()->user()->id;
         $learningMaterial->title = $lm->getClientOriginalName();
         $learningMaterial->mime_type = $lm->extension();
         $learningMaterial->alternative = $lm->hashName();
@@ -205,6 +187,7 @@ class TopicController extends Controller
     }
     public function assess(Request $request, Topic $topic)
     {
+        $this->authorize('assess-topic');
         DB::transaction(function () use ($request, $topic) {
             $assessment = new UserTopicAssessment;
             $assessment->user_id = auth()->user()->id;
@@ -232,11 +215,19 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
+        $this->authorize('update-topic', [$topic]);
+        $redirectRoute = route('topics.index');
+        $referer = Referer::get();
+        if ($referer == route('dashboard.index', ['tab' => 'topics'])) {
+            $redirectRoute = $referer;
+        }
         return view(
             'topic.edit',
             [
                 'topic' => $topic,
                 'rq' => $this->rq,
+                'routeOnSuccess' => $redirectRoute,
+                'routeOnCancel' => $redirectRoute,
             ]
         );
     }
@@ -246,7 +237,9 @@ class TopicController extends Controller
      */
     public function update(Request $request, Topic $topic)
     {
-        DB::transaction(function () use ($request, $topic) {
+        $this->authorize('update-topic', [$topic]);
+        $newTopic = new Topic;
+        DB::transaction(function () use ($request, &$newTopic, $topic) {
             $title = $request->input('title');
             $years = $request->input('years', []);
             $subject = $request->input('subject');
@@ -254,108 +247,156 @@ class TopicController extends Controller
             $skills = $request->input('skills', []);
             $newSubject = $request->input('newSubject');
 
-            if ($title) {
-                if ($topic->title != $title) {
-                    $topic->title = $title;
-                    $topic->save();
-                }
+            $newTopic->title = $title;
+            $newTopic->is_update = 1;
+            $newTopic->update_topic_id = $topic->id;
+            $newTopic->user_id = $request->user()->id;
+            $newTopic->save();
 
-                if (is_array($years) && count($years) > 0) {
-                    $topicYearsDeleted = $topic->years()->pluck('year')->diff($years);
-                    $topicYearsDeleted->each(function ($year) use ($topic) {
-                        TopicYear::where('topic_id', $topic->id)->where('year', $year)->delete();
-                    });
-                    $yearsAdded = collect($years)->diff($topic->years()->pluck('year'));
-                    $yearsAdded->each(function ($year) use ($topic) {
-                        $topicYear = new TopicYear;
-                        $topicYear->topic_id = $topic->id;
-                        $topicYear->year = $year;
-                        $topicYear->save();
-                    });
-                }
-                if ($subject) {
-                    if ($subject != $topic->subject) {
-                        $topic->subject_id = $subject;
-                        $topic->save();
-                    }
-                } elseif ($newSubject) {
-                    $subject = new Subject;
-                    $subject->title = $newSubject['title'];
-                    $subject->abbreviation = $newSubject['abbreviation'];
-                    $subject->save();
-                    if (is_array($subject['years']) && count($subject['years']) > 0) {
-                        collect($subject['years'])->each(function ($year) use ($subject) {
-                            $subjectYear = new SubjectYear;
-                            $subjectYear->subject_id = $subject->id;
-                            $subjectYear->year = $year;
-                            $subjectYear->save();
-                        });
-                    }
-                    $topic->subject_id = $subject->id;
-                    $topic->save();
-                }
+            $topic->updating_topic_id = $newTopic->id;
+            $topic->save();
 
-                if (is_array($fields) && count($fields) > 0) {
-                    $topicFieldsDeleted = $topic->fields()->pluck('field_id')->diff($fields);
-                    $topicFieldsDeleted->each(function ($field_id) use ($topic) {
-                        TopicField::where('topic_id', $topic->id)->where('field_id', $field_id)->delete();
+            collect($years)->each(function ($year) use ($newTopic) {
+                $topicYear = new TopicYear;
+                $topicYear->topic_id = $newTopic->id;
+                $topicYear->year = $year;
+                $topicYear->save();
+            });
+            if ($subject) {
+                $newTopic->subject_id = $subject;
+                $newTopic->save();
+            } elseif ($newSubject) {
+                $subject = new Subject;
+                $subject->title = $newSubject['title'];
+                $subject->abbreviation = $newSubject['abbreviation'];
+                $subject->save();
+                if (is_array($subject['years']) && count($subject['years']) > 0) {
+                    collect($subject['years'])->each(function ($year) use ($subject) {
+                        $subjectYear = new SubjectYear;
+                        $subjectYear->subject_id = $subject->id;
+                        $subjectYear->year = $year;
+                        $subjectYear->save();
                     });
-                    $fieldsAdded = collect($fields)->diff($topic->fields()->pluck('field_id'));
-                    $fieldsAdded->each(function ($field) use ($topic) {
-                        if (TopicField::where('topic_id', $topic->id)->where('field_id', $field)->doesntExist()) {
-                            $topicField = new TopicField;
-                            $topicField->topic_id = $topic->id;
-                            $topicField->field_id = $field;
-                            $topicField->save();
-                        }
-                    });
-                } else {
-                    TopicField::where('topic_id', $topic->id)->delete();
                 }
-
-
-                if (is_array($skills) && count($skills) > 0) {
-                    $topicSkillsDeleted = $topic->skills()->pluck('skill_id')->diff($skills);
-                    $topicSkillsDeleted->each(function ($skill_id) use ($topic) {
-                        TopicSkill::where('topic_id', $topic->id)->where('skill_id', $skill_id)->delete();
-                    });
-                    $skillsAdded = collect($skills)->diff($topic->skills()->pluck('skill_id'));
-                    $skillsAdded->each(function ($skill) use ($topic) {
-                        if (TopicSkill::where('topic_id', $topic->id)->where('skill_id', $skill)->doesntExist()) {
-                            $topicSkill = new TopicSkill;
-                            $topicSkill->topic_id = $topic->id;
-                            $topicSkill->skill_id = $skill;
-                            $topicSkill->save();
-                        }
-                    });
-                } else {
-                    TopicSkill::where('topic_id', $topic->id)->delete();
-                }
-
-                $lms = $request->file('documents');
-                if (is_array($lms) && count($lms) > 0) {
-                    foreach ($lms as $lm) {
-                        $this->updateLm($lm, $topic);
-                    }
-                } elseif ($lms != null) {
-                    $this->updateLm($lms, $topic);
-                }
+                $newTopic->subject_id = $subject->id;
+                $newTopic->save();
             }
+
+            collect($fields)->each(function ($field) use ($newTopic) {
+                if (TopicField::where('topic_id', $newTopic->id)->where('field_id', $field)->doesntExist()) {
+                    $topicField = new TopicField;
+                    $topicField->topic_id = $newTopic->id;
+                    $topicField->field_id = $field;
+                    $topicField->save();
+                }
+            });
+            collect($skills)->each(function ($skill) use ($newTopic) {
+                if (TopicSkill::where('topic_id', $newTopic->id)->where('skill_id', $skill)->doesntExist()) {
+                    $topicSkill = new TopicSkill;
+                    $topicSkill->topic_id = $newTopic->id;
+                    $topicSkill->skill_id = $skill;
+                    $topicSkill->save();
+                }
+            });
+            HandleSpladeFileUploads::forRequest($request, 'documents');
+            $request->orderedSpladeFileUploads('documents')->each(function (SpladeFile $file) use ($newTopic, $request) {
+                if ($file->exists()) {
+                    $existingLmFromDB = LearningMaterial::where('alternative', $file->existing->name)->first();
+                    $copy = $existingLmFromDB->replicate(['created_at', 'updated_at']);
+                    $copy->topic_id = $newTopic->id;
+                    $copy->user_id = $request->user()->id;
+                    $copy->save();
+                }
+                if ($file->doesntExist()) {
+                    // dd($file->upload);
+                    $this->uploadLm($file->upload, $newTopic);
+                }
+            });
         });
         Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
-        return redirect()->route('topics.show', $topic);
+        if ($request->input('routeOnSuccess') != null) {
+            // this is just a test version of this idea of redirecting
+            // back to a specified route on success
+            // the final goal is to make the specified route
+            // avaible in the show view, because I think
+            // is of a better ux when the user sees, what
+            // he just created, after creation, before
+            // he goes back where he came from
+            return redirect($request->input('routeOnSuccess'));
+        }
+        return redirect()->route('topics.show', $newTopic);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Topic $topic)
+    public function destroy(Request $request, Topic $topic)
     {
-        $topic->learningMaterials->each(function ($lm) {
-            Storage::delete($lm->path);
-        });
-        $topic->delete();
+        $this->authorize('delete-topic', [$topic]);
+        if ($topic->topicUpdating != null) {
+            Toast::danger("Topic can't be delete. Pending update detected")->autoDismiss(15);
+            return back();
+        }
+        DB::transaction(
+            function () use ($topic) {
+                $topic->learningMaterials->each(function ($lm) {
+                    if (LearningMaterial::where('alternative', $lm->alternative)->count() == 1) {
+                        Storage::delete($lm->path);
+                    }
+                });
+                $topic->delete();
+            }
+        );
         Toast::title('Topic deleted')->autoDismiss(5);
-        return redirect()->route('topics.index');
+
+        $redirectRoute = route('topics.index');
+        if ($request->fullUrl() == $currentRoute = route('dashboard.index', ['tab' => 'topics'])) {
+            $redirectRoute = $currentRoute;
+        }
+        return redirect($redirectRoute);
+    }
+
+    public function unpublish(Topic $topic)
+    {
+        $this->authorize('use-dashboard');
+        $topic->is_public = 0;
+        $topic->save();
+        return back();
+    }
+
+    public function publish(Topic $topic)
+    {
+        $this->authorize('use-dashboard');
+        $topic->is_public = 1;
+        $topic->save();
+        return redirect(route('dashboard.index', ['tab' => 'topics']));
+    }
+
+    public function applyUpdate(Topic $topic)
+    {
+        $this->authorize('use-dashboard');
+        DB::transaction(
+            function () use ($topic) {
+                $oldTopic = $topic->topicToUpdate;
+                if ($oldTopic->topicToUpdate) {
+                    $topic->update_topic_id = $oldTopic->topicToUpdate->id;
+                    $oldTopic->topicToUpdate->updating_topic_id = $topic->id;
+                    $oldTopic->topicToUpdate->save();
+                } else {
+                    $topic->is_update = 0;
+                }
+                $oldTopic->assessments->each(function ($assessment) use ($topic) {
+                    $assessmentCopy = $assessment->replicate();
+                    $assessmentCopy->topic_id = $topic->id;
+                    $assessmentCopy->save();
+                    UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $assessment->topic_id)->delete();
+                });
+                $oldTopic->delete();
+                $topic->is_public = true;
+                $topic->save();
+            }
+        );
+        Toast::title('Update applied')->autoDismiss(8);
+        return redirect(Referer::get());
     }
 }

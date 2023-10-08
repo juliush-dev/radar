@@ -35,12 +35,14 @@
     </p>
     @if (Route::is('skills.index'))
         @auth
-            <section class="relative w-full flex gap-4 text-white text-xs">
-                <x-layouts.navigation-link class="text-blue-400" label="edit" resource="skills" action="edit"
-                    :action-args="$skill" />
-                <x-layouts.navigation-link class="text-red-400" label="delete" resource="skills" action="destroy"
-                    :action-args="$skill" />
-            </section>
+            @canany(['update-skill', 'delete-skill'])
+                <section class="relative w-full flex gap-4 text-white text-xs">
+                    <x-layouts.navigation-link class="text-blue-400" label="edit" resource="skills" action="edit"
+                        :action-args="$skill" />
+                    <x-layouts.navigation-link class="text-red-400" label="delete" resource="skills" action="destroy"
+                        :action-args="$skill" />
+                </section>
+            @endcanany
         @endauth
     @endif
 </div>
