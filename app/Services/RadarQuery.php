@@ -9,6 +9,7 @@ use App\Models\Skill;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\User;
+use App\Tables\LearningMaterials;
 use App\Tables\Topics;
 use App\Tables\Users;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,6 +31,11 @@ class RadarQuery
         return Topics::class;
     }
 
+    public function learningMaterialsTable()
+    {
+        return LearningMaterials::class;
+    }
+
     public function totalUsers()
     {
         return User::count();
@@ -49,15 +55,16 @@ class RadarQuery
 
     public function topics($filter = [])
     {
-        $topics = Topic::where('is_public', 1);
+        $topics = Topic::where('is_public', 1)->where('is_update', false);
         if (isset($filter['author'])) {
-            $topics->orWhere('user_id', $filter['author']);
-            $topics->where(function ($query) {
-                $query->where('is_update', true)->whereNot('update_topic_id', null);
-                $query->orWhere('is_update', false)->where('updating_topic_id', null);
+            $topics->whereNot('user_id', $filter['author']);
+            $topics->orWhere(function ($query) use ($filter) {
+                $query->where('user_id', $filter['author'])->where('updating_topic_id', null);
+                $query->where(function ($query) {
+                    $query->where('is_update', true)->orWhere('is_update', false);
+                });
             });
-        } else {
-            $topics->where('is_update', false);
+            $topics->where('user_id', $filter['author'])->where('updating_topic_id', null);
         }
         if (isset($filter['year'])) {
             $topics->whereHas('years', function (Builder $query) use ($filter) {

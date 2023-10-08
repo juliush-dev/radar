@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -30,7 +32,10 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        if (!Gate::allows('login')) {
+            Toast::warning('This action is authorized')->autoDismiss(5);
+            return $this->destroy($request);
+        }
         return redirect(route('topics.index'));
     }
 

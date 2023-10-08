@@ -4,7 +4,7 @@
   <skill v-slot="skill" :form="form">
       <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-4">
           <button class="px-6 py-4 cursor-pointer"
-              v-bind:class=" skill.activeTab == 'skill' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-800' "
+              v-bind:class=" skill.activeTab == 'skill' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-700' "
               @click.prevent="skill.setActiveTab('skill')">skill</button>
       </div>
       <section v-show="skill.activeTab == 'skill'"
@@ -21,7 +21,7 @@
               placeholder="Choose or" multiple />
           <div class="flex justify-between my-6 gap-6">
               <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="$actionLabel" />
-              <Link href="{{ $routeOnCancel }}"
+              <Link href="{{ isset($skill) ? route('skills.show', $skill) : route('skills.index') }}"
                   class=" whitespace-nowrap flex items-center justify-center w-fit px-4 rounded-none text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
               Cancel
               </Link>

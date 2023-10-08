@@ -16,6 +16,7 @@ createApp({
 })
     .use(SpladePlugin, {
         max_keep_alive: 10,
+        view_transitions: true,
         transform_anchors: false,
         progress_bar: true,
         components: {

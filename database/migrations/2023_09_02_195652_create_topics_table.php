@@ -20,8 +20,6 @@ return new class extends Migration
             $table->foreignUuid('previous_topic_id')->nullable();
             $table->boolean('is_public')->default(false);
             $table->boolean('is_update')->default(false);
-            $table->foreignUuid('update_topic_id')->nullable()->constrained('topics')->nullOnDelete();
-            $table->foreignUuid('updating_topic_id')->nullable()->constrained('topics')->nullOnDelete();
             $table->timestamps();
         });
     }

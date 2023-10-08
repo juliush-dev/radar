@@ -68,7 +68,7 @@ class TopicController extends Controller
         if ($request->query('stay')) {
             return redirect()->route('topics.show', $topic);
         } else {
-            return redirect()->route('topics.index');
+            return redirect(Referer::get());
         }
     }
 
@@ -314,16 +314,6 @@ class TopicController extends Controller
             });
         });
         Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
-        if ($request->input('routeOnSuccess') != null) {
-            // this is just a test version of this idea of redirecting
-            // back to a specified route on success
-            // the final goal is to make the specified route
-            // avaible in the show view, because I think
-            // is of a better ux when the user sees, what
-            // he just created, after creation, before
-            // he goes back where he came from
-            return redirect($request->input('routeOnSuccess'));
-        }
         return redirect()->route('topics.show', $newTopic);
     }
 
@@ -350,26 +340,42 @@ class TopicController extends Controller
         Toast::title('Topic deleted')->autoDismiss(5);
 
         $redirectRoute = route('topics.index');
-        if ($request->fullUrl() == $currentRoute = route('dashboard.index', ['tab' => 'topics'])) {
+        if (Referer::get() == $currentRoute = route('dashboard.index', ['tab' => 'topics'])) {
             $redirectRoute = $currentRoute;
         }
         return redirect($redirectRoute);
     }
 
-    public function unpublish(Topic $topic)
+    public function unpublishTopic(Topic $topic)
     {
         $this->authorize('use-dashboard');
         $topic->is_public = 0;
         $topic->save();
-        return back();
+        return redirect(Referer::get());
     }
 
-    public function publish(Topic $topic)
+    public function publishTopic(Topic $topic)
     {
         $this->authorize('use-dashboard');
         $topic->is_public = 1;
         $topic->save();
-        return redirect(route('dashboard.index', ['tab' => 'topics']));
+        return redirect(Referer::get());
+    }
+
+    public function unpublishLearningMaterial(LearningMaterial $learningMaterial)
+    {
+        $this->authorize('use-dashboard');
+        $learningMaterial->is_public = 0;
+        $learningMaterial->save();
+        return redirect(Referer::get());
+    }
+
+    public function publishLearningMaterial(LearningMaterial $learningMaterial)
+    {
+        $this->authorize('use-dashboard');
+        $learningMaterial->is_public = 1;
+        $learningMaterial->save();
+        return redirect(Referer::get());
     }
 
     public function applyUpdate(Topic $topic)

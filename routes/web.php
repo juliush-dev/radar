@@ -37,10 +37,12 @@ Route::middleware('splade')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::prefix('topics')->name('topics.')->group(function () {
             Route::post('/{topic}/learning-materials/upload', [App\Http\Controllers\TopicController::class, 'uploadLearningMaterial'])->name('learning-materials.upload');
-            Route::post('/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('learning-materials.remove');
+            Route::delete('/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('learning-materials.remove');
+            Route::post('/learning-materials/{learningMaterial}/publish', [App\Http\Controllers\TopicController::class, 'publishLearningMaterial'])->name('learning-materials.publish');
+            Route::post('/learning-materials/{learningMaterial}/unpublish', [App\Http\Controllers\TopicController::class, 'unpublishLearningMaterial'])->name('learning-materials.unpublish');
             Route::post('/{topic}/assess', [App\Http\Controllers\TopicController::class, 'assess'])->name('assess');
-            Route::post('/{topic}/block', [App\Http\Controllers\TopicController::class, 'publish'])->name('publish');
-            Route::post('/{topic}/unblock', [App\Http\Controllers\TopicController::class, 'unpublish'])->name('unpublish');
+            Route::post('/{topic}/publish', [App\Http\Controllers\TopicController::class, 'publishTopic'])->name('publish');
+            Route::post('/{topic}/unpublish', [App\Http\Controllers\TopicController::class, 'unpublishTopic'])->name('unpublish');
             Route::post('/{topic}/apply-update', [App\Http\Controllers\TopicController::class, 'applyUpdate'])->name('apply-update');
         });
 

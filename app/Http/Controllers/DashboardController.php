@@ -13,6 +13,7 @@ class DashboardController extends Controller
     }
     public function index(Request $request)
     {
+        $this->authorize('use-dashboard');
         $activeTab = $request->query('tab');
         $tabParameters = [
             'activeTab' => $activeTab
@@ -27,6 +28,8 @@ class DashboardController extends Controller
             $tabParameters['users'] = $this->rq->usersTable();
         } elseif ($activeTab == 'topics') {
             $tabParameters['topics'] = $this->rq->topicsTable();
+        } elseif ($activeTab == 'learning-materials') {
+            $tabParameters['lms'] = $this->rq->learningMaterialsTable();
         }
 
         return view(

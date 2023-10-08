@@ -5,13 +5,16 @@
     <h1 class="mb-2">{{ $skill->title }}</h1>
     </Link>
     <p class="font-normal text-sm mb-4 text-slate-500 dark:text-slate-300">
-        <Link modal href="{{ route('groups.edit', $skill->group) }}" class="dark:text-teal-300 text-teal-500">
-        {{ $skill->group->title }}
-        </Link>
+        @can('update-group')
+            <x-nav-link modal href="{{ route('groups.edit', $skill->group) }}" class="dark:text-teal-300 text-teal-500">
+                {{ $skill->group->title }}
+            </x-nav-link> <span> / </span>
+        @else
+            <span class="dark:text-indigo-300 text-indigo-500">
+                {{ $skill->group->title }}
+            </span><span> / </span>
+        @endcan
         @foreach ($skill->years as $year)
-            @if ($loop->first)
-                <span> / </span>
-            @endif
             <span
                 class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
             @if (!$loop->last)

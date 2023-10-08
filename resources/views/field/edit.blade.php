@@ -7,7 +7,7 @@
             'details' => $field->details,
             'years' => $field->years->pluck('year'),
         ]" class="w-full">
-            <x-forms.field :$rq />
+            <x-forms.field :$rq :$field />
         </x-splade-form>
     </div>
 </x-layouts.app>

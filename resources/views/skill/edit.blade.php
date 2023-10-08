@@ -7,7 +7,7 @@
             'fields' => $rq->fields(['ids' => $skill->fields->pluck('field_id')->all()])->pluck('id'),
             'newGroup' => null,
         ]">
-            <x-forms.skill :$rq />
+            <x-forms.skill :$rq :$skill />
         </x-splade-form>
     </div>
 </x-layouts.app>

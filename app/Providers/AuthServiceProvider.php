@@ -25,6 +25,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Gate::define('login', function (User $user) {
+            return !$user->blocked;
+        });
+
         Gate::define('use-dashboard', function (User $user) {
             return $user->is_admin && !$user->blocked;
         });
@@ -36,16 +41,21 @@ class AuthServiceProvider extends ServiceProvider
             return ($user->id === $profile->id) && !$user->blocked || $user->is_admin && !$user->blocked;
         });
 
-        Gate::define('create-topic', function (User $user) {
-            return !$user->blocked;
+        Gate::define('create-topic', function (?User $user) {
+            return !$user?->blocked || $user == null;
         });
         Gate::define('assess-topic', function (User $user) {
             return !$user->blocked;
         });
 
         Gate::define('update-topic', function (User $user, ?Topic $topic) {
-            return $topic != null ? ($user->id === $topic->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
+            return $topic != null ? !isset($topic->updating_topic_id) && (($user->id === $topic->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked) : $user->is_admin && !$user->blocked;
         });
+
+        Gate::define('see-topic-update-path', function (User $user, ?Topic $topic) {
+            return $topic != null ? (($user->id === $topic->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked) : $user->is_admin && !$user->blocked;
+        });
+
         Gate::define('delete-topic', function (User $user, ?Topic $topic) {
             return $topic != null ? ($user->id === $topic->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
         });
@@ -53,8 +63,8 @@ class AuthServiceProvider extends ServiceProvider
             return $lm != null ? $user->id === $lm->author?->id && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
         });
 
-        Gate::define('create-skill', function (User $user) {
-            return $user->is_admin && !$user->blocked;
+        Gate::define('create-skill', function (?User $user) {
+            return $user?->is_admin && !$user?->blocked || $user == null;
         });
         Gate::define('update-skill', function (User $user) {
             return $user->is_admin && !$user->blocked;
@@ -70,6 +80,14 @@ class AuthServiceProvider extends ServiceProvider
             return $user->is_admin && !$user->blocked;
         });
         Gate::define('delete-field', function (User $user) {
+            return $user->is_admin && !$user->blocked;
+        });
+
+        Gate::define('update-subject', function (User $user) {
+            return $user->is_admin && !$user->blocked;
+        });
+
+        Gate::define('update-group', function (User $user) {
             return $user->is_admin && !$user->blocked;
         });
     }

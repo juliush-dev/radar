@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class App extends Component
 {
-    public function __construct(public $activePage = '', public $icon = '', public $userType = "visitor")
+    public function __construct(public $activePage = '', public $icon = '', public $previousRoute = "/")
     {
     }
 

@@ -15,7 +15,7 @@ class Topic extends Component
     public function __construct(
         public ?RadarQuery $rq,
         public $actionLabel = 'save',
-        public $routeOnCancel = 'index',
+        public $topic = null,
     ) {
         //
     }

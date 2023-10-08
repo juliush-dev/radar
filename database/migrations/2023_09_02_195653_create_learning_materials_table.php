@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('path');
             $table->string('mime_type');
-            $table->string('approval_status');
+            $table->boolean('is_public')->default(false);
             $table->string('alternative')->nullable();
             $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();

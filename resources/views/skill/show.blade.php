@@ -21,7 +21,17 @@
                 Group
             </h2>
             <p class="mb-8 text-lg">
-                {{ $skill->group->title }}
+                @can('update-group')
+                    <x-nav-link modal href="{{ route('groups.edit', $skill->group) }}"
+                        class="dark:text-teal-300 text-teal-500">
+                        {{ $skill->group->title }}
+                    </x-nav-link>
+                @else
+                    <span class="dark:text-indigo-300 text-indigo-500">
+                        {{ $skill->group->title }}
+                    </span>
+                @endcan
+
             </p>
         @endif
         <h2 class="text-2xl mb-4 dark:text-slate-100">

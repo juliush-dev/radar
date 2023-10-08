@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use Facades\Spatie\Referer\Referer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Route;
 
 class ProfileController extends Controller
 {
@@ -75,13 +75,13 @@ class ProfileController extends Controller
     {
         $profile->blocked = 1;
         $profile->save();
-        return back();
+        return redirect(Referer::get());
     }
 
     public function unblock(User $profile)
     {
         $profile->blocked = 0;
         $profile->save();
-        return back();
+        return redirect(Referer::get());
     }
 }

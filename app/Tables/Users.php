@@ -55,12 +55,5 @@ class Users extends AbstractTable
             ->column('email_verified_at')
             ->column('action')
             ->paginate(15);
-
-        // ->searchInput()
-        // ->selectFilter()
-        // ->withGlobalSearch()
-
-        // ->bulkAction()
-        // ->export()
     }
 }

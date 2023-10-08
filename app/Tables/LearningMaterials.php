@@ -2,12 +2,12 @@
 
 namespace App\Tables;
 
-use App\Models\Topic;
+use App\Models\LearningMaterial;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\SpladeTable;
 
-class Topics extends AbstractTable
+class LearningMaterials extends AbstractTable
 {
     /**
      * Create a new instance.
@@ -36,7 +36,7 @@ class Topics extends AbstractTable
      */
     public function for()
     {
-        return Topic::query();
+        return LearningMaterial::query();
     }
 
     /**
@@ -49,11 +49,9 @@ class Topics extends AbstractTable
     {
         $table
             ->column('title')
-            ->column('subject.title', 'subject')
-            ->column('learningMaterials', 'LMs')
-            ->column('author.name', 'author')
+            ->column('topic')
             ->column('public', canBeHidden: false)
-            ->column('topicToUpdate.title', 'Update of')
+            ->column('author.name', 'Author')
             ->column('action')
             ->paginate(15);
     }
