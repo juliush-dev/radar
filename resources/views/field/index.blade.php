@@ -7,7 +7,7 @@
                 <x-field :field="$field" />
             @endforeach
             @if ($filterIsSet && $fields->count() == 0)
-                <p class="text-xl mb-4 text-white">No field matches the filter</p>
+                <p class="text-xl mb-4 dark:text-white">No field matches the filter</p>
             @endif
         </div>
         @can('create-field')

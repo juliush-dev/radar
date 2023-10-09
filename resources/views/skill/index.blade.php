@@ -6,7 +6,7 @@
                  <x-skill :loop="$loop" :skill="$skill" />
              @endforeach
              @if ($filterIsSet && $skills->count() == 0)
-                 <p class="text-xl text-white">No skill matches the filter</p>
+                 <p class="text-xl dark:text-white">No skill matches the filter</p>
              @endif
          </div>
          @can('create-skill')

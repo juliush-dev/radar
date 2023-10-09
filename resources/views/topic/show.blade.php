@@ -11,13 +11,13 @@
                          <x-splade-form submit-on-change :action="$topic->is_public
                              ? route('topics.unpublish', $topic)
                              : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                             class="text-violet-500 hover:text-violet-600">
+                             class="text-violet-400 hover:text-violet-500">
                              <x-splade-checkbox inline label="Public" name="is_public" value="1"
                                  class="checked:bg-fuchsia-400" />
                          </x-splade-form>
                      @endif
                      <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"
-                         class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                         class="w-fit flex items-center gap-2 justify-end text-violet-400 hover:text-violet-500 transition-all duration-300">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor" class="w-5 h-5 my-auto">
                              <path stroke-linecap="round" stroke-linejoin="round"
@@ -25,7 +25,7 @@
                          </svg> Topics dashboard
                      </x-splade-link>
                      <x-splade-link :href="route('dashboard.index', ['tab' => 'learning-materials'])"
-                         class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                         class="w-fit flex items-center gap-2 justify-end text-violet-400 hover:text-violet-500 transition-all duration-300">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor" class="w-5 h-5 my-auto">
                              <path stroke-linecap="round" stroke-linejoin="round"
@@ -208,7 +208,7 @@
                          <x-splade-form submit-on-change :action="$topic->is_public
                              ? route('topics.unpublish', $topic)
                              : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                             class="text-violet-500 hover:text-violet-600">
+                             class="text-violet-400 hover:text-violet-500">
                              <x-splade-checkbox inline label="Public" name="is_public" value="1"
                                  class="checked:bg-fuchsia-400" />
                          </x-splade-form>

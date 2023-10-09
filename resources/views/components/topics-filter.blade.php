@@ -24,7 +24,7 @@
     @can('use-dashboard')
         <div class="flex justify-end items-center grow gap-6">
             <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"
-                class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                class="w-fit flex items-center gap-2 justify-end text-violet-400 hover:text-violet-500 transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-5 h-5 my-auto">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -32,7 +32,7 @@
                 </svg> Topics dashboard
             </x-splade-link>
             <x-splade-link :href="route('dashboard.index', ['tab' => 'learning-materials'])"
-                class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                class="w-fit flex items-center gap-2 justify-end text-violet-400 hover:text-violet-500 transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-5 h-5 my-auto">
                     <path stroke-linecap="round" stroke-linejoin="round"

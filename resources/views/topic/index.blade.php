@@ -7,7 +7,7 @@
                  <x-topic :topic="$topic" />
              @endforeach
              @if ($filterIsSet && $topics->count() == 0)
-                 <p class="text-xl mb-4 text-white">No topic matches the filter</p>
+                 <p class="text-xl mb-4 dark:text-white">No topic matches the filter</p>
              @endif
          </div>
          @can('create-topic')

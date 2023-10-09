@@ -1,7 +1,7 @@
  <div
      class="group break-inside-avoid w-full border border-violet-300 text-white shadow shadow-violet-400/80 dark:shadow-violet-400/50 hover:shadow-md hover:shadow-violet-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
      <x-nav-link href="{{ route('topics.show', $topic) }}"
-         class="text-lg first-letter:uppercase w-full text-violet-500 group-hover:text-violet-700 dark:text-violet-300 dark:group-hover:text-violet-500 hover:text-violet-600 transition-colors duration-300">
+         class="text-lg first-letter:uppercase w-full text-violet-500 group-hover:text-violet-700 dark:text-violet-300 dark:group-hover:text-violet-400 hover:text-violet-500 transition-colors duration-300">
          <h1 class="mb-2">{{ $topic->title }}</h1>
      </x-nav-link>
 
@@ -80,7 +80,7 @@
                          <x-splade-form submit-on-change :action="$topic->is_public
                              ? route('topics.unpublish', $topic)
                              : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                             class="text-violet-500 hover:text-violet-600">
+                             class="text-violet-400 hover:text-violet-500">
                              <x-splade-checkbox inline label="Public" name="is_public" value="1"
                                  class="checked:bg-fuchsia-400" />
                          </x-splade-form>
