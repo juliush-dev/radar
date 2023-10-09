@@ -5,10 +5,12 @@ import "@protonemedia/laravel-splade/dist/style.css";
 import "../css/choices.scss";
 import Topic from "./Components/Topic.vue";
 import Skill from "./Components/Skill.vue";
+import LineChart from "./Components/LineChart.vue";
 import "@protonemedia/laravel-splade/dist/jodit.css";
 
 import { createApp } from "vue/dist/vue.esm-bundler.js";
 import { renderSpladeApp, SpladePlugin } from "@protonemedia/laravel-splade";
+
 const el = document.getElementById("app");
 
 createApp({
@@ -22,6 +24,7 @@ createApp({
         components: {
             Topic,
             Skill,
+            LineChart,
         },
     })
     .mount(el);

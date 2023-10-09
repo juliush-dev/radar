@@ -1,5 +1,5 @@
 <div class="dark:text-slate-100">
-    <section>
+    <section class="mb-8">
         <h1 class="text-3xl mb-5">Numbers</h1>
         <div class="flex flex-wrap gap-6 justify-evenly">
             <Link href="{{ route('dashboard.index', ['tab' => 'users']) }}"
@@ -23,5 +23,10 @@
             <span class="text-2xl">{{ $totalSkills }}</span>
             </Link>
         </div>
+    </section>
+    <section class="p-6 bg-white">
+        <x-splade-data :default="$usersChart">
+            <line-chart :chart-data="data" />
+        </x-splade-data>
     </section>
 </div>

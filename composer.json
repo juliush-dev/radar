@@ -10,12 +10,13 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "nesbot/carbon": "^2.71",
         "protonemedia/laravel-splade-breeze": "^2.5",
         "spatie/laravel-query-builder": "^5.5",
         "spatie/laravel-referer": "^1.8"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
+        "fakerphp/faker": "^1.23",
         "laravel/dusk": "^7.9",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",

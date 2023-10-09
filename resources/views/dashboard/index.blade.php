@@ -46,7 +46,7 @@
         </div>
         <div class="px-6 lg:px-10 grow overflow-auto">
             @if ($activeTab == null)
-                <x-dashboard.overview :$totalUsers :$totalTopics :$totalLearningMaterials :$totalSkills />
+                <x-dashboard.overview :$totalUsers :$totalTopics :$totalLearningMaterials :$totalSkills :$usersChart />
             @elseif($activeTab == 'users')
                 <x-dashboard.users :$users />
             @elseif($activeTab == 'topics')
