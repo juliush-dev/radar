@@ -37,7 +37,9 @@
             placeholder="Choose or" multiple class="mb-4" />
         <x-splade-select name="skills" label="Skill" :options="$skills" option-value="id" option-label="title"
             placeholder="Choose or" multiple class="mb-4" />
-        <x-splade-file label="Learning materials" name="documents[]" filepond preview multiple />
+        @if (!$hideLmsInput)
+            <x-splade-file label="Learning materials" name="documents[]" filepond preview multiple />
+        @endif
         <div class="flex justify-between my-6 gap-6">
             <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="$actionLabel" />
             <Link href="{{ isset($topic) ? route('topics.show', $topic) : route('topics.index') }}"

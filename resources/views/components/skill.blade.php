@@ -10,7 +10,7 @@
                 {{ $skill->group->title }}
             </x-nav-link> <span> / </span>
         @else
-            <span class="dark:text-indigo-300 text-indigo-500">
+            <span class="dark:text-slate-300 text-slate-600">
                 {{ $skill->group->title }}
             </span><span> / </span>
         @endcan

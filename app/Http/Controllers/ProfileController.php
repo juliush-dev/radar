@@ -57,17 +57,20 @@ class ProfileController extends Controller
             ]);
         }
         $user = $profile;
-        if ($request->user()->id == $profile->id) {
+        $profileId = $user->id;
+        $requestorId = $request->user()->id;
+        $profile = null;
+        if ($requestorId == $profileId) {
             Auth::logout();
         }
-
         $user->delete();
-
-        if ($request->user()->id == $profile->id) {
+        if ($requestorId == $profileId) {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
         }
-        $profile = null;
+        if ($requestorId != $profileId && $request->user()->is_admin) {
+            return redirect(Referer::get());
+        }
         return Redirect::to('/');
     }
 

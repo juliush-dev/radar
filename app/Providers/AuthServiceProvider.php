@@ -64,7 +64,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('create-skill', function (?User $user) {
-            return $user?->is_admin && !$user?->blocked || $user == null;
+            return $user?->is_admin && !$user?->blocked;
         });
         Gate::define('update-skill', function (User $user) {
             return $user->is_admin && !$user->blocked;

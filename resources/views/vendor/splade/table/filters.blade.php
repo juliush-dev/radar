@@ -21,7 +21,7 @@
                 <div class="p-2">
                     @if ($filter->type === 'select')
                         <select name="filter-{{ $filter->key }}"
-                            class="block focus:ring-teal-500 focus:border-teal-500 w-full shadow-sm text-sm border-teal-500 rounded-md"
+                            class="block focus:ring-teal-500 focus:border-teal-500 w-full shadow-sm text-sm border-teal-500"
                             @change="table.updateQuery('filter[{{ $filter->key }}]', $event.target.value)">
                             @foreach ($filter->options() as $optionKey => $option)
                                 <option @selected($filter->hasValue() && $filter->value == $optionKey) value="{{ $optionKey }}">

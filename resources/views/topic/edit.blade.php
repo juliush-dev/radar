@@ -7,13 +7,10 @@
             'subject' => $topic->subject->id,
             'fields' => $topic->fields->pluck('field_id'),
             'skills' => $topic->skills->pluck('skill_id'),
-            'documents' => $topic->learningMaterials->map(function ($lm) {
-                return ProtoneMedia\Splade\FileUploads\ExistingFile::fromDisk('public')->get($lm->alternative);
-            }),
             'newSubject' => null,
             'learningMaterials' => [],
         ]">
-            <x-forms.topic :$rq action-label="Save changes" :$topic />
+            <x-forms.topic hide-lms-input :$rq action-label="Save changes" :$topic />
         </x-splade-form>
     </div>
 </x-layouts.app>

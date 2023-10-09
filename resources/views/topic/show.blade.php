@@ -1,28 +1,21 @@
  <x-layouts.app :active-page="$topic->title"
      icon="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
      <main class="h-full overflow-y-auto dark:text-white text-slate-800 p-6 lg:px-80">
-         <div class="flex gap-6 flex-wrap md:flex-nowrap mb-4">
-             @if ($topic->is_update || $topic->topicUpdating)
-                 <span
-                     class="px-2 bg-pink-600 w-fit mb-2 font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
-                     @if ($topic->is_update)
-                         <span
-                             class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
-                     @endif
-                 </span>
-             @endif
-         </div>
          <div class="flex  mb-4 items-center">
              <h1 class="first-letter:uppercase text-xl dark:text-slate-100">
                  {{ $topic->title }}
              </h1>
              @can('use-dashboard')
                  <div class="flex justify-end items-center grow gap-6">
-                     <x-splade-form submit-on-change :action="$topic->is_public ? route('topics.unpublish', $topic) : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                         class="text-violet-500 hover:text-violet-600">
-                         <x-splade-checkbox inline label="Public" name="is_public" value="1"
-                             class="checked:bg-fuchsia-400" />
-                     </x-splade-form>
+                     @if (!$topic->is_update)
+                         <x-splade-form submit-on-change :action="$topic->is_public
+                             ? route('topics.unpublish', $topic)
+                             : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
+                             class="text-violet-500 hover:text-violet-600">
+                             <x-splade-checkbox inline label="Public" name="is_public" value="1"
+                                 class="checked:bg-fuchsia-400" />
+                         </x-splade-form>
+                     @endif
                      <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"
                          class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -42,14 +35,14 @@
                  </div>
              @endcan
          </div>
-         <div class="text-sm flex items-center mb-4 gap-2 flex-wrap lg:flex-nowrap">
+         <div class="text-sm flex items-center mb-4 gap-2 flex-wrap">
              @can('update-subject')
                  <x-nav-link modal href="{{ route('subjects.edit', $topic->subject) }}"
                      class="dark:text-teal-300 text-teal-500">
                      {{ $topic->subject->title }}
                  </x-nav-link>/
              @else
-                 <span class="dark:text-indigo-300 text-indigo-500">
+                 <span class="dark:text-slate-300 text-slate-600">
                      {{ $topic->subject->title }}
                  </span>/
              @endcan
@@ -73,33 +66,42 @@
                                  ->where('topic_id', $topic->id)
                                  ->first();
                          @endphp
-                         @for ($i = 1; $i <= 5; $i++)
-                             <x-splade-form :action="route('topics.assess', $topic) . '?stay=1'" :default="['assessment' => $i]">
-                                 <button type="submit">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor"
-                                         class="w-6 h-6 transition-all duration-300 {{ isset($topicAssessment) && isset($topicAssessment->assessment) && $i <= $topicAssessment->assessment ? 'fill-yellow-400 text-yellow-400' : 'hover:fill-yellow-400 hover:text-yellow-400' }}">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                                     </svg>
-                                 </button>
-                             </x-splade-form>
-                         @endfor
+                         <x-splade-form :action="route('topics.assess', $topic)" :default="['assessment' => $topicAssessment?->assessment]" submit-on-change class="flex flex-nowrap gap-1">
+                             @for ($i = 1; $i <= 5; $i++)
+                                 <svg @click="form.assessment = form.assessment == {{ $i }} ? ({{ $i - 1 }} < 1 ? 0 : {{ $i - 1 }} ) : {{ $i }}"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                     stroke="currentColor" class="w-5 h-5 text-yellow-400 hover:fill-yellow-400"
+                                     v-bind:class="form.assessment && {{ $i }} <= form.assessment && 'fill-yellow-400'">
+                                     <path stroke-linecap="round" stroke-linejoin="round"
+                                         d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                 </svg>
+                             @endfor
+                         </x-splade-form>
                      @endcan
                  @else
+                     <Link href="#login-required" class="flex flex-nowrap gap-1">
                      @for ($i = 1; $i <= 5; $i++)
-                         <Link href="#login-required">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="w-6 h-6  transition-all duration-300">
+                             stroke="currentColor" class="w-5 h-5  text-yellow-400">
                              <path stroke-linecap="round" stroke-linejoin="round"
                                  d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                          </svg>
-                         </Link>
                      @endfor
+                     </Link>
                  @endauth
              </div>
+             @if ($topic->is_update || $topic->topicUpdating)
+                 <div class="w-full">
+                     <span
+                         class="px-2 bg-pink-600 w-fit mb-2 font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
+                         @if ($topic->is_update)
+                             <span
+                                 class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
+                         @endif
+                     </span>
+                 </div>
+             @endif
          </div>
-
          <hr class="mb-8">
          @can('see-topic-update-path', $topic)
              @if ($topic->is_update)
@@ -202,11 +204,15 @@
          @auth
              <section class="relative w-full flex gap-4 text-white text-xs items-center">
                  @can('use-dashboard')
-                     <x-splade-form submit-on-change :action="$topic->is_public ? route('topics.unpublish', $topic) : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                         class="text-violet-500 hover:text-violet-600">
-                         <x-splade-checkbox inline label="Public" name="is_public" value="1"
-                             class="checked:bg-fuchsia-400" />
-                     </x-splade-form>
+                     @if (!$topic->is_update)
+                         <x-splade-form submit-on-change :action="$topic->is_public
+                             ? route('topics.unpublish', $topic)
+                             : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
+                             class="text-violet-500 hover:text-violet-600">
+                             <x-splade-checkbox inline label="Public" name="is_public" value="1"
+                                 class="checked:bg-fuchsia-400" />
+                         </x-splade-form>
+                     @endif
                  @endcan
                  @if ($topic->is_update && $topic->topicUpdating == null)
                      @can('use-dashboard')
@@ -217,7 +223,7 @@
                      @endcan
                  @endif
                  @can('update-topic', $topic)
-                     @if (!$topic->is_update && $topic->topicUpdating == null)
+                     @if (!$topic->is_update || $topic->topicUpdating == null)
                          <x-layouts.navigation-link class="text-blue-400" label="edit" resource="topics" action="edit"
                              :action-args="$topic" />
                      @endif

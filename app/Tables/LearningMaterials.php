@@ -3,6 +3,7 @@
 namespace App\Tables;
 
 use App\Models\LearningMaterial;
+use App\Models\User;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\SpladeTable;
@@ -48,6 +49,8 @@ class LearningMaterials extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
+            ->selectFilter('user_id', User::all()->pluck('name', 'id')->all(), 'author')
+            ->selectFilter('is_public', [true => 'Public', false => 'Not public'], 'visibility')
             ->column('title')
             ->column('topic')
             ->column('public', canBeHidden: false)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Models\SubjectYear;
 use App\Services\RadarQuery;
+use Facades\Spatie\Referer\Referer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -53,6 +54,6 @@ class SubjectController extends Controller
         });
         // collect($request->toArray())->toJson();
         Toast::title('Subject sucessfuly updated!')->autoDismiss(5);
-        return redirect()->route('topics.index');
+        return redirect(Referer::get());
     }
 }

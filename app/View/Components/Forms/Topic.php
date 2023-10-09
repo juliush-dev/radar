@@ -16,6 +16,7 @@ class Topic extends Component
         public ?RadarQuery $rq,
         public $actionLabel = 'save',
         public $topic = null,
+        public $hideLmsInput = false,
     ) {
         //
     }

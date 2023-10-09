@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Models\Group;
+use Facades\Spatie\Referer\Referer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -64,7 +65,7 @@ Route::middleware('splade')->group(function () {
                 $group->save();
             }
             Toast::title('Group sucessfuly updated!')->autoDismiss(5);
-            return redirect()->route('skills.index');
+            return redirect(Referer::get());
         })->name('groups.update');
 
         Route::resource('fields', App\Http\Controllers\FieldController::class)->except(['index', 'show']);;

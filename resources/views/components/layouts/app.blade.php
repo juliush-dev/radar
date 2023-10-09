@@ -75,9 +75,8 @@
                                  d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                          </svg> Previous page
                      </x-splade-link>
-                     <button @click="theme.dark = !theme.dark"
-                         v-text="theme.dark ? '⚫ Turn light on' : '🟡 Turn light off'"
-                         class="my-auto whitespace-nowrap text-slate-600 dark:text-slate-200"></button>
+                     <button @click="theme.dark = !theme.dark" v-text="theme.dark ? '☀️' : '🕶️'"
+                         class="my-auto py-0.5 transition-shadow duration-300 shadow hover:shadow-md shadow-fuchsia-200 hover:shadow-fuchsia-400 px-0.5 whitespace-nowrap text-slate-600 dark:text-slate-200"></button>
                  </div>
              </div>
              <div class="grow overflow-hidden relative">

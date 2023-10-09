@@ -4,7 +4,7 @@
     <template #default="button">
         <{{ $type === 'link' || $type === 'call-to-action-link' ? 'Link' : 'button' }} :disabled="button.spinner"
             {{ $attributes->class([
-                    'rounded-md p-2 text-sm flex items.center justify.center gap-2 first-letter:capitalize leading-5 transition duration-500 ease-in-out',
+                    'p-2 text-sm flex items.center justify.center gap-2 first-letter:capitalize leading-5 transition duration-500 ease-in-out',
                     'p-2 text-sm shadow-md hover:shadow-xl' => $type === 'call-to-action' || $type == 'call-to-action-link',
                 ])->except(['v-bind:spinner', ':spinner'])->merge(['type' => $type])->when($name, fn($attr) => $attr->merge(['name' => $name, 'value' => $value])) }}>
             @if (trim($slot))

@@ -34,7 +34,8 @@ class TopicController extends Controller
     {
         $yearFilterValue = $request->query('year');
         $subjectFilterValue = $request->query('subject');
-        $filterIsSet = array_reduce([$yearFilterValue, $subjectFilterValue], function ($acc, $value) {
+        $assessmentFilterValue = $request->query('assessment');
+        $filterIsSet = array_reduce([$yearFilterValue, $subjectFilterValue, $assessmentFilterValue], function ($acc, $value) {
             $acc |= isset($value);
             return $acc;
         }, false);
@@ -43,6 +44,7 @@ class TopicController extends Controller
                 [
                     'year' => $yearFilterValue,
                     'subject' => $subjectFilterValue,
+                    'assessment' => $assessmentFilterValue,
                     'author' => $request->user()?->id
                 ]
             ),
@@ -204,7 +206,7 @@ class TopicController extends Controller
         if ($request->query('stay')) {
             return redirect()->route('topics.show', $topic);
         } else {
-            return redirect()->route('topics.index');
+            return redirect(Referer::get());
         }
     }
 

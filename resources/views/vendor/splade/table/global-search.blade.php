@@ -1,6 +1,5 @@
 <div class="relative">
-    <input
-        class="block w-full sm:pl-9 text-sm rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500 border-teal-500"
+    <input class="block w-full sm:pl-9 text-sm shadow-sm focus:ring-emerald-500 focus:border-emerald-500 border-teal-500"
         placeholder="{{ $table->searchInputs('global')->label }}" value="{{ $table->searchInputs('global')->value }}"
         type="text" name="searchInput-global" v-bind:class="{ 'opacity-50': table.isLoading }"
         v-bind:disabled="table.isLoading"

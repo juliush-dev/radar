@@ -48,6 +48,8 @@ class Users extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
+            ->selectFilter('id', User::all()->pluck('name', 'id')->all(), 'User')
+            ->selectFilter('blocked', [true => 'Blocked', false => 'Granted'], 'access')
             ->column('name', canBeHidden: false)
             ->column('email')
             ->column('blocked', canBeHidden: false)

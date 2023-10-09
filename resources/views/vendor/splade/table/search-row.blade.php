@@ -1,7 +1,7 @@
 <div v-show="@js($searchInput->value !== null) || table.isForcedVisible(@js($searchInput->key))" class="px-4 sm:px-0">
-    <div class="flex rounded-md shadow-sm relative mt-3">
+    <div class="flex shadow-sm relative mt-3">
         <label for="{{ $searchInput->key }}"
-            class="inline-flex items-center px-4 rounded-l-md border border-r-0 border-teal-500 bg-green-50 text-green-500 text-sm">
+            class="inline-flex items-center px-4 border border-r-0 border-teal-500 bg-green-50 text-green-500 text-sm">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-teal-600" viewBox="0 0 20 20"
                 fill="currentColor">
                 <path fill-rule="evenodd"
@@ -13,13 +13,13 @@
         </label>
 
         <input name="searchInput-{{ $searchInput->key }}" value="{{ $searchInput->value }}" type="text"
-            class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-emerald-500 focus:border-emerald-500 text-sm border-teal-500"
+            class="flex-1 min-w-0 block w-full px-3 py-2  focus:ring-emerald-500 focus:border-emerald-500 text-sm border-teal-500"
             v-bind:class="{ 'opacity-50': table.isLoading }" v-bind:disabled="table.isLoading"
             @input="table.debounceUpdateQuery('filter[{{ $searchInput->key }}]', $event.target.value, $event.target)" />
 
         <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
             <button
-                class="rounded-md text-teal-600 hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                class=" text-teal-600 hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
                 @click.prevent="table.disableSearchInput(@js($searchInput->key))"
                 dusk="remove-search-row-{{ $searchInput->key }}">
                 <span class="sr-only">{{ __('Remove search') }}</span>
