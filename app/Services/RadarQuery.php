@@ -57,30 +57,32 @@ class RadarQuery
     public function topics($filter = [])
     {
         $topics = Topic::where('is_public', 1)->where('is_update', false);
-        if (isset($filter['author'])) {
-            $topics->whereNot('user_id', $filter['author']);
-            $topics->orWhere(function ($query) {
-                $query->where('user_id', null)->where('is_update', false);
-            });
-            $topics->orWhere(function ($query) use ($filter) {
-                $query->where('user_id', $filter['author'])->where('updating_topic_id', null);
-                $query->where(function ($query) {
-                    $query->where('is_update', true)->orWhere('is_update', false);
+        if (!empty($filter['author'])) {
+            $topics->where(function ($query) use ($filter) {
+                $query->whereNot('user_id', $filter['author']);
+                $query->orWhere(function ($query) {
+                    $query->where('user_id', null)->where('is_update', false);
                 });
+                $query->orWhere(function ($query) use ($filter) {
+                    $query->where('user_id', $filter['author'])->where('updating_topic_id', null);
+                    $query->where(function ($query) {
+                        $query->where('is_update', true)->orWhere('is_update', false);
+                    });
+                });
+                $query->where('user_id', $filter['author'])->where('updating_topic_id', null);
             });
-            $topics->where('user_id', $filter['author'])->where('updating_topic_id', null);
         }
-        if (isset($filter['year'])) {
+        if (!empty($filter['year'])) {
             $topics->whereHas('years', function (Builder $query) use ($filter) {
                 $query->where('year', $filter['year']);
             });
         }
-        if (isset($filter['assessment'])) {
+        if (!empty($filter['assessment'])) {
             $topics->whereHas('assessments', function (Builder $query) use ($filter) {
                 $query->where('assessment', $filter['assessment'])->where('user_id', Request::user()->id);
             });
         }
-        if (isset($filter['subject'])) {
+        if (!empty($filter['subject'])) {
             $topics->where('subject_id', $filter['subject']);
         }
         return $topics->get();

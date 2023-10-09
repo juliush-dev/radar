@@ -40,6 +40,9 @@
         @if (!$hideLmsInput)
             <x-splade-file label="Learning materials" name="documents[]" filepond preview multiple />
         @endif
+        {{-- <div class="flex justify-start my-4">
+            <EmojiPicker :native="@js(false)" @select="" class="" />
+        </div> --}}
         <div class="flex justify-between my-6 gap-6">
             <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="$actionLabel" />
             <Link href="{{ isset($topic) ? route('topics.show', $topic) : route('topics.index') }}"
