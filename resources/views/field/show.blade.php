@@ -17,7 +17,7 @@
                         @endforeach
                     </p>
                 @endif
-                <div class="grow flex justify-end gap-6">
+                <div class="grow flex md:justify-end gap-6">
                     @can('create-field')
                         <Link href="{{ Auth::check() ? route('fields.create') : '#login-required' }}"
                             class="text-sky-400 hover:text-sky-500">

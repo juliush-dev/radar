@@ -209,7 +209,7 @@ class TopicController extends Controller
                 $assessment->save();
             }
         });
-        Toast::title('New assessment saved')->autoDismiss(5);
+        Toast::title('assessment updated')->autoDismiss(5);
         if ($request->query('stay')) {
             return redirect()->route('topics.show', $topic);
         } else {
@@ -305,19 +305,15 @@ class TopicController extends Controller
                     $topicSkill->save();
                 }
             });
-            HandleSpladeFileUploads::forRequest($request, 'documents');
-            $request->orderedSpladeFileUploads('documents')->each(function (SpladeFile $file) use ($newTopic, $request) {
-                if ($file->exists()) {
-                    $existingLmFromDB = LearningMaterial::where('alternative', $file->existing->name)->first();
-                    $copy = $existingLmFromDB->replicate(['created_at', 'updated_at']);
-                    $copy->topic_id = $newTopic->id;
-                    $copy->user_id = $request->user()->id;
-                    $copy->save();
-                }
-                if ($file->doesntExist()) {
-                    // dd($file->upload);
-                    $this->uploadLm($file->upload, $newTopic);
-                }
+            $topic->assessments->each(function ($assessment) use ($newTopic) {
+                $assessmentCopy = $assessment->replicate();
+                $assessmentCopy->topic_id = $newTopic->id;
+                $assessmentCopy->save();
+            });
+            $topic->learningMaterials->each(function ($learningMaterial) use ($newTopic) {
+                $learningMaterialCopy = $learningMaterial->replicate();
+                $learningMaterialCopy->topic_id = $newTopic->id;
+                $learningMaterialCopy->save();
             });
         });
         Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
@@ -398,12 +394,30 @@ class TopicController extends Controller
                 } else {
                     $topic->is_update = 0;
                 }
-                $oldTopic->assessments->each(function ($assessment) use ($topic) {
-                    $assessmentCopy = $assessment->replicate();
-                    $assessmentCopy->topic_id = $topic->id;
-                    $assessmentCopy->save();
-                    UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $assessment->topic_id)->delete();
+                $oldTopic->assessments->each(function ($assessment) use ($topic, $oldTopic) {
+                    $assessmentCopy = null;
+                    if (($assessmentCopy = UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $topic->id)->first()) == null) {
+                        $assessmentCopy = $assessment->replicate();
+                        $assessmentCopy->topic_id = $topic->id;
+                        $assessmentCopy->save();
+                        UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $assessment->topic_id)->delete();
+                    } elseif ($assessment->user_id != $oldTopic->user_id) {
+                        UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $topic->id)->delete();
+                        $assessmentCopy = $assessmentCopy->replicate();
+                        $assessmentCopy->assessment = $assessment->assessment;
+                        $assessmentCopy->save();
+                    }
                 });
+
+                $oldTopic->learningMaterials->each(function ($learningMaterial) use ($topic) {
+                    if (LearningMaterial::where('id', $learningMaterial->id)->where('topic_id', $topic->id)->first() == null) {
+                        $learningMaterialCopy = $learningMaterial->replicate();
+                        $learningMaterialCopy->topic_id = $topic->id;
+                        $learningMaterialCopy->save();
+                        LearningMaterial::where('id', $learningMaterial->id)->where('topic_id', $learningMaterial->topic_id)->delete();
+                    }
+                });
+
                 $oldTopic->delete();
                 $topic->is_public = true;
                 $topic->save();

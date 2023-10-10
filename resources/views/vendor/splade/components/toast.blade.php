@@ -8,7 +8,7 @@
                 'bg-red-50 border-red-400' => $isDanger,
                 'bg-green-50 border-emerald-400' => $isInfo,
             ])>
-                <div class="flex">
+                <div class="flex w-full">
                     <div class="flex-shrink-0">
                         @if ($isSuccess)
                             <svg class="h-5 w-5 text-teal-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"

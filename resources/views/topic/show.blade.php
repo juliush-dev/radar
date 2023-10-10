@@ -56,7 +56,7 @@
                      @endforeach
                  </p>
              @endif
-             <div class="flex justify-end grow gap-6 items-center">
+             <div class="flex md:justify-end grow gap-6 items-center">
                  @auth
                      @can('assess-topic')
                          @php
@@ -91,13 +91,13 @@
                  @endauth
                  @can('create-topic')
                      <Link href="{{ Auth::check() ? route('topics.create') : '#login-required' }}"
-                         class="text-fuchsia-400 hover:text-fuchsia-500">
+                         class="whitespace-nowrap text-fuchsia-400 hover:text-fuchsia-500">
                      Add new topic
                      </Link>
                  @endcan
                  @if ($topic->is_update || $topic->topicUpdating)
                      <span
-                         class="px-2 bg-pink-600 w-fit mb-2 font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
+                         class="px-2 bg-pink-600 w-fit font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
                          @if ($topic->is_update)
                              <span
                                  class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
@@ -150,11 +150,11 @@
              @endif
              Learning Materials
          </h2>
-         <div class="columns-1 lg:columns-3 space-y-4 gap-4 w-full mb-8">
+         <div class="columns-1 lg:columns-2  xl:columns-3 space-y-4 gap-4 w-full mb-8">
              @foreach ($topicLearningMaterials as $lm)
                  @if (Illuminate\Support\Facades\Storage::disk('public')->exists($lm->alternative))
                      <x-splade-form method="get" :action="route('topics.learning-materials.download', $lm->id)" blob
-                         class="break-inside-avoid group flex flex-col justify-center items-center relative w-full">
+                         class="break-inside-avoid group flex flex-col justify-center items-center relative w-full border border-slate-300">
                          @if (!$lm->is_public)
                              <span
                                  class="self-start px-2 bg-pink-600 w-fit font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile

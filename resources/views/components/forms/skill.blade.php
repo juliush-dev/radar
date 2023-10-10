@@ -26,7 +26,8 @@
           <x-splade-select name="fields" label="Fields" :options="$fields" option-value="id" option-label="code"
               placeholder="Choose or" multiple />
           <div class="flex justify-between my-6 gap-6">
-              <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="$actionLabel" />
+              <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md whitespace-nowrap"
+                  :label="$actionLabel" />
               <Link href="{{ isset($skill) ? route('skills.show', $skill) : route('skills.index') }}"
                   class=" whitespace-nowrap flex items-center justify-center w-fit px-4 rounded-none text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
               Cancel
