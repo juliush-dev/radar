@@ -9,6 +9,7 @@ use App\Models\Skill;
 use App\Models\Skill\Type;
 use App\Models\SkillField;
 use App\Models\SkillYear;
+use App\Models\UserSkillAssessment;
 use App\Services\RadarQuery;
 use Facades\Spatie\Referer\Referer;
 use Illuminate\Http\Request;
@@ -23,7 +24,10 @@ class SkillController extends Controller
     }
     public function show(Skill $skill)
     {
-        return view('skill.show', ['skill' => $skill]);
+        return view('skill.show', [
+            'skill' => $skill,
+            'userAssessment' => $this->rq->userSkillAssessment($skill)
+        ]);
     }
 
     public function index(Request $request)
@@ -35,7 +39,8 @@ class SkillController extends Controller
         $groupFilterValue = $request->query('group');
         $yearFilterValue = $request->query('year');
         $fieldFilterValue = $request->query('field');
-        $filterIsSet = array_reduce([$typeFilterValue, $groupFilterValue, $yearFilterValue, $fieldFilterValue], function ($acc, $value) {
+        $assessmentFilterValue = $request->query('assessment');
+        $filterIsSet = array_reduce([$typeFilterValue, $groupFilterValue, $yearFilterValue, $fieldFilterValue, $assessmentFilterValue], function ($acc, $value) {
             $acc |= isset($value);
             return $acc;
         }, false);
@@ -46,6 +51,7 @@ class SkillController extends Controller
                     'group' => $groupFilterValue,
                     'year' => $yearFilterValue,
                     'field' => $fieldFilterValue,
+                    'assessment' => $assessmentFilterValue,
                 ]
             ),
             'rq' => $this->rq,
@@ -270,5 +276,36 @@ class SkillController extends Controller
         $skill->delete();
         Toast::title('skill deleted')->autoDismiss(5);
         return redirect()->route('skills.index');
+    }
+
+    public function assess(Request $request, Skill $skill)
+    {
+        if (!Gate::allows('assess-skill', $skill)) {
+            Toast::warning('Action Denied')->autoDismiss(5);
+            return redirect(Referer::get());
+        }
+        DB::transaction(function () use ($request, $skill) {
+            $newAssessment = new UserSkillAssessment;
+            $newAssessment->user_id = auth()->user()->id;
+            $newAssessment->skill_id = $skill->id;
+            $userPreviousAssessmentQuery = UserSkillAssessment::where('user_id', $newAssessment->user_id)->where('skill_id', $newAssessment->skill_id);
+            $exists = $userPreviousAssessmentQuery->first() != null;
+            $newValue = $request->input('assessment');
+            $newValueValid = $newValue > 0 && $newValue <= 5;
+            if ($exists && $newValueValid) {
+                $userPreviousAssessmentQuery->update(['assessment' => $newValue]);
+            } elseif (!$exists && $newValueValid) {
+                $newAssessment->assessment = $newValue;
+                $newAssessment->save();
+            } else {
+                $userPreviousAssessmentQuery->delete();
+            }
+        });
+        Toast::title('assessment updated')->autoDismiss(5);
+        if ($request->query('stay')) {
+            return redirect()->route('skills.show', $skill);
+        } else {
+            return redirect(route('skills.show', $skill));
+        }
     }
 }

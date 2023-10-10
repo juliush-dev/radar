@@ -1,6 +1,6 @@
- <x-layouts.app :active-page="$topic->title"
+ <x-layouts.app :active-page="'Topic / ' . $topic->title"
      icon="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
-     <main class="h-full overflow-y-auto dark:text-white text-slate-800 p-6 lg:px-80">
+     <main class="h-full overflow-y-auto dark:text-white text-slate-800 p-6 lg:px-80" @preserveScroll('topic')>
          <div class="flex  mb-4 items-center">
              <h1 class="first-letter:uppercase text-xl dark:text-slate-100">
                  {{ $topic->title }}
@@ -57,38 +57,6 @@
                  </p>
              @endif
              <div class="flex md:justify-end grow gap-6 items-center">
-                 @auth
-                     @can('assess-topic')
-                         @php
-                             $topicAssessment = $topic
-                                 ->assessments()
-                                 ->where('user_id', auth()->user()->id)
-                                 ->where('topic_id', $topic->id)
-                                 ->first();
-                         @endphp
-                         <x-splade-form :action="route('topics.assess', $topic)" :default="['assessment' => $topicAssessment?->assessment]" submit-on-change class="flex flex-nowrap gap-1">
-                             @for ($i = 1; $i <= 5; $i++)
-                                 <svg @click="form.assessment = form.assessment == {{ $i }} ? ({{ $i - 1 }} < 1 ? 0 : {{ $i - 1 }} ) : {{ $i }}"
-                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                     stroke="currentColor" class="w-5 h-5 text-yellow-400 hover:fill-yellow-400"
-                                     v-bind:class="form.assessment && {{ $i }} <= form.assessment && 'fill-yellow-400'">
-                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                         d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                                 </svg>
-                             @endfor
-                         </x-splade-form>
-                     @endcan
-                 @else
-                     <Link href="#login-required" class="flex flex-nowrap gap-1">
-                     @for ($i = 1; $i <= 5; $i++)
-                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="w-5 h-5  text-yellow-400">
-                             <path stroke-linecap="round" stroke-linejoin="round"
-                                 d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                         </svg>
-                     @endfor
-                     </Link>
-                 @endauth
                  @can('create-topic')
                      <Link href="{{ Auth::check() ? route('topics.create') : '#login-required' }}"
                          class="whitespace-nowrap text-fuchsia-400 hover:text-fuchsia-500">
@@ -141,7 +109,7 @@
                  ->where('is_public', false)
                  ->get();
          @endphp
-         <h2 class="text-2xl mb-6 flex flex-nowrap gap-2 items-center">
+         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
              {{ $topic->learningMaterials->count() }}
              @if ($volatileTopicLearningMaterials->count() > 0)
                  <span class="px-2 bg-pink-500 text-white text-xs my-auto">
@@ -189,20 +157,28 @@
                  @endif
              @endforeach
          </div>
-         <x-splade-form :action="route('topics.learning-materials.upload', $topic->id) . '?stay=1'" class="mb-10">
+         <x-splade-form :action="route('topics.learning-materials.upload', $topic->id) . '?stay=1'" class="mb-8">
              <x-splade-file label="Click the input field to add more" filepond preview name="newLearningMaterials[]"
                  class="text-lg font-light mb-2 text-left" multiple />
              @auth
                  <x-splade-submit class="bg-fuchsia-500" label="Share" />
              @else
-                 <x-layouts.navigation-link class="px-6 flex justify-center text-white bg-fuchsia-500"
-                     @click.prevent="" resource="#login-required" label="Share" />
+                 <x-layouts.navigation-link class="px-6 flex justify-center text-white bg-fuchsia-500" @click.prevent=""
+                     resource="#login-required" label="Share" />
              @endauth
          </x-splade-form>
-         <h2 class="text-2xl mb-8">Skills</h2>
-         <div class="mb-5 columns-1 space-y-6 w-full">
+         <h2 class="text-2xl mb-4">Skills you gain learning this topic</h2>
+         <div class="mb-8 columns-1 space-y-6 w-full">
              @foreach ($topic->skills as $topicSkill)
-                 <x-skill :skill="$topicSkill->skill" />
+                 <x-skill :skill="$topicSkill->skill" :user-assessment="$rq->userSkillAssessment($topicSkill->skill)" />
+             @endforeach
+         </div>
+         <h2 class="text-2xl mb-4 dark:text-slate-100">
+             Fields
+         </h2>
+         <div class="mb-10 columns-1 space-y-6 w-full">
+             @foreach ($topic->fields as $skillField)
+                 <x-field :field="$skillField->field" />
              @endforeach
          </div>
          @auth

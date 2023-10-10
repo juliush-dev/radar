@@ -23,11 +23,6 @@ class Topic extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function assessments(): HasMany
-    {
-        return $this->hasMany(UserTopicAssessment::class);
-    }
-
     public function topicUpdating(): BelongsTo
     {
         return $this->belongsTo(Topic::class, 'updating_topic_id');

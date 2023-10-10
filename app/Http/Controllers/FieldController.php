@@ -18,7 +18,10 @@ class FieldController extends Controller
 
     public function show(Field $field)
     {
-        return view('field.show', ['field' => $field]);
+        return view('field.show', [
+            'field' => $field,
+            "rq" => $this->rq
+        ]);
     }
 
     public function index(Request $request)

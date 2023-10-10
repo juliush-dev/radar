@@ -84,9 +84,14 @@ class RadarQuery
                 $query->where('year', $filter['year']);
             });
         }
-        if (!empty($filter['assessment'])) {
-            $topics->whereHas('assessments', function (Builder $query) use ($filter) {
-                $query->where('assessment', $filter['assessment'])->where('user_id', Request::user()->id);
+        if (!empty($filter['field'])) {
+            $topics->whereHas('fields', function (Builder $query) use ($filter) {
+                $query->where('id', $filter['field']);
+            });
+        }
+        if (!empty($filter['skill'])) {
+            $topics->whereHas('skills', function (Builder $query) use ($filter) {
+                $query->where('id', $filter['skill']);
             });
         }
         if (!empty($filter['subject'])) {
@@ -164,6 +169,12 @@ class RadarQuery
                     $query->where('field_id', $filter['field']);
                 });
             }
+            if (!empty($filter['assessment'])) {
+                $filterConsidered = true;
+                $skills->whereHas('assessments', function (Builder $query) use ($filter) {
+                    $query->where('assessment', $filter['assessment'])->where('user_id', Request::user()->id);
+                });
+            }
         }
         if ($filterConsidered) {
             $skills = $skills->get();
@@ -176,5 +187,21 @@ class RadarQuery
     public function years()
     {
         return $this->ent->asOptions('App\Enums\Year');
+    }
+
+
+    public function assessments()
+    {
+        return [1 => 'Beginner', 2 => 'Intermediate', 3 => 'Advanced', 4 => 'Expert', 5 => 'Guru'];
+    }
+
+    public function userSkillAssessment($skill)
+    {
+        $skillAssessment = $skill
+            ->assessments()
+            ->where('user_id', auth()->user()?->id)
+            ->where('skill_id', $skill->id)
+            ->first();
+        return $skillAssessment?->assessment ?? 0;
     }
 }

@@ -38,7 +38,6 @@ Route::middleware('splade')->group(function () {
             Route::delete('/learning-materials/{learningMaterial}/remove', [App\Http\Controllers\TopicController::class, 'removeLearningMaterial'])->name('learning-materials.remove');
             Route::post('/learning-materials/{learningMaterial}/publish', [App\Http\Controllers\TopicController::class, 'publishLearningMaterial'])->name('learning-materials.publish');
             Route::post('/learning-materials/{learningMaterial}/unpublish', [App\Http\Controllers\TopicController::class, 'unpublishLearningMaterial'])->name('learning-materials.unpublish');
-            Route::post('/{topic}/assess', [App\Http\Controllers\TopicController::class, 'assess'])->name('assess');
             Route::post('/{topic}/publish', [App\Http\Controllers\TopicController::class, 'publishTopic'])->name('publish');
             Route::post('/{topic}/unpublish', [App\Http\Controllers\TopicController::class, 'unpublishTopic'])->name('unpublish');
             Route::post('/{topic}/apply-update', [App\Http\Controllers\TopicController::class, 'applyUpdate'])->name('apply-update');
@@ -56,6 +55,7 @@ Route::middleware('splade')->group(function () {
         Route::resource('fields', App\Http\Controllers\FieldController::class)->except(['index', 'show']);;
 
         Route::prefix('skills')->name('skills.')->group(function () {
+            Route::post('/{skill}/assess', [App\Http\Controllers\SkillController::class, 'assess'])->name('assess');
             Route::get('/groups/{group}/edit', [App\Http\Controllers\SkillController::class, 'editGroup'])->name('groups.edit');
             Route::patch('/groups/{group}', [App\Http\Controllers\SkillController::class, 'updateGroup'])->name('groups.update');
 

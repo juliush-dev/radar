@@ -13,7 +13,8 @@ class Skill extends Component
      */
     public function __construct(
         public \App\Models\Skill $skill,
-        public $loop = null
+        public $loop = null,
+        public $userAssessment = 0
     ) {
         //
     }

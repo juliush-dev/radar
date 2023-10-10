@@ -1,9 +1,10 @@
 <x-splade-form method="get" preserve-scroll submit-on-change="reset" :default="[
     'subject' => request()->query('subject'),
     'year' => request()->query('year'),
-    'assessment' => request()->query('assessment'),
+    'field' => request()->query('field'),
+    'skill' => request()->query('skill'),
 ]"
-    class="w-full z-20 flex flex-col gap-4 text-slate-800 dark:text-slate-400 grow px-6 lg:px-10 my-4 flex-wrap">
+    class="w-full z-20 flex flex-col gap-4 grow px-6 lg:px-10 my-4 flex-wrap">
     <x-splade-toggle class="w-full">
         <div class="w-full flex  gap-4 justify-end">
             <button @click.prevent="toggle">
@@ -13,7 +14,7 @@
                         v-bind:d="toggled ? 'M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z' : 'M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z'" />
                 </svg>
             </button>
-            <button title="reset filter" v-show="form.year || form.assessment || form.subject"
+            <button title="reset filter" v-show="form.year || form.subject || form.field || form.skill ||toggled"
                 @click="form.reset=true;">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6 text-violet-500 hover:text-violet-600">
@@ -22,27 +23,16 @@
                 </svg>
             </button>
         </div>
-        <x-splade-transition show="toggled" class="w-full flex flex-wrap gap-6 mb-4">
-            <x-splade-select class="w-full lg:w-[400px] whitespace-nowrap" label="Where subject is" placeholder="..."
-                name="subject" :options="$subjects" option-value="id" option-label="title" />
-            <x-splade-select class="w-full lg:w-[400px] whitespace-nowrap" label="Where year is" placeholder="..."
-                name="year" :options="$years" option-value="id" option-label="title" />
-            @auth
-                <div class="flex flex-col gap-1">
-                    <span class="font-normal">Where assessment is</span>
-                    <div class="flex flex-nowrap gap-1 my-auto">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <svg @click="form.assessment = form.assessment == {{ $i }} ? ({{ $i - 1 }} < 1 ? null : {{ $i - 1 }} ) : {{ $i }}"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-5 h-5 text-yellow-400 hover:fill-yellow-400"
-                                v-bind:class="form.assessment && {{ $i }} <= form.assessment && 'fill-yellow-400'">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                            </svg>
-                        @endfor
-                    </div>
-                </div>
-            @endauth
+        <x-splade-transition show="toggled"
+            class="w-full flex flex-wrap gap-6 mb-4 dark:bg-slate-200 dark:p-4 dark:md:p-6">
+            <x-splade-select class="grow whitespace-normal" label="Where subject is" placeholder="..." name="subject"
+                :options="$subjects" option-value="id" option-label="title" />
+            <x-splade-select class="grow whitespace-normal" label="Where year is" placeholder="..." name="year"
+                :options="$years" option-value="id" option-label="title" />
+            <x-splade-select class="w-full whitespace-normal" label="Where field is" placeholder="..." name="field"
+                :options="$fields" option-value="id" option-label="title" />
+            <x-splade-select class="w-full whitespace-normal" label="Where skill is" placeholder="..." name="skill"
+                :options="$skills" option-value="id" option-label="title" />
             @can('use-dashboard')
                 <div class="flex justify-end items-center grow gap-6">
                     <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"

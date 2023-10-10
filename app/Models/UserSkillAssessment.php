@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserTopicAssessment extends Model
+class UserSkillAssessment extends Model
 {
     use HasFactory;
 
@@ -16,8 +16,8 @@ class UserTopicAssessment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function topic(): BelongsTo
+    public function skill(): BelongsTo
     {
-        return $this->belongsTo(Topic::class);
+        return $this->belongsTo(Skill::class);
     }
 }

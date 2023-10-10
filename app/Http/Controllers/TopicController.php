@@ -31,7 +31,10 @@ class TopicController extends Controller
             Toast::warning('Access Denied')->autoDismiss(5);
             return redirect(Referer::get());
         }
-        return view('topic.show', ['topic' => $topic, 'referer' => Referer::get()]);
+        return view('topic.show', [
+            'topic' => $topic,
+            "rq" => $this->rq
+        ]);
     }
 
     public function index(Request $request)
@@ -41,8 +44,9 @@ class TopicController extends Controller
         }
         $yearFilterValue = $request->query('year');
         $subjectFilterValue = $request->query('subject');
-        $assessmentFilterValue = $request->query('assessment');
-        $filterIsSet = array_reduce([$yearFilterValue, $subjectFilterValue, $assessmentFilterValue], function ($acc, $value) {
+        $skillFilterValue = $request->query('skill');
+        $fieldFilterValue = $request->query('field');
+        $filterIsSet = array_reduce([$yearFilterValue, $subjectFilterValue, $fieldFilterValue, $skillFilterValue], function ($acc, $value) {
             $acc |= isset($value);
             return $acc;
         }, false);
@@ -51,7 +55,8 @@ class TopicController extends Controller
                 [
                     'year' => $yearFilterValue,
                     'subject' => $subjectFilterValue,
-                    'assessment' => $assessmentFilterValue,
+                    'field' => $fieldFilterValue,
+                    'skill' => $skillFilterValue,
                     'author' => $request->user()?->id
                 ]
             ),
@@ -192,30 +197,6 @@ class TopicController extends Controller
         $learningMaterial->path = $lm->store('public');
         $learningMaterial->save();
     }
-    public function assess(Request $request, Topic $topic)
-    {
-        $this->authorize('assess-topic');
-        DB::transaction(function () use ($request, $topic) {
-            $assessment = new UserTopicAssessment;
-            $assessment->user_id = auth()->user()->id;
-            $assessment->topic_id = $topic->id;
-            $actualAssessment = UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $assessment->topic_id)->first();
-            if ($actualAssessment) {
-                UserTopicAssessment::where('user_id', $assessment->user_id)
-                    ->where('topic_id', $assessment->topic_id)
-                    ->update(['assessment' => $request->input('assessment')]);
-            } else {
-                $assessment->assessment = $request->input('assessment');
-                $assessment->save();
-            }
-        });
-        Toast::title('assessment updated')->autoDismiss(5);
-        if ($request->query('stay')) {
-            return redirect()->route('topics.show', $topic);
-        } else {
-            return redirect(Referer::get());
-        }
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -305,11 +286,6 @@ class TopicController extends Controller
                     $topicSkill->save();
                 }
             });
-            $topic->assessments->each(function ($assessment) use ($newTopic) {
-                $assessmentCopy = $assessment->replicate();
-                $assessmentCopy->topic_id = $newTopic->id;
-                $assessmentCopy->save();
-            });
             $topic->learningMaterials->each(function ($learningMaterial) use ($newTopic) {
                 $learningMaterialCopy = $learningMaterial->replicate();
                 $learningMaterialCopy->topic_id = $newTopic->id;
@@ -394,21 +370,6 @@ class TopicController extends Controller
                 } else {
                     $topic->is_update = 0;
                 }
-                $oldTopic->assessments->each(function ($assessment) use ($topic, $oldTopic) {
-                    $assessmentCopy = null;
-                    if (($assessmentCopy = UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $topic->id)->first()) == null) {
-                        $assessmentCopy = $assessment->replicate();
-                        $assessmentCopy->topic_id = $topic->id;
-                        $assessmentCopy->save();
-                        UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $assessment->topic_id)->delete();
-                    } elseif ($assessment->user_id != $oldTopic->user_id) {
-                        UserTopicAssessment::where('user_id', $assessment->user_id)->where('topic_id', $topic->id)->delete();
-                        $assessmentCopy = $assessmentCopy->replicate();
-                        $assessmentCopy->assessment = $assessment->assessment;
-                        $assessmentCopy->save();
-                    }
-                });
-
                 $oldTopic->learningMaterials->each(function ($learningMaterial) use ($topic) {
                     if (LearningMaterial::where('id', $learningMaterial->id)->where('topic_id', $topic->id)->first() == null) {
                         $learningMaterialCopy = $learningMaterial->replicate();

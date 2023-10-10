@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_topic_assessments', function (Blueprint $table) {
+        Schema::create('user_skill_assessments', function (Blueprint $table) {
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('skill_id')->constrained()->cascadeOnDelete();
             $table->enum('assessment', [1, 2, 3, 4, 5]);
-            $table->primary(['user_id', 'topic_id']);
+            $table->primary(['user_id', 'skill_id']);
             $table->timestamps();
         });
     }

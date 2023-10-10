@@ -4,6 +4,7 @@ namespace App\Providers;
 
 
 use App\Models\LearningMaterial;
+use App\Models\Skill;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -47,7 +48,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('see-topic', function (?User $user, Topic $topic) {
             return (!$user?->blocked || $user == null) && (($topic->is_public && !$topic->is_update) || (!$topic->is_public && (!empty($user) && $user->id == $topic->author->id)) || (!empty($user) && $user->is_admin));
         });
-        Gate::define('assess-topic', function (User $user) {
+        Gate::define('assess-skill', function (User $user) {
             return !$user->blocked;
         });
 

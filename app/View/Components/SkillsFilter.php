@@ -16,6 +16,7 @@ class SkillsFilter extends Component
         public $groups,
         public $fields,
         public $years,
+        public $assessments,
     ) {
         //
     }

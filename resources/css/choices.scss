@@ -81,7 +81,7 @@ fieldset:disabled .#{$choices-selector} {
         }
 
         .#{$choices-selector}__item--selectable {
-            @apply text-slate-800 text-base px-4 font-mono;
+            @apply text-slate-800  text-base px-4 font-mono;
 
             &.is-highlighted {
                 @apply bg-fuchsia-500 text-white;

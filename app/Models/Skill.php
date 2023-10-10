@@ -23,6 +23,11 @@ class Skill extends Model
         return $this->belongsTo(Type::class);
     }
 
+    public function assessments(): HasMany
+    {
+        return $this->hasMany(UserSkillAssessment::class);
+    }
+
 
     public function years(): HasMany
     {
