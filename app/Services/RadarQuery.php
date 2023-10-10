@@ -6,6 +6,7 @@ use App\Models\Field;
 use App\Models\Group;
 use App\Models\LearningMaterial;
 use App\Models\Skill;
+use App\Models\Skill\Type;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\User;
@@ -56,21 +57,27 @@ class RadarQuery
 
     public function topics($filter = [])
     {
-        $topics = Topic::where('is_public', 1)->where('is_update', false);
+        $topics = Topic::query();
         if (!empty($filter['author'])) {
             $topics->where(function ($query) use ($filter) {
-                $query->whereNot('user_id', $filter['author']);
-                $query->orWhere(function ($query) {
-                    $query->where('user_id', null)->where('is_update', false);
+                $query->where(function ($query) use ($filter) {
+                    $query->where('is_public', true);
+                    $query->where('is_update', false);
+                    $query->where(function ($query) use ($filter) {
+                        $query->whereNot('user_id', $filter['author'])
+                            ->orWhere('user_id', null);
+                    });
                 });
                 $query->orWhere(function ($query) use ($filter) {
-                    $query->where('user_id', $filter['author'])->where('updating_topic_id', null);
+                    $query->where('user_id', $filter['author']);
+                    $query->where('updating_topic_id', null);
                     $query->where(function ($query) {
                         $query->where('is_update', true)->orWhere('is_update', false);
                     });
                 });
-                $query->where('user_id', $filter['author'])->where('updating_topic_id', null);
             });
+        } else {
+            $topics->where('is_public', true)->where('is_update', false);
         }
         if (!empty($filter['year'])) {
             $topics->whereHas('years', function (Builder $query) use ($filter) {
@@ -91,6 +98,11 @@ class RadarQuery
     public function groups()
     {
         return Group::all();
+    }
+
+    public function types()
+    {
+        return Type::all();
     }
 
 
@@ -128,6 +140,14 @@ class RadarQuery
         $skills = Skill::query();
         $filterConsidered = false;
         if (count($filter) > 0) {
+            if (isset($filter['type'])) {
+                $filterConsidered = true;
+                $skills->where('type_id', $filter['type']);
+            }
+            if (isset($filter['group'])) {
+                $filterConsidered = true;
+                $skills->where('group_id', $filter['group']);
+            }
             if (isset($filter['year'])) {
                 $filterConsidered = true;
                 $skills->whereHas('years', function (Builder $query) use ($filter) {

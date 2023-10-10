@@ -1,6 +1,6 @@
      @php
          $previousRoute = \Facades\Spatie\Referer\Referer::get();
-         if (!request()->routeIs('subjects.*') && !request()->routeIs('groups.*')) {
+         if (!request()->routeIs('topics.subjects.*') && !request()->routeIs('skills.groups.*') && !request()->routeIs('skills.types.*')) {
              \Facades\Spatie\Referer\Referer::put(Request::fullURL());
          }
      @endphp

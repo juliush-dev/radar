@@ -4,38 +4,53 @@
         class="text-md first-letter:uppercase w-full text-sky-500 group-hover:text-sky-700 dark:text-sky-300 dark:group-hover:text-sky-400 transition-colors duration-300">
     <h1 class="mb-2">{{ $skill->title }}</h1>
     </Link>
-    <p class="font-normal text-sm mb-4 text-slate-500 dark:text-slate-300">
-        @can('update-group')
-            <x-nav-link modal href="{{ route('groups.edit', $skill->group) }}" class="dark:text-teal-300 text-teal-500">
-                {{ $skill->group->title }}
-            </x-nav-link> <span> / </span>
-        @else
-            <span class="dark:text-slate-300 text-slate-600">
-                {{ $skill->group->title }}
-            </span><span> / </span>
-        @endcan
-        @foreach ($skill->years as $year)
-            <span
-                class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
-            @if (!$loop->last)
-                <span> - </span>
+    <div class="flex flex-col gap-2 font-normal text-xs mb-4 text-slate-500 dark:text-slate-300">
+        @if ($skill->type)
+            @can('update-type')
+                <x-nav-link modal href="{{ route('skills.types.edit', $skill->type) }}"
+                    class="dark:text-teal-500 text-teal-700 whitespace-break-spaces">
+                    {{ $skill->type->title }}
+                </x-nav-link>
+            @else
+                <span class="dark:text-slate-500 text-slate-700 whitespace-break-spaces">
+                    {{ $skill->type->title }}
+                </span>
+            @endcan
+        @endif
+        @if ($skill->group)
+            @can('update-group')
+                <x-nav-link modal href="{{ route('skills.groups.edit', $skill->group) }}"
+                    class="dark:text-teal-300 text-teal-500 whitespace-break-spaces">
+                    {{ $skill->group->title }}
+                </x-nav-link>
+            @else
+                <span class="dark:text-slate-300 text-slate-600 whitespace-break-spaces">
+                    {{ $skill->group->title }}
+                </span>
+            @endcan
+        @endif
+        <div class="flex gap-1 items-center">
+            @if ($skill->fields->count() > 0)
+                @foreach ($skill->fields as $skillField)
+                    <x-layouts.navigation-link open-as="modal" class="dark:text-sky-300 text-sky-500"
+                        title="{{ $skillField->field->title }}" :label="$skillField->field->code" resource="fields" action="show"
+                        :action-args="$skillField->field" />
+                    @if (!$loop->last)
+                        -
+                    @endif
+                @endforeach
             @endif
-        @endforeach
-        @if ($skill->fields->count() > 0)
-            @foreach ($skill->fields as $skillField)
-                @if ($loop->first)
-                    <span> / </span>
-                @endif
-                <Link href="{{ route('fields.show', $skillField->field) }}"
-                    class="uppercase dark:text-sky-300 text-sky-500">
-                {{ $skillField->field->code }}
-                </Link>
+        </div>
+        <div class="text-sm">
+            @foreach ($skill->years as $year)
+                <span
+                    class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
                 @if (!$loop->last)
-                    -
+                    <span> - </span>
                 @endif
             @endforeach
-        @endif
-    </p>
+        </div>
+    </div>
     @if (Route::is('skills.index'))
         @auth
             @canany(['update-skill', 'delete-skill'])

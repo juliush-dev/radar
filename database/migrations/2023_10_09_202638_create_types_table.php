@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skills', function (Blueprint $table) {
+        Schema::create('types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
-            $table->foreignUuid('group_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignUuid('type_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('skills');
+        Schema::dropIfExists('types');
     }
 };

@@ -44,6 +44,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-topic', function (?User $user) {
             return !$user?->blocked || $user == null;
         });
+        Gate::define('see-topic', function (?User $user, Topic $topic) {
+            return (!$user?->blocked || $user == null) && (($topic->is_public && !$topic->is_update) || (!$topic->is_public && (!empty($user) && $user->id == $topic->author->id)) || (!empty($user) && $user->is_admin));
+        });
         Gate::define('assess-topic', function (User $user) {
             return !$user->blocked;
         });
@@ -88,6 +91,10 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-group', function (User $user) {
+            return $user->is_admin && !$user->blocked;
+        });
+
+        Gate::define('update-type', function (User $user) {
             return $user->is_admin && !$user->blocked;
         });
     }

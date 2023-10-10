@@ -23,6 +23,9 @@ class FieldController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->boolean('reset')) {
+            return redirect(route('fields.index'));
+        }
         $yearFilterValue = $request->query('year');
         $filterIsSet = array_reduce([$yearFilterValue], function ($acc, $value) {
             $acc |= isset($value);

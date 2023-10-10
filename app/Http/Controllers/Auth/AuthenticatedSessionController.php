@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         if (!Gate::allows('login')) {
-            Toast::warning('This action is authorized')->autoDismiss(5);
+            Toast::warning('Access Denied')->autoDismiss(5);
             return $this->destroy($request);
         }
         return redirect(route('topics.index'));

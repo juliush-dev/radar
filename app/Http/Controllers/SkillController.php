@@ -6,9 +6,11 @@ use App\Models\Field;
 use App\Models\FieldYear;
 use App\Models\Group;
 use App\Models\Skill;
+use App\Models\Skill\Type;
 use App\Models\SkillField;
 use App\Models\SkillYear;
 use App\Services\RadarQuery;
+use Facades\Spatie\Referer\Referer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -26,15 +28,22 @@ class SkillController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->boolean('reset')) {
+            return redirect(route('skills.index'));
+        }
+        $typeFilterValue = $request->query('type');
+        $groupFilterValue = $request->query('group');
         $yearFilterValue = $request->query('year');
         $fieldFilterValue = $request->query('field');
-        $filterIsSet = array_reduce([$yearFilterValue, $fieldFilterValue], function ($acc, $value) {
+        $filterIsSet = array_reduce([$typeFilterValue, $groupFilterValue, $yearFilterValue, $fieldFilterValue], function ($acc, $value) {
             $acc |= isset($value);
             return $acc;
         }, false);
         return view('skill.index', [
             'skills' => $this->rq->skills(
                 [
+                    'type' => $typeFilterValue,
+                    'group' => $groupFilterValue,
                     'year' => $yearFilterValue,
                     'field' => $fieldFilterValue,
                 ]
@@ -65,7 +74,9 @@ class SkillController extends Controller
         DB::transaction(function () use ($request, &$skill) {
             $title = $request->input('title');
             $group = $request->input('group');
+            $type = $request->input('type');
             $newGroup = $request->input('newGroup');
+            $newType = $request->input('newType');
             $years = $request->input('years');
             $fields = $request->input('fields');
             $skill = new Skill;
@@ -78,6 +89,16 @@ class SkillController extends Controller
                 $group->save();
                 $skill->group_id = $group->id;
             }
+
+            if (isset($type)) {
+                $skill->type_id = $type;
+            } elseif (isset($newType)) {
+                $type = new Type;
+                $type->title = $newType;
+                $type->save();
+                $skill->type_id = $type->id;
+            }
+
             $skill->save();
 
             if (is_array($fields) && count($fields) > 0) {
@@ -105,7 +126,7 @@ class SkillController extends Controller
     }
 
 
-    public function edit(Request $request, Skill $skill)
+    public function edit(Skill $skill)
     {
         $this->authorize('update-field');
         return view(
@@ -113,11 +134,55 @@ class SkillController extends Controller
             [
                 'skill' => $skill,
                 'rq' => $this->rq,
-                'routeOnSuccess' => $request->input('routeOnSuccess'),
-                'routeOnCancel' => $request->input('routeOnCancel') ?? route('skills.index'),
             ]
         );
     }
+
+    public function editGroup(Group $group)
+    {
+        $this->authorize('update-group');
+        return view(
+            'skill.group-edit',
+            [
+                'group' => $group,
+            ]
+        );
+    }
+    public function updateGroup(Request $request, Group $group)
+    {
+        $this->authorize('update-group');
+        $title = $request->input('title');
+        if ($title != $group->title) {
+            $group->title = $title;
+            $group->save();
+        }
+        Toast::title('Group sucessfuly updated!')->autoDismiss(5);
+        return redirect(Referer::get());
+    }
+
+    public function editType(Type $type)
+    {
+        $this->authorize('update-type');
+        return view(
+            'skill.type-edit',
+            [
+                'type' => $type,
+            ]
+        );
+    }
+    public function updateType(Request $request, Type $type)
+    {
+        $this->authorize('update-type');
+        $title = $request->input('title');
+        if ($title != $type->title) {
+            $type->title = $title;
+            $type->save();
+        }
+        Toast::title('Type sucessfuly updated!')->autoDismiss(5);
+        return redirect(Referer::get());
+    }
+
+
 
     public function update(Request $request, Skill $skill)
     {
@@ -126,6 +191,8 @@ class SkillController extends Controller
             $title = $request->input('title');
             $group = $request->input('group');
             $newGroup = $request->input('newGroup');
+            $type = $request->input('type');
+            $newType = $request->input('newType');
             $years = $request->input('years', []);
             $fields = $request->input('fields', []);
 
@@ -158,6 +225,19 @@ class SkillController extends Controller
                     $group->title = $newGroup;
                     $group->save();
                     $skill->group_id = $group->id;
+                    $skill->save();
+                }
+
+                if ($type) {
+                    if ($type != $skill->type) {
+                        $skill->type_id = $type;
+                        $skill->save();
+                    }
+                } elseif ($newType) {
+                    $type = new Type;
+                    $type->title = $newType;
+                    $type->save();
+                    $skill->type_id = $type->id;
                     $skill->save();
                 }
 

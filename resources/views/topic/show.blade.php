@@ -37,7 +37,7 @@
          </div>
          <div class="text-sm flex items-center mb-4 gap-2 flex-wrap">
              @can('update-subject')
-                 <x-nav-link modal href="{{ route('subjects.edit', $topic->subject) }}"
+                 <x-nav-link modal href="{{ route('topics.subjects.edit', $topic->subject) }}"
                      class="dark:text-teal-300 text-teal-500">
                      {{ $topic->subject->title }}
                  </x-nav-link>/
@@ -56,7 +56,7 @@
                      @endforeach
                  </p>
              @endif
-             <div class="ml-auto flex gap-2 items-center">
+             <div class="flex justify-end grow gap-6 items-center">
                  @auth
                      @can('assess-topic')
                          @php
@@ -89,9 +89,13 @@
                      @endfor
                      </Link>
                  @endauth
-             </div>
-             @if ($topic->is_update || $topic->topicUpdating)
-                 <div class="w-full">
+                 @can('create-topic')
+                     <Link href="{{ Auth::check() ? route('topics.create') : '#login-required' }}"
+                         class="text-fuchsia-400 hover:text-fuchsia-500">
+                     Add new topic
+                     </Link>
+                 @endcan
+                 @if ($topic->is_update || $topic->topicUpdating)
                      <span
                          class="px-2 bg-pink-600 w-fit mb-2 font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
                          @if ($topic->is_update)
@@ -99,8 +103,8 @@
                                  class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
                          @endif
                      </span>
-                 </div>
-             @endif
+                 @endif
+             </div>
          </div>
          <hr class="mb-8">
          @can('see-topic-update-path', $topic)

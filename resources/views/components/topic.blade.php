@@ -7,7 +7,8 @@
 
      <p class="font-normal text-sm mb-2 text-slate-500 dark:text-slate-300">
          @can('update-subject')
-             <x-nav-link modal href="{{ route('subjects.edit', $topic->subject) }}" class="dark:text-teal-300 text-teal-500">
+             <x-nav-link modal href="{{ route('topics.subjects.edit', $topic->subject) }}"
+                 class="dark:text-teal-300 text-teal-500">
                  {{ $topic->subject->title }}
              </x-nav-link>/
          @else

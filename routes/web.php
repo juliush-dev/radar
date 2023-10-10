@@ -1,11 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Models\Group;
-use Facades\Spatie\Referer\Referer;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use ProtoneMedia\Splade\Facades\Toast;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +30,7 @@ Route::middleware('splade')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
+
     Route::get('/topics/learning-materials/{learningMaterial}/download', [App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'])->name('topics.learning-materials.download');
     Route::middleware('auth')->group(function () {
         Route::prefix('topics')->name('topics.')->group(function () {
@@ -45,6 +42,9 @@ Route::middleware('splade')->group(function () {
             Route::post('/{topic}/publish', [App\Http\Controllers\TopicController::class, 'publishTopic'])->name('publish');
             Route::post('/{topic}/unpublish', [App\Http\Controllers\TopicController::class, 'unpublishTopic'])->name('unpublish');
             Route::post('/{topic}/apply-update', [App\Http\Controllers\TopicController::class, 'applyUpdate'])->name('apply-update');
+
+            Route::get('/subjects/{subject}/edit', [App\Http\Controllers\TopicController::class, 'editSubject'])->name('subjects.edit');
+            Route::patch('/subjects/{subject}', [App\Http\Controllers\TopicController::class, 'updateSubject'])->name('subjects.update');
         });
 
         Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
@@ -53,27 +53,20 @@ Route::middleware('splade')->group(function () {
 
         Route::post('/profile/{profile}/block', [App\Http\Controllers\ProfileController::class, 'block'])->name('profile.block');
         Route::post('/profile/{profile}/unblock', [App\Http\Controllers\ProfileController::class, 'unblock'])->name('profile.unblock');
-
-
-        Route::get('/groups/{group}/edit', function (Group $group) {
-            return view('group.edit', ['group' => $group]);
-        })->name('groups.edit');
-        Route::patch('/groups/{group}', function (Request $request, Group $group) {
-            $title = $request->input('title');
-            if ($title != $group->title) {
-                $group->title = $title;
-                $group->save();
-            }
-            Toast::title('Group sucessfuly updated!')->autoDismiss(5);
-            return redirect(Referer::get());
-        })->name('groups.update');
-
         Route::resource('fields', App\Http\Controllers\FieldController::class)->except(['index', 'show']);;
-        Route::resource('subjects', App\Http\Controllers\SubjectController::class)->only(['edit', 'update']);
+
+        Route::prefix('skills')->name('skills.')->group(function () {
+            Route::get('/groups/{group}/edit', [App\Http\Controllers\SkillController::class, 'editGroup'])->name('groups.edit');
+            Route::patch('/groups/{group}', [App\Http\Controllers\SkillController::class, 'updateGroup'])->name('groups.update');
+
+            Route::get('/types/{type}/edit', [App\Http\Controllers\SkillController::class, 'editType'])->name('types.edit');
+            Route::patch('/types/{type}', [App\Http\Controllers\SkillController::class, 'updateType'])->name('types.update');
+        });
     });
     Route::resource('fields', App\Http\Controllers\FieldController::class)->only(['index', 'show']);
     Route::resource('topics', App\Http\Controllers\TopicController::class)->only(['index', 'show']);
     Route::resource('skills', App\Http\Controllers\SkillController::class)->only(['index', 'show']);
+
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
     require __DIR__ . '/auth.php';
 });

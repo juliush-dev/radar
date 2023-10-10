@@ -1,6 +1,7 @@
   @php($years = $rq->years())
   @php($fields = $rq->fields())
   @php($groups = $rq->groups())
+  @php($types = $rq->types())
   <skill v-slot="skill" :form="form">
       <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-4">
           <button class="px-6 py-4 cursor-pointer"
@@ -10,6 +11,11 @@
       <section v-show="skill.activeTab == 'skill'"
           class="w-full flex flex-col bg-white border border-slate-200 dark:border-white p-8">
           <x-splade-textarea required name="title" label="Title" class="mb-6" />
+          <div class="flex flex-col gap-4 mb-4">
+              <x-splade-select name="type" label="Select a type" :options="$types" option-value="id"
+                  option-label="title" placeholder="Choose or" />
+              <x-splade-textarea name="newType" label="Or create a new type" />
+          </div>
           <div class="flex flex-col gap-4 mb-4">
               <x-splade-select name="group" label="Select a group" :options="$groups" option-value="id"
                   option-label="title" placeholder="Choose or" />
