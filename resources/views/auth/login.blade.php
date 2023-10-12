@@ -10,14 +10,15 @@
             <x-splade-input id="password" type="password" name="password" :label="__('Password')" required
                 autocomplete="current-password" />
             <x-splade-checkbox id="remember_me" name="remember" :label="__('Remember me')" />
-            <div class="flex items-center justify-end gap-5">
-                <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md" :label="__('Log in')" />
+            <div class="flex items-center justify-end gap-5 flex-wrap text-end">
+                <x-splade-submit class="whitespace-nowrap bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md"
+                    :label="__('Log in')" />
                 @if (Route::has('password.request'))
-                    <x-nav-link href="{{ route('password.request') }}" small>
+                    <x-nav-link href="{{ route('password.request') }}" class="text-xs">
                         Reset password
                     </x-nav-link>
                 @endif
-                <x-nav-link href="{{ route('register') }}" small>
+                <x-nav-link href="{{ route('register') }}" class="text-xs">
                     Create an account
                 </x-nav-link>
             </div>

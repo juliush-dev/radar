@@ -140,47 +140,39 @@ class RadarQuery
         return Subject::all();
     }
 
-    public function skills($filter = [])
+    public function skills($filter = [], $all = false)
     {
+        if ($all) {
+            return Skill::all();
+        }
         $skills = Skill::query();
-        $filterConsidered = false;
         if (count($filter) > 0) {
             if (isset($filter['type'])) {
-                $filterConsidered = true;
                 $skills->where('type_id', $filter['type']);
             }
             if (isset($filter['group'])) {
-                $filterConsidered = true;
                 $skills->where('group_id', $filter['group']);
             }
             if (isset($filter['year'])) {
-                $filterConsidered = true;
                 $skills->whereHas('years', function (Builder $query) use ($filter) {
                     $query->where('year', $filter['year']);
                 });
             }
             if (isset($filter['group'])) {
-                $filterConsidered = true;
                 $skills->where('group_id', $filter['group']);
             }
             if (isset($filter['field'])) {
-                $filterConsidered = true;
                 $skills->whereHas('fields', function (Builder $query) use ($filter) {
                     $query->where('field_id', $filter['field']);
                 });
             }
             if (!empty($filter['assessment'])) {
-                $filterConsidered = true;
                 $skills->whereHas('assessments', function (Builder $query) use ($filter) {
                     $query->where('assessment', $filter['assessment'])->where('user_id', Request::user()->id);
                 });
             }
         }
-        if ($filterConsidered) {
-            $skills = $skills->get();
-        } else {
-            $skills = Skill::all();
-        }
+        $skills = $skills->paginate(8);
         return $skills;
     }
 

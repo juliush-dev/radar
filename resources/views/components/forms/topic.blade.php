@@ -1,7 +1,7 @@
 @php($years = $rq->years())
 @php($fields = $rq->fields())
 @php($subjects = $rq->subjects())
-@php($skills = $rq->skills())
+@php($skills = $rq->skills(all: true))
 <topic v-slot="topic" :form="form">
     <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-4">
         <button class="px-6 py-4 cursor-pointer"

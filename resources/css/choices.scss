@@ -2,6 +2,28 @@ $choices-bg-color: white;
 
 @import "choices.js/src/styles/choices";
 
+nav[role="navigation"]{
+    p {
+        @apply dark:text-slate-100;
+    }
+    div:nth-of-type(2) {
+
+        div:last-of-type {
+
+            span:nth-of-type(1) {
+                @apply dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100 rounded-none;
+            }
+            span[aria-current="page"] span {
+                @apply dark:border-slate-500 bg-slate-500 text-white dark:bg-slate-900 dark:text-slate-100 rounded-none;
+            }
+
+            a {
+                @apply dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100 rounded-none;
+            }
+        }
+    }
+}
+
 span+.#{$choices-selector} {
     @apply mt-1;
 }

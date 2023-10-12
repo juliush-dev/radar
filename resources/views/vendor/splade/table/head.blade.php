@@ -1,7 +1,7 @@
 <thead>
     <tr class="border-b border-slate-200 bg-slate-100 dark:bg-slate-300">
         @if ($hasBulkActions = $table->hasBulkActions())
-            <th width="64" class="px-6 py-3 text-xs">
+            <th width="64" class="px-6 py-3 text-xs whitespace-nowrap">
                 @include('splade::table.select-rows-dropdown')
             </th>
         @endif
@@ -12,7 +12,7 @@
 pr-6
 @else
 px-6
-@endif py-3 text-left font-medium tracking-wide {{ $column->classes }}">
+@endif py-3 text-left font-medium tracking-wide whitespace-nowrap {{ $column->classes }}">
                 @if ($column->sortable)
                     <a @click.exact.prevent="table.navigate(@js($sortByUrl = $sortBy($column)))" dusk="sort-{{ $column->key }}"
                         href="{{ $sortByUrl }}">

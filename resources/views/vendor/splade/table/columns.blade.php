@@ -1,6 +1,6 @@
 <x-splade-component is="button-with-dropdown" dusk="columns-dropdown" class="rounded-none">
     <x-slot:button>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-fuchsia-500" viewBox="0 0 20 20" fill="currentColor"
             :class="{
                 'text-fuchsia-600': !table.columnsAreToggled,
                 'text-fuchsia-600': table.columnsAreToggled,

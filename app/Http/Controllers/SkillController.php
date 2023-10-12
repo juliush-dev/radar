@@ -302,10 +302,6 @@ class SkillController extends Controller
             }
         });
         Toast::title('assessment updated')->autoDismiss(5);
-        if ($request->query('stay')) {
-            return redirect()->route('skills.show', $skill);
-        } else {
-            return redirect(route('skills.show', $skill));
-        }
+        return redirect(Referer::get());
     }
 }

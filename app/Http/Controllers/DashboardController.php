@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Faker\Factory;
+use Jenssegers\Agent\Facades\Agent;
 
 class DashboardController extends Controller
 {
@@ -41,14 +42,14 @@ class DashboardController extends Controller
 
             $faker = Factory::create();
             $fakeUsersNumbers = [];
-            for ($i = 1; $i <= 20; $i++) {
+            for ($i = 1; $i <= (Agent::isMobile() ? 3 : 6); $i++) {
                 // get a random digit, but always a new one, to avoid duplicates
                 $fakeUsersNumbers[] = $faker->randomDigit();
             }
             $fakeDaysDates = []; // Initialize an empty array to store the formatted dates
 
             // Generate 11 created_at dates before today
-            for ($i = 1; $i <= 20; $i++) {
+            for ($i = 1; $i <= (Agent::isMobile() ? 3 : 6); $i++) {
                 $date = $faker->dateTimeBetween('-30 days', 'now'); // Change the date range as needed
                 $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $date->format('Y-m-d H:i:s'))
                     ->subDay($i) // Subtract $i days from each date

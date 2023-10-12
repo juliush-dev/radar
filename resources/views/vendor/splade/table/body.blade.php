@@ -25,7 +25,7 @@
 pr-6
 @else
 px-6
-@endif py-4 max-w-0 overflow-auto @if ($column->highlight)
+@endif py-4 max-w-[250px] overflow-x-auto @if ($column->highlight)
 text-slate-900 font-medium
 @else
 text-slate-800

@@ -3,7 +3,20 @@
 ]"
     class="w-full z-20 flex flex-col gap-4 grow px-6 lg:px-10 my-4 flex-wrap">
     <x-splade-toggle class="w-full">
-        <div class="w-full flex  gap-4 justify-end">
+
+        <div class="flex gap-6 md:justify-end flex-wrap items-center overflow-x-auto">
+            {{-- <div class="whitespace-nowrap items-center lg:my-8 md:grow dark:text-sky-500">
+                {{ $slot }}
+            </div> --}}
+            @can('create-field')
+                <Link title="Create New field" href="{{ Auth::check() ? route('fields.create') : '#login-required' }}"
+                    class="text-pink-500 hover:text-pink-600 whitespace-nowrap">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                </Link>
+            @endcan
             <button @click.prevent="toggle">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6 text-pink-500 group-hover:text-pink-600">

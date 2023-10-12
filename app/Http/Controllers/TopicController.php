@@ -371,7 +371,7 @@ class TopicController extends Controller
                     $topic->is_update = 0;
                 }
                 $oldTopic->learningMaterials->each(function ($learningMaterial) use ($topic) {
-                    if (LearningMaterial::where('id', $learningMaterial->id)->where('topic_id', $topic->id)->first() == null) {
+                    if (LearningMaterial::where('alternative', $learningMaterial->alternative)->where('topic_id', $topic->id)->first() == null) {
                         $learningMaterialCopy = $learningMaterial->replicate();
                         $learningMaterialCopy->topic_id = $topic->id;
                         $learningMaterialCopy->save();

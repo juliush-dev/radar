@@ -36,6 +36,7 @@ class AuthenticatedSessionController extends Controller
             Toast::warning('Access Denied')->autoDismiss(5);
             return $this->destroy($request);
         }
+        Toast::title("🦄 Welcome!");
         return redirect(route('topics.index'));
     }
 

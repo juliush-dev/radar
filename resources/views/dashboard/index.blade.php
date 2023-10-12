@@ -1,10 +1,10 @@
 <x-layouts.app active-page="Dashboard"
     icon="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z">
     <div class="h-full w-full overflow-hidden flex flex-col">
-        <div
-            class="sticky right-0 overflow-x-auto top-0 z-10 shrink-0 flex gap-0 border border-slate-50/5 shadow mb-4 md:mx-6 lg:mx-10">
+        <div class="sticky right-0 overflow-x-auto top-0 z-10 shrink-0 flex gap-0 border border-slate-50/5 shadow mb-4 md:mx-6 lg:mx-10"
+            @preserveScroll('dashboardMenu')>
             <Link
-                class="whitespace-nowrap flex gap-2 pl-4 sm:px-6 py-4 cursor-pointer {{ $activeTab == null ? ' bg-pink-500 dark:bg-cyan-500 text-white' : 'text-slate-50 bg-slate-800' }}"
+                class="whitespace-nowrap flex gap-2 pl-4 px-6 py-4 cursor-pointer {{ $activeTab == null ? ' bg-pink-500 dark:bg-cyan-500 text-white' : 'text-slate-50 bg-slate-800' }}"
                 href="{{ route('dashboard.index') }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-5 h-5">
@@ -44,7 +44,7 @@
             Submitted LMs
             </Link>
         </div>
-        <div class="px-6 lg:px-10 grow overflow-auto">
+        <div class="px-0 md:px-6 lg:px-10 grow overflow-auto" @preserveScroll('dashboard')>
             @if ($activeTab == null)
                 <x-dashboard.overview :$totalUsers :$totalTopics :$totalLearningMaterials :$totalSkills :$usersChart />
             @elseif($activeTab == 'users')
