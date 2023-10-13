@@ -49,3 +49,7 @@ On any device, anywhere, anytime.
 ![Mobile Responsiveness](/resources/images/radar-tablet.png)
 
 ![Mobile Responsiveness](/resources/images/radar-fold.png)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
