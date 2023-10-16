@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Jenssegers\Agent\Agent;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,8 +33,11 @@ Route::middleware('splade')->group(function () {
 
     Route::get(
         '/topics/learning-materials/{learningMaterial}/download',
-        [App\Http\Controllers\TopicController::class, 'downloadLearningMaterial']
+        [
+            App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'
+        ]
     )->name('topics.learning-materials.download');
+
     Route::middleware('auth')->group(function () {
         Route::controller(App\Http\Controllers\TopicController::class)
             ->prefix('topics')
@@ -74,15 +76,32 @@ Route::middleware('splade')->group(function () {
                     '/subjects/{subject}/edit',
                     'editSubject'
                 )->name('subjects.edit');
+
+                Route::delete(
+                    '/subjects/{subject}/remove',
+                    'destroySubject'
+                )->name('subjects.remove');
+
                 Route::patch(
                     '/subjects/{subject}',
                     'updateSubject'
                 )->name('subjects.update');
             });
 
-        Route::resource('topics', App\Http\Controllers\TopicController::class)->except(['show', 'index']);
-        Route::resource('skills', App\Http\Controllers\SkillController::class)->except(['show', 'index']);
-        Route::resource('profile', ProfileController::class)->except(['create', 'index', 'show']);
+        Route::resource(
+            'topics',
+            App\Http\Controllers\TopicController::class
+        )->except(['show', 'index']);
+
+        Route::resource(
+            'skills',
+            App\Http\Controllers\SkillController::class
+        )->except(['show', 'index']);
+
+        Route::resource(
+            'profile',
+            ProfileController::class
+        )->except(['create', 'index', 'show']);
 
         Route::controller(App\Http\Controllers\ProfileController::class)
             ->prefix('profile')
@@ -98,43 +117,58 @@ Route::middleware('splade')->group(function () {
                 )->name('unblock');
             });
 
-        Route::resource('fields', App\Http\Controllers\FieldController::class)->except(['index', 'show']);;
+        Route::resource(
+            'fields',
+            App\Http\Controllers\FieldController::class
+        )->except(['index', 'show']);
 
         Route::controller(App\Http\Controllers\SkillController::class)
             ->prefix('skills')
             ->name('skills.')
             ->group(function () {
+
                 Route::post(
                     '/{skill}/assess',
                     'assess'
                 )->name('assess');
+
                 Route::get(
                     '/groups/{group}/edit',
                     'editGroup'
                 )->name('groups.edit');
+
                 Route::patch(
                     '/groups/{group}',
                     'updateGroup'
                 )->name('groups.update');
 
+                Route::delete(
+                    '/groups/{group}/remove',
+                    'destroyGroup'
+                )->name('groups.remove');
+
                 Route::get(
                     '/types/{type}/edit',
                     'editType'
                 )->name('types.edit');
+
                 Route::patch(
                     '/types/{type}',
                     'updateType'
                 )->name('types.update');
             });
     });
+
     Route::resource(
         'fields',
         App\Http\Controllers\FieldController::class
     )->only(['index', 'show']);
+
     Route::resource(
         'topics',
         App\Http\Controllers\TopicController::class
     )->only(['index', 'show']);
+
     Route::resource(
         'skills',
         App\Http\Controllers\SkillController::class
@@ -142,7 +176,9 @@ Route::middleware('splade')->group(function () {
 
     Route::get(
         '/dashboard',
-        [App\Http\Controllers\DashboardController::class, 'index']
+        [
+            App\Http\Controllers\DashboardController::class, 'index'
+        ]
     )->name('dashboard.index');
     require __DIR__ . '/auth.php';
 });

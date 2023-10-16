@@ -14,6 +14,6 @@ class Group extends Model
 
     public function skills(): HasMany
     {
-        return $this->hasMany(Group::class);
+        return $this->hasMany(Skill::class);
     }
 }

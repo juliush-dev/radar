@@ -304,4 +304,17 @@ class SkillController extends Controller
         Toast::title('assessment updated')->autoDismiss(5);
         return redirect(Referer::get());
     }
+
+    public function destroyGroup(Group $group)
+    {
+        $this->authorize('use-dashboard');
+        DB::transaction(function () use ($group) {
+            if ($group->skills()->count() > 0) {
+                Toast::warning("This group can't be delete. Some skills reference it.")->autoDismiss(5);
+            } else {
+                $group->delete();
+            }
+        });
+        return redirect(Referer::get());
+    }
 }

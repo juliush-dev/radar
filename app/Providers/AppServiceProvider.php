@@ -29,9 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Select::defaultChoices();
-        Select::defaultChoices([
-            'searchEnabled' => false
-        ]);
+        Select::defaultChoices();
         // Splade::defaultModalCloseExplicitly();
     }
 

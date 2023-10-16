@@ -21,6 +21,16 @@
             <h1 class="mb-2 text-xl first-letter:uppercase">Skills</h1>
             <span class="text-2xl">{{ $totalSkills }}</span>
             </Link>
+            <Link href="{{ route('dashboard.index', ['tab' => 'subjects']) }}"
+                class="border grow shadow-md hover:shadow-lg focus:shadow-sm dark:shadow-cyan-400 transition-all duration-300 p-6 dark:border-cyan-400">
+            <h1 class="mb-2 text-xl first-letter:uppercase">Subjects</h1>
+            <span class="text-2xl">{{ $totalSubjects }}</span>
+            </Link>
+            <Link href="{{ route('dashboard.index', ['tab' => 'groups']) }}"
+                class="border grow shadow-md hover:shadow-lg focus:shadow-sm dark:shadow-cyan-400 transition-all duration-300 p-6 dark:border-cyan-400">
+            <h1 class="mb-2 text-xl first-letter:uppercase">Groups</h1>
+            <span class="text-2xl">{{ $totalGroups }}</span>
+            </Link>
         </div>
     </section>
     <section class="bg-white pr-6 md:pr-0">

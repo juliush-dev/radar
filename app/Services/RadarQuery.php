@@ -10,10 +10,13 @@ use App\Models\Skill\Type;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\User;
+use App\Tables\Groups;
 use App\Tables\LearningMaterials;
+use App\Tables\Subjects;
 use App\Tables\Topics;
 use App\Tables\Users;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
 class RadarQuery
@@ -38,6 +41,16 @@ class RadarQuery
         return LearningMaterials::class;
     }
 
+    public function subjectsTable()
+    {
+        return Subjects::class;
+    }
+
+    public function groupsTable()
+    {
+        return Groups::class;
+    }
+
     public function totalUsers()
     {
         return User::count();
@@ -50,6 +63,16 @@ class RadarQuery
     {
         return Topic::count();
     }
+    public function totalSubjects()
+    {
+        return Subject::count();
+    }
+
+    public function totalGroups()
+    {
+        return Group::count();
+    }
+
     public function totalLearningMaterials()
     {
         return LearningMaterial::count();
@@ -195,5 +218,13 @@ class RadarQuery
             ->where('skill_id', $skill->id)
             ->first();
         return $skillAssessment?->assessment ?? 0;
+    }
+
+    public function usersByMonth()
+    {
+        return User::select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
     }
 }

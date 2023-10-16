@@ -28,10 +28,9 @@ class DashboardController extends Controller
             $tabParameters['totalUsers'] = $this->rq->totalUsers();
             $tabParameters['totalTopics'] = $this->rq->totalTopics();
             $tabParameters['totalLearningMaterials'] = $this->rq->totalLearningMaterials();
-            $usersByMonth = \App\Models\User::select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
-                ->groupBy('date')
-                ->orderBy('date', 'asc')
-                ->get();
+            $tabParameters['totalSubjects'] = $this->rq->totalSubjects();
+            $tabParameters['totalGroups'] = $this->rq->totalGroups();
+            $usersByMonth = $this->rq->usersByMonth();
             $data = $usersByMonth->reduce(function ($acc, $data) {
                 $date = Carbon::create($data->date);
                 $fullDate = $date->format('D, M j, Y');;
@@ -74,6 +73,10 @@ class DashboardController extends Controller
             $tabParameters['topics'] = $this->rq->topicsTable();
         } elseif ($activeTab == 'learning-materials') {
             $tabParameters['lms'] = $this->rq->learningMaterialsTable();
+        } elseif ($activeTab == 'subjects') {
+            $tabParameters['subjects'] = $this->rq->subjectsTable();
+        } elseif ($activeTab == 'groups') {
+            $tabParameters['groups'] = $this->rq->groupsTable();
         }
 
         return view(

@@ -16,6 +16,8 @@ class Overview extends Component
         public $totalSkills,
         public $totalTopics,
         public $totalLearningMaterials,
+        public $totalSubjects,
+        public $totalGroups,
         public $usersChart,
     ) {
     }

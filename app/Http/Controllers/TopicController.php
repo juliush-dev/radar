@@ -398,6 +398,7 @@ class TopicController extends Controller
 
     public function updateSubject(Request $request, Subject $subject)
     {
+        $this->authorize('use-dashboard');
         DB::transaction(function () use ($request, $subject) {
             $title = $request->input('title');
             $abbreviation = $request->input('abbreviation');
@@ -426,6 +427,19 @@ class TopicController extends Controller
         });
         // collect($request->toArray())->toJson();
         Toast::title('Subject sucessfuly updated!')->autoDismiss(5);
+        return redirect(Referer::get());
+    }
+
+    public function destroySubject(Subject $subject)
+    {
+        $this->authorize('use-dashboard');
+        DB::transaction(function () use ($subject) {
+            if ($subject->topics()->count() > 0) {
+                Toast::warning("This Subject can't be delete. Some topics reference it.")->autoDismiss(5);
+            } else {
+                $subject->delete();
+            }
+        });
         return redirect(Referer::get());
     }
 }

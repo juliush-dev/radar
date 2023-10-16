@@ -13,7 +13,7 @@
     @spladeHead
 </head>
 
-<body @preserveScroll('mainView') class="antialiased w-screen h-screen overflow-hidden relative flex flex-col">
+<body @preserveScroll('mainView') class="antialiased relative flex flex-col">
     @splade
 </body>
 
