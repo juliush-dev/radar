@@ -18,7 +18,7 @@
     @endif
 
     <button v-show="@js($canResetTable()) || table.columnsAreToggled || table.hasForcedVisibleSearchInputs" type="button"
-        class="group order-6 sm:order-4 ml-auto mr-2 sm:mr-3 bg-pink-500 shadow-sm px-2.5 sm:px-4 py-2 inline-flex justify-center text-sm font-medium hover:bg-pink-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 border-pink-500 transition-all duration-300"
+        class="group order-last sm:order-last  mx-2 sm:mx-3 bg-pink-500 shadow-sm px-2.5 sm:px-4 py-2 inline-flex justify-center text-sm font-medium hover:bg-pink-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 border-pink-500 transition-all duration-300"
         @click.prevent="table.reset" dusk="reset-table">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"

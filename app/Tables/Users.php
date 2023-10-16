@@ -47,14 +47,15 @@ class Users extends AbstractTable
      */
     public function configure(SpladeTable $table)
     {
+        $table->defaultColumnCanBeHidden(false);
         $table
             ->selectFilter('id', User::all()->pluck('name', 'id')->all(), 'User')
             ->selectFilter('blocked', [true => 'Blocked', false => 'Granted'], 'access')
-            ->column('name', canBeHidden: false)
+            ->column('name')
             ->column('email')
-            ->column('blocked', canBeHidden: false)
-            ->column('created_at')
-            ->column('email_verified_at')
+            ->column('blocked')
+            ->column('created_at', canBeHidden: true)
+            ->column('email_verified_at', canBeHidden: true)
             ->column('action')
             ->paginate(15);
     }

@@ -4,6 +4,7 @@ namespace App\Tables;
 
 use App\Models\Topic;
 use App\Models\User;
+use App\Services\RadarQuery;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\SpladeTable;
@@ -15,7 +16,7 @@ class Topics extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private RadarQuery $rq)
     {
         //
     }
@@ -49,16 +50,17 @@ class Topics extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
-            ->selectFilter('user_id', User::all()->pluck('name', 'id')->all(), 'author')
+            ->selectFilter('user_id', $this->rq->users()->pluck('name', 'id')->all(), 'author')
             ->selectFilter('is_public', [true => 'Public', false => 'Not public'], 'visibility')
             ->selectFilter('is_update', [true => 'Update', false => 'Topic'], 'type')
-            ->column('title')
-            ->column('subject.title', 'subject')
+            ->selectFilter('subject_id', $this->rq->subjects(true)->pluck('title', 'id')->all(), 'subject')
+            ->column('title', canBeHidden: false)
+            ->column('subject.title', 'subject', canBeHidden: false)
             ->column('learningMaterials', 'LMs')
             ->column('author.name', 'author')
-            ->column('public', canBeHidden: false)
-            ->column('topicToUpdate.title', 'Update of')
-            ->column('action')
+            ->column('public')
+            ->column('topicToUpdate.title', 'Update of', canBeHidden: false)
+            ->column('action', canBeHidden: false)
             ->paginate(15);
     }
 }

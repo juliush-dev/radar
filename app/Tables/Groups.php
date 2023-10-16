@@ -47,8 +47,9 @@ class Groups extends AbstractTable
      */
     public function configure(SpladeTable $table)
     {
+        $table->defaultColumnCanBeHidden(false);
         $table
-            ->column('title', canBeHidden: false)
+            ->column('title')
             ->column('action');
     }
 }

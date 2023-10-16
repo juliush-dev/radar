@@ -158,8 +158,11 @@ class RadarQuery
         return $fields;
     }
 
-    public function subjects()
+    public function subjects($all = false)
     {
+        if ($all) {
+            return Subject::all();
+        }
         return Subject::whereHas('topics', function ($query) {
             $query->where('is_public', true);
         })->get();
@@ -228,5 +231,10 @@ class RadarQuery
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get();
+    }
+
+    public function users()
+    {
+        return User::all();
     }
 }

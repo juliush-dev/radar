@@ -47,10 +47,11 @@ class Subjects extends AbstractTable
      */
     public function configure(SpladeTable $table)
     {
+        $table->defaultColumnCanBeHidden(false);
         $table
-            ->column('title', canBeHidden: false)
-            ->column('abbreviation', canBeHidden: false)
-            ->column('years.year', canBeHidden: false)
+            ->column('title')
+            ->column('abbreviation')
+            ->column('years.year')
             ->column('action');
     }
 }

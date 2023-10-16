@@ -49,13 +49,14 @@ class LearningMaterials extends AbstractTable
      */
     public function configure(SpladeTable $table)
     {
+        $table->defaultColumnCanBeHidden(false);
         $table
             ->selectFilter('topic_id', Topic::all()->pluck('title', 'id')->all(), 'topic')
             ->selectFilter('user_id', User::all()->pluck('name', 'id')->all(), 'author')
             ->selectFilter('is_public', [true => 'Public', false => 'Not public'], 'visibility')
             ->column('title')
             ->column('topic')
-            ->column('public', canBeHidden: false)
+            ->column('public')
             ->column('author.name', 'Author')
             ->column('action')
             ->paginate(15);
