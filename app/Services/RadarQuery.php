@@ -19,6 +19,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
+/**
+ * Use this class when in the context you are
+ * in, you want to retrieve some data from a source
+ * but it is not the responsability
+ * of that context, to be aware of the query
+ * constructed to get the required data.
+ */
 class RadarQuery
 {
 
