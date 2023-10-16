@@ -160,7 +160,9 @@ class RadarQuery
 
     public function subjects()
     {
-        return Subject::all();
+        return Subject::whereHas('topics', function ($query) {
+            $query->where('is_public', true);
+        })->get();
     }
 
     public function skills($filter = [], $all = false)
