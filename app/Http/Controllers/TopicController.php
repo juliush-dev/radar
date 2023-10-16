@@ -9,7 +9,6 @@ use App\Models\Topic;
 use App\Models\TopicField;
 use App\Models\TopicSkill;
 use App\Models\TopicYear;
-use App\Models\UserTopicAssessment;
 use App\Services\RadarQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

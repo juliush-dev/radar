@@ -11,7 +11,7 @@
 
     <div class="flex justify-between my-6 gap-6">
         <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md whitespace-nowrap" :label="$actionLabel" />
-        <Link href="{{ isset($field) ? route('fields.show', $field) : route('fields.index') }}"
+        <Link href="{{ Referer::get() }}"
             class=" whitespace-nowrap flex items-center justify-center w-fit px-4 rounded-none text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
         Cancel
         </Link>
