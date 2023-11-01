@@ -9,21 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('topics', function (Blueprint $table) {
-            $table->renameColumn('potential_replacement_topic_id', 'potential_replacement_topic_id');
-            $table->renameColumn('it_may_replace_topic_id', 'it_may_replace_topic_id');
+            $table->foreignUuid('potential_replacement')->nullable()->constrained('topics')->nullOnDelete();
+            $table->foreignUuid('potential_replacement_of')->nullable()->constrained('topics')->nullOnDelete();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('topics', function (Blueprint $table) {
+        Schema::table('learning-materials', function (Blueprint $table) {
             //
         });
     }

@@ -19,18 +19,18 @@
              <span>NN</span>
          @endif
      @endcell
-     @cell('topicItMayReplace.title', $topic)
-         @if ($topic->topicItMayReplace == null)
+     @cell('potentialReplacementOf.title', $topic)
+         @if ($topic->potentialReplacementOf == null)
              -
          @else
-             <x-splade-link :href="route('topics.show', $topic->topicItMayReplace)"
+             <x-splade-link :href="route('topics.show', $topic->potentialReplacementOf)"
                  class="text-teal-500 hover:text-teal-800 dark:text-teal-600 transition-colors duration-300">
-                 {{ $topic->topicItMayReplace->title }}
+                 {{ $topic->potentialReplacementOf->title }}
              </x-splade-link>
          @endif
      @endcell
      @cell('action', $topic)
-         @if ($topic->is_update && $topic->potentialReplacementTopic == null)
+         @if ($topic->is_update && $topic->potentialReplacement == null)
              <x-splade-link method="post" :href="route('topics.apply-update', $topic)" class="mr-4">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor"
@@ -42,7 +42,7 @@
 
              </x-splade-link>
          @endif
-         @if ($topic->potentialReplacementTopic == null)
+         @if ($topic->potentialReplacement == null)
              <x-splade-link :href="route('topics.edit', $topic)" class="mr-4">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor"
@@ -53,7 +53,7 @@
                  </svg>
              </x-splade-link>
          @endif
-         @if ($topic->potentialReplacementTopic)
+         @if ($topic->potentialReplacement)
              <span class="px-2 bg-yellow-400 font-mono text-sm">Update available</span>
          @else
              <x-splade-link method="delete" href="{{ route('topics.destroy', $topic) }}">

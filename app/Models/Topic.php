@@ -23,14 +23,14 @@ class Topic extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function potentialReplacementTopic(): BelongsTo
+    public function potentialReplacement(): BelongsTo
     {
-        return $this->belongsTo(Topic::class, 'potential_replacement_topic_id');
+        return $this->belongsTo(Topic::class, 'potential_replacement');
     }
 
-    public function topicItMayReplace(): BelongsTo
+    public function potentialReplacementOf(): BelongsTo
     {
-        return $this->belongsTo(Topic::class, 'it_may_replace_topic_id');
+        return $this->belongsTo(Topic::class, 'potential_replacement_of');
     }
 
     public function skill(): BelongsTo

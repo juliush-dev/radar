@@ -236,11 +236,11 @@ class TopicController extends Controller
 
             $newTopic->title = $title;
             $newTopic->is_update = 1;
-            $newTopic->it_may_replace_topic_id = $topic->id;
+            $newTopic->potential_replacement_of = $topic->id;
             $newTopic->user_id = $request->user()->id;
             $newTopic->save();
 
-            $topic->potential_replacement_topic_id = $newTopic->id;
+            $topic->potential_replacement = $newTopic->id;
             $topic->save();
 
             collect($years)->each(function ($year) use ($newTopic) {
@@ -301,7 +301,7 @@ class TopicController extends Controller
     public function destroy(Request $request, Topic $topic)
     {
         $this->authorize('delete-topic', [$topic]);
-        if ($topic->potentialReplacementTopic != null) {
+        if ($topic->potentialReplacement != null) {
             Toast::danger("Topic can't be delete. Pending update detected")->autoDismiss(15);
             return back();
         }
@@ -361,11 +361,11 @@ class TopicController extends Controller
         $this->authorize('use-dashboard');
         DB::transaction(
             function () use ($topic) {
-                $oldTopic = $topic->topicItMayReplace;
-                if ($oldTopic->topicItMayReplace) {
-                    $topic->it_may_replace_topic_id = $oldTopic->topicItMayReplace->id;
-                    $oldTopic->topicItMayReplace->potential_replacement_topic_id = $topic->id;
-                    $oldTopic->topicItMayReplace->save();
+                $oldTopic = $topic->potentialReplacementOf;
+                if ($oldTopic->potentialReplacementOf) {
+                    $topic->potential_replacement_of = $oldTopic->potentialReplacementOf->id;
+                    $oldTopic->potentialReplacementOf->potential_replacement = $topic->id;
+                    $oldTopic->potentialReplacementOf->save();
                 } else {
                     $topic->is_update = 0;
                 }

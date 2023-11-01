@@ -53,7 +53,7 @@
                          </x-splade-form>
                      @endif
                  @endcan
-                 @if ($topic->is_update && $topic->potentialReplacementTopic == null)
+                 @if ($topic->is_update && $topic->potentialReplacement == null)
                      @can('use-dashboard')
                          <x-splade-link method="post" :href="route('topics.apply-update', $topic)"
                              class="text-teal-500 hover:text-teal-600 dark:text-teal-200">
@@ -62,7 +62,7 @@
                      @endcan
                  @endif
                  @can('update-topic', $topic)
-                     @if (!$topic->is_update || $topic->potentialReplacementTopic == null)
+                     @if (!$topic->is_update || $topic->potentialReplacement == null)
                          <x-layouts.navigation-link class="text-blue-400" label="edit" resource="topics" action="edit"
                              :action-args="$topic" />
                      @endif
@@ -73,7 +73,7 @@
                  @endcan
              </div>
          @endauth
-         @if ($topic->is_update || $topic->potentialReplacementTopic)
+         @if ($topic->is_update || $topic->potentialReplacement)
              <span
                  class="whitespace-nowrap px-2 bg-pink-600 w-fit mb-2 font-mono text-sm dark:text-slate-200 my-auto grow-0">Volatile
                  @if ($topic->is_update)
