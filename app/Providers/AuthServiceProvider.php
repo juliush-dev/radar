@@ -53,7 +53,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-topic', function (User $user, ?Topic $topic) {
-            return $topic != null ? !isset($topic->updating_topic_id) && (($user->id === $topic->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked) : $user->is_admin && !$user->blocked;
+            return $topic != null ? !isset($topic->potential_replacement_topic_id) && (($user->id === $topic->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked) : $user->is_admin && !$user->blocked;
         });
 
         Gate::define('see-topic-update-path', function (User $user, ?Topic $topic) {

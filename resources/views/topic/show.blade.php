@@ -63,7 +63,7 @@
                      Add new topic
                      </Link>
                  @endcan
-                 @if ($topic->is_update || $topic->topicUpdating)
+                 @if ($topic->is_update || $topic->potentialReplacementTopic)
                      <span
                          class="px-2 bg-pink-600 w-fit font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
                          @if ($topic->is_update)
@@ -81,20 +81,20 @@
                      <h2 class="text-2xl mb-4">
                          Will replace
                      </h2>
-                     <x-splade-link :href="route('topics.show', $topic->topicToUpdate)"
+                     <x-splade-link :href="route('topics.show', $topic->topicItMayReplace)"
                          class="text-teal-600 hover:text-teal-700 dark:text-teal-400 transition-colors duration-300">
-                         {{ $topic->topicToUpdate->title }}
+                         {{ $topic->topicItMayReplace->title }}
                      </x-splade-link>
                  </section>
              @endif
-             @if ($topic->topicUpdating)
+             @if ($topic->potentialReplacementTopic)
                  <section class="mb-8 border border-pink-800 p-4">
                      <h2 class="text-2xl mb-4">
                          Will be replaced by
                      </h2>
-                     <x-splade-link :href="route('topics.show', $topic->topicUpdating)"
+                     <x-splade-link :href="route('topics.show', $topic->potentialReplacementTopic)"
                          class=" text-teal-600 hover:text-teal-700 dark:text-teal-400 transition-colors duration-300">
-                         {{ $topic->topicUpdating->title }}
+                         {{ $topic->potentialReplacementTopic->title }}
                      </x-splade-link>
                  </section>
              @endif
@@ -191,7 +191,7 @@
                          </x-splade-form>
                      @endif
                  @endcan
-                 @if ($topic->is_update && $topic->topicUpdating == null)
+                 @if ($topic->is_update && $topic->potentialReplacementTopic == null)
                      @can('use-dashboard')
                          <x-splade-link method="post" :href="route('topics.apply-update', $topic)"
                              class="text-teal-500 hover:text-teal-600 dark:text-teal-200">
@@ -200,7 +200,7 @@
                      @endcan
                  @endif
                  @can('update-topic', $topic)
-                     @if (!$topic->is_update || $topic->topicUpdating == null)
+                     @if (!$topic->is_update || $topic->potentialReplacementTopic == null)
                          <x-layouts.navigation-link class="text-blue-400" label="edit" resource="topics" action="edit"
                              :action-args="$topic" />
                      @endif
@@ -209,7 +209,7 @@
                      <x-layouts.navigation-link class="text-red-400" label="delete" resource="topics" action="destroy"
                          :action-args="$topic" />
                  @endcan
-                 @if ($topic->is_update || $topic->topicUpdating)
+                 @if ($topic->is_update || $topic->potentialReplacementTopic)
                      <span
                          class="ml-auto px-2 bg-pink-600 w-fit mb-2 font-mono text-sm dark:text-slate-200 my-auto grow-0">Volatile
                          @if ($topic->is_update)

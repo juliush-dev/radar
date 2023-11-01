@@ -100,7 +100,7 @@ class RadarQuery
                 });
                 $query->orWhere(function ($query) use ($filter) {
                     $query->where('user_id', $filter['author']);
-                    $query->where('updating_topic_id', null);
+                    $query->where('potential_replacement_topic_id', null);
                     $query->where(function ($query) {
                         $query->where('is_update', true)->orWhere('is_update', false);
                     });

@@ -59,7 +59,7 @@ class Topics extends AbstractTable
             ->column('learningMaterials', 'LMs')
             ->column('author.name', 'author')
             ->column('public')
-            ->column('topicToUpdate.title', 'Update of', canBeHidden: false)
+            ->column('topicItMayReplace.title', 'Update of', canBeHidden: false)
             ->column('action', canBeHidden: false)
             ->paginate(15);
     }
