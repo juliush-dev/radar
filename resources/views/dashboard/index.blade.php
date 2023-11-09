@@ -63,6 +63,16 @@
             </svg>
             Groups
             </Link>
+            <Link
+                class="whitespace-nowrap flex gap-2 px-6 py-4 cursor-pointer {{ $activeTab == 'checkpoints' ? ' bg-pink-500 dark:bg-cyan-500 text-white' : 'text-slate-50 bg-slate-800' }}"
+                href="{{ route('dashboard.index', ['tab' => 'checkpoints']) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+            </svg>
+            Checkpoints
+            </Link>
         </div>
         <div class="px-0 md:px-6 lg:px-10 grow overflow-auto" @preserveScroll('dashboard')>
             @if ($activeTab == null)
@@ -78,6 +88,8 @@
                 <x-dashboard.subjects :$subjects />
             @elseif($activeTab == 'groups')
                 <x-dashboard.groups :$groups />
+            @elseif($activeTab == 'checkpoints')
+                <x-dashboard.checkpoints :$checkpoints />
             @endif
         </div>
     </div>

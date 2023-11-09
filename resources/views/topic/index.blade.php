@@ -3,7 +3,7 @@
      <div class="h-full flex flex-col overflow-y-auto pb-20 md:pb-8 @if (Agent::isAndroidOs() && Agent::isEdge()) pb-36 @endif"
          @preserveScroll('topics')>
          <x-topics-filter :years="$rq->years()" :subjects="$rq->subjects()" :fields="$rq->fields()" :skills="$rq->skills()" />
-         <div class="space-y-4 columns-1 lg:columns-3 grow w-full mb-4 gap-4 px-6 lg:px-10">
+         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full gap-6 px-6 lg:px-10">
              @foreach ($topics as $topic)
                  <x-topic :topic="$topic" />
              @endforeach

@@ -441,4 +441,15 @@ class TopicController extends Controller
         });
         return redirect(Referer::get());
     }
+
+    public function createCheckpoint(Topic $topic)
+    {
+        $checkpointController =  app(CheckpointController::class);
+        return $checkpointController->create(null, $topic);
+    }
+    public function storeCheckpoint(Request $request, Topic $topic)
+    {
+        $checkpointController =  app(CheckpointController::class);
+        return $checkpointController->store($request, null, $topic);
+    }
 }

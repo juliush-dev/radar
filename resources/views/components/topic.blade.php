@@ -1,11 +1,11 @@
  <div
-     class="group break-inside-avoid w-full border border-violet-300 text-white shadow shadow-violet-400/80 dark:shadow-violet-400/50 hover:shadow-md hover:shadow-violet-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
+     class="group border border-violet-300 text-white shadow shadow-violet-400/80 dark:shadow-violet-400/50 hover:shadow-md hover:shadow-violet-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
      <x-nav-link href="{{ route('topics.show', $topic) }}"
          class="text-lg first-letter:uppercase w-full text-violet-500 group-hover:text-violet-700 dark:text-violet-300 dark:group-hover:text-violet-400 hover:text-violet-500 transition-colors duration-300">
          <h1 class="mb-2">{{ $topic->title }}</h1>
      </x-nav-link>
 
-     <p class="font-normal text-sm mb-2 text-slate-500 dark:text-slate-300">
+     <div class="font-normal text-sm mb-2 text-slate-500 dark:text-slate-300 flex flex-wrap">
          @can('update-subject')
              <x-nav-link modal href="{{ route('topics.subjects.edit', $topic->subject) }}"
                  class="dark:text-teal-300 text-teal-500">
@@ -24,21 +24,25 @@
              @endif
          @endforeach
          <span class="mx-1">/</span>
-         @php
-             $volatileTopicLearningMaterials = \App\Models\LearningMaterial::where('topic_id', $topic->id)
-                 ->where('is_public', false)
-                 ->get();
-         @endphp
          <span class="dark:text-slate-300 text-slate-500 flex gap-2 flex-nowrap">
              {{ $topic->learningMaterials->count() }}
-             @if ($volatileTopicLearningMaterials->count() > 0)
+             @if (($volatiles = $topic->volatileLearningMaterials()->count()) > 0)
                  <span class="px-2 bg-pink-500 text-white text-xs my-auto">
-                     % {{ $volatileTopicLearningMaterials->count() }}
+                     % {{ $volatiles }}
                  </span>
              @endif
              Lms
+         </span><span class="mx-1">/</span>
+         <span class="dark:text-slate-300 text-slate-500 flex gap-2 flex-nowrap">
+             {{ $topic->publicCheckpoints->count() }}
+             @if (($volatiles = $topic->volatileCheckpoints->count()) > 0)
+                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
+                     % {{ $volatiles }}
+                 </span>
+             @endif
+             CP
          </span>
-     </p>
+     </div>
      <div class="w-full flex justify-between text-white text-xs items-center">
          @auth
              <div class="flex gap-4 items-center">
@@ -82,5 +86,6 @@
                  @endif
              </span>
          @endif
+         <x-volatile-sign :model="$topic" />
      </div>
  </div>

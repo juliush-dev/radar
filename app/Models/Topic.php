@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Services\RadarQuery;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 class Topic extends Model
 {
@@ -61,5 +62,36 @@ class Topic extends Model
     public function learningMaterials(): HasMany
     {
         return $this->hasMany(LearningMaterial::class);
+    }
+
+    public function checkpoints(): HasMany
+    {
+        return $this->hasMany(Checkpoint::class);
+    }
+    public function volatileCheckpoints()
+    {
+        return $this->checkpoints()->where('is_public', false);
+    }
+
+    public function publicCheckpoints()
+    {
+        return $this->checkpoints()->where(
+            RadarQuery::publicOrAuthor(Auth::id())
+        );
+    }
+
+    public function volatileLearningMaterials()
+    {
+        return $this->learningMaterials()->where('is_public', false);
+    }
+
+    public function publicLearningMaterials()
+    {
+        return $this->learningMaterials()->where(
+            function ($query) {
+                $query->where('is_public', true)
+                    ->orWhere('user_id', Auth::id());
+            }
+        );
     }
 }

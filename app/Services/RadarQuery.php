@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Checkpoint;
 use App\Models\Field;
 use App\Models\Group;
 use App\Models\LearningMaterial;
@@ -10,12 +11,17 @@ use App\Models\Skill\Type;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\User;
+use App\Models\UserCheckpointSession;
+use App\Models\UserCheckpointSessionResult;
+use App\Tables\Checkpoints;
 use App\Tables\Groups;
 use App\Tables\LearningMaterials;
 use App\Tables\Subjects;
 use App\Tables\Topics;
 use App\Tables\Users;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
@@ -243,5 +249,115 @@ class RadarQuery
     public function users()
     {
         return User::all();
+    }
+
+    public function checkpoints($filter = [])
+    {
+        $checkpoint = Checkpoint::query();
+        if (!empty($filter['author'])) {
+            $checkpoint->where(function ($query) use ($filter) {
+                $query->where(function ($query) use ($filter) {
+                    $query->where('is_public', true);
+                    $query->where('is_update', false);
+                    $query->where(function ($query) use ($filter) {
+                        $query->whereNot('user_id', $filter['author'])
+                            ->orWhere('user_id', null);
+                    });
+                });
+                $query->orWhere(function ($query) use ($filter) {
+                    $query->where('user_id', $filter['author']);
+                    $query->where('potential_replacement', null);
+                    $query->where(function ($query) {
+                        $query->where('is_update', true)->orWhere('is_update', false);
+                    });
+                });
+            });
+        } else {
+            $checkpoint->where('is_public', true)->where('is_update', false);
+        }
+        if (!empty($filter['topic'])) {
+            $checkpoint->where('topic_id', $filter['topic']);
+        }
+        return $checkpoint->get();
+    }
+
+    public function checkpointsTable()
+    {
+        return Checkpoints::class;
+    }
+
+    public function checkpointsSessions($filter = [])
+    {
+        $sessions = UserCheckpointSession::query();
+        if (!empty($filter['author'])) {
+            $sessions->where('user_id', $filter['author']);
+        }
+        if (!empty($filter['checkpoint'])) {
+            $sessions->where('checkpoint_id', $filter['checkpoint']);
+        }
+        return $sessions->get();
+    }
+
+    public function sessionCorrectsResults(
+        UserCheckpointSession $session,
+        ?Collection $results = null
+    ) {
+        $corrects = $session->checkpoint
+            ->questionAnswerSets()
+            ->whereIn(
+                'id',
+                ($results != null ? $results : $session->userResults)
+                    ->where('answered_correctly', true)
+                    ->pluck('QA_set_id')
+            );
+        return $corrects;
+    }
+
+    public function sessionWrongsResults(
+        UserCheckpointSession $session,
+        ?Collection $results = null
+    ) {
+        $wrongs = $session->checkpoint
+            ->questionAnswerSets()
+            ->whereIn(
+                'id',
+                ($results != null ? $results : $session->userResults)
+                    ->where('answered_correctly', false)
+                    ->pluck('QA_set_id')
+            );
+        return $wrongs;
+    }
+
+    public function sessionUntouchedQuestions(
+        UserCheckpointSession $session,
+        ?Collection $results = null
+    ) {
+        $untouched = $session->checkpoint
+            ->questionAnswerSets()
+            ->whereNotIn('id', ($results != null ? $results : $session->userResults)
+                ->pluck('QA_set_id'));
+        return $untouched;
+    }
+
+    static function publicOrAuthor($userId)
+    {
+        return function ($query) use ($userId) {
+            $query->where(function ($query) use ($userId) {
+                $query->where('is_public', true);
+                $query->where('is_update', false);
+                $query->where(function ($query) use ($userId) {
+                    $query->whereNot('user_id', $userId)
+                        ->orWhere('user_id', null);
+                });
+            });
+            $query->orWhere(function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+                $query->where('potential_replacement', null);
+                $query->where(function ($query) {
+                    $query->where('is_update', true)
+                        ->orWhere('is_update', false);
+                });
+            });
+        };
     }
 }

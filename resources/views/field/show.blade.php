@@ -30,7 +30,8 @@
             <h2 class="text-2xl mb-4">
                 In-depth
             </h2>
-            <div class="mb-8 font-sans text-slate-500 dark:text-slate-300">
+            <div
+                class="min-w-full mb-8 font-sans text-slate-500 dark:text-slate-300 prose prose-strong:dark:text-white">
                 @if ($field->details)
                     {!! $field->details !!}
                 @else

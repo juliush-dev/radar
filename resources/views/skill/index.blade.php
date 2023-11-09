@@ -4,7 +4,7 @@
          <x-skills-filter :years="$rq->years()" :types="$rq->types()" :groups="$rq->groups()" :fields="$rq->fields()" :assessments="$rq->assessments()">
              {{ $skills->appends(request()->query())->links() }}
          </x-skills-filter>
-         <div class="space-y-4 columns-1 lg:columns-3 w-full mb-4 gap-4 px-6 lg:px-10">
+         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full gap-6  mb-4 px-6 lg:px-10">
              @foreach ($skills as $skill)
                  <x-skill :loop="$loop" :skill="$skill" :user-assessment="$rq->userSkillAssessment($skill)" />
              @endforeach

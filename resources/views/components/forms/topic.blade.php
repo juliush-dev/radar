@@ -4,12 +4,21 @@
 @php($skills = $rq->skills(all: true))
 <topic v-slot="topic" :form="form">
     <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-4">
-        <button class="px-6 py-4 cursor-pointer"
+        <button class="px-6 py-4 cursor-pointer w-full md:w-fit"
             v-bind:class=" topic.activeTab == 'topic' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-700'"
             @click.prevent="topic.setActiveTab('topic')">Topic</button>
-        <button v-show="form.newSubject != null" class="px-6 py-4 cursor-pointer"
+        <button v-show="form.newSubject != null" class="px-6 py-4 cursor-pointer w-full md:w-fit"
             v-bind:class=" topic.activeTab == 'subject' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-700'"
             @click.prevent="topic.setActiveTab('subject')">New Subject</button>
+        <div class="flex justify-start md:ml-auto w-full md:w-fit order-first md:order-last">
+            <x-splade-submit
+                class="bg-fuchsia-500 h-full w-full md:w-32 hover:bg-fuchsia-600 shadow-md whitespace-nowrap"
+                :label="$actionLabel" />
+            <Link href="{{ Referer::get() }}"
+                class=" whitespace-nowrap flex items-center justify-center w-full md:w-fit px-4 rounded-none text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
+            Cancel
+            </Link>
+        </div>
     </div>
     <section v-show="topic.activeTab == 'topic'"
         class="w-full flex flex-col bg-white border border-slate-200 dark:border-white p-8">
@@ -43,14 +52,6 @@
         {{-- <div class="flex justify-start my-4">
             <EmojiPicker :native="@js(false)" @select="" class="" />
         </div> --}}
-        <div class="flex justify-between my-6 gap-6">
-            <x-splade-submit class="bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md whitespace-nowrap"
-                :label="$actionLabel" />
-            <Link href="{{ Referer::get() }}"
-                class=" whitespace-nowrap flex items-center justify-center w-fit px-4 rounded-none text-white bg-slate-400 shadow hover:bg-slate-500 hover:shadow-md align-middle">
-            Cancel
-            </Link>
-        </div>
     </section>
     <section v-show="topic.activeTab == 'subject'"
         class="w-full flex flex-col bg-white border border-slate-200 dark:border-white p-8">

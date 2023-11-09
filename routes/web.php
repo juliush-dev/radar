@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CheckpointController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserCheckpointSessionController;
+use App\Http\Controllers\UserCheckpointSessionResultController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +41,11 @@ Route::middleware('splade')->group(function () {
         ]
     )->name('topics.learning-materials.download');
 
+    Route::get(
+        '/checkpoints/{checkpoint}/session/preview',
+        [CheckpointController::class, 'preview']
+    )->name('checkpoints.preview');
+
     Route::middleware('auth')->group(function () {
         Route::controller(App\Http\Controllers\TopicController::class)
             ->prefix('topics')
@@ -59,6 +67,7 @@ Route::middleware('splade')->group(function () {
                     '/learning-materials/{learningMaterial}/unpublish',
                     'unpublishLearningMaterial'
                 )->name('learning-materials.unpublish');
+
                 Route::post(
                     '/{topic}/publish',
                     'publishTopic'
@@ -76,12 +85,10 @@ Route::middleware('splade')->group(function () {
                     '/subjects/{subject}/edit',
                     'editSubject'
                 )->name('subjects.edit');
-
                 Route::delete(
                     '/subjects/{subject}/remove',
                     'destroySubject'
                 )->name('subjects.remove');
-
                 Route::patch(
                     '/subjects/{subject}',
                     'updateSubject'
@@ -126,7 +133,6 @@ Route::middleware('splade')->group(function () {
             ->prefix('skills')
             ->name('skills.')
             ->group(function () {
-
                 Route::post(
                     '/{skill}/assess',
                     'assess'
@@ -156,6 +162,83 @@ Route::middleware('splade')->group(function () {
                     '/types/{type}',
                     'updateType'
                 )->name('types.update');
+            });
+        Route::resource(
+            'checkpoints',
+            App\Http\Controllers\CheckpointController::class
+        )->only(['edit', 'update', 'destroy']);
+        Route::controller(App\Http\Controllers\CheckpointController::class)
+            ->prefix('checkpoints')
+            ->name('checkpoints.')
+            ->group(function () {
+                Route::get(
+                    '/topics/{topic}',
+                    'create'
+                )->name('create');
+                Route::post(
+                    '/topics/{topic}',
+                    'store'
+                )->name('store');
+                Route::post(
+                    '/{checkpoint}/session/initiate',
+                    'initiate'
+                )->name('initiate');
+                Route::post(
+                    '/{checkpoint}/publish',
+                    'publish'
+                )->name('publish');
+                Route::post(
+                    '/{checkpoint}/unpublish',
+                    'unpublish'
+                )->name('unpublish');
+                Route::post(
+                    '/{checkpoint}/apply-update',
+                    'applyUpdate'
+                )->name('apply-update');
+            });
+
+        Route::controller(UserCheckpointSessionController::class)
+            ->prefix('sessions')
+            ->name('sessions.')
+            ->group(function () {
+                Route::get(
+                    '/{session}/start',
+                    'start'
+                )->name('start');
+                Route::patch(
+                    '/{session}/stop',
+                    'stop'
+                )->name('stop');
+                Route::get(
+                    '/{session}/review',
+                    'review'
+                )->name('review');
+                Route::post(
+                    '/{session}/answers/{answer}/correct',
+                    'correct'
+                )->name('results.correct');
+                Route::post(
+                    '/{session}/answers/{answer}/wrong',
+                    'wrong'
+                )->name('results.wrong');
+                Route::delete(
+                    '/{session}',
+                    'destroy'
+                )->name('destroy');
+            });
+
+        Route::controller(UserCheckpointSessionResultController::class)
+            ->prefix('results')
+            ->name('results.')
+            ->group(function () {
+                Route::post(
+                    '/sessions/{session}/answers/{answer}/correct',
+                    'correct'
+                )->name('correct');
+                Route::post(
+                    '/sessions/{session}/answers/{answer}/wrong',
+                    'wrong'
+                )->name('wrong');
             });
     });
 

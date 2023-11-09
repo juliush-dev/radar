@@ -41,3 +41,13 @@ tr {
     border-radius: 0px;
     border-color: rgba(255, 0, 255, 0.3);
 }
+.jodit-wrapper {
+    min-width: 100%;
+}
+.jodit-toolbar__box {
+    top: 55px !important;
+}
+.jodit-add-new-line,
+.jodit-add-new-line_after {
+    display: none !important;
+}

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Checkpoint\Checkpoint;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -59,5 +60,20 @@ class User extends Authenticatable
     public function learningMaterials(): HasMany
     {
         return $this->hasMany(LearningMaterial::class);
+    }
+
+    public function checkpoints(): HasMany
+    {
+        return $this->hasMany(Checkpoint::class);
+    }
+
+    public function checkpointQuestionAnswerSets(): HasMany
+    {
+        return $this->hasMany(CheckpointQuestionAnswerSet::class);
+    }
+
+    public function checkpointSessions(): HasMany
+    {
+        return $this->hasMany(UserCheckpointSession::class);
     }
 }

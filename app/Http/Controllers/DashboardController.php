@@ -77,6 +77,8 @@ class DashboardController extends Controller
             $tabParameters['subjects'] = $this->rq->subjectsTable();
         } elseif ($activeTab == 'groups') {
             $tabParameters['groups'] = $this->rq->groupsTable();
+        } elseif ($activeTab == 'checkpoints') {
+            $tabParameters['checkpoints'] = $this->rq->checkpointsTable();
         }
 
         return view(

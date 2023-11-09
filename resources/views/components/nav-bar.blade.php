@@ -15,7 +15,7 @@
          </div>
      </x-splade-modal>
  @endguest
- <div class="flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-6 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-50/5 shadow-sm shadow-fuchsia-400"
+ <div class="z-20 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-6 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-50/5 shadow-sm shadow-fuchsia-400"
      @preserveScroll('navigationContainer')>
      <div class="flex gap-2 items-center p-4 lg:py-2 lg:px-10 md:pb-0">
          <span

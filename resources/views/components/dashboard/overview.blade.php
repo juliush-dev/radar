@@ -1,6 +1,6 @@
 <div class="dark:text-slate-100">
     <section class="mb-8 px-6 md:px-0 pt-5">
-        <div class="flex flex-wrap gap-6 justify-evenly">
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full gap-6 ">
             <Link href="{{ route('dashboard.index', ['tab' => 'users']) }}"
                 class="border grow shadow-md hover:shadow-lg focus:shadow-sm dark:shadow-cyan-400 transition-all duration-300 p-6 dark:border-cyan-400">
             <h1 class="mb-2 text-xl first-letter:uppercase">Users</h1>

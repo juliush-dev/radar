@@ -7,6 +7,6 @@
     $classes .= ' first-letter:uppercase rounded-sm inline-flex items.center justify.center gap-2 transition duration-500 ease-in-out';
 @endphp
 
-<{{ $as }} {{ $attributes->class($classes) }}>
+<{{ $as }} {{ $attributes->class($classes) }} @click.stop>
     {{ $slot }}
     </{{ $as }}>
