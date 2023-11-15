@@ -27,7 +27,7 @@
                     </x-splade-button>
                 </div>
             </x-splade-transition>
-            <button @click.prevent="checkpoint.removeQuestionsCube(index)" class="block w-fit ml-auto lg:mr-6">
+            <button @click.prevent.stop="checkpoint.removeQuestionsCube(index)" class="block w-fit ml-auto lg:mr-6">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 text-red-400 hover:text-red-500

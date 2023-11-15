@@ -1,5 +1,4 @@
 <script>
-import { nextTick } from 'vue';
 
 export default {
 
@@ -39,12 +38,16 @@ export default {
             console.log(content);
         },
         removeQuestion (index = null) {
-            console.log(index);
-            if (isNaN(index)) {
-                this.cube.questions = [];
-            } else {
-                this.cube.questions.splice(index, 1);
+            if (isNaN(index) || index < 0 || index >= this.cube.questions.length) {
+                console.error("Invalid index or index out of bounds");
+                return;
             }
+            var temp =  this.cube.questions;
+            this.cube.questions = [];
+            this.$nextTick(() => {
+                this.cube.questions = temp.filter((e, i) => i != index);
+                temp = null;
+            });
         },
         next (activeFace, activeDeep) {
             this.activeIndex + 1 >= this.questionsCount ? this.activeIndex = 0 : this.activeIndex++;

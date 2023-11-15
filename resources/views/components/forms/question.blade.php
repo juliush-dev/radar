@@ -14,7 +14,7 @@
                     <x-forms.flash-card-q-a />
                 </div>
             </x-splade-transition>
-            <button @click.prevent="questionsCube.removeQuestion(index)" class="block w-fit ml-auto">
+            <button @click.prevent.stop="questionsCube.removeQuestion(index)" class="block w-fit ml-auto">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 text-red-400 hover:text-red-500

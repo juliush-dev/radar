@@ -182,20 +182,20 @@ export default {
     },
 
     created() {
-        console.log();
-        console.log('-----------');
-        console.log('Content:');
-        console.log(this.content);
-        console.log(`Context: ${this.context}`);
-        console.log(`Index: ${this.index}`);
-        console.log(`Deep: ${this.deep}`);
-        console.log(`NextDeep: ${this.nextDeep}`);
-        console.log(`PrevDeep: ${this.previousDeep}`);
-        console.log(`Face: ${this.face}`);
-        console.log(`nextFace: ${this.nextFace}`);
-        // console.log(`prevFace: ${this.previousFace}`);
-        console.log('-----------');
-        console.log();
+        // console.log();
+        // console.log('-----------');
+        // console.log('Content:');
+        // console.log(this.content);
+        // console.log(`Context: ${this.context}`);
+        // console.log(`Index: ${this.index}`);
+        // console.log(`Deep: ${this.deep}`);
+        // console.log(`NextDeep: ${this.nextDeep}`);
+        // console.log(`PrevDeep: ${this.previousDeep}`);
+        // console.log(`Face: ${this.face}`);
+        // console.log(`nextFace: ${this.nextFace}`);
+        // // console.log(`prevFace: ${this.previousFace}`);
+        // console.log('-----------');
+        // console.log();
         if(this.content && this.content.is_cloze){
             this.$watch('content.answer', () => {
                 this.trackClozedWords();
@@ -208,12 +208,12 @@ export default {
          }
     },
     updated() {
-        console.log('----------------------');
-        console.log(this.index);
-        console.log(`revealed: ${this.answerRevealed}`);
-        console.log(`correctly: ${this.answeredCorrectly}`);
-        console.log('----------------------');
-        console.log();
+        // console.log('----------------------');
+        // console.log(this.index);
+        // console.log(`revealed: ${this.answerRevealed}`);
+        // console.log(`correctly: ${this.answeredCorrectly}`);
+        // console.log('----------------------');
+        // console.log();
     },
     render () {
         return this.$slots.default({
