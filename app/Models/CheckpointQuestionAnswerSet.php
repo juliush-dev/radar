@@ -21,4 +21,19 @@ class CheckpointQuestionAnswerSet extends Model
     {
         return $this->belongsTo(Checkpoint::class);
     }
+
+    public function questionsCube(): BelongsTo
+    {
+        return $this->belongsTo(QuestionsCube::class);
+    }
+
+    public function potentialReplacement(): BelongsTo
+    {
+        return $this->belongsTo(CheckpointQuestionAnswerSet::class, 'potential_replacement');
+    }
+
+    public function potentialReplacementOf(): BelongsTo
+    {
+        return $this->belongsTo(CheckpointQuestionAnswerSet::class, 'potential_replacement_of');
+    }
 }

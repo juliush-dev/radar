@@ -8,6 +8,8 @@ import Topic from "./Components/Topic.vue";
 import Skill from "./Components/Skill.vue";
 import Checkpoint from "./Components/Checkpoint.vue";
 import CheckpointSession from "./Components/CheckpointSession.vue";
+import QuestionsCube from "./Components/QuestionsCube.vue";
+import Question from "./Components/Question.vue";
 import Countdown from "./Components/Countdown.vue";
 import LineChart from "./Components/LineChart.vue";
 
@@ -31,6 +33,8 @@ createApp({
             Skill,
             Checkpoint,
             CheckpointSession,
+            QuestionsCube,
+            Question,
             LineChart,
             Countdown,
         },

@@ -72,7 +72,7 @@ export default {
         start (){
             if (!this.over) {
                 this.startedningId = setInterval(() => {
-                    if(!this.session.pauseCountdown){
+                    if(!this.session.paused){
                         this.form.countdown--
                         if (this.form.countdown <= 0) {
                             this.stop();

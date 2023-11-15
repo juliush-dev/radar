@@ -2,12 +2,11 @@
 
 namespace App\View\Components\Forms;
 
-use App\Services\RadarQuery;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Checkpoint extends Component
+class Question extends Component
 {
     /**
      * Create a new component instance.
@@ -22,6 +21,6 @@ class Checkpoint extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.forms.checkpoint');
+        return view('components.forms.question');
     }
 }

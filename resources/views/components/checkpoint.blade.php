@@ -1,10 +1,10 @@
  <div
-     class="bg-white dark:bg-slate-100 dark:border-white border-slate-300 flex flex-col gap-3 justify-between p-6 rounded-md whitespace-break-spaces border">
+     class="bg-white dark:bg-slate-700 dark:border-slate-700 border-slate-300 flex flex-col gap-3 justify-between p-6 rounded-md whitespace-break-spaces border">
      <x-nav-link href="{{ route('checkpoints.preview', $checkpoint) }}"
          class="text-lg first-letter:uppercase w-full text-violet-500 group-hover:text-violet-700 transition-colors duration-300">
          <h1 class="mb-2">{{ $checkpoint->title }}</h1>
      </x-nav-link>
-     <div class="flex gap-2 dark:text-slate-500">
+     <div class="flex gap-2 dark:text-slate-300">
          <span>{{ $checkpoint->questionAnswerSets->count() }}Q</span>
          @if (Auth::check())
              <span class="mx-1">/</span>

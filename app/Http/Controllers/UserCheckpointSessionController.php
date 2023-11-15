@@ -23,7 +23,7 @@ class UserCheckpointSessionController extends Controller
             Toast::message('You already completed this session. Here is a brief review of it');
             return redirect(route('sessions.review', $session));
         }
-        return view('checkpoint-session.start', [
+        return view('checkpoint-session.record', [
             'session' => $session
         ]);
     }

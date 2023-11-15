@@ -32,6 +32,7 @@ class Checkpoint extends Model
     {
         return $this->hasMany(UserCheckpointSession::class);
     }
+
     public function potentialReplacement(): BelongsTo
     {
         return $this->belongsTo(Checkpoint::class, 'potential_replacement');
@@ -40,5 +41,10 @@ class Checkpoint extends Model
     public function potentialReplacementOf(): BelongsTo
     {
         return $this->belongsTo(Checkpoint::class, 'potential_replacement_of');
+    }
+
+    public function questionsCubes(): HasMany
+    {
+        return $this->hasMany(QuestionsCube::class);
     }
 }

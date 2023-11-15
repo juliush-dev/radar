@@ -1,9 +1,9 @@
 <x-layouts.app active-page="Edit Checkpoint">
     <div class="h-full overflow-y-auto relative px-6 lg:px-80 md:px-20 pb-6">
         <x-splade-form :action="route('checkpoints.update', $checkpoint)" method="patch" :default="[
-            'clozes' => $clozes,
-            'flashCards' => $flashCards,
-            'title' => $checkpoint->title,
+            'title' => $title,
+            'goal' => $goal,
+            'questionsCubes' => $questionsCubes,
         ]">
             <x-forms.checkpoint :$rq />
         </x-splade-form>

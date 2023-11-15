@@ -24,7 +24,7 @@ export default defineConfig({
         //     usePolling: true,
         // },
         // hmr: {
-        //     host: "192.168.0.102",
+        //     host: "192.168.0.101",
         // },
     },
     ssr: {

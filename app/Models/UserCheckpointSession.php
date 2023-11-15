@@ -26,4 +26,59 @@ class UserCheckpointSession extends Model
     {
         return $this->hasMany(UserCheckpointSessionResult::class, 'session_id');
     }
+
+    public function untouchedQuestions($justCount = false)
+    {
+        $untouched = CheckpointQuestionAnswerSet::where('checkpoint_id', $this->checkpoint->id)
+            ->whereNotIn('id', $this->userResults->pluck('QA_set_id')->all());
+        if ($justCount) {
+            return $untouched->count();
+        }
+        $untouched = $untouched->get();
+        $modifiedCollection = $untouched->map(function ($item) {
+            $item['answered_correctly'] = null;
+            return $item;
+        });
+        return $modifiedCollection;
+    }
+
+    public function correctResults($justCount = false)
+    {
+        $results = CheckpointQuestionAnswerSet::whereIn(
+            'id',
+            $this->userResults()->where(
+                'answered_correctly',
+                true
+            )->pluck('QA_set_id')->all()
+        );
+        if ($justCount) {
+            return $results->count();
+        }
+        $results = $results->get();
+        $modifiedCollection = $results->map(function ($item) {
+            $item['answered_correctly'] = true;
+            return $item;
+        });
+        return $modifiedCollection;
+    }
+
+    public function wrongResults($justCount = false)
+    {
+        $result = CheckpointQuestionAnswerSet::whereIn(
+            'id',
+            $this->userResults()->where(
+                'answered_correctly',
+                false
+            )->pluck('QA_set_id')->all()
+        );
+        if ($justCount) {
+            return $result->count();
+        }
+        $result = $result->get();
+        $modifiedCollection = $result->map(function ($item) {
+            $item['answered_correctly'] = false;
+            return $item;
+        });
+        return $modifiedCollection;
+    }
 }

@@ -6,8 +6,8 @@
 @tailwind utilities;
 
 * {
-    --sb-track-color: #f1f5f7;
-    --sb-thumb-color: rgba(0, 0, 0, 0.3);
+    --sb-track-color: transparent;
+    --sb-thumb-color: rgba(94, 93, 93, 0.653);
     --sb-size: 5px;
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
 }
@@ -19,12 +19,12 @@
 
 *::-webkit-scrollbar-track {
     background: var(--sb-track-color);
-    border-radius: 5px;
+    /* border-radius: 0px; */
 }
 
 *::-webkit-scrollbar-thumb {
     background: var(--sb-thumb-color);
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
 body {
     font-family: "Montserrat", sans-serif;

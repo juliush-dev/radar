@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('checkpoint_question_answer_sets', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('checkpoint_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('questions_cube_id')->nullable()->constrained('questions_cubes')->nullOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
             $table->boolean('is_cloze')->default(false);
             $table->boolean('is_assisted_cloze')->default(false);
             $table->boolean('is_flash_card')->default(false);
-            $table->string('title')->nullable();
+            $table->tinyText('subject')->nullable();
+            $table->longText('question');
             $table->longText('answer');
-            $table->longText('question')->nullable();
             $table->longText('answer_in_place_explanation')->nullable();
             $table->string('answer_explanation_redirect')->nullable();
             $table->boolean('is_public')->default(false);

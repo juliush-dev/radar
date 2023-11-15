@@ -1,13 +1,10 @@
  <checkpoint v-slot="checkpoint" :form="form">
      <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-10">
-         <button class="px-6 py-4 cursor-pointer"
-             v-bind:class=" checkpoint.activeTab == 'clozes' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-700'"
-             @click.prevent="checkpoint.setActiveTab('clozes')">clozes <span
-                 v-text="checkpoint.form.clozes.length"></span></button>
-         <button class="px-6 py-4 cursor-pointer"
-             v-bind:class=" checkpoint.activeTab == 'flash cards' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-700'"
-             @click.prevent="checkpoint.setActiveTab('flash cards')">Flash cards <span
-                 v-text="checkpoint.form.flashCards.length"></span> </button>
+         <div class="px-6 py-4 cursor-pointer w-fit bg-pink-500 text-white"
+             @click.prevent="checkpoint.setActiveTab('flash cards')">
+             Questons cubes
+             <span v-text="checkpoint.form.questionsCubes.length"></span>
+         </div>
          <div class="flex justify-start md:ml-auto w-full md:w-fit">
              <x-splade-submit
                  class="bg-fuchsia-500 h-full w-full md:w-32 hover:bg-fuchsia-600 shadow-md whitespace-nowrap"
@@ -18,16 +15,29 @@
              </Link>
          </div>
      </div>
-     <div class="bg-white border border-slate-200 dark:border-white p-8">
-
-         <h2 v-text="checkpoint.form.title" class="mb-6 text-2xl font-medium"></h2>
-         <x-splade-input name="title" label="Checkpoint title/theme" class="mb-6"
-             placeholder="Netzwerkkomponenten" />
-         <div v-show="checkpoint.activeTab == 'clozes'">
-             <x-forms.cloze-q-a :$rq />
+     <div class="bg-white border border-slate-200 dark:border-white">
+         <div class="p-4">
+             <div class="flex items-center gap-4 flex-nowrap mb-6 whitespace-nowrap">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 h-6">
+                     <path stroke-linecap="round" stroke-linejoin="round"
+                         d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+                 </svg>
+                 <h2 v-text="checkpoint.form.title" class="text-2xl font-medium first-letter:uppercase"></h2>
+             </div>
+             <x-splade-input name="title" label="What is this checkpoint about?" class="mb-6 first-letter:uppercase"
+                 placeholder="Netzwerkkomponenten" />
+             <x-splade-textarea rows="6" name="goal" label="What should one take out of this checkpoint?"
+                 placeholder="Die verschiedene Netzwerkkomponenten kennen und deren Rollen im Netzwerk" />
          </div>
-         <div v-show="checkpoint.activeTab == 'flash cards'">
-             <x-forms.flash-card-q-a :$rq />
+         <div v-for="(questionsCube, index) in checkpoint.form.questionsCubes">
+             <x-forms.questions-cube />
+         </div>
+         <div v-if="form.title.length > 3" class="flex flex-col gap-4 p-4">
+             <x-splade-button type="call-to-action" @click.prevent="checkpoint.addQuestionsCube"
+                 class="w-fit bg-amber-500 hover:bg-amber-600 text-white">
+                 Add questions cube
+             </x-splade-button>
          </div>
      </div>
  </checkpoint>

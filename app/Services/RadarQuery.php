@@ -298,46 +298,6 @@ class RadarQuery
         return $sessions->get();
     }
 
-    public function sessionCorrectsResults(
-        UserCheckpointSession $session,
-        ?Collection $results = null
-    ) {
-        $corrects = $session->checkpoint
-            ->questionAnswerSets()
-            ->whereIn(
-                'id',
-                ($results != null ? $results : $session->userResults)
-                    ->where('answered_correctly', true)
-                    ->pluck('QA_set_id')
-            );
-        return $corrects;
-    }
-
-    public function sessionWrongsResults(
-        UserCheckpointSession $session,
-        ?Collection $results = null
-    ) {
-        $wrongs = $session->checkpoint
-            ->questionAnswerSets()
-            ->whereIn(
-                'id',
-                ($results != null ? $results : $session->userResults)
-                    ->where('answered_correctly', false)
-                    ->pluck('QA_set_id')
-            );
-        return $wrongs;
-    }
-
-    public function sessionUntouchedQuestions(
-        UserCheckpointSession $session,
-        ?Collection $results = null
-    ) {
-        $untouched = $session->checkpoint
-            ->questionAnswerSets()
-            ->whereNotIn('id', ($results != null ? $results : $session->userResults)
-                ->pluck('QA_set_id'));
-        return $untouched;
-    }
 
     static function publicOrAuthor($userId)
     {

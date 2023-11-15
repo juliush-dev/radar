@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checkpoints', function (Blueprint $table) {
+        Schema::create('questions_cubes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('title');
-            $table->string('goal')->nullable();
+            $table->foreignUuid('checkpoint_id')->constrained()->cascadeOnDelete();
+            $table->tinyText('subject');
             $table->boolean('is_public')->default(false);
             $table->boolean('is_update')->default(false);
             $table->timestamps();
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checkpoints');
+        Schema::dropIfExists('questions_cubes');
     }
 };

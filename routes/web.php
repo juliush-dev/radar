@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckpointController;
+use App\Http\Controllers\CheckpointQuestionAnswerSetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserCheckpointSessionController;
 use App\Http\Controllers\UserCheckpointSessionResultController;
@@ -241,6 +242,10 @@ Route::middleware('splade')->group(function () {
                 )->name('wrong');
             });
     });
+    Route::get('/question-answer-set/{qas}', [
+        CheckpointQuestionAnswerSetController::class,
+        'show'
+    ])->name('question-answer-set.show');
 
     Route::resource(
         'fields',

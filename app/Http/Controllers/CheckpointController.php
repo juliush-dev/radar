@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Checkpoint;
 use App\Models\CheckpointQuestionAnswerSet;
+use App\Models\QuestionsCube;
 use App\Models\Topic;
 use App\Models\UserCheckpointSession;
 use App\Services\RadarQuery;
@@ -27,64 +28,102 @@ class CheckpointController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(?Checkpoint $previous, ?Topic $topic)
+    public function create(Topic $topic)
     {
         return view('checkpoint.create', [
             'rq' => $this->rq,
             'topic' => $topic,
-            'previous' => $previous
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, ?Topic $topic)
+    public function store(Request $request, ?Topic $topic, ?Checkpoint $checkpoint)
     {
-        $checkpoint = null;
-        DB::transaction(function () use ($request, &$checkpoint, $topic) {
+        $newCheckpoint = null;
+        DB::transaction(function () use ($request, &$newCheckpoint, $topic, $checkpoint) {
+            $title = trim($request->input('title', ''));
+            $goal = trim($request->input('goal', ''));
+            $questionsCubes = $request->input('questionsCubes', []);
 
-            $title = $request->input('title');
-            $clozes = $request->input('clozes', []);
-            $flashCards = $request->input('flashCards');
+            if (!empty($title)) {
+                $newCheckpoint = new Checkpoint;
+                $newCheckpoint->title = $title;
+                $newCheckpoint->user_id = $request->user()->id;
+                $newCheckpoint->topic_id =  $topic->id;
+                $newCheckpoint->goal =  $goal;
+                $newCheckpoint->save();
 
-            if (trim($title)) {
-                $checkpoint = new Checkpoint;
-                $checkpoint->title = $title;
-                $checkpoint->user_id = $request->user()->id;
-                $checkpoint->topic_id =  $topic->id;
-                $checkpoint->save();
+                if ($checkpoint->exists) {
+                    $newCheckpoint->is_update = true;
+                    $newCheckpoint->potential_replacement_of = $checkpoint->id;
+                    $newCheckpoint->save();
+
+                    $checkpoint->potential_replacement = $newCheckpoint->id;
+                    $checkpoint->save();
+                }
             } else {
                 throw new Exception("Error Processing Request", 1);
             }
+            collect($questionsCubes)->each(function ($cube) use ($request, $newCheckpoint) {
+                $subject = trim($cube['subject'] ?? '');
+                if (empty($subject)) {
+                    throw new Exception("Error Processing Request", 1);
+                }
+                $questions = $cube['questions'];
 
-            collect($clozes)->each(function ($cloze) use ($request, $checkpoint) {
-                $checkpointQASet = new CheckpointQuestionAnswerSet;
-                $checkpointQASet->user_id = $request->user()->id;
-                $checkpointQASet->is_cloze = true;
-                $checkpointQASet->is_assisted_cloze = $cloze['is_assisted_cloze'] ?? false;
-                $checkpointQASet->checkpoint_id = $checkpoint->id;
-                $checkpointQASet->title = $cloze['title'];
-                $checkpointQASet->question = $cloze['question'];
-                $checkpointQASet->answer = $cloze['answer'];
-                $checkpointQASet->save();
-            });
+                $newCube = new QuestionsCube;
+                $newCube->checkpoint_id = $newCheckpoint->id;
+                $newCube->subject = $subject;
+                $newCube->save();
 
-            collect($flashCards)->each(function ($flashCard) use ($request, $checkpoint) {
-                $checkpointQASet = new CheckpointQuestionAnswerSet;
-                $checkpointQASet->user_id = $request->user()->id;
-                $checkpointQASet->is_flash_card = true;
-                $checkpointQASet->checkpoint_id = $checkpoint->id;
-                $checkpointQASet->title = $flashCard['title'];
-                $checkpointQASet->question = $flashCard['question'];
-                $checkpointQASet->answer = $flashCard['answer'];
-                $checkpointQASet->answer_in_place_explanation = $flashCard['answer_in_place_explanation'];
-                $checkpointQASet->answer_explanation_redirect = $flashCard['answer_explanation_redirect'];
-                $checkpointQASet->save();
+                if ($newCheckpoint->is_update && !empty($cube['id'])) {
+                    $foundCube =  $newCheckpoint->potentialReplacementOf->questionsCubes()->find($cube['id']);
+                    $newCube->is_update = true;
+                    $newCube->potential_replacement_of = $foundCube->id;
+                    $newCube->save();
+
+                    $foundCube->potential_replacement = $newCube->id;
+                    $foundCube->save();
+                }
+
+                collect($questions)->each(function ($content) use ($request, $newCube) {
+                    $newContent = new CheckpointQuestionAnswerSet;
+
+                    $newContent->checkpoint_id = $newCube->checkpoint_id;
+                    $newContent->user_id = $request->user()->id;
+                    $newContent->questions_cube_id = $newCube->id;
+
+                    $newContent->is_cloze = $content['is_cloze'] ?? false;
+                    $newContent->is_assisted_cloze = $content['is_assisted_cloze'] ?? false;
+                    $newContent->is_flash_card = $content['is_flash_card'] ?? false;
+                    $newContent->subject = $content['subject'];
+                    $newContent->question = $content['question'];
+                    $newContent->answer = $content['answer'];
+                    $newContent->answer_in_place_explanation = $content['answer_in_place_explanation'];
+                    $newContent->answer_explanation_redirect = $content['answer_explanation_redirect'];
+
+                    $newContent->save();
+
+                    if ($newCube->is_update && !empty($content['id'])) {
+                        $foundContent =  $newCube->potentialReplacementOf->questions()->find($content['id']);
+                        $newContent->is_update = true;
+                        $newContent->potential_replacement_of = $foundContent->id;
+                        $newContent->save();
+
+                        $foundContent->potential_replacement = $newContent->id;
+                        $foundContent->save();
+                    }
+                });
             });
         });
-        Toast::title('Checkpoint sucessfuly created!')->autoDismiss(5);
-        return redirect()->route('topics.show', $topic);
+        if (!$checkpoint->exists) {
+            Toast::title('Checkpoint sucessfuly created!')->autoDismiss(5);
+        } else {
+            return $newCheckpoint;
+        }
+        return redirect()->route('checkpoints.preview', $newCheckpoint);
     }
     /**
      * Show the form for editing the specified resource.
@@ -93,9 +132,21 @@ class CheckpointController extends Controller
     {
         return view('checkpoint.edit', [
             'rq' => $this->rq,
-            'clozes' => $checkpoint->questionAnswerSets()->where('is_cloze', true)->get(),
-            'flashCards' => $checkpoint->questionAnswerSets()->where('is_flash_card', true)->get(),
             'checkpoint' => $checkpoint,
+            'title' => $checkpoint->title,
+            'goal' => $checkpoint->goal,
+            'questionsCubes' => $checkpoint->questionsCubes->reduce(
+                function ($acc, $cube) {
+                    $cube = [
+                        'id' => $cube->id,
+                        'subject' => $cube->subject,
+                        'questions' =>  $cube->questions
+                    ];
+                    array_push($acc, $cube);
+                    return $acc;
+                },
+                []
+            ),
         ]);
     }
 
@@ -104,66 +155,14 @@ class CheckpointController extends Controller
      */
     public function update(Request $request, Checkpoint $checkpoint)
     {
-        $newCheckpoint = null;
-        DB::transaction(function () use ($request, &$newCheckpoint, $checkpoint) {
-            $title = $request->input('title');
-            $clozes = $request->input('clozes', []);
-            $flashCards = $request->input('flashCards');
-
-            if (empty(trim($title))) {
-                throw new Exception("Error Processing Request", 1);
-            }
-            $newCheckpoint = new Checkpoint;
-            $newCheckpoint->is_update = true;
-            $newCheckpoint->potential_replacement_of = $checkpoint->id;
-            $newCheckpoint->title = $title;
-            $newCheckpoint->user_id = $request->user()->id;
-            $newCheckpoint->topic_id = $checkpoint->topic->id;
-            $newCheckpoint->save();
-            $checkpoint->potential_replacement = $newCheckpoint->id;
-            $checkpoint->save();
-
-            collect($clozes)->each(function ($cloze) use ($request, $newCheckpoint) {
-                $newCheckpointQASet = new CheckpointQuestionAnswerSet;
-                $newCheckpointQASet->user_id = $request->user()->id;
-                $newCheckpointQASet->is_cloze = true;
-                $newCheckpointQASet->is_assisted_cloze = $cloze['is_assisted_cloze'] ?? false;
-                $newCheckpointQASet->checkpoint_id = $newCheckpoint->id;
-                $newCheckpointQASet->title = $cloze['title'];
-                $newCheckpointQASet->question = $cloze['question'];
-                $newCheckpointQASet->answer = $cloze['answer'];
-                $newCheckpointQASet->save();
-                if (!empty($cloze['id'])) {
-                    $newCheckpointQASet->potential_replacement_of = $cloze['id'];
-                    $newCheckpointQASet->save();
-                    $oldQASet = CheckpointQuestionAnswerSet::find($cloze['id']);
-                    $oldQASet->potential_replacement = $newCheckpointQASet->id;
-                    $oldQASet->save();
-                }
-            });
-
-            collect($flashCards)->each(function ($flashCard) use ($request, $newCheckpoint) {
-                $newCheckpointQASet = new CheckpointQuestionAnswerSet;
-                $newCheckpointQASet->user_id = $request->user()->id;
-                $newCheckpointQASet->is_flash_card = true;
-                $newCheckpointQASet->checkpoint_id = $newCheckpoint->id;
-                $newCheckpointQASet->title = $flashCard['title'];
-                $newCheckpointQASet->question = $flashCard['question'];
-                $newCheckpointQASet->answer = $flashCard['answer'];
-                $newCheckpointQASet->answer_in_place_explanation = $flashCard['answer_in_place_explanation'];
-                $newCheckpointQASet->answer_explanation_redirect = $flashCard['answer_explanation_redirect'];
-                $newCheckpointQASet->save();
-                if (!empty($flashCard['id'])) {
-                    $newCheckpointQASet->potential_replacement_of = $flashCard['id'];
-                    $newCheckpointQASet->save();
-                    $oldQASet = CheckpointQuestionAnswerSet::find($flashCard['id']);
-                    $oldQASet->potential_replacement = $newCheckpointQASet->id;
-                    $oldQASet->save();
-                }
-            });
-        });
+        $this->authorize('update-checkpoint', [$checkpoint]);
+        if ($checkpoint->potentialReplacement != null) {
+            Toast::danger("Checkpoint can't be updated. Pending update detected")->autoDismiss(5);
+            return back();
+        }
+        $newCheckpoint = $this->store($request, $checkpoint->topic, $checkpoint);
         Toast::title('Checkpoint sucessfuly updated!')->autoDismiss(5);
-        return redirect()->route('checkpoints.preview', $newCheckpoint);
+        return redirect(route('checkpoints.preview', $newCheckpoint));
     }
 
     /**
@@ -173,7 +172,7 @@ class CheckpointController extends Controller
     {
         $this->authorize('delete-checkpoint', [$checkpoint]);
         if ($checkpoint->potentialReplacement != null) {
-            Toast::danger("Checkpoint can't be delete. Pending update detected")->autoDismiss(15);
+            Toast::danger("Checkpoint can't be delete. Pending update detected")->autoDismiss(5);
             return back();
         }
         $topic = null;
