@@ -17,6 +17,11 @@
     height: var(--sb-size);
 }
 
+.tunnel::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
 *::-webkit-scrollbar-track {
     background: var(--sb-track-color);
     /* border-radius: 0px; */

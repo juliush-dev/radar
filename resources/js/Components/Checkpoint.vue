@@ -13,7 +13,7 @@ export default {
             this.form.$all.questionsCubes.push({ subject: '', questions: [] });
         },
         removeQuestionsCube ( index = null) {
-             if (isNaN(index) || index < 0 || index >= this.form.$all.questionsCubes.length) {
+            if (isNaN(index) || index < 0 || index >= this.form.$all.questionsCubes.length) {
                 console.error("Invalid index or index out of bounds");
                 return;
             }

@@ -1,20 +1,20 @@
  <question v-slot="card" :initial-content="question" :cube-faces-count="6" :index="index"
-     :active-index="questionsCube.activeIndex" :context="@js($context)">
+     :active-index="questionsCube.activeIndex" :context="@js($context)" :cube="questionsCube">
      <div v-show="card.deep == questionsCube.activeDeep" class="absolute w-96 h-96 dark:text-slate-700"
          v-bind:style="card.coordonates">
          <div class="flex flex-col w-96 h-96 p-6 border rounded-md transition-all duration-500 dark:border-slate-700"
-             :class="card.style">
+             v-bind:class="card.style">
              <div class="mb-2">
-                 <h2 class="text-lg first-letter:uppercase mb-3" v-text="questionsCube.cube.subject"></h2>
+                 <h2 class="text-lg first-letter:uppercase mb-3 font-medium" v-text="questionsCube.cube.subject"></h2>
                  <h3 class="first-letter:uppercase" v-text="card.content.subject"></h3>
              </div>
-             <hr class="border-slate-200 mb-4">
+             <hr class="border-slate-200 dark:border-slate-600 mb-4">
              <div class="mb-auto text-xs flex flex-col grow">
-                 <div class="line-clamp-3 font-medium mb-3" v-html="card.content.question"></div>
-                 <div v-show="!(card.context == 'test') || card.answerRevealed" class="line-clamp-3 mb-4"
-                     v-html="card.content.answer"></div>
+                 <div class="line-clamp-3 mb-3" v-html="card.content.question"></div>
+                 <div v-show="!(card.context == 'test') || card.answerRevealed"
+                     class="line-clamp-3 mb-4 border-t pt-2 dark:border-slate-600" v-html="card.content.answer"></div>
                  <hr v-if="((card.context == 'test') && card.answerRevealed && card.content.answer_in_place_explanation || !(card.context == 'test')) && card.content.answer.length > 0"
-                     class="border-slate-300 mb-3">
+                     class="border-slate-300 mb-3 dark:border-slate-600">
                  <div v-if="(!(card.context == 'test') || card.answerRevealed) && card.content.answer_in_place_explanation"
                      class="line-clamp-4 grow justify-self-end" v-html="card.content.answer_in_place_explanation"></div>
                  <div v-if="(!(card.context == 'test') || card.answerRevealed) && card.content.answer_explanation_redirect"
@@ -27,9 +27,10 @@
                  </div>
              </div>
              <div class="flex gap-6 justify-self-end mt-4">
-                 <span class="border border-slate-500 rounded-full px-2 py-0.5 text-sm w-20 text-center"
+                 <button @click="questionsCube.toggleQuestionsList()"
+                     class="border border-slate-500 rounded-full px-2 py-0.5 text-sm w-20 text-center"
                      v-bind:class="{'border-white': card.answeredCorrectly != undefined || card.answeredCorrectly == undefined && card.context == 'review'}"
-                     v-text="`${card.index + 1}/${questionsCube.filledFacesCount}`"></span>
+                     v-text="`${card.index + 1}/${questionsCube.filledFacesCount}`"></button>
                  <Link modal v-bind:href="`/question-answer-set/${card.content.id}?context=${card.context}`"
                      v-if="card.content.answer.length > 0" class="text-sm">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -93,7 +94,7 @@
 
                  <button v-show="(card.context == 'test') && !session.paused || !(card.context == 'test')"
                      class="text-md ml-auto disabled:opacity-50" :disabled="card.index == 0"
-                     @click="questionsCube.previous">
+                     @click.prevent.stop="questionsCube.previous">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-6 h-6">
                          <path stroke-linecap="round" stroke-linejoin="round"
@@ -101,7 +102,8 @@
                      </svg>
                  </button>
                  <button v-show="(card.context == 'test') && !session.paused || !(card.context == 'test')"
-                     class="text-md disabled:opacity-50" @click="questionsCube.next(card.nextFace, card.nextDeep)"
+                     class="text-md disabled:opacity-50"
+                     @click.prevent.stop="questionsCube.next(card.nextFace, card.nextDeep)"
                      :disabled="card.index == questionsCube.questionsCount - 1">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-6 h-6">

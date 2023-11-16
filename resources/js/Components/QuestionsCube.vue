@@ -18,11 +18,13 @@ export default {
             activeDeepPath: [0],
             activeFace: 'front',
             activeFacePath: ['front'],
+            layout: [],
             cubeFacesCount: 6,
+            showQuestions: false,
         }
     },
     methods: {
-          addQuestion (add_cloze = false) {
+        addQuestion (add_cloze = false) {
             const content = {
                 is_assisted_cloze: false,
                 is_cloze: add_cloze,
@@ -49,12 +51,20 @@ export default {
                 temp = null;
             });
         },
-        next (activeFace, activeDeep) {
-            this.activeIndex + 1 >= this.questionsCount ? this.activeIndex = 0 : this.activeIndex++;
+        next (activeFace, activeDeep, offset = null) {
             this.activeDeep = activeDeep > this.maxDeep ? 0 : activeDeep;
             this.activeFace = activeFace;
-            this.activeFacePath.push(this.activeFace);
-            // this.activeDeepPath.push(this.activeDeep);
+            if(offset == null){
+                this.activeIndex + 1 >= this.questionsCount ? this.activeIndex = 0 : this.activeIndex++;
+                this.activeFacePath.push(this.activeFace);
+            }else{
+                this.activeIndex = offset;
+                this.activeFacePath = [];
+                for (let index = 0; index <= offset; index++) {
+                    this.activeFacePath.push(this.layout[index].face);
+                }
+            }
+            console.log(this.activeFacePath);
         },
         async previous () {
             var temp = this.activeIndex - 1;
@@ -65,6 +75,24 @@ export default {
             this.activeFacePath.push(temp);
 
         },
+        toggleQuestionsList(faceToGoto = null){
+            if (faceToGoto != null && isNaN(faceToGoto) || faceToGoto < 0 || faceToGoto >= this.cube.questions.length) {
+                console.error("Invalid faceToGoto or faceToGoto out of bounds");
+                return;
+            }
+            this.showQuestions = !this.showQuestions;
+            if (faceToGoto != null) {
+                const layer = this.layout[faceToGoto];
+                this.next(layer.face, layer.deep, faceToGoto);
+            }
+        },
+        addLayer(layer){
+            this.layout.push(layer);
+        },
+        getLayout (){
+            return this.layout;
+        },
+
     },
     computed: {
         questionsCount(){
@@ -73,6 +101,8 @@ export default {
         },
         nextFace(){
             return {
+                'transform-style': 'preserve-3d',
+                'transition': 'all 1s',
                 'transform': (() => {
                     if (this.activeFace == 'front') {
                         return 'translateZ(-191px) rotateY(0deg)';
@@ -93,7 +123,7 @@ export default {
                     if (this.activeFace == 'bottom') {
                         return 'translateZ(-191px) rotateX(  90deg)';
                     }
-                })()
+                })(),
              }
         },
         maxDeep(){
@@ -113,6 +143,11 @@ export default {
             activeDeep: this.activeDeep,
             context: this.context,
             filledFacesCount: this.filledFacesCount,
+            toggleQuestionsList: this.toggleQuestionsList,
+            showQuestions: this.showQuestions,
+            // layout: this.layout,
+            addLayer: this.addLayer,
+            getLayout: this.getLayout,
         });
     },
 };

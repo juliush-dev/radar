@@ -16,7 +16,8 @@ export default {
         context: {
             type: String,
             default: 'preview'
-        }
+        },
+        cube: Object,
     },
     data() {
         return {
@@ -156,6 +157,7 @@ export default {
             }
         },
         style(){
+            console.log(`active index: ${this.activeIndex}`);
             return {
                 'drop-shadow-lg shadow-black/5 dark:shadow-slate-600/50':
                     this.activeIndex == this.index,
@@ -206,15 +208,11 @@ export default {
          if(this.content.answered_correctly === false || this.content.answered_correctly === true){
             this.answeredCorrectly = this.content.answered_correctly;
          }
+         if(this.cube){
+             this.cube.addLayer({'face': this.face, 'deep':this.deep});
+         }
     },
-    updated() {
-        // console.log('----------------------');
-        // console.log(this.index);
-        // console.log(`revealed: ${this.answerRevealed}`);
-        // console.log(`correctly: ${this.answeredCorrectly}`);
-        // console.log('----------------------');
-        // console.log();
-    },
+
     render () {
         return this.$slots.default({
             content: this.content,
@@ -231,6 +229,7 @@ export default {
             answerRevealed: this.answerRevealed,
             style: this.style,
             context: this.context,
+            cube: this.cube,
         });
     },
 };

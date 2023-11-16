@@ -185,10 +185,13 @@
             </svg>
             </Link> --}}
         </div>
-        <x-layouts.questions-cubes>
-            @foreach ($checkpoint->questionsCubes as $questionsCube)
-                <x-checkpoint.questions-cube :$questionsCube :reviewQuestions="null" />
-            @endforeach
-        </x-layouts.questions-cubes>
+        <div class="mb-52">
+            <x-layouts.questions-cubes>
+                @foreach ($checkpoint->questionsCubes as $questionsCube)
+                    <x-checkpoint.questions-cube :$questionsCube :reviewQuestions="null" />
+                @endforeach
+            </x-layouts.questions-cubes>
+        </div>
+
     </main>
 </x-layouts.app>

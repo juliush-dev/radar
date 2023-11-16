@@ -77,11 +77,13 @@
              <p>Correct: {{ $corrects->count() }} </p>
          </div>
          <hr class="mb-8">
-         <x-layouts.questions-cubes>
-             @foreach ($reviewGroupedByCubes as $questionsCubeId => $reviewQuestions)
-                 @php($questionsCube = \App\Models\QuestionsCube::find($questionsCubeId))
-                 <x-checkpoint.questions-cube :$questionsCube :$reviewQuestions context="review" />
-             @endforeach
-         </x-layouts.questions-cubes>
+         <div class="mb-52">
+             <x-layouts.questions-cubes>
+                 @foreach ($reviewGroupedByCubes as $questionsCubeId => $reviewQuestions)
+                     @php($questionsCube = \App\Models\QuestionsCube::find($questionsCubeId))
+                     <x-checkpoint.questions-cube :$questionsCube :$reviewQuestions context="review" />
+                 @endforeach
+             </x-layouts.questions-cubes>
+         </div>
      </main>
  </x-layouts.app>

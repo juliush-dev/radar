@@ -89,11 +89,13 @@
             <h2 class="text-2xl mb-4 dark:text-slate-100">
                 Quizzes
             </h2>
-            <x-layouts.questions-cubes>
-                @foreach ($session->checkpoint->questionsCubes as $questionsCube)
-                    <x-checkpoint.questions-cube :$questionsCube context="test" :reviewQuestions="null" />
-                @endforeach
-            </x-layouts.questions-cubes>
+            <div class="mb-52">
+                <x-layouts.questions-cubes>
+                    @foreach ($session->checkpoint->questionsCubes as $questionsCube)
+                        <x-checkpoint.questions-cube :$questionsCube context="test" :reviewQuestions="null" />
+                    @endforeach
+                </x-layouts.questions-cubes>
+            </div>
         </checkpoint-session>
     </main>
 </x-layouts.app>
