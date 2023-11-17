@@ -89,7 +89,7 @@
             </div>
             <hr class="mb-8">
             <h2 class="text-2xl mb-4 dark:text-slate-100">
-                Quizzes
+                Cross as much bridges as you can
             </h2>
             <div class="mb-52">
                 <x-layouts.knowledge-cubes>

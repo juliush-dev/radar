@@ -13,8 +13,10 @@
                  </div>
                  <hr v-if="((card.context == 'test') && card.knowledgeRevealed && card.knowledge.implications || !(card.context == 'test')) && card.knowledge.information.length > 0"
                      class="border-slate-300 mb-3 dark:border-slate-600">
-                 <div v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.implications"
-                     class="line-clamp-4 grow justify-self-end" v-html="card.knowledge.implications"></div>
+                 <p v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.implications"
+                     class="line-clamp-2 grow justify-self-end font-mono">
+                     Implications availble. click the zoom button to see more
+                 </p>
                  <div v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.external_reference"
                      class="line-clamp-4 mb-3 justify-self-end">
                      <a v-bind:href="`${card.knowledge.external_reference}`" target="_blank" rel="noopener noreferrer"

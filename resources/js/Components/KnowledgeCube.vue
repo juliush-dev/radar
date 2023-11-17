@@ -33,6 +33,12 @@ export default {
                 external_reference: ''
             };
             this.cube.knowledge.push(content);
+            this.$nextTick(() => {
+                const newTextArea = this.$refs.textareas[this.cube.knowledge.length - 1];
+                if (newTextArea) {
+                    newTextArea.focus();
+                }
+            });
         },
         removeKnowledge (index = null) {
             if (isNaN(index) || index < 0 || index >= this.cube.knowledge.length) {

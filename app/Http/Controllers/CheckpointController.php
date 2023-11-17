@@ -185,6 +185,7 @@ class CheckpointController extends Controller
 
     public function preview(Checkpoint $checkpoint)
     {
+        $this->authorize('preview-checkpoint', [$checkpoint]);
         return view('checkpoint-session.preview', [
             'checkpoint' => $checkpoint,
             'rq' => $this->rq
@@ -193,6 +194,7 @@ class CheckpointController extends Controller
 
     public function initiate(?Request $request, Checkpoint $checkpoint)
     {
+        $this->authorize('record-checkpoint', [$checkpoint]);
         $session = null;
         DB::transaction(function () use ($request, &$session, $checkpoint) {
             $session = new UserCheckpointSession;

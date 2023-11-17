@@ -102,7 +102,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-checkpoint', function (?User $user) {
             return !$user?->blocked || $user == null;
         });
-        Gate::define('see-checkpoint', function (?User $user, Checkpoint $checkpoint) {
+        Gate::define('preview-checkpoint', function (?User $user, Checkpoint $checkpoint) {
+            return (!$user?->blocked || $user == null) && (($checkpoint->is_public && !$checkpoint->is_update) || (!$checkpoint->is_public && (!empty($user) && $user->id == $checkpoint->author->id)) || (!empty($user) && $user->is_admin));
+        });
+        Gate::define('record-checkpoint', function (?User $user, Checkpoint $checkpoint) {
             return (!$user?->blocked || $user == null) && (($checkpoint->is_public && !$checkpoint->is_update) || (!$checkpoint->is_public && (!empty($user) && $user->id == $checkpoint->author->id)) || (!empty($user) && $user->is_admin));
         });
         Gate::define('update-checkpoint', function (User $user, ?Checkpoint $checkpoint) {

@@ -1,17 +1,27 @@
 <knowledge-cube v-slot="knowledgeCube" :cube="knowledgeCube">
     <x-splade-toggle>
-        <div @click.self="toggle" class="border-t pt-6 px-4 pb-4 bg-slate-100 lg:border rounded lg:p-6">
-            <div @click.capture="toggle" class="flex items-center gap-4 whitespace-nowrap flex-nowrap">
+        <div class="border-t pt-6 mt-6 mb-12 px-4 pb-4 bg-slate-100 lg:border rounded lg:p-6 relative">
+            <button @click.prevent.stop="toggle"
+                class="absolute left-1/2 -translate-x-1/2 -top-4 border-t-2 border-slate-500 text-slate-500 rounded-full bg-slate-100 p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                 </svg>
-                <h2 v-text="knowledgeCube.cube.subject" class="text-xl font-medium first-letter:uppercase"></h2>
+            </button>
+            <button @click.prevent.stop="toggle"
+                class="absolute left-1/2 -translate-x-1/2 -bottom-4  border-b-2 border-slate-500 text-slate-500 rounded-full bg-slate-100 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>
+            </button>
+            <div class="flex items-center gap-4 whitespace-nowrap flex-nowrap mb-6 w-full">
+                <x-splade-textarea v-model="knowledgeCube.cube.subject" label="Main Concept in this cube"
+                    class="first-letter:uppercase whitespace-break-spaces grow" placeholder="Host" />
             </div>
-            <x-splade-transition show="!toggled" class="mb-3  mt-6">
-                <x-splade-textarea v-model="knowledgeCube.cube.subject" label="What is this cube about?"
-                    class="mb-6 first-letter:uppercase whitespace-break-spaces" placeholder="Host" />
+            <x-splade-transition show="toggled" class="mb-3  mt-6">
                 <div v-for="(knowledge, index) in knowledgeCube.cube.knowledge">
                     <x-forms.knowledge />
                 </div>

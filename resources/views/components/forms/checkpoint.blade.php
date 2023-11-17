@@ -25,10 +25,10 @@
                  </svg>
                  <h2 v-text="checkpoint.form.title" class="text-2xl font-medium first-letter:uppercase"></h2>
              </div>
-             <x-splade-input name="title" label="What is this checkpoint about?" class="mb-6 first-letter:uppercase"
+             <x-splade-input name="title" label="Subject" class="mb-6 first-letter:uppercase"
                  placeholder="Netzwerkkomponenten" />
-             <x-splade-textarea rows="6" name="goal" label="What should one take out of this checkpoint?"
-                 placeholder="Die verschiedene Netzwerkkomponenten kennen und deren Rollen im Netzwerk" />
+             <x-splade-textarea rows="6" name="goal" label="Brief summary"
+                 placeholder="Netzwerkkomponenten sind das Herz vom Netzwerke. Gibt sie nicht, gibt auch dann kein Netzwerk." />
          </div>
          <div v-for="(knowledgeCube, index) in checkpoint.form.knowledgeCubes">
              <x-forms.knowledge-cube />

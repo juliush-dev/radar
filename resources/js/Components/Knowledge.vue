@@ -176,7 +176,7 @@ export default {
                 'bg-white dark:bg-slate-700 dark:text-slate-300':
                     !(this.context == 'test') &&  (this.context == 'preview') || this.context == 'test' && !this.knowledgeRevealed,
 
-                'bg-white/80 dark:bg-black/80 dark:text-slate-100':
+                'bg-white/80 dark:bg-black/70 dark:text-slate-100':
                     this.knowledge.information.length == 0,
             }
         },
