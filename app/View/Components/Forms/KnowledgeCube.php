@@ -2,11 +2,12 @@
 
 namespace App\View\Components\Forms;
 
+use App\Services\RadarQuery;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Question extends Component
+class KnowledgeCube extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +22,6 @@ class Question extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.forms.question');
+        return view('components.forms.knowledge-cube');
     }
 }

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('checkpoint_question_answer_sets', function (Blueprint $table) {
-            $table->foreignUuid('questions_cube_id')->nullable()->constrained('questions_cubes')->nullOnDelete();
+        Schema::table('checkpoint_knowledge', function (Blueprint $table) {
+            $table->foreignUuid('knowledge_cube_id')->nullable()->constrained('knowledge_cubes')->nullOnDelete();
             $table->tinyText('subject')->nullable();
-            // We will paginate 6 by 6 on retrievial
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('checkpoint_question_answer_sets', function (Blueprint $table) {
+        Schema::table('checkpoint_knowledge', function (Blueprint $table) {
             //
         });
     }

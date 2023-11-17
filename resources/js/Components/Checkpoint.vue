@@ -9,18 +9,18 @@ export default {
         }
     },
     methods: {
-        addQuestionsCube () {
-            this.form.$all.questionsCubes.push({ subject: '', questions: [] });
+        addKnowledgeCube () {
+            this.form.$all.knowledgeCubes.push({ subject: '', knowledge: [] });
         },
-        removeQuestionsCube ( index = null) {
-            if (isNaN(index) || index < 0 || index >= this.form.$all.questionsCubes.length) {
+        removeKnowledgeCube ( index = null) {
+            if (isNaN(index) || index < 0 || index >= this.form.$all.knowledgeCubes.length) {
                 console.error("Invalid index or index out of bounds");
                 return;
             }
-            var temp = this.form.$all.questionsCubes;
-            this.form.$all.questionsCubes = [];
+            var temp = this.form.$all.knowledgeCubes;
+            this.form.$all.knowledgeCubes = [];
             this.$nextTick(() => {
-                this.form.$all.questionsCubes = temp.filter((e, i) => i != index);
+                this.form.$all.knowledgeCubes = temp.filter((e, i) => i != index);
                 temp = null;
             });
         },
@@ -29,8 +29,8 @@ export default {
     render () {
         return this.$slots.default({
             form: this.form,
-            addQuestionsCube: this.addQuestionsCube,
-            removeQuestionsCube: this.removeQuestionsCube,
+            addKnowledgeCube: this.addKnowledgeCube,
+            removeKnowledgeCube: this.removeKnowledgeCube,
         });
     },
 };

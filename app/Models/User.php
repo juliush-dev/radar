@@ -67,9 +67,9 @@ class User extends Authenticatable
         return $this->hasMany(Checkpoint::class);
     }
 
-    public function checkpointQuestionAnswerSets(): HasMany
+    public function checkpointKnowledges(): HasMany
     {
-        return $this->hasMany(CheckpointQuestionAnswerSet::class);
+        return $this->hasMany(CheckpointKnowledge::class);
     }
 
     public function checkpointSessions(): HasMany

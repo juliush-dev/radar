@@ -20,34 +20,29 @@ export default {
             activeFacePath: ['front'],
             layout: [],
             cubeFacesCount: 6,
-            showQuestions: false,
+            showKnowledge: false,
         }
     },
     methods: {
-        addQuestion (add_cloze = false) {
+        addKnowledge () {
             const content = {
-                is_assisted_cloze: false,
-                is_cloze: add_cloze,
-                is_flash_card: !add_cloze,
-                title: '',
-                question: '',
-                answer: '',
-                subject: '',
-                answer_in_place_explanation: '',
-                answer_explanation_redirect: ''
+                assisted: false,
+                information: '',
+                bridge: '',
+                implications: '',
+                external_reference: ''
             };
-            this.cube.questions.push(content);
-            console.log(content);
+            this.cube.knowledge.push(content);
         },
-        removeQuestion (index = null) {
-            if (isNaN(index) || index < 0 || index >= this.cube.questions.length) {
+        removeKnowledge (index = null) {
+            if (isNaN(index) || index < 0 || index >= this.cube.knowledge.length) {
                 console.error("Invalid index or index out of bounds");
                 return;
             }
-            var temp =  this.cube.questions;
-            this.cube.questions = [];
+            var temp =  this.cube.knowledge;
+            this.cube.knowledge = [];
             this.$nextTick(() => {
-                this.cube.questions = temp.filter((e, i) => i != index);
+                this.cube.knowledge = temp.filter((e, i) => i != index);
                 temp = null;
             });
         },
@@ -55,7 +50,7 @@ export default {
             this.activeDeep = activeDeep > this.maxDeep ? 0 : activeDeep;
             this.activeFace = activeFace;
             if(offset == null){
-                this.activeIndex + 1 >= this.questionsCount ? this.activeIndex = 0 : this.activeIndex++;
+                this.activeIndex + 1 >= this.knowledgeCount ? this.activeIndex = 0 : this.activeIndex++;
                 this.activeFacePath.push(this.activeFace);
             }else{
                 this.activeIndex = offset;
@@ -64,23 +59,23 @@ export default {
                     this.activeFacePath.push(this.layout[index].face);
                 }
             }
-            console.log(this.activeFacePath);
+            // console.log(this.activeFacePath);
         },
         async previous () {
             var temp = this.activeIndex - 1;
-            this.activeIndex = temp < 0 ? this.questionsCount - 1 : temp;
+            this.activeIndex = temp < 0 ? this.knowledgeCount - 1 : temp;
             this.activeDeep = Math.floor(this.activeIndex / this.cubeFacesCount);
             this.activeFacePath.pop();
             this.activeFace = temp = (this.activeFacePath.pop() ?? 'front');
             this.activeFacePath.push(temp);
 
         },
-        toggleQuestionsList(faceToGoto = null){
-            if (faceToGoto != null && isNaN(faceToGoto) || faceToGoto < 0 || faceToGoto >= this.cube.questions.length) {
+        toggleKnowledgeList(faceToGoto = null){
+            if (faceToGoto != null && isNaN(faceToGoto) || faceToGoto < 0 || faceToGoto >= this.cube.knowledge.length) {
                 console.error("Invalid faceToGoto or faceToGoto out of bounds");
                 return;
             }
-            this.showQuestions = !this.showQuestions;
+            this.showKnowledge = !this.showKnowledge;
             if (faceToGoto != null) {
                 const layer = this.layout[faceToGoto];
                 this.next(layer.face, layer.deep, faceToGoto);
@@ -95,8 +90,8 @@ export default {
 
     },
     computed: {
-        questionsCount(){
-            const length = this.cube.questions.length;
+        knowledgeCount(){
+            const length = this.cube.knowledge.length;
             return length < 6 ? 6 : length;
         },
         nextFace(){
@@ -127,24 +122,24 @@ export default {
              }
         },
         maxDeep(){
-            return Math.floor((this.questionsCount-1) / this.cubeFacesCount);
+            return Math.floor((this.knowledgeCount-1) / this.cubeFacesCount);
         }
     },
     render () {
         return this.$slots.default({
             cube: this.cube,
-            addQuestion: this.addQuestion,
-            removeQuestion: this.removeQuestion,
+            addKnowledge: this.addKnowledge,
+            removeKnowledge: this.removeKnowledge,
             activeIndex: this.activeIndex,
-            questionsCount: this.questionsCount,
+            knowledgeCount: this.knowledgeCount,
             next: this.next,
             previous: this.previous,
             nextFace: this.nextFace,
             activeDeep: this.activeDeep,
             context: this.context,
             filledFacesCount: this.filledFacesCount,
-            toggleQuestionsList: this.toggleQuestionsList,
-            showQuestions: this.showQuestions,
+            toggleKnowledgeList: this.toggleKnowledgeList,
+            showKnowledge: this.showKnowledge,
             // layout: this.layout,
             addLayer: this.addLayer,
             getLayout: this.getLayout,

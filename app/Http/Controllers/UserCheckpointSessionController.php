@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CheckpointQuestionAnswerSet;
+use App\Models\CheckpointKnowledge;
 use App\Models\UserCheckpointSession;
 use App\Models\UserCheckpointSessionResult;
 use App\Services\RadarQuery;
@@ -49,32 +49,32 @@ class UserCheckpointSessionController extends Controller
         ]);
     }
 
-    public function correct(UserCheckpointSession $session, CheckpointQuestionAnswerSet $answer)
+    public function cross(UserCheckpointSession $session, CheckpointKnowledge $bridge)
     {
-        DB::transaction(function () use ($session, $answer) {
-            $result = UserCheckpointSessionResult::where('session_id', $session->id)->where('QA_set_id', $answer->id)->firstOr(function () use ($session, $answer) {
+        DB::transaction(function () use ($session, $bridge) {
+            $result = UserCheckpointSessionResult::where('session_id', $session->id)->where('knowledge_id', $bridge->id)->firstOr(function () use ($session, $bridge) {
                 $result = new UserCheckpointSessionResult;
                 $result->session_id = $session->id;
-                $result->QA_set_id = $answer->id;
+                $result->knowledge_id = $bridge->id;
                 $result->progression = 1;
                 return $result;
             });
-            $result->answered_correctly = true;
+            $result->bridge_crossed = true;
             $result->save();
         });
     }
 
-    public function wrong(UserCheckpointSession $session, CheckpointQuestionAnswerSet $answer)
+    public function miss(UserCheckpointSession $session, CheckpointKnowledge $bridge)
     {
-        DB::transaction(function () use ($session, $answer) {
-            $result = UserCheckpointSessionResult::where('session_id', $session->id)->where('QA_set_id', $answer->id)->firstOr(function () use ($session, $answer) {
+        DB::transaction(function () use ($session, $bridge) {
+            $result = UserCheckpointSessionResult::where('session_id', $session->id)->where('knowledge_id', $bridge->id)->firstOr(function () use ($session, $bridge) {
                 $result = new UserCheckpointSessionResult;
                 $result->session_id = $session->id;
-                $result->QA_set_id = $answer->id;
+                $result->knowledge_id = $bridge->id;
                 $result->progression = 1;
                 return $result;
             });
-            $result->answered_correctly = false;
+            $result->bridge_crossed = false;
             $result->save();
         });
     }

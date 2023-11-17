@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\CheckpointQuestionAnswerSet;
+use App\Models\CheckpointKnowledge;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,9 +23,9 @@ class Checkpoint extends Model
         return $this->belongsTo(Topic::class, 'topic_id');
     }
 
-    public function questionAnswerSets(): HasMany
+    public function knowledgeAnswerSets(): HasMany
     {
-        return $this->hasMany(CheckpointQuestionAnswerSet::class);
+        return $this->hasMany(CheckpointKnowledge::class);
     }
 
     public function userSessions(): HasMany
@@ -43,8 +43,8 @@ class Checkpoint extends Model
         return $this->belongsTo(Checkpoint::class, 'potential_replacement_of');
     }
 
-    public function questionsCubes(): HasMany
+    public function knowledgeCubes(): HasMany
     {
-        return $this->hasMany(QuestionsCube::class);
+        return $this->hasMany(KnowledgeCube::class);
     }
 }

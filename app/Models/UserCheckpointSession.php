@@ -27,16 +27,16 @@ class UserCheckpointSession extends Model
         return $this->hasMany(UserCheckpointSessionResult::class, 'session_id');
     }
 
-    public function untouchedQuestions($justCount = false)
+    public function untouchedKnowledge($justCount = false)
     {
-        $untouched = CheckpointQuestionAnswerSet::where('checkpoint_id', $this->checkpoint->id)
-            ->whereNotIn('id', $this->userResults->pluck('QA_set_id')->all());
+        $untouched = CheckpointKnowledge::where('checkpoint_id', $this->checkpoint->id)
+            ->whereNotIn('id', $this->userResults->pluck('knowledge_id')->all());
         if ($justCount) {
             return $untouched->count();
         }
         $untouched = $untouched->get();
         $modifiedCollection = $untouched->map(function ($item) {
-            $item['answered_correctly'] = null;
+            $item['bridge_crossed'] = null;
             return $item;
         });
         return $modifiedCollection;
@@ -44,19 +44,19 @@ class UserCheckpointSession extends Model
 
     public function correctResults($justCount = false)
     {
-        $results = CheckpointQuestionAnswerSet::whereIn(
+        $results = CheckpointKnowledge::whereIn(
             'id',
             $this->userResults()->where(
-                'answered_correctly',
+                'bridge_crossed',
                 true
-            )->pluck('QA_set_id')->all()
+            )->pluck('knowledge_id')->all()
         );
         if ($justCount) {
             return $results->count();
         }
         $results = $results->get();
         $modifiedCollection = $results->map(function ($item) {
-            $item['answered_correctly'] = true;
+            $item['bridge_crossed'] = true;
             return $item;
         });
         return $modifiedCollection;
@@ -64,19 +64,19 @@ class UserCheckpointSession extends Model
 
     public function wrongResults($justCount = false)
     {
-        $result = CheckpointQuestionAnswerSet::whereIn(
+        $result = CheckpointKnowledge::whereIn(
             'id',
             $this->userResults()->where(
-                'answered_correctly',
+                'bridge_crossed',
                 false
-            )->pluck('QA_set_id')->all()
+            )->pluck('knowledge_id')->all()
         );
         if ($justCount) {
             return $result->count();
         }
         $result = $result->get();
         $modifiedCollection = $result->map(function ($item) {
-            $item['answered_correctly'] = false;
+            $item['bridge_crossed'] = false;
             return $item;
         });
         return $modifiedCollection;

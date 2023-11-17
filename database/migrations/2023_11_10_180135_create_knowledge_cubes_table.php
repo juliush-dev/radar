@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions_cubes', function (Blueprint $table) {
+        Schema::create('knowledge_cubes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('checkpoint_id')->constrained()->cascadeOnDelete();
             $table->tinyText('subject');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions_cubes');
+        Schema::dropIfExists('knowledge_cubes');
     }
 };

@@ -2,20 +2,20 @@
 
 namespace App\View\Components\Checkpoint;
 
-use App\Models\CheckpointQuestionAnswerSet;
+use App\Models\CheckpointKnowledge;
 use App\Models\UserCheckpointSession;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Question extends Component
+class Knowledge extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
         public ?UserCheckpointSession $session = null,
-        public ?array $question = null,
+        public ?array $knowledge = null,
         public ?int $index = null,
         public String $context = 'preview',
     ) {
@@ -27,6 +27,6 @@ class Question extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.checkpoint.question');
+        return view('components.checkpoint.knowledge');
     }
 }

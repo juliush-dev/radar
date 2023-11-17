@@ -52,6 +52,14 @@
         </x-nav-link>
         <div class="text-sm flex grow md:justify-end gap-6 items-center w-full">
             @can('use-dashboard')
+                <x-splade-link :href="route('dashboard.index', ['tab' => 'checkpoints'])"
+                    class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+                    </svg>
+                </x-splade-link>
                 @if (!$checkpoint->is_update)
                     <x-splade-form submit-on-change :action="$checkpoint->is_public
                         ? route('checkpoints.unpublish', $checkpoint)
@@ -61,14 +69,6 @@
                             class="checked:bg-fuchsia-400" />
                     </x-splade-form>
                 @endif
-                <x-splade-link :href="route('dashboard.index', ['tab' => 'checkpoints'])"
-                    class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-                    </svg>
-                </x-splade-link>
             @endcan
             @can('update-checkpoint', $checkpoint)
                 <x-splade-link href="{{ route('checkpoints.edit', $checkpoint) }}" class="text-sm">
@@ -133,7 +133,7 @@
                 My last sessions
             </h2>
             @if (Auth::check())
-                <x-layouts.questions-cubes>
+                <x-layouts.knowledge-cubes>
                     @forelse ($rq->checkpointsSessions(['author' => auth()->user()->id, 'checkpoint' => $checkpoint->id]) as $session)
                         <div
                             class="flex flex-col gap-6 w-fit whitespace-nowrap p-4 rounded-md shadow bg-white dark:bg-slate-700 dark:text-slate-100 first-letter:uppercase transition-colors duration-300">
@@ -144,8 +144,8 @@
                             <div class="text-sm flex flex-col gap-2 justify-between">
                                 <p>Duration: {{ $session->countdown - $session->end_countdown }}s</p>
                                 <p>Touched {{ $session->userResults()->count() }} /
-                                    {{ $total = $session->checkpoint->questionAnswerSets->count() }}</p>
-                                <p>Untouched: {{ $session->untouchedQuestions(true) }} </p>
+                                    {{ $total = $session->checkpoint->knowledgeAnswerSets->count() }}</p>
+                                <p>Untouched: {{ $session->untouchedKnowledge(true) }} </p>
                                 <p>Wrong: {{ $session->wrongResults(true) }}</p>
                                 <p>Correct: {{ $correct = $session->correctResults(true) }} </p>
                                 <p class="text-lg font-medium">Note: {{ floor(($correct / $total) * 100) }}% </p>
@@ -163,7 +163,7 @@
                     @empty
                         <p>No Session. Start a new one.</p>
                     @endforelse
-                </x-layouts.questions-cubes>
+                </x-layouts.knowledge-cubes>
             @else
                 <div class="w-full flex flex-wrap gap-4">
                     <x-nav-link href="#login-required"
@@ -175,7 +175,7 @@
         </div>
         <div class="flex items-center mb-8">
             <h2 class="text-2xl dark:text-slate-100">
-                Cubes of questions
+                Cubes of knowledge
             </h2>
             {{-- <Link href="{{ Auth::check() ? route('checkpoints.create', $checkpoint->topic) : '#login-required' }}"
                 class="whitespace-nowrap text-fuchsia-400 hover:text-fuchsia-500">
@@ -186,11 +186,11 @@
             </Link> --}}
         </div>
         <div class="mb-52">
-            <x-layouts.questions-cubes>
-                @foreach ($checkpoint->questionsCubes as $questionsCube)
-                    <x-checkpoint.questions-cube :$questionsCube :reviewQuestions="null" />
+            <x-layouts.knowledge-cubes>
+                @foreach ($checkpoint->knowledgeCubes as $knowledgeCube)
+                    <x-checkpoint.knowledge-cube :$knowledgeCube :reviewKnowledge="null" />
                 @endforeach
-            </x-layouts.questions-cubes>
+            </x-layouts.knowledge-cubes>
         </div>
 
     </main>

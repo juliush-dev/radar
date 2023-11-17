@@ -1,11 +1,11 @@
  @php
      $corrects = $session->correctResults();
      $wrongs = $session->wrongResults();
-     $untouched = $session->untouchedQuestions();
+     $untouched = $session->untouchedKnowledge();
      $reviewGroupedByCubes = $wrongs
          ->concat($corrects)
          ->concat($untouched)
-         ->groupBy('questions_cube_id');
+         ->groupBy('knowledge_cube_id');
  @endphp
  <x-layouts.app :active-page="'Review/ ' . $session->checkpoint->title"
      icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5">
@@ -24,6 +24,14 @@
              <div class="flex md:justify-end grow gap-6 items-center">
                  @can('use-dashboard')
                      <div class="flex justify-end items-center grow gap-6">
+                         <x-splade-link :href="route('dashboard.index', ['tab' => 'checkpoints'])"
+                             class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-6 h-6">
+                                 <path stroke-linecap="round" stroke-linejoin="round"
+                                     d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+                             </svg>
+                         </x-splade-link>
                          @if (!$session->checkpoint->is_update)
                              <x-splade-form submit-on-change :action="$session->checkpoint->is_public
                                  ? route('checkpoints.unpublish', $session->checkpoint)
@@ -33,14 +41,6 @@
                                      class="checked:bg-fuchsia-400" />
                              </x-splade-form>
                          @endif
-                         <x-splade-link :href="route('dashboard.index', ['tab' => 'checkpoints'])"
-                             class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-6 h-6">
-                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                     d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-                             </svg>
-                         </x-splade-link>
                      </div>
                  @endcan
                  @can('create-checkpoint')
@@ -71,19 +71,19 @@
              class="text-md dark:text-slate-100 flex flex-wrap gap-6 justify-between rounded bg-white dark:bg-slate-700 shadow p-4">
              <p>Duration: {{ $session->countdown - $session->end_countdown }}s</p>
              <p>Touched {{ $corrects->count() + $wrongs->count() }} /
-                 {{ $session->checkpoint->questionAnswerSets()->count() }}</p>
+                 {{ $session->checkpoint->knowledgeAnswerSets()->count() }}</p>
              <p>Untouched: {{ $untouched->count() }} </p>
              <p>Wrong: {{ $wrongs->count() }}</p>
              <p>Correct: {{ $corrects->count() }} </p>
          </div>
          <hr class="mb-8">
          <div class="mb-52">
-             <x-layouts.questions-cubes>
-                 @foreach ($reviewGroupedByCubes as $questionsCubeId => $reviewQuestions)
-                     @php($questionsCube = \App\Models\QuestionsCube::find($questionsCubeId))
-                     <x-checkpoint.questions-cube :$questionsCube :$reviewQuestions context="review" />
+             <x-layouts.knowledge-cubes>
+                 @foreach ($reviewGroupedByCubes as $knowledgeCubeId => $reviewKnowledge)
+                     @php($knowledgeCube = \App\Models\KnowledgeCube::find($knowledgeCubeId))
+                     <x-checkpoint.knowledge-cube :$knowledgeCube :$reviewKnowledge context="review" />
                  @endforeach
-             </x-layouts.questions-cubes>
+             </x-layouts.knowledge-cubes>
          </div>
      </main>
  </x-layouts.app>

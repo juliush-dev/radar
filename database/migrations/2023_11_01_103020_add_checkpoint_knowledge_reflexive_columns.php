@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('checkpoint_question_answer_sets', function (Blueprint $table) {
-            $table->foreignUuid('potential_replacement_of')->nullable()->constrained('checkpoint_question_answer_sets')->nullOnDelete();
-            $table->foreignUuid('potential_replacement')->nullable()->constrained('checkpoint_question_answer_sets')->nullOnDelete();
+        Schema::table('checkpoint_knowledge', function (Blueprint $table) {
+            $table->foreignUuid('potential_replacement_of')->nullable()->constrained('checkpoint_knowledge')->nullOnDelete();
+            $table->foreignUuid('potential_replacement')->nullable()->constrained('checkpoint_knowledge')->nullOnDelete();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('checkpoint_question_answer_sets', function (Blueprint $table) {
+        Schema::table('checkpoint_knowledge', function (Blueprint $table) {
             $table->dropColumn('potential_replacement_of');
             $table->dropColumn('potential_replacement');
         });

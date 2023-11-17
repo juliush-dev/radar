@@ -2,7 +2,7 @@
 export default {
 
     props: {
-        initialContent: Object,
+        initialValue: Object,
         index: Number,
         activeIndex: Number,
         cubeFacesCount: {
@@ -21,7 +21,7 @@ export default {
     },
     data() {
         return {
-            content: this.initialContent,
+            knowledge: this.initialValue,
             face: (
                 () => {
                     if (this.index == 0 || (this.index - 0) % this.cubeFacesCount == 0) {
@@ -54,8 +54,8 @@ export default {
                 return Math.floor( nextIndex / this.cubeFacesCount)
             })(),
             touched: false,
-            answeredCorrectly: this.userGotItRight,
-            answerRevealed: false
+            bridgeCrossedSuccessfully: this.userGotItRight,
+            knowledgeRevealed: false
         }
     },
     methods: {
@@ -70,7 +70,7 @@ export default {
             return preview.replace(/\n/g, '<br>');
         },
         async trackClozedWords () {
-            this.content.question = await this.replaceTokensInText(this.content.answer);
+            this.knowledge.bridge = await this.replaceTokensInText(this.knowledge.information);
         },
         async wrapToken (event) {
             const inputText = event.target;
@@ -105,10 +105,10 @@ export default {
             this.touched = true;
         },
         reveal(){
-            this.answerRevealed = true;
+            this.knowledgeRevealed = true;
         },
-        setAnsweredCorrectly (value) {
-            this.answeredCorrectly = value;
+        setBridgeCrossedSuccessfully (value) {
+            this.bridgeCrossedSuccessfully = value;
         }
     },
     computed: {
@@ -157,56 +157,41 @@ export default {
             }
         },
         style(){
-            console.log(`active index: ${this.activeIndex}`);
             return {
                 'drop-shadow-lg shadow-black/5 dark:shadow-slate-600/50':
                     this.activeIndex == this.index,
 
                 'bg-red-400 text-white dark:bg-red-500 dark:text-slate-100':
-                    this.answeredCorrectly === false,
+                    this.bridgeCrossedSuccessfully === false,
 
                 'bg-green-400 text-white dark:bg-green-500 dark:text-slate-100':
-                    this.answeredCorrectly,
+                    this.bridgeCrossedSuccessfully,
 
                 'bg-slate-100 dark:bg-slate-800 dark:text-slate-400':
-                    this.answerRevealed && this.answeredCorrectly == undefined,
+                    this.knowledgeRevealed && this.bridgeCrossedSuccessfully == undefined,
 
                 'bg-blue-400 text-white dark:bg-blue-500 dark:text-slate-100':
-                    this.context == 'review' && this.answeredCorrectly == undefined && this.content.answer.length >0,
+                    this.context == 'review' && this.bridgeCrossedSuccessfully == undefined && this.knowledge.information.length >0,
 
                 'bg-white dark:bg-slate-700 dark:text-slate-300':
-                    !(this.context == 'test') &&  (this.context == 'preview') || this.context == 'test' && !this.answerRevealed,
+                    !(this.context == 'test') &&  (this.context == 'preview') || this.context == 'test' && !this.knowledgeRevealed,
 
                 'bg-white/80 dark:bg-black/80 dark:text-slate-100':
-                    this.content.answer.length == 0,
+                    this.knowledge.information.length == 0,
             }
         },
     },
 
     created() {
-        // console.log();
-        // console.log('-----------');
-        // console.log('Content:');
-        // console.log(this.content);
-        // console.log(`Context: ${this.context}`);
-        // console.log(`Index: ${this.index}`);
-        // console.log(`Deep: ${this.deep}`);
-        // console.log(`NextDeep: ${this.nextDeep}`);
-        // console.log(`PrevDeep: ${this.previousDeep}`);
-        // console.log(`Face: ${this.face}`);
-        // console.log(`nextFace: ${this.nextFace}`);
-        // // console.log(`prevFace: ${this.previousFace}`);
-        // console.log('-----------');
-        // console.log();
-        if(this.content && this.content.is_cloze){
-            this.$watch('content.answer', () => {
+        if(this.knowledge){
+            this.$watch('knowledge.information', () => {
                 this.trackClozedWords();
             });
        }
     },
     mounted () {
-         if(this.content.answered_correctly === false || this.content.answered_correctly === true){
-            this.answeredCorrectly = this.content.answered_correctly;
+         if(this.knowledge.bridge_crossed === false || this.knowledge.bridge_crossed === true){
+            this.bridgeCrossedSuccessfully = this.knowledge.bridge_crossed;
          }
          if(this.cube){
              this.cube.addLayer({'face': this.face, 'deep':this.deep});
@@ -215,7 +200,7 @@ export default {
 
     render () {
         return this.$slots.default({
-            content: this.content,
+            knowledge: this.knowledge,
             wrapToken: this.wrapToken,
             nextFace: this.nextFace,
             index: this.index,
@@ -223,10 +208,10 @@ export default {
             deep: this.deep,
             nextDeep: this.nextDeep,
             previousDeep: this.previousDeep,
-            answeredCorrectly: this.answeredCorrectly,
-            setAnsweredCorrectly: this.setAnsweredCorrectly,
+            bridgeCrossedSuccessfully: this.bridgeCrossedSuccessfully,
+            setBridgeCrossedSuccessfully: this.setBridgeCrossedSuccessfully,
             reveal: this.reveal,
-            answerRevealed: this.answerRevealed,
+            knowledgeRevealed: this.knowledgeRevealed,
             style: this.style,
             context: this.context,
             cube: this.cube,

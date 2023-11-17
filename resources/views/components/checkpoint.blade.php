@@ -5,7 +5,7 @@
          <h1 class="mb-2">{{ $checkpoint->title }}</h1>
      </x-nav-link>
      <div class="flex gap-2 dark:text-slate-300">
-         <span>{{ $checkpoint->questionAnswerSets->count() }}Q</span>
+         <span>{{ $checkpoint->knowledgeAnswerSets->count() }}Q</span>
          @if (Auth::check())
              <span class="mx-1">/</span>
              <span>{{ $checkpoint->userSessions()->where('user_id', auth()->user()->id)->count() }}S</span>

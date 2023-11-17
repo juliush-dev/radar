@@ -3,7 +3,7 @@
          <div class="px-6 py-4 cursor-pointer w-fit bg-pink-500 text-white"
              @click.prevent="checkpoint.setActiveTab('flash cards')">
              Questons cubes
-             <span v-text="checkpoint.form.questionsCubes.length"></span>
+             <span v-text="checkpoint.form.knowledgeCubes.length"></span>
          </div>
          <div class="flex justify-start md:ml-auto w-full md:w-fit">
              <x-splade-submit
@@ -30,13 +30,13 @@
              <x-splade-textarea rows="6" name="goal" label="What should one take out of this checkpoint?"
                  placeholder="Die verschiedene Netzwerkkomponenten kennen und deren Rollen im Netzwerk" />
          </div>
-         <div v-for="(questionsCube, index) in checkpoint.form.questionsCubes">
-             <x-forms.questions-cube />
+         <div v-for="(knowledgeCube, index) in checkpoint.form.knowledgeCubes">
+             <x-forms.knowledge-cube />
          </div>
          <div v-if="form.title.length > 3" class="flex flex-col gap-4 p-4">
-             <x-splade-button type="call-to-action" @click.prevent="checkpoint.addQuestionsCube"
+             <x-splade-button type="call-to-action" @click.prevent="checkpoint.addKnowledgeCube"
                  class="w-fit bg-amber-500 hover:bg-amber-600 text-white">
-                 Add questions cube
+                 Add knowledge cube
              </x-splade-button>
          </div>
      </div>

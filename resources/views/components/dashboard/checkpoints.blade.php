@@ -5,9 +5,9 @@
              {{ $checkpoint->title }}
          </x-splade-link>
      @endcell
-     @cell('questionAnswerSets', $checkpoint)
+     @cell('knowledgeAnswerSets', $checkpoint)
          <span class="text-md">
-             {{ $checkpoint->questionAnswerSets->count() }}
+             {{ $checkpoint->knowledgeAnswerSets->count() }}
          </span>
      @endcell
      @cell('public', $checkpoint)

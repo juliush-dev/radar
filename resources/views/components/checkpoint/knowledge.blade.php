@@ -1,38 +1,36 @@
- <question v-slot="card" :initial-content="question" :cube-faces-count="6" :index="index"
-     :active-index="questionsCube.activeIndex" :context="@js($context)" :cube="questionsCube">
-     <div v-show="card.deep == questionsCube.activeDeep" class="absolute w-96 h-96 dark:text-slate-700"
+ <knowledge v-slot="card" :initial-value="knowledge" :cube-faces-count="6" :index="index"
+     :active-index="knowledgeCube.activeIndex" :context="@js($context)" :cube="knowledgeCube">
+     <div v-show="card.deep == knowledgeCube.activeDeep" class="absolute w-96 h-96 dark:text-slate-700"
          v-bind:style="card.coordonates">
          <div class="flex flex-col w-96 h-96 p-6 border rounded-md transition-all duration-500 dark:border-slate-700"
              v-bind:class="card.style">
-             <div class="mb-2">
-                 <h2 class="text-lg first-letter:uppercase mb-3 font-medium" v-text="questionsCube.cube.subject"></h2>
-                 <h3 class="first-letter:uppercase" v-text="card.content.subject"></h3>
-             </div>
+             <h2 class="text-lg first-letter:uppercase mb-2 font-medium" v-text="knowledgeCube.cube.subject"></h2>
              <hr class="border-slate-200 dark:border-slate-600 mb-4">
              <div class="mb-auto text-xs flex flex-col grow">
-                 <div class="line-clamp-3 mb-3" v-html="card.content.question"></div>
-                 <div v-show="!(card.context == 'test') || card.answerRevealed"
-                     class="line-clamp-3 mb-4 border-t pt-2 dark:border-slate-600" v-html="card.content.answer"></div>
-                 <hr v-if="((card.context == 'test') && card.answerRevealed && card.content.answer_in_place_explanation || !(card.context == 'test')) && card.content.answer.length > 0"
+                 <div class="line-clamp-3 mb-3" v-html="card.knowledge.bridge"></div>
+                 <div v-show="!(card.context == 'test') || card.knowledgeRevealed"
+                     class="line-clamp-3 mb-4 border-t pt-2 dark:border-slate-600" v-html="card.knowledge.information">
+                 </div>
+                 <hr v-if="((card.context == 'test') && card.knowledgeRevealed && card.knowledge.implications || !(card.context == 'test')) && card.knowledge.information.length > 0"
                      class="border-slate-300 mb-3 dark:border-slate-600">
-                 <div v-if="(!(card.context == 'test') || card.answerRevealed) && card.content.answer_in_place_explanation"
-                     class="line-clamp-4 grow justify-self-end" v-html="card.content.answer_in_place_explanation"></div>
-                 <div v-if="(!(card.context == 'test') || card.answerRevealed) && card.content.answer_explanation_redirect"
+                 <div v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.implications"
+                     class="line-clamp-4 grow justify-self-end" v-html="card.knowledge.implications"></div>
+                 <div v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.external_reference"
                      class="line-clamp-4 mb-3 justify-self-end">
-                     <a v-bind:href="`${card.content.answer_explanation_redirect}`" target="_blank"
-                         rel="noopener noreferrer" class="text-blue-400"
-                         v-bind:class="{'text-white underline underline-offset-2': card.answeredCorrectly != undefined}">
-                         Full explanation
+                     <a v-bind:href="`${card.knowledge.external_reference}`" target="_blank" rel="noopener noreferrer"
+                         class="text-blue-400"
+                         v-bind:class="{'text-white underline underline-offset-2': card.bridgeCrossedSuccessfully != undefined}">
+                         Take me to external reference
                      </a>
                  </div>
              </div>
              <div class="flex gap-6 justify-self-end mt-4">
-                 <button @click="questionsCube.toggleQuestionsList()"
+                 <button @click="knowledgeCube.toggleKnowledgeList()"
                      class="border border-slate-500 rounded-full px-2 py-0.5 text-sm w-20 text-center"
-                     v-bind:class="{'border-white': card.answeredCorrectly != undefined || card.answeredCorrectly == undefined && card.context == 'review'}"
-                     v-text="`${card.index + 1}/${questionsCube.filledFacesCount}`"></button>
-                 <Link modal v-bind:href="`/question-answer-set/${card.content.id}?context=${card.context}`"
-                     v-if="card.content.answer.length > 0" class="text-sm">
+                     v-bind:class="{'border-white': card.bridgeCrossedSuccessfully != undefined || card.bridgeCrossedSuccessfully == undefined && card.context == 'review'}"
+                     v-text="`${card.index + 1}/${knowledgeCube.filledFacesCount}`"></button>
+                 <Link modal v-bind:href="`/knowledge/${card.knowledge.id}?context=${card.context}`"
+                     v-if="card.knowledge.information.length > 0" class="text-sm">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
                      <path stroke-linecap="round" stroke-linejoin="round"
@@ -40,30 +38,32 @@
                  </svg>
                  </Link>
 
-                 <template v-if="(card.context == 'test') && card.content.answer.length > 0"
+                 <template v-if="(card.context == 'test') && card.knowledge.information.length > 0"
                      class="flex justify-center gap-6  items-center justify-self-center grow">
-                     <div class="flex items-center" v-show="card.answerRevealed && card.answeredCorrectly == undefined">
+                     <div class="flex items-center"
+                         v-show="card.knowledgeRevealed && card.bridgeCrossedSuccessfully == undefined">
                          <x-splade-form stay submit-on-change
-                             v-bind:action="`/sessions/${session.content.id}/answers/${card.content.id}/wrong`"
+                             v-bind:action="`/sessions/${session.content.id}/bridges/${card.knowledge.id}/missed`"
                              class="flex items-center">
                              <button type="submit" class="transition-opacity duration-300 disabled:opacity-50"
-                                 @click="card.setAnsweredCorrectly(false); session.resume(); form.submit = true;"
-                                 :disabled="card.answeredCorrectly === false">
+                                 @click="card.setBridgeCrossedSuccessfully(false); session.resume(); form.submit = true;"
+                                 :disabled="card.bridgeCrossedSuccessfully === false">
                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transition-colors"
-                                     v-bind:class="{'text-red-400': card.answeredCorrectly === false}">
+                                     v-bind:class="{'text-red-400': card.bridgeCrossedSuccessfully === false}">
                                      <path stroke-linecap="round" stroke-linejoin="round"
                                          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                  </svg>
                              </button>
                          </x-splade-form>
                      </div>
-                     <div class="flex items-center" v-show="!card.answerRevealed && !session.paused">
+                     <div class="flex items-center" v-show="!card.knowledgeRevealed && !session.paused">
                          <x-splade-form stay
-                             v-bind:action="`/sessions/${session.content.id}/answers/${card.content.id}/wrong`"
+                             v-bind:action="`/sessions/${session.content.id}/bridges/${card.knowledge.id}/missed`"
                              class="flex items-center">
                              <button type="submit" class="transition-opacity duration-300 disabled:opacity-50"
-                                 @click="card.reveal(); session.pause();" :disabled="card.answeredCorrectly === false">
+                                 @click="card.reveal(); session.pause();"
+                                 :disabled="card.bridgeCrossedSuccessfully === false">
                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                      <path stroke-linecap="round" stroke-linejoin="round"
@@ -74,16 +74,17 @@
                              </button>
                          </x-splade-form>
                      </div>
-                     <div class="flex items-center" v-show="card.answerRevealed && card.answeredCorrectly == undefined">
+                     <div class="flex items-center"
+                         v-show="card.knowledgeRevealed && card.bridgeCrossedSuccessfully == undefined">
                          <x-splade-form stay submit-on-change
-                             v-bind:action="`/sessions/${session.content.id}/answers/${card.content.id}/correct`"
+                             v-bind:action="`/sessions/${session.content.id}/bridges/${card.knowledge.id}/crossed`"
                              class="flex items-center">
                              <button type="submit" class="transition-opacity duration-300"
-                                 @click="card.setAnsweredCorrectly(true); session.resume(); form.submit = true;"
-                                 :disabled="card.answeredCorrectly">
+                                 @click="card.setBridgeCrossedSuccessfully(true); session.resume(); form.submit = true;"
+                                 :disabled="card.bridgeCrossedSuccessfully">
                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transition-colors"
-                                     v-bind:class="{'text-green-400': card.answeredCorrectly}">
+                                     v-bind:class="{'text-green-400': card.bridgeCrossedSuccessfully}">
                                      <path stroke-linecap="round" stroke-linejoin="round"
                                          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                  </svg>
@@ -94,7 +95,7 @@
 
                  <button v-show="(card.context == 'test') && !session.paused || !(card.context == 'test')"
                      class="text-md ml-auto disabled:opacity-50" :disabled="card.index == 0"
-                     @click.prevent.stop="questionsCube.previous">
+                     @click.prevent.stop="knowledgeCube.previous">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-6 h-6">
                          <path stroke-linecap="round" stroke-linejoin="round"
@@ -103,8 +104,8 @@
                  </button>
                  <button v-show="(card.context == 'test') && !session.paused || !(card.context == 'test')"
                      class="text-md disabled:opacity-50"
-                     @click.prevent.stop="questionsCube.next(card.nextFace, card.nextDeep)"
-                     :disabled="card.index == questionsCube.questionsCount - 1">
+                     @click.prevent.stop="knowledgeCube.next(card.nextFace, card.nextDeep)"
+                     :disabled="card.index == knowledgeCube.knowledgeCount - 1">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-6 h-6">
                          <path stroke-linecap="round" stroke-linejoin="round"
@@ -114,4 +115,4 @@
              </div>
          </div>
      </div>
- </question>
+ </knowledge>

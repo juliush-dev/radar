@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckpointController;
-use App\Http\Controllers\CheckpointQuestionAnswerSetController;
+use App\Http\Controllers\CheckpointKnowledgeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserCheckpointSessionController;
 use App\Http\Controllers\UserCheckpointSessionResultController;
@@ -215,13 +215,13 @@ Route::middleware('splade')->group(function () {
                     'review'
                 )->name('review');
                 Route::post(
-                    '/{session}/answers/{answer}/correct',
-                    'correct'
-                )->name('results.correct');
+                    '/{session}/bridges/{bridge}/crossed',
+                    'cross'
+                )->name('results.cross');
                 Route::post(
-                    '/{session}/answers/{answer}/wrong',
-                    'wrong'
-                )->name('results.wrong');
+                    '/{session}/bridges/{bridge}/missed',
+                    'miss'
+                )->name('results.miss');
                 Route::delete(
                     '/{session}',
                     'destroy'
@@ -233,19 +233,19 @@ Route::middleware('splade')->group(function () {
             ->name('results.')
             ->group(function () {
                 Route::post(
-                    '/sessions/{session}/answers/{answer}/correct',
+                    '/sessions/{session}/bridges/{bridge}/crossed',
                     'correct'
                 )->name('correct');
                 Route::post(
-                    '/sessions/{session}/answers/{answer}/wrong',
+                    '/sessions/{session}/bridges/{bridge}/missed',
                     'wrong'
                 )->name('wrong');
             });
     });
-    Route::get('/question-answer-set/{qas}', [
-        CheckpointQuestionAnswerSetController::class,
+    Route::get('/knowledge/{knowledge}', [
+        CheckpointKnowledgeController::class,
         'show'
-    ])->name('question-answer-set.show');
+    ])->name('knowledge.show');
 
     Route::resource(
         'fields',

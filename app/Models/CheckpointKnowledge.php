@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CheckpointQuestionAnswerSet extends Model
+class CheckpointKnowledge extends Model
 {
     use HasFactory, HasUuids;
 
@@ -22,18 +22,18 @@ class CheckpointQuestionAnswerSet extends Model
         return $this->belongsTo(Checkpoint::class);
     }
 
-    public function questionsCube(): BelongsTo
+    public function knowledgeCube(): BelongsTo
     {
-        return $this->belongsTo(QuestionsCube::class);
+        return $this->belongsTo(KnowledgeCube::class);
     }
 
     public function potentialReplacement(): BelongsTo
     {
-        return $this->belongsTo(CheckpointQuestionAnswerSet::class, 'potential_replacement');
+        return $this->belongsTo(CheckpointKnowledge::class, 'potential_replacement');
     }
 
     public function potentialReplacementOf(): BelongsTo
     {
-        return $this->belongsTo(CheckpointQuestionAnswerSet::class, 'potential_replacement_of');
+        return $this->belongsTo(CheckpointKnowledge::class, 'potential_replacement_of');
     }
 }

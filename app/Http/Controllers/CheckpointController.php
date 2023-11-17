@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkpoint;
-use App\Models\CheckpointQuestionAnswerSet;
-use App\Models\QuestionsCube;
+use App\Models\CheckpointKnowledge;
+use App\Models\KnowledgeCube;
 use App\Models\Topic;
 use App\Models\UserCheckpointSession;
 use App\Services\RadarQuery;
@@ -18,11 +18,6 @@ class CheckpointController extends Controller
 {
     public function __construct(private RadarQuery $rq)
     {
-    }
-
-    public function index()
-    {
-        //
     }
 
     /**
@@ -45,7 +40,7 @@ class CheckpointController extends Controller
         DB::transaction(function () use ($request, &$newCheckpoint, $topic, $checkpoint) {
             $title = trim($request->input('title', ''));
             $goal = trim($request->input('goal', ''));
-            $questionsCubes = $request->input('questionsCubes', []);
+            $knowledgeCubes = $request->input('knowledgeCubes', []);
 
             if (!empty($title)) {
                 $newCheckpoint = new Checkpoint;
@@ -66,20 +61,20 @@ class CheckpointController extends Controller
             } else {
                 throw new Exception("Error Processing Request", 1);
             }
-            collect($questionsCubes)->each(function ($cube) use ($request, $newCheckpoint) {
+            collect($knowledgeCubes)->each(function ($cube) use ($request, $newCheckpoint) {
                 $subject = trim($cube['subject'] ?? '');
                 if (empty($subject)) {
                     throw new Exception("Error Processing Request", 1);
                 }
-                $questions = $cube['questions'];
+                $knowledge = $cube['knowledge'];
 
-                $newCube = new QuestionsCube;
+                $newCube = new KnowledgeCube;
                 $newCube->checkpoint_id = $newCheckpoint->id;
                 $newCube->subject = $subject;
                 $newCube->save();
 
                 if ($newCheckpoint->is_update && !empty($cube['id'])) {
-                    $foundCube =  $newCheckpoint->potentialReplacementOf->questionsCubes()->find($cube['id']);
+                    $foundCube =  $newCheckpoint->potentialReplacementOf->knowledgeCubes()->find($cube['id']);
                     $newCube->is_update = true;
                     $newCube->potential_replacement_of = $foundCube->id;
                     $newCube->save();
@@ -88,26 +83,23 @@ class CheckpointController extends Controller
                     $foundCube->save();
                 }
 
-                collect($questions)->each(function ($content) use ($request, $newCube) {
-                    $newContent = new CheckpointQuestionAnswerSet;
+                collect($knowledge)->each(function ($content) use ($request, $newCube) {
+                    $newContent = new CheckpointKnowledge;
 
                     $newContent->checkpoint_id = $newCube->checkpoint_id;
                     $newContent->user_id = $request->user()->id;
-                    $newContent->questions_cube_id = $newCube->id;
+                    $newContent->knowledge_cube_id = $newCube->id;
 
-                    $newContent->is_cloze = $content['is_cloze'] ?? false;
-                    $newContent->is_assisted_cloze = $content['is_assisted_cloze'] ?? false;
-                    $newContent->is_flash_card = $content['is_flash_card'] ?? false;
-                    $newContent->subject = $content['subject'];
-                    $newContent->question = $content['question'];
-                    $newContent->answer = $content['answer'];
-                    $newContent->answer_in_place_explanation = $content['answer_in_place_explanation'];
-                    $newContent->answer_explanation_redirect = $content['answer_explanation_redirect'];
+                    $newContent->assisted = $content['assisted'] ?? false;
+                    $newContent->information = $content['information'];
+                    $newContent->bridge = $content['bridge'];
+                    $newContent->implications = $content['implications'];
+                    $newContent->external_reference = $content['external_reference'];
 
                     $newContent->save();
 
                     if ($newCube->is_update && !empty($content['id'])) {
-                        $foundContent =  $newCube->potentialReplacementOf->questions()->find($content['id']);
+                        $foundContent =  $newCube->potentialReplacementOf->knowledge()->find($content['id']);
                         $newContent->is_update = true;
                         $newContent->potential_replacement_of = $foundContent->id;
                         $newContent->save();
@@ -135,12 +127,12 @@ class CheckpointController extends Controller
             'checkpoint' => $checkpoint,
             'title' => $checkpoint->title,
             'goal' => $checkpoint->goal,
-            'questionsCubes' => $checkpoint->questionsCubes->reduce(
+            'knowledgeCubes' => $checkpoint->knowledgeCubes->reduce(
                 function ($acc, $cube) {
                     $cube = [
                         'id' => $cube->id,
                         'subject' => $cube->subject,
-                        'questions' =>  $cube->questions
+                        'knowledge' =>  $cube->knowledge
                     ];
                     array_push($acc, $cube);
                     return $acc;
@@ -247,9 +239,9 @@ class CheckpointController extends Controller
                     $session->checkpoint_id = $checkpoint->id;
                     $session->save();
                     $session->userResults->each(function ($result) use ($checkpoint) {
-                        $QA = $checkpoint->questionAnswerSets()->where('potential_replacement_of', $result->QA_set_id)->first();
+                        $QA = $checkpoint->knowledgeAnswerSets()->where('potential_replacement_of', $result->knowledge_id)->first();
                         if ($QA != null) {
-                            $result->QA_set_id = $QA->id;
+                            $result->knowledge_id = $QA->id;
                             $result->save();
                         } else {
                             $result->delete();

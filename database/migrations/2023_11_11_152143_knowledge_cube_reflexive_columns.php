@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('questions_cubes', function (Blueprint $table) {
-            $table->foreignUuid('potential_replacement_of')->nullable()->constrained('questions_cubes')->nullOnDelete();
-            $table->foreignUuid('potential_replacement')->nullable()->constrained('questions_cubes')->nullOnDelete();
+        Schema::table('knowledge_cubes', function (Blueprint $table) {
+            $table->foreignUuid('potential_replacement_of')->nullable()->constrained('knowledge_cubes')->nullOnDelete();
+            $table->foreignUuid('potential_replacement')->nullable()->constrained('knowledge_cubes')->nullOnDelete();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('questions_cubes', function (Blueprint $table) {
+        Schema::table('knowledge_cubes', function (Blueprint $table) {
             //
         });
     }

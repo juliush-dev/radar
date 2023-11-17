@@ -3,7 +3,7 @@
         <x-splade-form :action="route('checkpoints.update', $checkpoint)" method="patch" :default="[
             'title' => $title,
             'goal' => $goal,
-            'questionsCubes' => $questionsCubes,
+            'knowledgeCubes' => $knowledgeCubes,
         ]">
             <x-forms.checkpoint :$rq />
         </x-splade-form>
