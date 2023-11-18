@@ -24,6 +24,15 @@ export default {
                 temp = null;
             });
         },
+        summarize () {
+            this.form.summary = this.form.$all.knowledgeCubes.reduce((collector, cube) => {
+                collector += cube.knowledge.reduce((collector, knowledge) => {
+                    collector += `${knowledge.information}\n`;
+                    return collector;
+                }, '') + '\n\n';
+                return collector;
+            }, '');
+        },
     },
 
     render () {
@@ -31,6 +40,7 @@ export default {
             form: this.form,
             addKnowledgeCube: this.addKnowledgeCube,
             removeKnowledgeCube: this.removeKnowledgeCube,
+            summarize: this.summarize,
         });
     },
 };

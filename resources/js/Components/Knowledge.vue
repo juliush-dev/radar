@@ -1,6 +1,6 @@
 <script>
 export default {
-
+    emits: ['newKnowledge'],
     props: {
         initialValue: Object,
         index: Number,
@@ -19,7 +19,7 @@ export default {
         },
         cube: Object,
     },
-    data() {
+    data () {
         return {
             knowledge: this.initialValue,
             face: (
@@ -51,7 +51,7 @@ export default {
             })(),
             nextDeep: (() => {
                 let nextIndex = this.index + 1;
-                return Math.floor( nextIndex / this.cubeFacesCount)
+                return Math.floor(nextIndex / this.cubeFacesCount)
             })(),
             touched: false,
             bridgeCrossedSuccessfully: this.userGotItRight,
@@ -59,12 +59,12 @@ export default {
         }
     },
     methods: {
-         replaceTokensInText (textA, hideBridgeToken = true) {
+        replaceTokensInText (textA, hideBridgeToken = true) {
             // Define a regular expression pattern to match tokens surrounded by "-- --"
             var regex = /\[(.*?)\]/g;
             // Replace matched tokens with the specified HTML span element
             var preview = textA.replace(regex, (match, token) => {
-                const emptySpan = `<span class="bg-violet-500 text-white px-1 rounded">${ hideBridgeToken ? '&nbsp;'.repeat(token.length) : token}</span>`;
+                const emptySpan = `<span class="bg-violet-500 text-white px-1 rounded">${hideBridgeToken ? '&nbsp;'.repeat(token.length) : token}</span>`;
                 return emptySpan;
             });
             regex = /\*(.*?)\*/g;
@@ -75,15 +75,12 @@ export default {
             });
             return preview.replace(/\n/g, '<br>');
         },
-        trackClozedWords () {
-            this.knowledge.bridge = this.replaceTokensInText(this.knowledge.information);
-        },
         wrapToken (event) {
             const inputText = event.target;
             var wrapperStart = "[";
             var wrapperEnd = "]";
             if (event.key === '[' || event.key === '*') {
-                if(event.key === '*'){
+                if (event.key === '*') {
                     wrapperStart = wrapperEnd = "*";
                 }
                 const selectionStart = inputText.selectionStart;
@@ -113,14 +110,17 @@ export default {
                 }
             }
         },
-        touch(){
+        touch () {
             this.touched = true;
         },
-        reveal(){
+        reveal () {
             this.knowledgeRevealed = true;
         },
         setBridgeCrossedSuccessfully (value) {
             this.bridgeCrossedSuccessfully = value;
+        },
+        focus (ev) {
+            alert(ev.target);
         }
     },
     computed: {
@@ -149,7 +149,7 @@ export default {
                 })(),
             }
         },
-        nextFace() {
+        nextFace () {
             if (this.face == 'front') {
                 return 'right';
             }
@@ -169,7 +169,7 @@ export default {
                 return 'front';
             }
         },
-        style(){
+        style () {
             return {
                 'drop-shadow-lg shadow-black/5 dark:shadow-slate-600/50':
                     this.activeIndex == this.index,
@@ -184,31 +184,38 @@ export default {
                     this.knowledgeRevealed && this.bridgeCrossedSuccessfully == undefined,
 
                 'bg-blue-400 text-white dark:bg-blue-500 dark:text-slate-100':
-                    this.context == 'review' && this.bridgeCrossedSuccessfully == undefined && this.knowledge.information.length >0,
+                    this.context == 'review' && this.bridgeCrossedSuccessfully == undefined && this.knowledge.information.length > 0,
 
                 'bg-white dark:bg-slate-700 dark:text-slate-300':
-                    !(this.context == 'test') &&  (this.context == 'preview') || this.context == 'test' && !this.knowledgeRevealed,
+                    !(this.context == 'test') && (this.context == 'preview') || this.context == 'test' && !this.knowledgeRevealed,
 
                 'bg-white/80 dark:bg-slate-700/80 dark:text-slate-100':
                     this.knowledge.information.length == 0,
             }
         },
+        bridge () {
+            const bridge = this.replaceTokensInText(this.knowledge.information);
+            return bridge;
+        }
+
     },
 
-    created() {
-        if(this.knowledge){
-            this.$watch('knowledge.information', () => {
-                this.trackClozedWords();
-            });
-       }
-    },
     mounted () {
-         if(this.knowledge.bridge_crossed === false || this.knowledge.bridge_crossed === true){
+        if (this.knowledge.bridge_crossed === false || this.knowledge.bridge_crossed === true) {
             this.bridgeCrossedSuccessfully = this.knowledge.bridge_crossed;
-         }
-         if(this.cube){
-             this.cube.addLayer({'face': this.face, 'deep':this.deep});
-         }
+        }
+        if (this.cube) {
+            this.cube.addLayer({ 'face': this.face, 'deep': this.deep });
+        }
+        if (this.knowledge.information.length == 0) {
+            // the targeted element should be in the dom for this to work
+            // if it is hidden, this will not work
+            const textareaElement = this.$el.parentElement.querySelector('textarea');
+            if (textareaElement) {
+                textareaElement.focus();
+                textareaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
     },
 
     render () {
@@ -229,6 +236,8 @@ export default {
             context: this.context,
             cube: this.cube,
             replaceTokensInText: this.replaceTokensInText,
+            bridge: this.bridge,
+            focus: this.focus,
         });
     },
 };

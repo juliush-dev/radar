@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
-            $table->string('goal')->nullable();
+            $table->longText('summary')->nullable();
             $table->boolean('is_public')->default(false);
             $table->boolean('is_update')->default(false);
             $table->timestamps();

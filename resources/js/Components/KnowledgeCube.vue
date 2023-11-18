@@ -35,6 +35,7 @@ export default {
                 bridge: '',
                 implications: '',
                 external_reference: ''
+
             };
             this.cube.knowledge.push(content);
         },

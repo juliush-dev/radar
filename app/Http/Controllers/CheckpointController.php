@@ -39,7 +39,7 @@ class CheckpointController extends Controller
         $newCheckpoint = null;
         DB::transaction(function () use ($request, &$newCheckpoint, $topic, $checkpoint) {
             $title = trim($request->input('title', ''));
-            $goal = trim($request->input('goal', ''));
+            $summary = trim($request->input('summary', ''));
             $knowledgeCubes = $request->input('knowledgeCubes', []);
 
             if (!empty($title)) {
@@ -47,7 +47,7 @@ class CheckpointController extends Controller
                 $newCheckpoint->title = $title;
                 $newCheckpoint->user_id = $request->user()->id;
                 $newCheckpoint->topic_id =  $topic->id;
-                $newCheckpoint->goal =  $goal;
+                $newCheckpoint->summary =  $summary;
                 $newCheckpoint->save();
 
                 if ($checkpoint->exists) {
@@ -125,7 +125,7 @@ class CheckpointController extends Controller
             'rq' => $this->rq,
             'checkpoint' => $checkpoint,
             'title' => $checkpoint->title,
-            'goal' => $checkpoint->goal,
+            'summary' => $checkpoint->summary,
             'knowledgeCubes' => $checkpoint->knowledgeCubes->reduce(
                 function ($acc, $cube) {
                     $cube = [

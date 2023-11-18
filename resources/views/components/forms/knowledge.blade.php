@@ -1,38 +1,30 @@
 <knowledge v-slot="card" :initial-value="knowledge">
     <x-splade-toggle>
-        <div class="rounded p-4 bg-slate-100 lg:p-6 mb-10 shadow shadow-slate-400 w-full relative transition-all duration-150"
-            v-bind:class="(knowledgeCube.reordering && knowledgeCube.reorder.index == index) && 'border-4 border-blue-400' || 'lg:border'">
-            <button v-show="!toggled" @click.prevent.stop="toggle"
-                class="absolute left-1/2 -translate-x-1/2 -top-4 border-t-2 border-slate-500 text-slate-500 rounded-full bg-slate-100 p-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </button>
-            <button v-show="toggled" @click.prevent.stop="toggle"
-                class="absolute left-1/2 -translate-x-1/2 -bottom-4  border-b-2 border-slate-500 text-slate-500 rounded-full bg-slate-100 p-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-                </svg>
-            </button>
+        <div class="rounded p-4 border bg-slate-100 lg:p-6 mb-10 shadow shadow-slate-400 w-full relative transition-all duration-300"
+            v-bind:class="
+            (knowledgeCube.reordering &&
+            (knowledgeCube.reorder.index == index ? ' bg-pink-400/50 ' : ' bg-blue-400/10 '))
+            + (card.knowledge.information.length == 0 && ' bg-slate-400/70') ">
+
             <div class="mb-6">
                 <label>Bridge <span class="text-sm font-mono">(automatically generated)</span></label>
-                <div v-html="card.knowledge.bridge" class="my-6"></div>
+                <div v-html="card.bridge" class="my-6"></div>
             </div>
-            <x-splade-transition show="toggled" class="my-3" enter="duration-1000" leave="duration-500">
+            <x-splade-transition show="toggled || !toggled && card.knowledge.information.length == 0" class="my-3"
+                enter="duration-1000" leave="duration-500">
                 <x-splade-textarea rows="5" required v-model="card.knowledge.information"
                     label="Reformulated Information" class="mb-6 first-letter:uppercase"
+                    v-bind:class="card.knowledge.information.length == 0 && 'new'"
                     placeholder="Host sind alle mit einem [Netzwerk] verbundenen Computer, die direkt an die [Netzwerkkommunikation] beteiligt sind."
-                    @keydown="card.wrapToken" />
+                    @keydown="card.wrapToken" @input.once="setToggle(true)" />
                 <x-splade-wysiwyg v-model="card.knowledge.implications" label="Implications"
                     class="mb-4 prose jodit-wrapper overflow-hidden"
                     placeholder="This implied that, the sum of ... is calculated by adding ..." />
                 <x-splade-input v-model="card.knowledge.external_reference" label="External reference" class="mb-6"
                     placeholder="https://moodle-hnbk.de/pluginfile.php/138211/mod_resource/content/1/%C3%9Cbung%20Grundbegriffe%20Datenbanken.pdf" />
             </x-splade-transition>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-6 bg-inherit w-full overflow-hidden">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-6 bg-inherit w-fit overflow-hidden">
                     <x-splade-toggle>
                         <x-splade-transition animation="slide-left" enter="duration-300" show="knowledgeCube.reordering"
                             class="flex gap-6">
@@ -61,7 +53,7 @@
                                     v-text="knowledgeCube.reorder.position + ' Me'"></span>
                             </button>
                         </x-splade-transition>
-                        <x-splade-transition animation="slide-left" enter="duration-300"
+                        <x-splade-transition animation="slide-left" enter="transition-opacity duration-75"
                             show="knowledgeCube.reorder.position == null"
                             class="flex items-center gap-6 w-fit overflow-hidden">
                             <button @click.prevent.stop="setToggle(knowledgeCube.setReorderingBefore(index))"
@@ -85,6 +77,16 @@
                         </x-splade-transition>
                     </x-splade-toggle>
                 </div>
+                <button v-show="card.knowledge.information.length > 0" @click.prevent.stop="toggle" class="ml-auto">
+                    <svg v-show="!toggled" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                    <svg v-show="toggled" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                    </svg>
+                </button>
                 <button @click.prevent.stop="knowledgeCube.removeKnowledge(index)" class="block w-fit">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor"

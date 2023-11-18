@@ -1,7 +1,6 @@
  <checkpoint v-slot="checkpoint" :form="form">
      <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-10">
-         <div class="px-6 py-4 cursor-pointer w-fit bg-pink-500 text-white"
-             @click.prevent="checkpoint.setActiveTab('flash cards')">
+         <div class="px-6 py-4 cursor-pointer w-fit bg-pink-500 text-white">
              Questons cubes
              <span v-text="checkpoint.form.knowledgeCubes.length"></span>
          </div>
@@ -27,8 +26,13 @@
              </div>
              <x-splade-input name="title" label="Subject" class="mb-6 first-letter:uppercase"
                  placeholder="Netzwerkkomponenten" />
-             <x-splade-textarea rows="6" name="goal" label="Brief summary"
-                 placeholder="Netzwerkkomponenten sind das Herz vom Netzwerke. Gibt sie nicht, gibt auch dann kein Netzwerk." />
+             <x-splade-textarea rows="6" name="summary" label="Brief summary"
+                 placeholder="Netzwerkkomponenten sind das Herz vom Netzwerke. Gibt sie nicht, gibt auch dann kein Netzwerk."
+                 class="mb-6" />
+             <x-splade-button type="call-to-action" @click.prevent="checkpoint.summarize"
+                 class="ml-auto w-fit bg-amber-500 hover:bg-amber-600 text-white">
+                 Summarize
+             </x-splade-button>
          </div>
          <div v-for="(knowledgeCube, index) in checkpoint.form.knowledgeCubes">
              <x-forms.knowledge-cube />

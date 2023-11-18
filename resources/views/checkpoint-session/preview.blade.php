@@ -174,18 +174,34 @@
                     </div>
                 @endif
             </div>
-            <div class="flex items-center mb-8">
-                <h2 class="text-2xl dark:text-slate-100">
-                    Cubes of knowledge
+            <section class="mb-20">
+                <h2 class="text-2xl dark:text-slate-100 mb-8">
+                    Summary
                 </h2>
-                {{-- <Link href="{{ Auth::check() ? route('checkpoints.create', $checkpoint->topic) : '#login-required' }}"
-                class="whitespace-nowrap text-fuchsia-400 hover:text-fuchsia-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            </Link> --}}
-            </div>
+                <x-splade-toggle>
+                    <div class="relative bg-white rounded-lg shadow-lg p-8 leading-loose text-lg dark:bg-slate-800 dark:shadow-slate-700 border dark:border-slate-700 dark:text-slate-400"
+                        style="transition: max-height 0.15s ease-in-out;" v-bind:class="toggled && 'overflow-scroll'"
+                        v-bind:style="toggled ? 'max-height: 40rem;' : 'max-height: 20rem;'">
+                        <div v-bind:class="toggled || 'line-clamp-4'">
+                            {!! $checkpoint->summary !!}
+                        </div>
+                        <button @click="toggle" class="block w-fit ml-auto mt-4 overflow-hidden">
+                            <svg v-show="!toggled" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                            <svg v-show="toggled" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
+                </x-splade-toggle>
+            </section>
+            <h2 class="text-2xl dark:text-slate-100">
+                Cubes of knowledge
+            </h2>
         </main>
         <x-layouts.knowledge-cubes>
             @foreach ($checkpoint->knowledgeCubes as $knowledgeCube)
