@@ -59,22 +59,33 @@ export default {
         }
     },
     methods: {
-         async replaceTokensInText (textA) {
+         replaceTokensInText (textA, hideBridgeToken = true) {
             // Define a regular expression pattern to match tokens surrounded by "-- --"
-            const regex = /\[(.*?)\]/g;
+            var regex = /\[(.*?)\]/g;
             // Replace matched tokens with the specified HTML span element
-            const preview = textA.replace(regex, (match, token) => {
-                const emptySpan = `<span class="bg-violet-500 px-1 rounded">${'&nbsp;'.repeat(token.length)}</span>`;
+            var preview = textA.replace(regex, (match, token) => {
+                const emptySpan = `<span class="bg-violet-500 text-white px-1 rounded">${ hideBridgeToken ? '&nbsp;'.repeat(token.length) : token}</span>`;
+                return emptySpan;
+            });
+            regex = /\*(.*?)\*/g;
+            // Replace matched tokens with the specified HTML span element
+            preview = preview.replace(regex, (match, token) => {
+                const emptySpan = `<span class="bg-yellow-400/30 text-black dark:text-slate-300 px-1 rounded dark:bg-slate-800">${token}</span>`;
                 return emptySpan;
             });
             return preview.replace(/\n/g, '<br>');
         },
-        async trackClozedWords () {
-            this.knowledge.bridge = await this.replaceTokensInText(this.knowledge.information);
+        trackClozedWords () {
+            this.knowledge.bridge = this.replaceTokensInText(this.knowledge.information);
         },
-        async wrapToken (event) {
+        wrapToken (event) {
             const inputText = event.target;
-            if (event.key === '[') {
+            var wrapperStart = "[";
+            var wrapperEnd = "]";
+            if (event.key === '[' || event.key === '*') {
+                if(event.key === '*'){
+                    wrapperStart = wrapperEnd = "*";
+                }
                 const selectionStart = inputText.selectionStart;
                 const selectionEnd = inputText.selectionEnd;
                 const textValue = inputText.value;
@@ -84,7 +95,7 @@ export default {
 
                 // Check if the selected text is not empty and doesn't consist of only spaces
                 if (selectedText.trim() !== "") {
-                    if (selectedText.startsWith('[') && selectedText.endsWith(']')) {
+                    if (selectedText.startsWith('[') && selectedText.endsWith(']') || selectedText.startsWith('*') && selectedText.endsWith('*')) {
                         // Remove the brackets
                         const updatedText = textValue.substring(0, selectionStart) + selectedText.substring(1, selectedText.length - 1) + textValue.substring(selectionEnd);
                         inputText.value = updatedText;
@@ -92,7 +103,8 @@ export default {
                         inputText.dispatchEvent(new Event('input'));
                     } else {
                         // Wrap the selected text with square brackets
-                        const updatedText = textValue.substring(0, selectionStart) + '[' + selectedText + ']' + textValue.substring(selectionEnd);
+
+                        const updatedText = textValue.substring(0, selectionStart) + wrapperStart + selectedText + wrapperEnd + textValue.substring(selectionEnd);
                         inputText.value = updatedText;
                         inputText.setSelectionRange(selectionStart, selectionEnd + 2); // Adjust the cursor position
                         inputText.dispatchEvent(new Event('input'));
@@ -113,25 +125,26 @@ export default {
     },
     computed: {
         coordonates () {
+            const size = this.cube?.onPhone ? 160 : 250;
             return {
                 'transform': (() => {
                     if (this.face == 'front') {
-                        return 'rotateY(0deg) translateZ(191px)';
+                        return `rotateY(0deg) translateZ(${size}px)`;
                     }
                     if (this.face == 'right') {
-                        return 'rotateY(90deg) translateZ(191px)';
+                        return `rotateY(90deg) translateZ(${size}px)`;
                     }
                     if (this.face == 'back') {
-                        return 'rotateY(180deg) translateZ(191px)';
+                        return `rotateY(180deg) translateZ(${size}px)`;
                     }
                     if (this.face == 'left') {
-                        return 'rotateY(-90deg) translateZ(191px)';
+                        return `rotateY(-90deg) translateZ(${size}px)`;
                     }
                     if (this.face == 'top') {
-                        return 'rotateX(90deg) translateZ(191px)';
+                        return `rotateX(90deg) translateZ(${size}px)`;
                     }
                     if (this.face == 'bottom') {
-                        return 'rotateX(-90deg) translateZ(191px)';
+                        return `rotateX(-90deg) translateZ(${size}px)`;
                     }
                 })(),
             }
@@ -176,7 +189,7 @@ export default {
                 'bg-white dark:bg-slate-700 dark:text-slate-300':
                     !(this.context == 'test') &&  (this.context == 'preview') || this.context == 'test' && !this.knowledgeRevealed,
 
-                'bg-white/80 dark:bg-black/70 dark:text-slate-100':
+                'bg-white/80 dark:bg-slate-700/80 dark:text-slate-100':
                     this.knowledge.information.length == 0,
             }
         },
@@ -215,6 +228,7 @@ export default {
             style: this.style,
             context: this.context,
             cube: this.cube,
+            replaceTokensInText: this.replaceTokensInText,
         });
     },
 };

@@ -27,7 +27,7 @@
              </svg>
          </span>
          <h1
-             class="text-xl font-medium text-green-400 dark:text-yellow-400 whitespace-nowrap w-40 lg:w-52 overflow-hidden text-ellipsis">
+             class="text-xl font-medium text-green-400 dark:text-yellow-400 whitespace-nowrap w-full lg:w-52 overflow-hidden text-ellipsis">
              {{ empty($activePage) ? 'Welcome' : $activePage }}
          </h1>
      </div>

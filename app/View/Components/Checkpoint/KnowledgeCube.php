@@ -18,7 +18,8 @@ class KnowledgeCube extends Component
         public ModelsKnowledgeCube $knowledgeCube,
         public ?UserCheckpointSession $session = null,
         public ?Collection $reviewKnowledge = null,
-        public String $context = 'preview'
+        public String $context = 'preview',
+        public ?String $id = null
     ) {
         //
     }

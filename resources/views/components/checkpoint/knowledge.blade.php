@@ -1,22 +1,15 @@
  <knowledge v-slot="card" :initial-value="knowledge" :cube-faces-count="6" :index="index"
      :active-index="knowledgeCube.activeIndex" :context="@js($context)" :cube="knowledgeCube">
-     <div v-show="card.deep == knowledgeCube.activeDeep" class="absolute w-96 h-96 dark:text-slate-700"
-         v-bind:style="card.coordonates">
-         <div class="flex flex-col w-96 h-96 p-6 border rounded-md transition-all duration-500 dark:border-slate-700"
+     <div v-show="card.deep == knowledgeCube.activeDeep"
+         class="absolute w-80 h-80 md:w-[500px] md:h-[500px] dark:text-slate-700" v-bind:style="card.coordonates">
+         <div class="flex flex-col w-80 h-80 md:w-[500px] md:h-[500px] p-6 border rounded-md transition-all duration-75 dark:border-slate-700"
              v-bind:class="card.style">
-             <h2 class="text-lg first-letter:uppercase mb-2 font-medium" v-text="knowledgeCube.cube.subject"></h2>
-             <hr class="border-slate-200 dark:border-slate-600 mb-4">
-             <div class="mb-auto text-xs flex flex-col grow">
-                 <div class="line-clamp-3 mb-3" v-html="card.knowledge.bridge"></div>
-                 <div v-show="!(card.context == 'test') || card.knowledgeRevealed"
-                     class="line-clamp-3 mb-4 border-t pt-2 dark:border-slate-600" v-html="card.knowledge.information">
+             <h2 class="text-xl first-letter:uppercase mb-6 font-medium underline-offset-2 underline"
+                 v-text="knowledgeCube.cube.subject"></h2>
+             <div class="mb-auto text-xs md:text-lg flex flex-col grow">
+                 <div class="line-clamp-3 lg:line-clamp-6 mb-6 text-base leading-loose"
+                     v-html="card.replaceTokensInText(knowledge.information, !((card.context != 'test') || card.knowledgeRevealed))">
                  </div>
-                 <hr v-if="((card.context == 'test') && card.knowledgeRevealed && card.knowledge.implications || !(card.context == 'test')) && card.knowledge.information.length > 0"
-                     class="border-slate-300 mb-3 dark:border-slate-600">
-                 <p v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.implications"
-                     class="line-clamp-2 grow justify-self-end font-mono">
-                     Implications availble. click the zoom button to see more
-                 </p>
                  <div v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.external_reference"
                      class="line-clamp-4 mb-3 justify-self-end">
                      <a v-bind:href="`${card.knowledge.external_reference}`" target="_blank" rel="noopener noreferrer"
@@ -32,12 +25,16 @@
                      v-bind:class="{'border-white': card.bridgeCrossedSuccessfully != undefined || card.bridgeCrossedSuccessfully == undefined && card.context == 'review'}"
                      v-text="`${card.index + 1}/${knowledgeCube.filledFacesCount}`"></button>
                  <Link modal v-bind:href="`/knowledge/${card.knowledge.id}?context=${card.context}`"
-                     v-if="card.knowledge.information.length > 0" class="text-sm">
+                     v-if="card.knowledge.information.length > 0" class="text-sm relative flex items-center">
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
                      <path stroke-linecap="round" stroke-linejoin="round"
                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
                  </svg>
+                 <span v-if="(!(card.context == 'test') || card.knowledgeRevealed) && card.knowledge.implications"
+                     class="absolute flex h-3 w-3 right-0 -top-1">
+                     <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                 </span>
                  </Link>
 
                  <template v-if="(card.context == 'test') && card.knowledge.information.length > 0"
@@ -47,7 +44,7 @@
                          <x-splade-form stay submit-on-change
                              v-bind:action="`/sessions/${session.content.id}/bridges/${card.knowledge.id}/missed`"
                              class="flex items-center">
-                             <button type="submit" class="transition-opacity duration-300 disabled:opacity-50"
+                             <button type="submit" class="transition-opacity duration-75 disabled:opacity-50"
                                  @click="card.setBridgeCrossedSuccessfully(false); session.resume(); form.submit = true;"
                                  :disabled="card.bridgeCrossedSuccessfully === false">
                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -63,7 +60,7 @@
                          <x-splade-form stay
                              v-bind:action="`/sessions/${session.content.id}/bridges/${card.knowledge.id}/missed`"
                              class="flex items-center">
-                             <button type="submit" class="transition-opacity duration-300 disabled:opacity-50"
+                             <button type="submit" class="transition-opacity duration-75 disabled:opacity-50"
                                  @click="card.reveal(); session.pause();"
                                  :disabled="card.bridgeCrossedSuccessfully === false">
                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -81,7 +78,7 @@
                          <x-splade-form stay submit-on-change
                              v-bind:action="`/sessions/${session.content.id}/bridges/${card.knowledge.id}/crossed`"
                              class="flex items-center">
-                             <button type="submit" class="transition-opacity duration-300"
+                             <button type="submit" class="transition-opacity duration-75"
                                  @click="card.setBridgeCrossedSuccessfully(true); session.resume(); form.submit = true;"
                                  :disabled="card.bridgeCrossedSuccessfully">
                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

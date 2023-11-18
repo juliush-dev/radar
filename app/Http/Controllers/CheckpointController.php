@@ -92,7 +92,6 @@ class CheckpointController extends Controller
 
                     $newContent->assisted = $content['assisted'] ?? false;
                     $newContent->information = $content['information'];
-                    $newContent->bridge = $content['bridge'];
                     $newContent->implications = $content['implications'];
                     $newContent->external_reference = $content['external_reference'];
 
@@ -154,7 +153,7 @@ class CheckpointController extends Controller
         }
         $newCheckpoint = $this->store($request, $checkpoint->topic, $checkpoint);
         Toast::title('Checkpoint sucessfuly updated!')->autoDismiss(5);
-        return redirect(route('checkpoints.preview', $newCheckpoint));
+        return redirect()->route('checkpoints.preview', $newCheckpoint);
     }
 
     /**
