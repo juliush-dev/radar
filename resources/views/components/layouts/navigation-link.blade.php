@@ -37,6 +37,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icon }}" />
                     </svg>
                 @endif
+                {{ $slot }}
                 {{ $label }}
             </x-nav-link>
         </div>

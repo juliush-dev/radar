@@ -22,4 +22,12 @@ class LearningMaterial extends Model
     {
         return $this->belongsTo(Topic::class);
     }
+
+    public function copyToTopics($topic)
+    {
+        $learningMaterialCopy = $this->replicate();
+        $learningMaterialCopy->topic_id = $topic->id;
+        $learningMaterialCopy->save();
+        return $learningMaterialCopy;
+    }
 }

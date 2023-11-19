@@ -5,14 +5,14 @@
          <h1 class="mb-2">{{ $checkpoint->title }}</h1>
      </x-nav-link>
      <div class="flex gap-2 dark:text-slate-300">
-         <span>{{ $checkpoint->knowledgeAnswerSets->count() }}Q</span>
+         <span>{{ $checkpoint->knowledgeCubes->count() }}C</span>
          @if (Auth::check())
              <span class="mx-1">/</span>
              <span>{{ $checkpoint->userSessions()->where('user_id', auth()->user()->id)->count() }}S</span>
          @endif
      </div>
 
-     <div class="flex gap-5 items-center justify-end">
+     <div class="flex gap-5 items-center justify-end mt-auto">
          @can('update-checkpoint', $checkpoint)
              <x-layouts.navigation-link require-login="true" class=" w-fit text-sm text-fuchsia-500 hover:text-fuchsia-600"
                  resource="checkpoints" action="edit" :action-args="$checkpoint" label="edit" />

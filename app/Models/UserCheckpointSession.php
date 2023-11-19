@@ -81,4 +81,62 @@ class UserCheckpointSession extends Model
         });
         return $modifiedCollection;
     }
+
+    public function potentialReplacement(): BelongsTo
+    {
+        return $this->belongsTo(UserCheckpointSession::class, 'potential_replacement');
+    }
+
+    public function potentialReplacementOf(): BelongsTo
+    {
+        return $this->belongsTo(UserCheckpointSession::class, 'potential_replacement_of');
+    }
+
+    public function copyToCheckpoint($checkpoint)
+    {
+        $sessionCopy = $this->replicate();
+        $sessionCopy->checkpoint_id = $checkpoint->id;
+        $sessionCopy->potential_replacement_of = $this->id;
+        $sessionCopy->is_update = true;
+        $sessionCopy->save();
+
+        $this->potential_replacement = $sessionCopy->id;
+        $this->save();
+        return $sessionCopy;
+    }
+
+    public function applyUpdate()
+    {
+        $oldSession = $this->potentialReplacementOf;
+        if ($oldSession->potentialReplacementOf) {
+            $this->potential_replacement_of = $oldSession->potentialReplacementOf->id;
+            $oldSession->potentialReplacementOf->potential_replacement = $this->id;
+            $oldSession->potentialReplacementOf->save();
+        } else {
+            $this->is_update = 0;
+        }
+        $this->copyNewUserResultsFromOldSession();
+        $this->userResults()->where('is_update', true)->get()->each(function (UserCheckpointSessionResult $result) {
+            $result->applyUpdate();
+        });
+        $oldSession->delete();
+        $this->save();
+    }
+
+    public function copyNewUserResultsFromOldSession()
+    {
+        // Retrieve results in the old session that do not have a potential replacement in the current session
+        $resultsWithoutReplacement = $this->potentialReplacementOf->userResults()
+            ->whereNotIn(
+                'id',
+                $this->userResults()->whereNotNull('potential_replacement_of')
+                    ->pluck('potential_replacement_of')
+                    ->all()
+            )->get();
+        $resultsWithoutReplacement->each(function ($oldResult) {
+            // Replicate and save the new knowledge in the current cube
+            $oldResult->copyToSession($this);
+        });
+        return $resultsWithoutReplacement->count();
+    }
 }

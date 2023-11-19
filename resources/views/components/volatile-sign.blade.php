@@ -4,7 +4,7 @@
         @if ($model->is_update)
             <span class="px-2 bg-amber-300 font-mono text-slate-700 text-sm">R</span>
         @elseif($model->potentialReplacement != null)
-            <span class="px-2 bg-lime-400 font-mono text-slate-50 text-sm">U</span>
+            <span class="px-2 bg-blue-400 font-mono text-slate-50 text-sm">U</span>
         @endif
         @if (!$model->is_public)
             <span class="px-2 bg-black font-mono text-slate-50 text-sm">P</span>

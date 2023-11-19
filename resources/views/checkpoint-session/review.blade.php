@@ -55,16 +55,18 @@
                          </Link>
                      @endcan
                      @can('delete-checkpoint-session', $session)
-                         <x-splade-link method="delete" href="{{ route('sessions.destroy', $session) }}"
-                             confirm="Deletion requested" confirm-text="This session will be permanently deleted?"
-                             confirm-button="Yes, delete it!" cancel-button="No, keep it!">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor"
-                                 class="w-6 h-6 text-red-400 hover:text-red-500
+                         @if ($session->potentialReplacement == null && !$session->checkpoint->topic->is_update)
+                             <x-splade-link method="delete" href="{{ route('sessions.destroy', $session) }}"
+                                 confirm="Deletion requested" confirm-text="This session will be permanently deleted?"
+                                 confirm-button="Yes, delete it!" cancel-button="No, keep it!">
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     class="w-6 h-6 text-red-400 hover:text-red-500
                             transition-all duration-300">
-                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                             </svg>
-                         </x-splade-link>
+                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                 </svg>
+                             </x-splade-link>
+                         @endif
                      @endcan
                  </div>
              </div>
@@ -72,7 +74,7 @@
                  class="text-md dark:text-slate-100 flex flex-wrap gap-6 justify-between rounded bg-white dark:bg-slate-700 shadow p-4">
                  <p>Duration: {{ $session->countdown - $session->end_countdown }}s</p>
                  <p>Touched {{ $corrects->count() + $wrongs->count() }} /
-                     {{ $session->checkpoint->knowledgeAnswerSets()->count() }}</p>
+                     {{ $session->checkpoint->knowledge()->count() }}</p>
                  <p>Untouched: {{ $untouched->count() }} </p>
                  <p>Wrong: {{ $wrongs->count() }}</p>
                  <p>Correct: {{ $corrects->count() }} </p>

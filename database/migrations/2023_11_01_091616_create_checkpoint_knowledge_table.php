@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('checkpoint_knowledge', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('knowledge_cube_id')->nullable()->constrained('knowledge_cubes')->nullOnDelete();
+            $table->foreignUuid('knowledge_cube_id')->constrained('knowledge_cubes')->cascadeOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
             $table->boolean('assisted')->default(false);
             $table->longText('information');
-            $table->longText('bridge');
             $table->longText('implications')->nullable();
             $table->string('external_reference')->nullable();
             $table->boolean('is_public')->default(false);

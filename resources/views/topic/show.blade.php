@@ -32,15 +32,6 @@
              <div class="flex md:justify-end grow gap-6 items-center mt-4">
                  @can('use-dashboard')
                      <div class="flex justify-end items-center gap-6">
-                         @if (!$topic->is_update)
-                             <x-splade-form submit-on-change :action="$topic->is_public
-                                 ? route('topics.unpublish', $topic)
-                                 : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                                 class="text-violet-400 hover:text-violet-500">
-                                 <x-splade-checkbox inline label="Public" name="is_public" value="1"
-                                     class="checked:bg-fuchsia-400" />
-                             </x-splade-form>
-                         @endif
                          <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"
                              class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -68,6 +59,62 @@
                      </svg>
                      </Link>
                  @endcan
+                 @auth
+                     <section class="relative w-fit flex gap-6 text-white text-xs items-center">
+                         @can('use-dashboard')
+                             @if (!$topic->is_update)
+                                 <x-splade-form submit-on-change :action="$topic->is_public
+                                     ? route('topics.unpublish', $topic)
+                                     : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
+                                     class="text-violet-400 hover:text-violet-500">
+                                     <x-splade-checkbox inline label="Public" name="is_public" value="1"
+                                         class="checked:bg-fuchsia-400" />
+                                 </x-splade-form>
+                             @endif
+                         @endcan
+                         @if ($topic->is_update && $topic->potentialReplacement == null)
+                             @can('use-dashboard')
+                                 <x-splade-link method="post" :href="route('topics.apply-update', $topic)"
+                                     class="text-teal-500 hover:text-teal-600 dark:text-teal-200">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-6 h-6 text-teal-500 hover:text-teal-600 shadow
+                                    hover:shadow-md transition-all duration-300">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
+                                     </svg>
+                                 </x-splade-link>
+                             @endcan
+                         @endif
+                         @can('update-topic', $topic)
+                             @if (!$topic->is_update || $topic->potentialReplacement == null)
+                                 <x-layouts.navigation-link class="text-blue-400" resource="topics" action="edit"
+                                     :action-args="$topic">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-5 h-5 text-violet-400 hover:text-violet-500 shadow
+                                    hover:shadow-md transition-all duration-300">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                     </svg>
+                                 </x-layouts.navigation-link>
+                             @endif
+                         @endcan
+                         @can('delete-topic', $topic)
+                             @if ($topic->potentialReplacement == null)
+                                 <x-layouts.navigation-link class="text-red-400" resource="topics" action="destroy"
+                                     :action-args="$topic">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-6 h-6 text-red-500 hover:text-red-600 shadow
+                                hover:shadow-md transition-all duration-300">
+                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                     </svg>
+                                 </x-layouts.navigation-link>
+                             @endif
+                         @endcan
+                     </section>
+                 @endauth
                  <x-volatile-sign :model="$topic" />
              </div>
          </div>
@@ -96,6 +143,27 @@
                  </section>
              @endif
          @endcan
+
+         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
+             {{ $topic->publicCheckpoints->count() }}
+             @if (($volatiles = $topic->volatileCheckpoints()->count()) > 0)
+                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
+                     % {{ $volatiles }}
+                 </span>
+             @endif
+             Checkpoints
+         </h2>
+         <div class="mb-10">
+             <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 pb-2 mb-2">
+                 @foreach ($topic->publicCheckpoints()->get() as $checkpoint)
+                     <x-checkpoint :$checkpoint />
+                 @endforeach
+             </div>
+             <x-layouts.navigation-link type="call-to-action" require-login="true"
+                 class="ml-1 w-fit text-md text-white bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md shadow-slate-400"
+                 resource="checkpoints" action="create" :action-args="$topic" label="New checkpoint"
+                 icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+         </div>
          <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
              {{ $topic->publicLearningMaterials->count() }}
              @if (($volatiles = $topic->volatileLearningMaterials()->count()) > 0)
@@ -151,26 +219,6 @@
                      resource="#login-required" label="Share" />
              @endauth
          </x-splade-form>
-         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
-             {{ $topic->publicCheckpoints->count() }}
-             @if (($volatiles = $topic->volatileCheckpoints()->count()) > 0)
-                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
-                     % {{ $volatiles }}
-                 </span>
-             @endif
-             Checkpoints
-         </h2>
-         <div class="mb-10">
-             <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 pb-2 mb-2">
-                 @foreach ($topic->publicCheckpoints()->get() as $checkpoint)
-                     <x-checkpoint :$checkpoint />
-                 @endforeach
-             </div>
-             <x-layouts.navigation-link type="call-to-action" require-login="true"
-                 class="ml-1 w-fit text-md text-white bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md shadow-slate-400"
-                 resource="checkpoints" action="create" :action-args="$topic" label="New checkpoint"
-                 icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-         </div>
          <h2 class="text-2xl mb-4">Skills you gain learning this topic</h2>
          <div class="mb-8 columns-1 space-y-6 w-full">
              @foreach ($topic->skills as $topicSkill)
@@ -185,47 +233,5 @@
                  <x-field :field="$skillField->field" />
              @endforeach
          </div>
-         @auth
-             <section class="relative w-full flex gap-4 text-white text-xs items-center">
-                 @can('use-dashboard')
-                     @if (!$topic->is_update)
-                         <x-splade-form submit-on-change :action="$topic->is_public
-                             ? route('topics.unpublish', $topic)
-                             : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                             class="text-violet-400 hover:text-violet-500">
-                             <x-splade-checkbox inline label="Public" name="is_public" value="1"
-                                 class="checked:bg-fuchsia-400" />
-                         </x-splade-form>
-                     @endif
-                 @endcan
-                 @if ($topic->is_update && $topic->potentialReplacement == null)
-                     @can('use-dashboard')
-                         <x-splade-link method="post" :href="route('topics.apply-update', $topic)"
-                             class="text-teal-500 hover:text-teal-600 dark:text-teal-200">
-                             Apply update
-                         </x-splade-link>
-                     @endcan
-                 @endif
-                 @can('update-topic', $topic)
-                     @if (!$topic->is_update || $topic->potentialReplacement == null)
-                         <x-layouts.navigation-link class="text-blue-400" label="edit" resource="topics" action="edit"
-                             :action-args="$topic" />
-                     @endif
-                 @endcan
-                 @can('delete-topic', $topic)
-                     <x-layouts.navigation-link class="text-red-400" label="delete" resource="topics" action="destroy"
-                         :action-args="$topic" />
-                 @endcan
-                 @if ($topic->is_update || $topic->potentialReplacement)
-                     <span
-                         class="ml-auto px-2 bg-pink-600 w-fit mb-2 font-mono text-sm dark:text-slate-200 my-auto grow-0">Volatile
-                         @if ($topic->is_update)
-                             <span
-                                 class="px-2 bg-amber-300 font-mono text-slate-700 text-sm shadow shadow-amber-400">Update</span>
-                         @endif
-                     </span>
-                 @endif
-             </section>
-         @endauth
      </main>
  </x-layouts.app>

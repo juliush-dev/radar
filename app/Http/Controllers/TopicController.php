@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checkpoint;
+use App\Models\KnowledgeCube;
 use App\Models\LearningMaterial;
 use App\Models\Subject;
 use App\Models\SubjectYear;
@@ -285,11 +287,10 @@ class TopicController extends Controller
                     $topicSkill->save();
                 }
             });
-            $topic->learningMaterials->each(function ($learningMaterial) use ($newTopic) {
-                $learningMaterialCopy = $learningMaterial->replicate();
-                $learningMaterialCopy->topic_id = $newTopic->id;
-                $learningMaterialCopy->save();
-            });
+            $newTopic->copyNewCheckpointsFromOldTopic();
+            $newTopic->copyNewKnowledgeCubesFromReplacements();
+            $newTopic->copyNewLearningMaterialsFromOldTopic();
+            $newTopic->copyResultsForReplacedSessions();
         });
         Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
         return redirect()->route('topics.show', $newTopic);
@@ -361,30 +362,41 @@ class TopicController extends Controller
         $this->authorize('use-dashboard');
         DB::transaction(
             function () use ($topic) {
-                $oldTopic = $topic->potentialReplacementOf;
-                if ($oldTopic->potentialReplacementOf) {
-                    $topic->potential_replacement_of = $oldTopic->potentialReplacementOf->id;
-                    $oldTopic->potentialReplacementOf->potential_replacement = $topic->id;
-                    $oldTopic->potentialReplacementOf->save();
-                } else {
-                    $topic->is_update = 0;
-                }
-                $oldTopic->learningMaterials->each(function ($learningMaterial) use ($topic) {
-                    if (LearningMaterial::where('alternative', $learningMaterial->alternative)->where('topic_id', $topic->id)->first() == null) {
-                        $learningMaterialCopy = $learningMaterial->replicate();
-                        $learningMaterialCopy->topic_id = $topic->id;
-                        $learningMaterialCopy->save();
-                        LearningMaterial::where('id', $learningMaterial->id)->where('topic_id', $learningMaterial->topic_id)->delete();
-                    }
-                });
-
-                $oldTopic->delete();
-                $topic->is_public = true;
-                $topic->save();
+                $topic->applyUpdate();
             }
         );
         Toast::title('Update applied')->autoDismiss(8);
         return redirect(Referer::get());
+    }
+
+    public static function copyNewKnowledgeCubes($fromCheckpoint, $replacementCheckpoint)
+    {
+        $fromCheckpoint->knowledgeCubes->each(function ($cube) use ($replacementCheckpoint) {
+            $cubeCopy = $cube->copyToCheckpoint($replacementCheckpoint);
+            self::copyNewKnowledge($cube, $cubeCopy);
+        });
+    }
+
+    public static function copyNewKnowledge($fromCube, $replacementCube)
+    {
+        $fromCube->knowledge->each(function ($knowledge) use ($replacementCube) {
+            $knowledge->copyToCube($replacementCube);
+        });
+    }
+
+    public static function copyNewSessions($fromCheckpoint, $replacementCheckpoint)
+    {
+        $fromCheckpoint->userSessions->each(function ($session) use ($replacementCheckpoint) {
+            $sessionCopy = $session->copyToCheckpoint($replacementCheckpoint);
+            self::copyNewSessionsResults($session, $sessionCopy);
+        });
+    }
+
+    public static function copyNewSessionsResults($fromSession, $replacementSession)
+    {
+        $fromSession->userResults->each(function ($result) use ($replacementSession) {
+            $result->copyToSession($replacementSession);
+        });
     }
 
     public function editSubject(Subject $subject)

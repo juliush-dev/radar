@@ -12,6 +12,7 @@ use Exception;
 use Facades\Spatie\Referer\Referer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use ProtoneMedia\Splade\Facades\Toast;
 
 class CheckpointController extends Controller
@@ -184,7 +185,10 @@ class CheckpointController extends Controller
 
     public function preview(Checkpoint $checkpoint)
     {
-        $this->authorize('preview-checkpoint', [$checkpoint]);
+        if (!Gate::allows('preview-checkpoint', $checkpoint)) {
+            Toast::warning('Access Denied')->autoDismiss(5);
+            return redirect(Referer::get());
+        }
         return view('checkpoint-session.preview', [
             'checkpoint' => $checkpoint,
             'rq' => $this->rq
@@ -227,35 +231,7 @@ class CheckpointController extends Controller
         $this->authorize('use-dashboard');
         DB::transaction(
             function () use ($checkpoint) {
-                $oldCheckpoint = $checkpoint->potentialReplacementOf;
-                if ($oldCheckpoint->potentialReplacementOf) {
-                    $checkpoint->potential_replacement_of = $oldCheckpoint->potentialReplacementOf->id;
-                    $oldCheckpoint->potentialReplacementOf->potential_replacement = $checkpoint->id;
-                    $oldCheckpoint->potentialReplacementOf->save();
-                } else {
-                    $checkpoint->is_update = 0;
-                }
-
-                $oldCheckpoint->userSessions->each(function ($session) use ($checkpoint) {
-                    $session->checkpoint_id = $checkpoint->id;
-                    $session->save();
-                    $session->userResults->each(function ($result) use ($checkpoint) {
-                        $QA = $checkpoint->knowledgeAnswerSets()->where('potential_replacement_of', $result->knowledge_id)->first();
-                        if ($QA != null) {
-                            $result->knowledge_id = $QA->id;
-                            $result->save();
-                        } else {
-                            $result->delete();
-                        }
-                    });
-                    if ($session->userResults->count() == 0) {
-                        $session->delete();
-                    }
-                });
-
-                $oldCheckpoint->delete();
-                $checkpoint->is_public = true;
-                $checkpoint->save();
+                $checkpoint->applyUpdate();
             }
         );
         Toast::title('Update applied')->autoDismiss(8);

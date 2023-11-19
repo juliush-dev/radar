@@ -1,4 +1,4 @@
-<x-layouts.app :active-page="'Checkpoint Preview / ' . $checkpoint->title"
+<x-layouts.app :active-page="'Preview / ' . $checkpoint->title"
     icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5">
     <div class="h-full overflow-y-auto dark:text-white text-slate-600" @preserveScroll('checkpoint')>
         <main class="p-6 lg:px-80">
@@ -61,25 +61,6 @@
                                 d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
                         </svg>
                     </x-splade-link>
-                    @if (!$checkpoint->is_update)
-                        <x-splade-form submit-on-change :action="$checkpoint->is_public
-                            ? route('checkpoints.unpublish', $checkpoint)
-                            : route('checkpoints.publish', $checkpoint)" method="post" :default="['is_public' => $checkpoint->is_public]"
-                            class="text-violet-400 hover:text-violet-500">
-                            <x-splade-checkbox inline label="Public" name="is_public" value="1"
-                                class="checked:bg-fuchsia-400" />
-                        </x-splade-form>
-                    @endif
-                @endcan
-                @can('update-checkpoint', $checkpoint)
-                    <x-splade-link href="{{ route('checkpoints.edit', $checkpoint) }}" class="text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor"
-                            class="w-6 h-6 text-violet-400 hover:text-violet-500 transition-all duration-300">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                        </svg>
-                    </x-splade-link>
                 @endcan
                 @can('create-checkpoint')
                     <Link href="{{ Auth::check() ? route('checkpoints.create', $checkpoint->topic) : '#login-required' }}"
@@ -90,17 +71,44 @@
                     </svg>
                     </Link>
                 @endcan
-                @can('delete-checkpoint', $checkpoint)
-                    <x-splade-link method="delete" href="{{ route('checkpoints.destroy', $checkpoint) }}"
-                        confirm="Deletion requested" confirm-text="This checkpoint will be permanently deleted?"
-                        confirm-button="Yes, delete it!" cancel-button="No, keep it!" class="text-sm">
+                @can('use-dashboard')
+                    @if (!$checkpoint->is_update)
+                        <x-splade-form submit-on-change :action="$checkpoint->is_public
+                            ? route('checkpoints.unpublish', $checkpoint)
+                            : route('checkpoints.publish', $checkpoint)" method="post" :default="['is_public' => $checkpoint->is_public]"
+                            class="text-violet-400 hover:text-violet-500">
+                            <x-splade-checkbox inline label="Public" name="is_public" value="1"
+                                class="checked:bg-fuchsia-400" />
+                        </x-splade-form>
+                    @endif
+                @endcan
+                {{-- @if (!$checkpoint->is_update) --}}
+                {{-- @if (!$checkpoint->topic->is_update) --}}
+                @can('update-checkpoint', $checkpoint)
+                    <x-splade-link href="{{ route('checkpoints.edit', $checkpoint) }}" class="text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6 text-red-400 hover:text-red-500
-                            transition-all duration-300">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            class="w-6 h-6 text-violet-400 hover:text-violet-500 transition-all duration-300">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                         </svg>
                     </x-splade-link>
+                @endcan
+                {{-- @endif --}}
+                {{-- @endif --}}
+                @can('delete-checkpoint', $checkpoint)
+                    @if ($checkpoint->potentialReplacement == null && !$checkpoint->topic->is_update)
+                        <x-splade-link method="delete" href="{{ route('checkpoints.destroy', $checkpoint) }}"
+                            confirm="Deletion requested" confirm-text="This checkpoint will be permanently deleted?"
+                            confirm-button="Yes, delete it!" cancel-button="No, keep it!" class="text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor"
+                                class="w-6 h-6 text-red-400 hover:text-red-500
+                            transition-all duration-300">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </x-splade-link>
+                    @endif
                 @endcan
                 <x-volatile-sign :model="$checkpoint" />
             </div>
@@ -145,7 +153,7 @@
                                 <div class="text-sm flex flex-col gap-2 justify-between">
                                     <p>Duration: {{ $session->countdown - $session->end_countdown }}s</p>
                                     <p>Touched {{ $session->userResults()->count() }} /
-                                        {{ $total = $session->checkpoint->knowledgeAnswerSets->count() }}</p>
+                                        {{ $total = $session->checkpoint->knowledge->count() }}</p>
                                     <p>Untouched: {{ $session->untouchedKnowledge(true) }} </p>
                                     <p>Wrong: {{ $session->wrongResults(true) }}</p>
                                     <p>Correct: {{ $correct = $session->correctResults(true) }} </p>

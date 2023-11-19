@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('user_checkpoint_sessions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->nullOnDelete();
             $table->foreignUuid('checkpoint_id')->constrained()->cascadeOnDelete();
             $table->boolean('started')->default(true);
             $table->integer('countdown')->default(60);
             $table->integer('end_countdown')->default(60);
             $table->boolean('ended')->default(false);
+            $table->boolean('is_update')->default(false);
             $table->timestamps();
         });
     }

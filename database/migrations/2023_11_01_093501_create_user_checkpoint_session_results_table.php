@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('knowledge_id')->constrained('checkpoint_knowledge')->cascadeOnDelete();
             $table->boolean('bridge_crossed')->default(false);
             $table->integer('progression');
+            $table->boolean('is_update')->default(false);
             $table->timestamps();
         });
     }
