@@ -40,15 +40,14 @@ class CheckpointController extends Controller
         $newCheckpoint = null;
         DB::transaction(function () use ($request, &$newCheckpoint, $topic, $checkpoint) {
             $title = trim($request->input('title', ''));
-            $summary = trim($request->input('summary', ''));
-            $knowledgeCubes = $request->input('knowledgeCubes', []);
+            $source = trim($request->input('source', ''));
 
             if (!empty($title)) {
                 $newCheckpoint = new Checkpoint;
                 $newCheckpoint->title = $title;
                 $newCheckpoint->user_id = $request->user()->id;
                 $newCheckpoint->topic_id =  $topic->id;
-                $newCheckpoint->summary =  $summary;
+                $newCheckpoint->source =  $source;
                 $newCheckpoint->save();
 
                 if ($checkpoint->exists) {
@@ -62,53 +61,6 @@ class CheckpointController extends Controller
             } else {
                 throw new Exception("Error Processing Request", 1);
             }
-            collect($knowledgeCubes)->each(function ($cube) use ($request, $newCheckpoint) {
-                $subject = trim($cube['subject'] ?? '');
-                if (empty($subject)) {
-                    throw new Exception("Error Processing Request", 1);
-                }
-                $knowledge = $cube['knowledge'];
-
-                $newCube = new KnowledgeCube;
-                $newCube->checkpoint_id = $newCheckpoint->id;
-                $newCube->subject = $subject;
-                $newCube->save();
-
-                if ($newCheckpoint->is_update && !empty($cube['id'])) {
-                    $foundCube =  $newCheckpoint->potentialReplacementOf->knowledgeCubes()->find($cube['id']);
-                    $newCube->is_update = true;
-                    $newCube->potential_replacement_of = $foundCube->id;
-                    $newCube->save();
-
-                    $foundCube->potential_replacement = $newCube->id;
-                    $foundCube->save();
-                }
-
-                collect($knowledge)->each(function ($content) use ($request, $newCube) {
-                    $newContent = new CheckpointKnowledge;
-
-                    $newContent->checkpoint_id = $newCube->checkpoint_id;
-                    $newContent->user_id = $request->user()->id;
-                    $newContent->knowledge_cube_id = $newCube->id;
-
-                    $newContent->assisted = $content['assisted'] ?? false;
-                    $newContent->information = $content['information'];
-                    $newContent->implications = $content['implications'];
-                    $newContent->external_reference = $content['external_reference'];
-
-                    $newContent->save();
-
-                    if ($newCube->is_update && !empty($content['id'])) {
-                        $foundContent =  $newCube->potentialReplacementOf->knowledge()->find($content['id']);
-                        $newContent->is_update = true;
-                        $newContent->potential_replacement_of = $foundContent->id;
-                        $newContent->save();
-
-                        $foundContent->potential_replacement = $newContent->id;
-                        $foundContent->save();
-                    }
-                });
-            });
         });
         if (!$checkpoint->exists) {
             Toast::title('Checkpoint sucessfuly created!')->autoDismiss(5);
@@ -126,19 +78,8 @@ class CheckpointController extends Controller
             'rq' => $this->rq,
             'checkpoint' => $checkpoint,
             'title' => $checkpoint->title,
-            'summary' => $checkpoint->summary,
-            'knowledgeCubes' => $checkpoint->knowledgeCubes->reduce(
-                function ($acc, $cube) {
-                    $cube = [
-                        'id' => $cube->id,
-                        'subject' => $cube->subject,
-                        'knowledge' =>  $cube->knowledge
-                    ];
-                    array_push($acc, $cube);
-                    return $acc;
-                },
-                []
-            ),
+            'source' => $checkpoint->source,
+            'topic' => $checkpoint->topic,
         ]);
     }
 

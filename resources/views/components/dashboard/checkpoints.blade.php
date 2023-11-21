@@ -5,10 +5,8 @@
              {{ $checkpoint->title }}
          </x-splade-link>
      @endcell
-     @cell('knowledge', $checkpoint)
-         <span class="text-md">
-             {{ $checkpoint->knowledgeCubes->count() }}
-         </span>
+     @cell('source', $checkpoint)
+         <a href="{{ $checkpoint->source }}" target="_blank" rel="noopener noreferrer">Source</a>
      @endcell
      @cell('public', $checkpoint)
          @if (!$checkpoint->is_update)

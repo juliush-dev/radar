@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\CheckpointKnowledge;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,16 +36,6 @@ class Checkpoint extends Model
     {
         return $this->belongsTo(Checkpoint::class, 'potential_replacement_of');
     }
-
-    public function knowledgeCubes(): HasMany
-    {
-        return $this->hasMany(KnowledgeCube::class);
-    }
-    public function knowledge(): HasMany
-    {
-        return $this->hasMany(CheckpointKnowledge::class);
-    }
-
     public function copyToTopic($topic)
     {
 
@@ -71,44 +60,13 @@ class Checkpoint extends Model
         } else {
             $this->is_update = 0;
         }
-        $this->copyNewCubesFromOldCheckpoint();
         $this->copyNewSessionsFromOldCheckpoint();
         $this->userSessions()->where('is_update', true)->get()->each(function (UserCheckpointSession $session) {
             $session->applyUpdate();
         });
-        $this->knowledgeCubes()->where('is_update', true)->get()->each(function (KnowledgeCube $cube) {
-            $cube->applyUpdate();
-        });
         $oldCheckpoint->delete();
         $this->is_public = true;
         $this->save();
-    }
-
-    public function copyNewCubesFromOldCheckpoint()
-    {
-        // Retrieve cubes in the old checkpoint that do not have a potential replacement in the current checkpoint
-        $cubesWithoutReplacement = $this->potentialReplacementOf->knowledgeCubes()
-            ->whereNotIn(
-                'id',
-                $this->knowledgeCubes()->whereNotNull('potential_replacement_of')
-                    ->pluck('potential_replacement_of')
-                    ->all()
-            )->get();
-
-        $cubesWithoutReplacement->each(function ($oldCube) {
-            // Replicate and save the new cube in the current checkpoint
-            $cubeCopy = $oldCube->copyToCheckpoint($this);
-            // Copy knowledge cubes and user sessions related to the new cube
-            $oldCube->knowledge->each(function ($knowledge) use ($cubeCopy) {
-                $knowledge->copyToCube($cubeCopy);
-            });
-            $this->potentialReplacementOf->userSessions->each(function ($session) {
-                $sessionCopy = $session->copyToCheckpoint($this);
-                $session->userResults->each(function ($result) use ($sessionCopy) {
-                    $result->copyToSession($sessionCopy);
-                });
-            });
-        });
     }
 
     public function copyNewSessionsFromOldCheckpoint()
@@ -122,9 +80,7 @@ class Checkpoint extends Model
                     ->all()
             )->get();
         $sessionsWithoutReplacement->each(function ($oldSession) {
-            // Replicate and save the new session in the current checkpoint
-            $sessionCopy = $oldSession->copyToCheckpoint($this);
-            $sessionCopy->copyNewUserResultsFromOldSession();
+            $oldSession->copyToCheckpoint($this);
         });
     }
     public function myCheckpoints(): HasMany

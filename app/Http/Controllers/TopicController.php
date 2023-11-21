@@ -288,9 +288,7 @@ class TopicController extends Controller
                 }
             });
             $newTopic->copyNewCheckpointsFromOldTopic();
-            $newTopic->copyNewKnowledgeCubesFromReplacements();
             $newTopic->copyNewLearningMaterialsFromOldTopic();
-            $newTopic->copyResultsForReplacedSessions();
         });
         Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
         return redirect()->route('topics.show', $newTopic);
@@ -369,33 +367,10 @@ class TopicController extends Controller
         return redirect(Referer::get());
     }
 
-    public static function copyNewKnowledgeCubes($fromCheckpoint, $replacementCheckpoint)
-    {
-        $fromCheckpoint->knowledgeCubes->each(function ($cube) use ($replacementCheckpoint) {
-            $cubeCopy = $cube->copyToCheckpoint($replacementCheckpoint);
-            self::copyNewKnowledge($cube, $cubeCopy);
-        });
-    }
-
-    public static function copyNewKnowledge($fromCube, $replacementCube)
-    {
-        $fromCube->knowledge->each(function ($knowledge) use ($replacementCube) {
-            $knowledge->copyToCube($replacementCube);
-        });
-    }
-
     public static function copyNewSessions($fromCheckpoint, $replacementCheckpoint)
     {
         $fromCheckpoint->userSessions->each(function ($session) use ($replacementCheckpoint) {
-            $sessionCopy = $session->copyToCheckpoint($replacementCheckpoint);
-            self::copyNewSessionsResults($session, $sessionCopy);
-        });
-    }
-
-    public static function copyNewSessionsResults($fromSession, $replacementSession)
-    {
-        $fromSession->userResults->each(function ($result) use ($replacementSession) {
-            $result->copyToSession($replacementSession);
+            $session->copyToCheckpoint($replacementCheckpoint);
         });
     }
 

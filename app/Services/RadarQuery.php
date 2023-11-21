@@ -312,7 +312,7 @@ class RadarQuery
             });
             $query->orWhere(function ($query) use ($userId) {
                 $query->where('user_id', $userId);
-                $query->where('potential_replacement', null);
+                // $query->where('potential_replacement', null);
                 $query->where(function ($query) {
                     $query->where('is_update', true)
                         ->orWhere('is_update', false);

@@ -108,9 +108,7 @@ class Topic extends Model
             $this->is_update = 0;
         }
         $this->copyNewCheckpointsFromOldTopic();
-        $this->copyNewKnowledgeCubesFromReplacements();
         $this->copyNewLearningMaterialsFromOldTopic();
-        $this->copyResultsForReplacedSessions();
         $this->checkpoints()->where('is_update', true)->get()->each(function (Checkpoint $checkpoint) {
             $checkpoint->applyUpdate();
         });
@@ -119,30 +117,6 @@ class Topic extends Model
         $this->save();
     }
 
-    public function copyNewKnowledgeCubesFromReplacements()
-    {
-        // Retrieve all checkpoints in the current topic
-        $this->checkpoints->each(function ($checkpoint) {
-            // Check if the checkpoint has a potential replacement in the current topic
-            $replacementCheckpoint = $this->checkpoints()
-                ->where('potential_replacement_of', $checkpoint->id)
-                ->first();
-            if ($replacementCheckpoint) {
-                // Check for new knowledge cubes in the replacement checkpoint
-                $replacementCheckpoint->knowledgeCubes()->where('potential_replacement_of', null)->get()
-                    ->each(function ($knowledgeCube) use ($checkpoint) {
-                        // Replicate and save the new knowledge cube in the current checkpoint
-                        $knowledgeCubeCopy = $knowledgeCube->cobyToCheckpoint($checkpoint);
-                        // Copy knowledge related to the new knowledge cube
-                        $knowledgeCube->knowledge->each(function ($knowledge) use ($knowledgeCubeCopy) {
-                            $knowledge->copyToCube($knowledgeCubeCopy);
-                        });
-                    });
-            }
-        });
-    }
-    // Add this method to your Topic model
-    // Assuming you have a checkpoints relationship defined in the Topic model
     public function copyNewCheckpointsFromOldTopic()
     {
         // Retrieve checkpoints in the old topic that do not have a potential replacement in the current topic
@@ -155,7 +129,6 @@ class Topic extends Model
             )->get();
         $checkpointsWithoutReplacement->each(function ($oldCheckpoint) {
             $checkpointCopy = $oldCheckpoint->copyToTopic($this);
-            $checkpointCopy->copyNewCubesFromOldCheckpoint();
             $checkpointCopy->copyNewSessionsFromOldCheckpoint();
         });
     }

@@ -106,7 +106,7 @@
                 </div>
                 <div class="h-full grow overflow-hidden pb-20" @preserveScroll('checkpoint')>
                     <div
-                        class="flex items-center whitespace-nowrap gap-6 justify-between px-8 py-4 sticky top-0 shadow shadow-fuchsia-400 bg-white dark:bg-slate-800">
+                        class="flex items-center whitespace-nowrap gap-6 justify-between px-10 py-4 sticky top-0 shadow shadow-fuchsia-400 bg-white dark:bg-slate-800">
                         <button @click="data.explorer = !data.explorer">
                             <svg v-show="!data.explorer" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -153,7 +153,7 @@
                                 @forelse ($checkpoints as $checkpoint)
                                     <x-checkpoint :$checkpoint />
                                 @empty
-                                    <p class="text-xl text-slate-400">No checkpoints to learn</p>
+                                    <p class="text-xl text-slate-400">No checkpoints to exercise</p>
                                 @endforelse
                             </div>
                         @else
@@ -193,8 +193,10 @@
                                     @if ($mySubject = $myOffice->subjects()->where('subject_id', $subject->id)->first())
                                         <x-splade-form :action="route('my-office.subjects.remove', ['subject' => $mySubject])" method="post">
                                             <button
-                                                class="shadow sticky top-0 transition-all duration-300 bg-red-400 hover:bg-red-500 text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-700">
-                                                {{ $subject->title }}
+                                                class="shadow transition-all duration-300 bg-green-400 hover:bg-green-500 text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-400/50">
+                                                {{ $subject->title }} <br><span
+                                                    class="font-medium mt-2 text-xs w-fit px-2 inline-flex items-center justify-center rounded-md border-2 border-slate-100">
+                                                    {{ $subject->topics()->count() }} T</span>
                                             </button>
                                         </x-splade-form>
                                     @else
@@ -203,8 +205,10 @@
                                             'subject' => $subject,
                                         ])" method="post">
                                             <button
-                                                class="transition-all duration-300 bg-green-400 hover:bg-green-500 text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-700">
-                                                {{ $subject->title }}
+                                                class="transition-all duration-300 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 dark:text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-500">
+                                                {{ $subject->title }} <br><span
+                                                    class="font-medium mt-2 text-xs w-fit px-2 inline-flex items-center justify-center rounded-md border-2 border-slate-100">
+                                                    {{ $subject->topics()->count() }} T</span>
                                             </button>
                                         </x-splade-form>
                                     @endif
@@ -215,8 +219,10 @@
                                     @if ($myTopic = $myActiveSubject->topics()->where('topic_id', $topic->id)->first())
                                         <x-splade-form :action="route('my-office.topics.remove', ['topic' => $myTopic])" method="post">
                                             <button
-                                                class="transition-all duration-300 bg-red-400 hover:bg-red-500 text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-700">
-                                                {{ $topic->title }}
+                                                class="transition-all duration-300 bg-green-400 hover:bg-green-500 text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-400/50">
+                                                {{ $topic->title }} <br><span
+                                                    class="font-medium mt-2 text-xs w-fit px-2 inline-flex items-center justify-center rounded-md border-2 border-slate-100">
+                                                    {{ $topic->checkpoints()->count() }} C</span>
                                             </button>
                                         </x-splade-form>
                                     @else
@@ -225,8 +231,10 @@
                                             'topic' => $topic,
                                         ])" method="post">
                                             <button
-                                                class="transition-all duration-300 bg-green-400 hover:bg-green-500 text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-700">
-                                                {{ $topic->title }}
+                                                class="transition-all duration-300 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 dark:text-white px-8 py-4 w-full text-left border-b border-slate-300 dark:border-slate-500">
+                                                {{ $topic->title }} <br><span
+                                                    class="font-medium mt-2 text-xs w-fit px-2 inline-flex items-center justify-center rounded-md border-2 border-slate-400">
+                                                    {{ $topic->checkpoints()->count() }} C</span>
                                             </button>
                                         </x-splade-form>
                                     @endif

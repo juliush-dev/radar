@@ -51,7 +51,7 @@
                     @endauth
                 </div>
             </div>
-            <hr class="mb-8">
+            <hr class="mb-8 border-slate-200 dark:border-slate-700">
             <h2 class="text-2xl mb-4">
                 In-depth
             </h2>

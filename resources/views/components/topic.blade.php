@@ -1,5 +1,5 @@
  <div
-     class="group border border-violet-300 text-white shadow shadow-violet-400/80 dark:shadow-violet-400/50 hover:shadow-md hover:shadow-violet-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
+     class="group rounded-md border-2 border-violet-300 text-white shadow shadow-violet-400/80 dark:shadow-violet-400/50 hover:shadow-md hover:shadow-violet-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
      <x-nav-link href="{{ route('topics.show', $topic) }}"
          class="text-lg first-letter:uppercase w-full text-violet-500 group-hover:text-violet-700 dark:text-violet-300 dark:group-hover:text-violet-400 hover:text-violet-500 transition-colors duration-300">
          <h1 class="mb-2">{{ $topic->title }}</h1>

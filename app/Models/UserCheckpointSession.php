@@ -115,28 +115,7 @@ class UserCheckpointSession extends Model
         } else {
             $this->is_update = 0;
         }
-        $this->copyNewUserResultsFromOldSession();
-        $this->userResults()->where('is_update', true)->get()->each(function (UserCheckpointSessionResult $result) {
-            $result->applyUpdate();
-        });
         $oldSession->delete();
         $this->save();
-    }
-
-    public function copyNewUserResultsFromOldSession()
-    {
-        // Retrieve results in the old session that do not have a potential replacement in the current session
-        $resultsWithoutReplacement = $this->potentialReplacementOf->userResults()
-            ->whereNotIn(
-                'id',
-                $this->userResults()->whereNotNull('potential_replacement_of')
-                    ->pluck('potential_replacement_of')
-                    ->all()
-            )->get();
-        $resultsWithoutReplacement->each(function ($oldResult) {
-            // Replicate and save the new knowledge in the current cube
-            $oldResult->copyToSession($this);
-        });
-        return $resultsWithoutReplacement->count();
     }
 }

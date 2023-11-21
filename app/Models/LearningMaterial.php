@@ -23,7 +23,7 @@ class LearningMaterial extends Model
         return $this->belongsTo(Topic::class);
     }
 
-    public function copyToTopics($topic)
+    public function copyToTopic($topic)
     {
         $learningMaterialCopy = $this->replicate();
         $learningMaterialCopy->topic_id = $topic->id;

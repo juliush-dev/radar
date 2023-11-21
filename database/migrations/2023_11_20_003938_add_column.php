@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('my_topics', function (Blueprint $table) {
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
+        Schema::table('checkpoints', function (Blueprint $table) {
+            $table->text('source')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('my_topics', function (Blueprint $table) {
-            //
+        Schema::table('checkpoints', function (Blueprint $table) {
+            $table->dropColumn('source');
         });
     }
 };

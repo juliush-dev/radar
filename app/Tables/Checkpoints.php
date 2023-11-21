@@ -53,7 +53,7 @@ class Checkpoints extends AbstractTable
             ->selectFilter('is_public', [true => 'Public', false => 'Not public'], 'visibility')
             ->selectFilter('is_update', [true => 'Update', false => 'Checkpoint'], 'type')
             ->column('title', canBeHidden: false)
-            ->column('knowledge', 'Cubes')
+            ->column('source', 'Source')
             ->column('topic.title', 'Topic')
             ->column('author.name', 'author')
             ->column('public')

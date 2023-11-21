@@ -1,5 +1,5 @@
 <div
-    class="group border border-sky-300 text-white shadow shadow-sky-400/80 dark:shadow-sky-400/50 hover:shadow-md hover:shadow-sky-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
+    class="group rounded-md border-2 border-sky-300 text-white shadow shadow-sky-400/80 dark:shadow-sky-400/50 hover:shadow-md hover:shadow-sky-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
     <x-assessment :href="route('skills.assess', $skill)" :assessment="$userAssessment" />
     <Link href="{{ route('skills.show', $skill) }}"
         class="text-md first-letter:uppercase w-full text-sky-500 group-hover:text-sky-700 dark:text-sky-300 dark:group-hover:text-sky-400 transition-colors duration-300">

@@ -118,7 +118,7 @@
                  <x-volatile-sign :model="$topic" />
              </div>
          </div>
-         <hr class="mb-8">
+         <hr class="mb-8 border-slate-200 dark:border-slate-700">
          @can('see-topic-update-path', $topic)
              @if ($topic->is_update)
                  <section class="mb-8 border border-pink-800 p-4">
@@ -145,26 +145,6 @@
          @endcan
 
          <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
-             {{ $topic->publicCheckpoints->count() }}
-             @if (($volatiles = $topic->volatileCheckpoints()->count()) > 0)
-                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
-                     % {{ $volatiles }}
-                 </span>
-             @endif
-             Checkpoints
-         </h2>
-         <div class="mb-10">
-             <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 pb-2 mb-2">
-                 @foreach ($topic->publicCheckpoints()->get() as $checkpoint)
-                     <x-checkpoint :$checkpoint />
-                 @endforeach
-             </div>
-             <x-layouts.navigation-link type="call-to-action" require-login="true"
-                 class="ml-1 w-fit text-md text-white bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md shadow-slate-400"
-                 resource="checkpoints" action="create" :action-args="$topic" label="New checkpoint"
-                 icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-         </div>
-         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
              {{ $topic->publicLearningMaterials->count() }}
              @if (($volatiles = $topic->volatileLearningMaterials()->count()) > 0)
                  <span class="px-2 bg-pink-500 text-white text-xs my-auto">
@@ -177,7 +157,7 @@
              @foreach ($topic->publicLearningMaterials()->get() as $lm)
                  @if (Illuminate\Support\Facades\Storage::disk('public')->exists($lm->alternative))
                      <x-splade-form method="get" :action="route('topics.learning-materials.download', $lm->id)" blob
-                         class="break-inside-avoid group flex flex-col justify-center items-center relative w-full border border-slate-300">
+                         class="break-inside-avoid rounded-md group flex flex-col justify-center items-center relative w-full border-2 border-slate-300">
                          @if (!$lm->is_public)
                              <span
                                  class="self-start px-2 bg-pink-600 w-fit font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
@@ -219,6 +199,28 @@
                      resource="#login-required" label="Share" />
              @endauth
          </x-splade-form>
+
+         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
+             {{ $topic->publicCheckpoints->count() }}
+             @if (($volatiles = $topic->volatileCheckpoints()->count()) > 0)
+                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
+                     % {{ $volatiles }}
+                 </span>
+             @endif
+             Checkpoints
+         </h2>
+         <div class="mb-10">
+             <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 pb-2 mb-2">
+                 @foreach ($topic->publicCheckpoints()->get() as $checkpoint)
+                     <x-checkpoint :$checkpoint />
+                 @endforeach
+             </div>
+             <x-layouts.navigation-link type="call-to-action" require-login="true"
+                 class="ml-1 w-fit text-md text-white bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md shadow-slate-400"
+                 resource="checkpoints" action="create" :action-args="$topic" label="New checkpoint"
+                 icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+         </div>
+
          <h2 class="text-2xl mb-4">Skills you gain learning this topic</h2>
          <div class="mb-8 columns-1 space-y-6 w-full">
              @foreach ($topic->skills as $topicSkill)

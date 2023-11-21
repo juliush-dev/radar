@@ -1,8 +1,7 @@
  <checkpoint v-slot="checkpoint" :form="form">
      <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-10">
          <div class="px-6 py-4 cursor-pointer w-fit bg-pink-500 text-white">
-             Questons cubes
-             <span v-text="checkpoint.form.knowledgeCubes.length"></span>
+             Checkpoint
          </div>
          <div class="flex justify-start md:ml-auto w-full md:w-fit">
              <x-splade-submit
@@ -14,34 +13,27 @@
              </Link>
          </div>
      </div>
+     <div
+         class="p-6 border rounded-md shadow bg-white mb-6 dark:bg-slate-800 text-slate-500 dark:text-slate-400 dark:border-slate-400">
+         <div class="flex items-center gap-4 flex-nowrap mb-6 whitespace-nowrap">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+                 <path stroke-linecap="round" stroke-linejoin="round"
+                     d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+             </svg>
+             <h2 class="text-2xl font-medium first-letter:uppercase">{{ $topic->title }}</h2>
+         </div>
+         <p>
+             A Checkpoint is a source of exercises about a particular concept in a topic
+         </p>
+     </div>
      <div class="bg-white border border-slate-200 dark:border-white">
          <div class="p-4">
-             <div class="flex items-center gap-4 flex-nowrap mb-6 whitespace-nowrap">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-6 h-6">
-                     <path stroke-linecap="round" stroke-linejoin="round"
-                         d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-                 </svg>
-                 <h2 v-text="checkpoint.form.title" class="text-2xl font-medium first-letter:uppercase"></h2>
-             </div>
-             <x-splade-input name="title" label="Subject" class="mb-6 first-letter:uppercase"
+             <x-splade-input name="title" label="Title" class="mb-6 first-letter:uppercase"
                  placeholder="Netzwerkkomponenten" />
-             <x-splade-textarea rows="6" name="summary" label="Brief summary"
-                 placeholder="Netzwerkkomponenten sind das Herz vom Netzwerke. Gibt sie nicht, gibt auch dann kein Netzwerk."
+             <x-splade-input name="source" label="Source"
+                 placeholder="https://moodle-hnbk.de/.../SD_U_LF05_WOR_TheorieSkript_%C3%9Cbungen_2023-06-20.pdf"
                  class="mb-6" />
-             <x-splade-button type="call-to-action" @click.prevent="checkpoint.summarize"
-                 class="ml-auto w-fit bg-amber-500 hover:bg-amber-600 text-white">
-                 Summarize
-             </x-splade-button>
-         </div>
-         <div v-for="(knowledgeCube, index) in checkpoint.form.knowledgeCubes">
-             <x-forms.knowledge-cube />
-         </div>
-         <div v-if="form.title.length > 3" class="flex flex-col gap-4 p-4">
-             <x-splade-button type="call-to-action" @click.prevent="checkpoint.addKnowledgeCube"
-                 class="w-fit bg-amber-500 hover:bg-amber-600 text-white">
-                 Add knowledge cube
-             </x-splade-button>
          </div>
      </div>
  </checkpoint>

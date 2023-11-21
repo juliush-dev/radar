@@ -79,7 +79,7 @@
                  <p>Wrong: {{ $wrongs->count() }}</p>
                  <p>Correct: {{ $corrects->count() }} </p>
              </div>
-             <hr class="mb-8">
+             <hr class="mb-8 border-slate-200 dark:border-slate-700">
          </main>
          <x-layouts.knowledge-cubes>
              @foreach ($reviewGroupedByCubes as $knowledgeCubeId => $reviewKnowledge)

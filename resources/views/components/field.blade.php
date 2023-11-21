@@ -1,5 +1,5 @@
 <div
-    class="overflow-hidden relative group border border-pink-300 text-white shadow shadow-pink-400/80 dark:shadow-pink-400/50 hover:shadow-md hover:shadow-pink-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
+    class="overflow-hidden relative group rounded-md border-2 border-pink-300 text-white shadow shadow-pink-400/80 dark:shadow-pink-400/50 hover:shadow-md hover:shadow-pink-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
     <x-nav-link href="{{ route('fields.show', $field) }}"
         class="whitespace-break-spaces text-md first-letter:uppercase w-full text-pink-500 group-hover:text-pink-700 dark:text-pink-300 dark:group-hover:text-pink-400 transition-colors duration-300">
         <h1 class="mb-2">{{ $field->title }}</h1>

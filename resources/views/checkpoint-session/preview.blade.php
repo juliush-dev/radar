@@ -2,46 +2,6 @@
     icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5">
     <div class="h-full overflow-y-auto dark:text-white text-slate-600" @preserveScroll('checkpoint')>
         <main class="p-6 lg:px-80">
-            <x-splade-form :action="route('checkpoints.initiate', $checkpoint)" default="{countdown: 60}"
-                class="flex whitespace-nowrap absolute bottom-0 z-20 dark:text-slate-500">
-                <countdown v-slot="countdown" :form="form">
-                    <input type="number" min="0" max="2" v-bind:value="countdown.getHour"
-                        @input="countdown.setHour" placeholder="0"
-                        class="w-12 px-0 pl-1 py-0 border-0 bg-slate-100 active:ring-0 focus:ring-0 transition-all duration-75"
-                        v-bind:disabled="countdown.running"><span class="bg-slate-100 px-0.5">h</span>
-                    <input type="number" min="1" max="59" v-bind:value="countdown.getMin"
-                        @input="countdown.setMin" placeholder="00"
-                        class="w-12 px-0 pl-1 py-0 border-0 bg-slate-200 active:ring-0 focus:ring-0 transition-all duration-75"
-                        v-bind:disabled="countdown.running"><span class="bg-slate-200 px-0.5">m</span>
-                    <input type="number" min="0" max="59" v-bind:value="countdown.getSec"
-                        @input="countdown.setSec" placeholder="00"
-                        class="w-12 px-0 pl-1 py-0 border-0 bg-slate-300 active:ring-0 focus:ring-0 transition-all duration-75"
-                        v-bind:disabled="countdown.running"><span class="bg-slate-300 px-0.5">s</span>
-                    <div class="flex flex-nowrap">
-                        @if (Auth::check())
-                            <x-splade-submit
-                                class="bg-fuchsia-500 py-2 md:w-fit hover:bg-fuchsia-600 shadow-m whitespace-nowrap flex gap-1 items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-                                </svg>
-                                Take a test
-                            </x-splade-submit>
-                        @else
-                            <x-nav-link href="#login-required"
-                                class="bg-fuchsia-500 py-2 md:w-fit hover:bg-fuchsia-600 shadow-m whitespace-nowrap flex gap-1 items-center text-white px-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-                                </svg>
-                                Take a test
-                            </x-nav-link>
-                        @endif
-                    </div>
-                </countdown>
-            </x-splade-form>
             <div class="flex mb-4 items-center flex-wrap">
                 <h1 class="first-letter:uppercase text-xl dark:text-slate-100">
                     {{ $checkpoint->title }}
@@ -52,6 +12,7 @@
                 {{ $checkpoint->topic->title }}
             </x-nav-link>
             <div class="text-sm flex grow md:justify-end gap-6 items-center w-full">
+                <a href="{{ $checkpoint->source }}" target="_blank" rel="noopener noreferrer" class="mr-auto">Source</a>
                 @can('use-dashboard')
                     <x-splade-link :href="route('dashboard.index', ['tab' => 'checkpoints'])"
                         class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
@@ -82,8 +43,6 @@
                         </x-splade-form>
                     @endif
                 @endcan
-                {{-- @if (!$checkpoint->is_update) --}}
-                {{-- @if (!$checkpoint->topic->is_update) --}}
                 @can('update-checkpoint', $checkpoint)
                     <x-splade-link href="{{ route('checkpoints.edit', $checkpoint) }}" class="text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -94,15 +53,13 @@
                         </svg>
                     </x-splade-link>
                 @endcan
-                {{-- @endif --}}
-                {{-- @endif --}}
                 @can('delete-checkpoint', $checkpoint)
                     @if ($checkpoint->potentialReplacement == null && !$checkpoint->topic->is_update)
                         <x-splade-link method="delete" href="{{ route('checkpoints.destroy', $checkpoint) }}"
                             confirm="Deletion requested" confirm-text="This checkpoint will be permanently deleted?"
                             confirm-button="Yes, delete it!" cancel-button="No, keep it!" class="text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor"
                                 class="w-6 h-6 text-red-400 hover:text-red-500
                             transition-all duration-300">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -137,7 +94,7 @@
                     </section>
                 @endif
             @endcan
-            <div class="mb-8">
+            <div>
                 <h2 class="text-2xl mb-4 dark:text-slate-100">
                     My last sessions
                 </h2>
@@ -146,18 +103,11 @@
                         @forelse ($rq->checkpointsSessions(['author' => auth()->user()->id, 'checkpoint' => $checkpoint->id]) as $session)
                             <div
                                 class="flex flex-col gap-6 w-fit whitespace-nowrap p-4 rounded-md shadow bg-white dark:bg-slate-700 dark:text-slate-100 first-letter:uppercase transition-colors duration-300">
-                                <x-nav-link href="{{ route('sessions.review', $session) }}"
-                                    class="text-violet-500 hover:text-violet-500 dark:text-violet-400 dark:hover:text-violet-300">
+                                <h4 class="text-base font-medium">
                                     {{ $session->created_at }}
-                                </x-nav-link>
+                                </h4>
                                 <div class="text-sm flex flex-col gap-2 justify-between">
                                     <p>Duration: {{ $session->countdown - $session->end_countdown }}s</p>
-                                    <p>Touched {{ $session->userResults()->count() }} /
-                                        {{ $total = $session->checkpoint->knowledge->count() }}</p>
-                                    <p>Untouched: {{ $session->untouchedKnowledge(true) }} </p>
-                                    <p>Wrong: {{ $session->wrongResults(true) }}</p>
-                                    <p>Correct: {{ $correct = $session->correctResults(true) }} </p>
-                                    <p class="text-lg font-medium">Note: {{ floor(($correct / $total) * 100) }}% </p>
                                 </div>
                                 <div class="flex items-center justify-end">
                                     <x-splade-link method="delete" href="{{ route('sessions.destroy', $session) }}"
@@ -182,39 +132,46 @@
                     </div>
                 @endif
             </div>
-            <section class="mb-20">
-                <h2 class="text-2xl dark:text-slate-100 mb-8">
-                    Summary
-                </h2>
-                <x-splade-toggle>
-                    <div class="relative bg-white rounded-lg shadow-lg p-8 leading-loose text-lg dark:bg-slate-800 dark:shadow-slate-700 border dark:border-slate-700 dark:text-slate-400"
-                        style="transition: max-height 0.15s ease-in-out;" v-bind:class="toggled && 'overflow-scroll'"
-                        v-bind:style="toggled ? 'max-height: 40rem;' : 'max-height: 20rem;'">
-                        <div v-bind:class="toggled || 'line-clamp-4'">
-                            {!! $checkpoint->summary !!}
-                        </div>
-                        <button @click="toggle" class="block w-fit ml-auto mt-4 overflow-hidden">
-                            <svg v-show="!toggled" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                            <svg v-show="toggled" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-                            </svg>
-                        </button>
+            <x-splade-form :action="route('checkpoints.initiate', $checkpoint)" default="{countdown: 60}"
+                class="flex whitespace-nowrap  dark:text-slate-500 text-xl font-semibold">
+                <countdown v-slot="countdown" :form="form">
+                    <input type="number" min="0" max="2" v-bind:value="countdown.getHour"
+                        @input="countdown.setHour" placeholder="0"
+                        class="w-12 px-0 pl-1 py-0 border-0 bg-slate-100 active:ring-0 focus:ring-0 transition-all duration-75"
+                        v-bind:disabled="countdown.running"><span class="bg-slate-100 px-0.5">h</span>
+                    <input type="number" min="1" max="59" v-bind:value="countdown.getMin"
+                        @input="countdown.setMin" placeholder="00"
+                        class="w-12 px-0 pl-1 py-0 border-0 bg-slate-200 active:ring-0 focus:ring-0 transition-all duration-75"
+                        v-bind:disabled="countdown.running"><span class="bg-slate-200 px-0.5">m</span>
+                    <input type="number" min="0" max="59" v-bind:value="countdown.getSec"
+                        @input="countdown.setSec" placeholder="00"
+                        class="w-12 px-0 pl-1 py-0 border-0 bg-slate-300 active:ring-0 focus:ring-0 transition-all duration-75"
+                        v-bind:disabled="countdown.running"><span class="bg-slate-300 px-0.5">s</span>
+                    <div class="flex flex-nowrap">
+                        @if (Auth::check())
+                            <x-splade-submit
+                                class="bg-fuchsia-500 py-2 md:w-fit hover:bg-fuchsia-600 shadow-m whitespace-nowrap flex gap-1 items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                                </svg>
+                                Take a session
+                            </x-splade-submit>
+                        @else
+                            <x-nav-link href="#login-required"
+                                class="bg-fuchsia-500 py-2 md:w-fit hover:bg-fuchsia-600 shadow-m whitespace-nowrap flex gap-1 items-center text-white px-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                                </svg>
+                                Start a new session
+                            </x-nav-link>
+                        @endif
                     </div>
-                </x-splade-toggle>
-            </section>
-            <h2 class="text-2xl dark:text-slate-100">
-                Cubes of knowledge
-            </h2>
+                </countdown>
+            </x-splade-form>
         </main>
-        <x-layouts.knowledge-cubes>
-            @foreach ($checkpoint->knowledgeCubes as $knowledgeCube)
-                <x-checkpoint.knowledge-cube :$knowledgeCube :reviewKnowledge="null" />
-            @endforeach
-        </x-layouts.knowledge-cubes>
     </div>
 </x-layouts.app>

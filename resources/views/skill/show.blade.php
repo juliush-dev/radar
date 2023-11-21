@@ -49,7 +49,7 @@
                 @endauth
             </div>
         </div>
-        <hr class="mb-8">
+        <hr class="mb-8 border-slate-200 dark:border-slate-700">
         @if ($skill->type)
             <h2 class="text-2xl mb-4 dark:text-slate-100">
                 Type
