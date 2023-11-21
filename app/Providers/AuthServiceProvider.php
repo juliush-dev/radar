@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Checkpoint;
 use App\Models\LearningMaterial;
+use App\Models\MyOffice;
 use App\Models\Skill;
 use App\Models\Topic;
 use App\Models\User;
@@ -120,6 +121,13 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('delete-checkpoint-session', function (User $user, ?UserCheckpointSession $session) {
             return $session != null ? ($user->id === $session->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
+        });
+
+        Gate::define('create-office', function (User $user) {
+            return !$user?->blocked;
+        });
+        Gate::define('see-office', function (User $user, MyOffice $myOffice) {
+            return (!$user->blocked && $user->id == $myOffice->user->id);
         });
     }
 }

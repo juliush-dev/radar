@@ -12,6 +12,7 @@ import KnowledgeCube from "./Components/KnowledgeCube.vue";
 import Knowledge from "./Components/Knowledge.vue";
 import Countdown from "./Components/Countdown.vue";
 import LineChart from "./Components/LineChart.vue";
+import MyOffice from "./Components/MyOffice.vue";
 
 import "@protonemedia/laravel-splade/dist/jodit.css";
 
@@ -37,6 +38,7 @@ createApp({
             Knowledge,
             LineChart,
             Countdown,
+            MyOffice,
         },
     })
     .mount(el);

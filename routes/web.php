@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CheckpointController;
 use App\Http\Controllers\CheckpointKnowledgeController;
+use App\Http\Controllers\MyOfficeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserCheckpointSessionController;
 use App\Http\Controllers\UserCheckpointSessionResultController;
@@ -240,6 +241,77 @@ Route::middleware('splade')->group(function () {
                     '/sessions/{session}/bridges/{bridge}/missed',
                     'wrong'
                 )->name('wrong');
+            });
+
+        Route::controller(MyOfficeController::class)
+            ->prefix('my-office')
+            ->name('my-office.')
+            ->group(function () {
+
+                Route::get(
+                    '/{office}',
+                    'show'
+                )->name('show');
+                Route::post(
+                    '/',
+                    'store'
+                )->name('store');
+                Route::delete(
+                    '/{office}',
+                    'destroy'
+                )->name('destroy');
+
+                Route::post(
+                    '/{office}/subjects/{subject}/add',
+                    'addSubject'
+                )->name('subjects.add');
+                Route::post(
+                    '/subjects/{subject}/remove',
+                    'removeSubject'
+                )->name('subjects.remove');
+                Route::get(
+                    '/subjects/{subject}',
+                    'showSubject'
+                )->name('subjects.show');
+                Route::post(
+                    '/{office}/subjects/reorder',
+                    'reorderSubjects'
+                )->name('subjects.reorder');
+
+                Route::post(
+                    '/subjects/{subject}/topics/{topic}/add',
+                    'addTopic'
+                )->name('topics.add');
+                Route::post(
+                    '/topics/{topic}/remove',
+                    'removeTopic'
+                )->name('topics.remove');
+                Route::get(
+                    '/topics/{topic}',
+                    'showTopic'
+                )->name('topics.show');
+                Route::post(
+                    '/{office}/topics/reorder',
+                    'reorderTopics'
+                )->name('topics.reorder');
+
+
+                Route::post(
+                    '/topics/{topic}/checkpoints/{checkpoint}/add',
+                    'addCheckpoint'
+                )->name('checkpoints.add');
+                Route::post(
+                    '/checkpoints/{checkpoint}/remove',
+                    'removeCheckpoint'
+                )->name('checkpoints.remove');
+                Route::get(
+                    '/checkpoints/{checkpoint}',
+                    'showCheckpoint'
+                )->name('checkpoints.show');
+                Route::post(
+                    '/{office}/checkpoints/reorder',
+                    'reorderCheckpoints'
+                )->name('checkpoints.reorder');
             });
     });
     Route::get('/knowledge/{knowledge}', [

@@ -127,4 +127,8 @@ class Checkpoint extends Model
             $sessionCopy->copyNewUserResultsFromOldSession();
         });
     }
+    public function myCheckpoints(): HasMany
+    {
+        return $this->hasMany(MyCheckpoint::class);
+    }
 }

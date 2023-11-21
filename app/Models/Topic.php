@@ -217,4 +217,15 @@ class Topic extends Model
             }
         });
     }
+    public function myTopics(): HasMany
+    {
+        return $this->hasMany(MyTopic::class);
+    }
+
+    public static function published()
+    {
+        return Topic::where(
+            RadarQuery::publicOrAuthor(Auth::id())
+        );
+    }
 }
