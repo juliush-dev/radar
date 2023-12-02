@@ -16,9 +16,9 @@
      </x-splade-modal>
  @endguest
  <div v-show="radar.navigation"
-     class="z-30 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-6 justify-between w-full  text-slate-800 dark:text-white shadow-sm shadow-fuchsia-400"
+     class="z-30 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white shadow-sm shadow-fuchsia-400"
      @preserveScroll('navigationContainer')>
-     <div class="flex gap-2 items-center p-4 lg:py-2 lg:px-10 md:pb-0">
+     <div class="flex gap-2 items-center px-4 lg:py-2 lg:px-10 md:pb-0 pl-[21px]">
          <span
              class="justify-center p-1 bg-green-400 dark:bg-yellow-400 rounded-full text-slate-50 dark:text-slate-900 flex items.center capitalize flex-nowrap">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -32,7 +32,7 @@
              {{ empty($activePage) ? 'Welcome' : $activePage }}
          </h1>
      </div>
-     <div class="flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-4 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-0 overflow-x-auto"
+     <div class="text-sm flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-2 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-0 overflow-x-auto"
          @preserveScroll('mainNavigation')>
          @if (!Route::is('welcome'))
              <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="welcome"
@@ -72,7 +72,7 @@
                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
              </svg> Previous page
          </x-splade-link>
-         <button @click="radar.dark = !radar.dark" v-text="radar.dark ? '☀️' : '🕶️'"
-             class="my-auto py-0.5 shadow-sm shadow-slate-500 px-0.5 whitespace-nowrap"></button>
+         <button @click="radar.dark = !radar.dark" v-text="radar.dark ? '🙄' : '🥱'"
+             class="mt-0.5 px-0.5 whitespace-nowrap"></button>
      </div>
  </div>

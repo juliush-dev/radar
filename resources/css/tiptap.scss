@@ -1,8 +1,8 @@
 .ProseMirror{
     @apply min-w-full prose p-0 pr-6 dark:prose-invert focus:outline-none;
     @apply dark:prose-blockquote:border-slate-400 prose-headings:m-0 prose-headings:mb-3;
-    @apply prose-img:w-full prose-img:h-auto prose-img:rounded-2xl dark:prose-headings:text-slate-500;
-    @apply  dark:prose-strong:text-slate-500;
+    @apply prose-img:max-w-full prose-img:h-auto prose-img:rounded-md dark:prose-headings:text-slate-300;
+    @apply  dark:prose-strong:text-slate-300;
     @apply  prose-headings:text-slate-500;
     // @apply  prose-headings:font-medium;
 }

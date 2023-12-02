@@ -33,7 +33,7 @@
                 :type="$type">
                 @if (strlen($icon) > 0)
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="my-auto w-6 h-6">
+                        stroke="currentColor" class="my-auto w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icon }}" />
                     </svg>
                 @endif

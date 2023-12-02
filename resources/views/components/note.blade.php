@@ -8,7 +8,7 @@
         'categories' => $note->categoriesMap(),
         'getCategoriesOptions' => false,
     ]"
-        class="flex flex-col justify-between lg:pl-6 py-6 overflow-hidden" stay background
+        class="flex flex-col justify-between md:pl-6 py-6 overflow-hidden" stay background
         submit-on-change="content, is_public, getCategoriesOptions, categories">
         <div class="flex flex-wrap md:items-center gap-6 mb-6 w-full md:pr-6" id="{{ $note->id }}">
             <div class="text-xl font-medium text-slate-400 first-letter:uppercase dark:text-slate-600">
@@ -31,50 +31,65 @@
         @else
             <div class="ProseMirror" v-html="form.content"></div>
         @endcan
-        <section v-if="form.categories.length > 0" class="mb-6 md:mr-6">
-            <h2 class="mb-3 text-md font-semibold">Exit links</h2>
-            <ul class="flex flex-col gap-6">
-                <li v-for="(note, index) in form.categories" :key="index"
-                    class="text-sm flex flex-col gap-2 rounded-md p-3 shrink text-slate-700 dark:text-slate-100 bg-slate-100 dark:bg-slate-700">
-                    <x-nav-link v-bind:href="`/topics/${note.topic_id}#${note.id}`" target="_blank"
-                        class="whitespace-break-spaces" v-text="note.title">
-                    </x-nav-link>
-                    <Link v-bind:href="`/topics/${note.topic_id}`" class="font-mono" v-text="note.topic">
-                    </Link>
-                    <Link v-bind:href="`/notes/${note.id}/references`"
-                        class="font-medium text-fuchsia-500 hover:text-fuchsia-600 transition-colors duration-300">
-                    Vizualize
-                    </Link>
-                </li>
-            </ul>
-        </section>
-        <x-splade-transition show="form.categoriesOptions.length > 0">
-            <div class="w-full mb-8">
-                <h2 class="mt-6 mb-3 text-md font-semibold">Categories</h2>
-                <ul class="flex flex-col gap-6 ml-0">
-                    <li v-for="(note, index) in form.categoriesOptions" :key="index"
-                        class="flex gap-2 items-center">
-                        <input type="checkbox" v-model="form.categories" v-bind:id="`input-${note.id}`"
-                            v-bind:value="note" />
-                        <label v-bind:for="`input-${note.id}`" class="flex flex-col gap-1">
-                            <span v-text="`${note.title}`"></span>
-                            <span class="text-sm font-semibold" v-text="`${note.topic}`"></span>
-                        </label>
+        <div class="flex gap-8 flex-wrap lg:flex-nowrap mt-4">
+            <x-splade-transition show="form.categoriesOptions.length > 0"
+                class="order-last md:order-first grow md:grow-0 md:w-1/2 whitespace-break-spaces ml-1 md:ml-0">
+                <div class="w-full mb-8">
+                    <h2 class="mb-4 text-md font-semibold">Link/Unlink relations</h2>
+                    <ul class="flex flex-col gap-6 ml-0">
+                        <li>
+                            <button @click.prevent="form.$put('getCategoriesOptions', !form.getCategoriesOptions)"
+                                class="transition-colors duration-300 text-sky-500 hover:text-sky-600 -ml-0.5">
+                                Done
+                            </button>
+                        </li>
+                        <li v-for="(note, index) in form.categoriesOptions" :key="index"
+                            class="flex gap-2 items-start">
+                            <input type="checkbox" v-model="form.categories" v-bind:id="`input-${note.id}`"
+                                v-bind:value="note" />
+                            <label v-bind:for="`input-${note.id}`" class="flex flex-col -mt-1">
+                                <span v-text="`${note.title}`"></span>
+                                <span class="text-sm font-semibold" v-text="`${note.topic}`"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <button @click.prevent="form.$put('getCategoriesOptions', !form.getCategoriesOptions)"
+                                class="transition-colors duration-300 text-sky-500 hover:text-sky-600 -ml-0.5">
+                                Done
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </x-splade-transition>
+            <x-splade-transition show="form.categories.length > 0" class="mb-6 md:mr-6 flex-1">
+                <h2 class="mb-4 text-md font-semibold">Relate to</h2>
+                <ul class="flex flex-col gap-6">
+                    <li v-for="(note, index) in form.categories" :key="index"
+                        class="text-sm flex flex-col gap-2 rounded-md p-3 shrink text-slate-700 dark:text-slate-100 bg-slate-100 dark:bg-slate-700">
+                        <x-nav-link v-bind:href="`/topics/${note.topic_id}#${note.id}`" target="_blank"
+                            class="whitespace-break-spaces" v-text="note.title">
+                        </x-nav-link>
+                        <Link v-bind:href="`/topics/${note.topic_id}`" class="font-mono" v-text="note.topic">
+                        </Link>
+                        <Link v-bind:href="`/notes/${note.id}/references`"
+                            class="font-medium text-fuchsia-500 hover:text-fuchsia-600 transition-colors duration-300">
+                        Vizualize
+                        </Link>
                     </li>
                 </ul>
-            </div>
-        </x-splade-transition>
+            </x-splade-transition>
+        </div>
         <div class="flex items-center justify-between md:mr-6 mt-4 gap-6">
             @auth
                 @can('edit-note', [$note])
                     <x-splade-checkbox inline label="Public" name="is_public" value="1" class="checked:bg-fuchsia-400" />
-                    <button @click.prevent="form.$put('getCategoriesOptions', !form.getCategoriesOptions)"
+                    <button v-show="!form.getCategoriesOptions"
+                        @click.prevent="form.$put('getCategoriesOptions', !form.getCategoriesOptions)"
                         class="transition-colors duration-300 text-sky-500 hover:text-sky-600">
                         <p
                             v-if="form.$response && form.$response.categoriesOptions && (form.categoriesOptions = form.$response.categoriesOptions)">
                         </p>
-                        <span v-if="!form.getCategoriesOptions">Link/Unlink</span>
-                        <span v-if="form.getCategoriesOptions">Done</span>
+                        Link/Unlink
                     </button>
                     <button @click.prevent="notes.convertToMarkdown(form.content)" class="text-fuchsia-400">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
