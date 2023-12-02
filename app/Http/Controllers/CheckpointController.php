@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkpoint;
-use App\Models\CheckpointKnowledge;
-use App\Models\KnowledgeCube;
 use App\Models\Topic;
 use App\Models\UserCheckpointSession;
 use App\Services\RadarQuery;

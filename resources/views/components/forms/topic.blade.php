@@ -23,9 +23,7 @@
     <section v-show="topic.activeTab == 'topic'"
         class="w-full flex flex-col bg-white border border-slate-200 dark:border-white p-8">
         <x-splade-input required name="title" label="Title" class="mb-6" />
-        <x-splade-select required name="years" label="Years" :options="$years" option-value="id" option-label="title"
-            placeholder="Choose or" class="mb-6" multiple />
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 mb-6">
             <x-splade-select required v-if="form.newSubject == null" name="subject" label="Subject" :options="$subjects"
                 option-value="id" option-label="title" placeholder="Choose or" />
             <x-splade-button v-if="form.newSubject == null" type="call-to-action" @click.prevent="topic.newSubject"
@@ -42,6 +40,8 @@
                 New subject added
             </p>
         </div>
+        <x-splade-select name="years" label="Years" :options="$years" option-value="id" option-label="title"
+            placeholder="Choose or" class="mb-6" multiple />
         <x-splade-select name="fields" label="Fields" :options="$fields" option-value="id" option-label="title"
             placeholder="Choose or" multiple class="mb-4" />
         <x-splade-select name="skills" label="Skill" :options="$skills" option-value="id" option-label="title"
@@ -59,7 +59,7 @@
             <div v-if="form.newSubject != null" class="flex flex-col gap-6 ">
                 <x-splade-input required v-model="form.newSubject.title" label="title" />
                 <x-splade-input required v-model="form.newSubject.abbreviation" label="Abbreviation" />
-                <x-splade-select required v-model="form.newSubject.years" :options="$years" option-value="id"
+                <x-splade-select v-model="form.newSubject.years" :options="$years" option-value="id"
                     option-label="title" label="Years" multiple />
             </div>
             <x-splade-button v-if="form.newSubject != null" type="call-to-action"

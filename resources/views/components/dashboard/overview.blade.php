@@ -11,10 +11,10 @@
             <h1 class="mb-2 text-xl first-letter:uppercase">Topics</h1>
             <span class="text-2xl">{{ $totalTopics }}</span>
             </Link>
-            <Link href="{{ route('dashboard.index', ['tab' => 'learning-materials']) }}"
+            <Link href="{{ route('dashboard.index', ['tab' => 'notes']) }}"
                 class="border grow shadow-md hover:shadow-lg focus:shadow-sm dark:shadow-cyan-400 transition-all duration-300 p-6 dark:border-cyan-400">
-            <h1 class="mb-2 text-xl first-letter:uppercase">Learning materials</h1>
-            <span class="text-2xl">{{ $totalLearningMaterials }}</span>
+            <h1 class="mb-2 text-xl first-letter:uppercase">Notes</h1>
+            <span class="text-2xl">{{ $totalNotes }}</span>
             </Link>
             <Link href="{{ route('skills.index') }}"
                 class="border grow shadow-md hover:shadow-lg focus:shadow-sm dark:shadow-cyan-400 transition-all duration-300 p-6 dark:border-cyan-400">

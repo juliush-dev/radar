@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checkpoints', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
+        Schema::create('note_category', function (Blueprint $table) {
+            $table->id()->autoIncrement();
+            $table->string('relation')->nullable();
+            $table->foreignUuid('note_id')->nullable()->constrained('notes')->nullOnDelete();
+            $table->foreignUuid('category_id')->nullable()->constrained('notes')->nullOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('title');
-            $table->text('source');
             $table->boolean('is_public')->default(false);
             $table->boolean('is_update')->default(false);
             $table->timestamps();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checkpoints');
+        Schema::dropIfExists('note_category');
     }
 };

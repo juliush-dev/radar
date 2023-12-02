@@ -12,14 +12,14 @@
                      <x-nav-link modal href="{{ route('topics.subjects.edit', $topic->subject) }}"
                          class="dark:text-teal-300 text-teal-500">
                          {{ $topic->subject->title }}
-                     </x-nav-link>/
+                     </x-nav-link>
                  @else
                      <span class="dark:text-slate-300 text-slate-600">
                          {{ $topic->subject->title }}
-                     </span>/
+                     </span>
                  @endcan
                  @if ($topic->years->count() > 0)
-                     <p class="font-light">
+                     /<p class="font-light">
                          @foreach ($topic->years as $year)
                              <span class="first-letter:capitalize">{{ $year->year }}</span>
                              @if (!$loop->last)
@@ -29,19 +29,19 @@
                      </p>
                  @endif
              </div>
-             <div class="flex md:justify-end grow gap-6 items-center mt-4">
+             <div class="flex md:justify-end flex-wrap grow gap-6 items-center mt-4">
                  @can('use-dashboard')
                      <div class="flex justify-end items-center gap-6">
                          <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"
-                             class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                             class="w-fit flex items-center gap-2 justify-end text-fuchsia-500 hover:text-fuchsia-600 transition-all duration-300">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-5 h-5 my-auto">
                                  <path stroke-linecap="round" stroke-linejoin="round"
                                      d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
                              </svg>
                          </x-splade-link>
-                         <x-splade-link :href="route('dashboard.index', ['tab' => 'learning-materials'])"
-                             class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
+                         <x-splade-link :href="route('dashboard.index', ['tab' => 'notes'])"
+                             class="w-fit flex items-center gap-2 justify-end text-fuchsia-500 hover:text-fuchsia-600 transition-all duration-300">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-5 h-5 my-auto">
                                  <path stroke-linecap="round" stroke-linejoin="round"
@@ -66,7 +66,7 @@
                                  <x-splade-form submit-on-change :action="$topic->is_public
                                      ? route('topics.unpublish', $topic)
                                      : route('topics.publish', $topic)" method="post" :default="['is_public' => $topic->is_public]"
-                                     class="text-violet-400 hover:text-violet-500">
+                                     class="text-fuchsia-400 hover:text-fuchsia-500">
                                      <x-splade-checkbox inline label="Public" name="is_public" value="1"
                                          class="checked:bg-fuchsia-400" />
                                  </x-splade-form>
@@ -92,7 +92,7 @@
                                      :action-args="$topic">
                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5" stroke="currentColor"
-                                         class="w-5 h-5 text-violet-400 hover:text-violet-500 shadow
+                                         class="w-5 h-5 text-fuchsia-400 hover:text-fuchsia-500 shadow
                                     hover:shadow-md transition-all duration-300">
                                          <path stroke-linecap="round" stroke-linejoin="round"
                                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -102,12 +102,10 @@
                          @endcan
                          @can('delete-topic', $topic)
                              @if ($topic->potentialReplacement == null)
-                                 <x-layouts.navigation-link class="text-red-400" resource="topics" action="destroy"
-                                     :action-args="$topic">
+                                 <x-layouts.navigation-link class="text-red-500 hover:text-red-600 transition-all duration-300"
+                                     resource="topics" action="destroy" :action-args="$topic">
                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor"
-                                         class="w-6 h-6 text-red-500 hover:text-red-600 shadow
-                                hover:shadow-md transition-all duration-300">
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                      </svg>
                                  </x-layouts.navigation-link>
@@ -144,83 +142,46 @@
              @endif
          @endcan
 
-         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
-             {{ $topic->publicLearningMaterials->count() }}
-             @if (($volatiles = $topic->volatileLearningMaterials()->count()) > 0)
-                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
-                     % {{ $volatiles }}
-                 </span>
-             @endif
-             Learning Materials
-         </h2>
-         <div class="columns-1 lg:columns-3  xl:columns-4 space-y-4 gap-4 w-full mb-8">
-             @foreach ($topic->publicLearningMaterials()->get() as $lm)
-                 @if (Illuminate\Support\Facades\Storage::disk('public')->exists($lm->alternative))
-                     <x-splade-form method="get" :action="route('topics.learning-materials.download', $lm->id)" blob
-                         class="break-inside-avoid rounded-md group flex flex-col justify-center items-center relative w-full border-2 border-slate-300">
-                         @if (!$lm->is_public)
-                             <span
-                                 class="self-start px-2 bg-pink-600 w-fit font-mono text-sm text-white dark:text-slate-200  my-auto grow-0">Volatile
-                             </span>
-                         @endif
-                         @if (in_array($lm->mime_type, array_column(\App\Enums\ImageMimeType::cases(), 'value')))
-                             <img src="{{ Illuminate\Support\Facades\Storage::url($lm->path) }}" alt=""
-                                 srcset="" class="w-full" height="auto">
-                         @endif
-                         <button type="submit"
-                             class="flex gap-2 items-center text-white text-sm bg-indigo-500 hover:bg-indigo-600 transition-all duration-200 w-full py-1 px-2">
-                             <span class="px-1 bg-lime-400 text-slate-700">D</span>
-                             <span
-                                 class="first-letter:uppercase shrink whitespace-normal text-sm">{{ $lm->title }}</span>
-                         </button>
-                         @can('delete-learning-material', $lm)
-                             <x-splade-form method="delete" :action="route('topics.learning-materials.remove', $lm->id) . '?stay=1'" class="absolute bottom-0 right-0">
-                                 <button type="submit"
-                                     class="flex gap-2 text-white text-sm p-2 bg-red-600 rounded-t-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                     </svg>
-                                 </button>
-                             </x-splade-form>
-                         @endcan
-                     </x-splade-form>
-                 @endif
+         <div class="flex flex-col gap-4 w-full mb-8">
+             <note-space v-slot="notes">
+                 @auth
+                     <h2 class="text-2xl mb-4">Own notes</h2>
+                     @auth
+                         @foreach ($topic->notes()->where('user_id', Auth::user()->id)->get() as $note)
+                             <x-note :$note />
+                         @endforeach
+                     @endauth
+                     <div class="w-full mb-8">
+                         <x-splade-form action="{{ route('topics.notes.store', $topic) }}" method="post"
+                             class="h-6 mx-auto">
+                             <button type="submit" class="text-fuchsia-400 hover:text-fuchsia-500">
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                 </svg>
+                             </button>
+                         </x-splade-form>
+                     </div>
+                     <h2 class="text-2xl mb-4">Others notes</h2>
+                     @foreach ($topic->notes()->whereNot('user_id', Auth::user()->id)->where('is_public', true)->get() as $note)
+                         <x-note :$note :editable="false" />
+                     @endforeach
+                 @else
+                     <h2 class="text-2xl mb-4">Notes</h2>
+                     @foreach ($topic->notes()->where('is_public', true)->get() as $note)
+                         <x-note :$note :editable="false" />
+                     @endforeach
+                 @endauth
+             </note-space>
+         </div>
+
+         <h2 class="text-2xl mb-4">In the same subject</h2>
+         <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 mx-auto mb-8">
+             @foreach ($topic->inTheSameSubject()->get() as $topic)
+                 <x-topic :topic="$topic" />
              @endforeach
          </div>
-         <x-splade-form :action="route('topics.learning-materials.upload', $topic->id) . '?stay=1'" class="mb-8">
-             <x-splade-file label="Click the input field to add more" filepond preview name="newLearningMaterials[]"
-                 class="text-lg font-light mb-2 text-left" multiple />
-             @auth
-                 <x-splade-submit class="bg-fuchsia-500" label="Share" />
-             @else
-                 <x-layouts.navigation-link class="px-6 flex justify-center text-white bg-fuchsia-500" @click.prevent=""
-                     resource="#login-required" label="Share" />
-             @endauth
-         </x-splade-form>
-
-         <h2 class="text-2xl mb-4 flex flex-nowrap gap-2 items-center">
-             {{ $topic->publicCheckpoints->count() }}
-             @if (($volatiles = $topic->volatileCheckpoints()->count()) > 0)
-                 <span class="px-2 bg-pink-500 text-white text-xs my-auto">
-                     % {{ $volatiles }}
-                 </span>
-             @endif
-             Checkpoints
-         </h2>
-         <div class="mb-10">
-             <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 pb-2 mb-2">
-                 @foreach ($topic->publicCheckpoints()->get() as $checkpoint)
-                     <x-checkpoint :$checkpoint />
-                 @endforeach
-             </div>
-             <x-layouts.navigation-link type="call-to-action" require-login="true"
-                 class="ml-1 w-fit text-md text-white bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md shadow-slate-400"
-                 resource="checkpoints" action="create" :action-args="$topic" label="New checkpoint"
-                 icon="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-         </div>
-
+         <hr class="mb-8 border-slate-200 dark:border-slate-700">
          <h2 class="text-2xl mb-4">Skills you gain learning this topic</h2>
          <div class="mb-8 columns-1 space-y-6 w-full">
              @foreach ($topic->skills as $topicSkill)

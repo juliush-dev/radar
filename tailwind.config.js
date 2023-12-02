@@ -19,11 +19,5 @@ export default {
         extend: {},
     },
     darkMode: "class",
-    plugins: [
-        forms,
-        typography,
-        // require("tailwindcss-plugins/pagination")({
-        //     color: colors["teal-dark"],
-        // }),
-    ],
+    plugins: [forms, typography],
 };

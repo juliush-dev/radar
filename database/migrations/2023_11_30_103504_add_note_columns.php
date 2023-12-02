@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('my_topics', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('my_subject_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+        Schema::table('notes', function (Blueprint $table) {
+            $table->boolean('is_update')->default(false);
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('my_topics');
+        Schema::table('notes', function (Blueprint $table) {
+            //
+        });
     }
 };

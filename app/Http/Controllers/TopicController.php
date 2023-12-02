@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Checkpoint;
 use App\Models\KnowledgeCube;
 use App\Models\LearningMaterial;
+use App\Models\Note;
 use App\Models\Subject;
 use App\Models\SubjectYear;
 use App\Models\Topic;
@@ -65,44 +66,6 @@ class TopicController extends Controller
             'filterIsSet' => $filterIsSet
         ]);
     }
-    public function downloadLearningMaterial(Request $r, LearningMaterial $learningMaterial)
-    {
-        return Storage::download($learningMaterial->path, $learningMaterial->title);
-    }
-
-    public function removeLearningMaterial(Request $request, LearningMaterial $learningMaterial)
-    {
-        if (!Gate::allows('delete-learning-material', $learningMaterial)) {
-            abort(403);
-        }
-        $topic = $learningMaterial->topic;
-        Storage::delete($learningMaterial->path);
-        $learningMaterial->delete();
-        Toast::title('Learning material sucessfuly removed!')->autoDismiss(5);
-        if ($request->query('stay')) {
-            return redirect()->route('topics.show', $topic);
-        } else {
-            return redirect(Referer::get());
-        }
-    }
-
-    public function uploadLearningMaterial(Request $request, Topic $topic)
-    {
-        $lms = $request->file('newLearningMaterials');
-        if (is_array($lms) && count($lms) > 0) {
-            foreach ($lms as $lm) {
-                $this->uploadLm($lm, $topic);
-            }
-        } elseif ($lms != null) {
-            $this->uploadLm($lms, $topic);
-        }
-        Toast::title('New learning materials sucessfuly uploaded!')->autoDismiss(5);
-        if ($request->query('stay')) {
-            return redirect()->route('topics.show', $topic);
-        } else {
-            return redirect()->route('topics.index');
-        }
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -150,8 +113,11 @@ class TopicController extends Controller
                 $subject = new Subject;
                 $subject->title = $newSubject['title'];
                 $subject->abbreviation = $newSubject['abbreviation'];
+                if ($request->user()->is_admin) {
+                    $subject->is_public = true;
+                }
                 $subject->save();
-                collect($newSubject['years'])->each(function ($year) use ($subject) {
+                collect($newSubject['years'] ?? [])->each(function ($year) use ($subject) {
                     $subjectYear = new SubjectYear;
                     $subjectYear->subject_id = $subject->id;
                     $subjectYear->year = $year;
@@ -183,21 +149,6 @@ class TopicController extends Controller
         return redirect()->route('topics.show', $topic);
     }
 
-    private function uploadLm($lm, $topic)
-    {
-        if (empty($lm) || $lm == "") {
-            Toast::danger('A problem occured during file upload');
-            return;
-        }
-        $learningMaterial = new LearningMaterial;
-        $learningMaterial->topic_id = $topic->id;
-        $learningMaterial->user_id = request()->user()->id;
-        $learningMaterial->title = $lm->getClientOriginalName();
-        $learningMaterial->mime_type = $lm->extension();
-        $learningMaterial->alternative = $lm->hashName();
-        $learningMaterial->path = $lm->store('public');
-        $learningMaterial->save();
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -205,18 +156,11 @@ class TopicController extends Controller
     public function edit(Topic $topic)
     {
         $this->authorize('update-topic', [$topic]);
-        $redirectRoute = route('topics.index');
-        $referer = Referer::get();
-        if ($referer == route('dashboard.index', ['tab' => 'topics'])) {
-            $redirectRoute = $referer;
-        }
         return view(
             'topic.edit',
             [
                 'topic' => $topic,
                 'rq' => $this->rq,
-                'routeOnSuccess' => $redirectRoute,
-                'routeOnCancel' => $redirectRoute,
             ]
         );
     }
@@ -258,6 +202,9 @@ class TopicController extends Controller
                 $subject = new Subject;
                 $subject->title = $newSubject['title'];
                 $subject->abbreviation = $newSubject['abbreviation'];
+                if ($request->user()->is_admin) {
+                    $subject->is_public = true;
+                }
                 $subject->save();
                 if (is_array($subject['years']) && count($subject['years']) > 0) {
                     collect($subject['years'])->each(function ($year) use ($subject) {
@@ -287,17 +234,15 @@ class TopicController extends Controller
                     $topicSkill->save();
                 }
             });
-            $newTopic->copyNewCheckpointsFromOldTopic();
-            $newTopic->copyNewLearningMaterialsFromOldTopic();
+            $newTopic->copyNewNotesFromOldTopic();
         });
-        Toast::title('Topic sucessfuly updated!')->autoDismiss(5);
         return redirect()->route('topics.show', $newTopic);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Topic $topic)
+    public function destroy(Topic $topic)
     {
         $this->authorize('delete-topic', [$topic]);
         if ($topic->potentialReplacement != null) {
@@ -306,11 +251,6 @@ class TopicController extends Controller
         }
         DB::transaction(
             function () use ($topic) {
-                $topic->learningMaterials->each(function ($lm) {
-                    if (LearningMaterial::where('alternative', $lm->alternative)->count() == 1) {
-                        Storage::delete($lm->path);
-                    }
-                });
                 $topic->delete();
             }
         );
@@ -339,22 +279,6 @@ class TopicController extends Controller
         return redirect(Referer::get());
     }
 
-    public function unpublishLearningMaterial(LearningMaterial $learningMaterial)
-    {
-        $this->authorize('use-dashboard');
-        $learningMaterial->is_public = 0;
-        $learningMaterial->save();
-        return redirect(Referer::get());
-    }
-
-    public function publishLearningMaterial(LearningMaterial $learningMaterial)
-    {
-        $this->authorize('use-dashboard');
-        $learningMaterial->is_public = 1;
-        $learningMaterial->save();
-        return redirect(Referer::get());
-    }
-
     public function applyUpdate(Topic $topic)
     {
         $this->authorize('use-dashboard');
@@ -363,7 +287,6 @@ class TopicController extends Controller
                 $topic->applyUpdate();
             }
         );
-        Toast::title('Update applied')->autoDismiss(8);
         return redirect(Referer::get());
     }
 
@@ -411,8 +334,6 @@ class TopicController extends Controller
                 });
             }
         });
-        // collect($request->toArray())->toJson();
-        Toast::title('Subject sucessfuly updated!')->autoDismiss(5);
         return redirect(Referer::get());
     }
 
@@ -438,5 +359,53 @@ class TopicController extends Controller
     {
         $checkpointController =  app(CheckpointController::class);
         return $checkpointController->store($request, null, $topic);
+    }
+
+    public function storeNote(Request $request, Topic $topic)
+    {
+        DB::transaction(function () use ($request, $topic) {
+            $newNote = new Note;
+            $newNote->user_id = $request->user()->id;
+            $newNote->topic_id = $topic->id;
+            $newNote->content = '<h3>My new Note title</h3>';
+            $newNote->save();
+        });
+        return redirect(Referer::get());
+    }
+    public function updateNote(Request $request, Note $note)
+    {
+        $response = [
+            'categoriesOptions' => [],
+            'updated_at' => null,
+            'getCategoriesOptions' => $request->input('getCategoriesOptions', false),
+        ];
+        DB::transaction(function () use ($request, &$note) {
+            $note->content = $request->input('content');
+            $note->is_public = $request->input('is_public');
+            $note->categories()->detach();
+            $note->categories()->attach(collect($request->input('categories', []))->pluck('id'));
+            $note->save();
+        });
+        if ($response['getCategoriesOptions']) {
+            $response['categories'] = $note->categoriesMap();
+            $response['categoriesOptions'] = $note->categoriesOptions();
+        } elseif (count($request->input('categoriesOptions', [])) > 0) {
+            $response['categoriesOptions'] = [];
+        }
+        $response['updated_at'] = $note->updated_at;
+        return $response;
+    }
+
+    public function deleteNote(Note $note)
+    {
+        DB::transaction(function () use ($note) {
+            $note->delete();
+        });
+        return redirect(Referer::get());
+    }
+
+    public function referencableNote(Note $note)
+    {
+        return view('components.referencable-notes');
     }
 }

@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('checkpoints', function (Blueprint $table) {
-            $table->text('source')->nullable();
+        Schema::table('notes', function (Blueprint $table) {
+            $table->foreignUuid('potential_replacement_of')->nullable()->constrained('notes')->nullOnDelete();
+            $table->foreignUuid('potential_replacement')->nullable()->constrained('notes')->nullOnDelete();
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('checkpoints', function (Blueprint $table) {
-            $table->dropColumn('source');
+        Schema::table('notes', function (Blueprint $table) {
+            //
         });
     }
 };

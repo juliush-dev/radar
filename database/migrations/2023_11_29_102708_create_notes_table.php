@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('learning_materials', function (Blueprint $table) {
+        Schema::create('notes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
-            $table->string('path');
-            $table->string('mime_type');
-            $table->boolean('is_public')->default(false);
-            $table->string('alternative')->nullable();
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
+            $table->longText('content');
+            $table->boolean('is_public')->default(false);
+            $table->boolean('is_update')->default(false);
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('learning_materials');
+        Schema::dropIfExists('notes');
     }
 };

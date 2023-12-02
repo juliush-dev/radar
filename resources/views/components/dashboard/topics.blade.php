@@ -5,9 +5,9 @@
              {{ $topic->title }}
          </x-splade-link>
      @endcell
-     @cell('learningMaterials', $topic)
+     @cell('notes', $topic)
          <span class="text-md">
-             {{ $topic->learningMaterials->count() }}
+             {{ $topic->notes->count() }}
          </span>
      @endcell
      @cell('public', $topic)

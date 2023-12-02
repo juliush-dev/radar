@@ -7,17 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MyCheckpoint extends Model
+class MyNote extends Model
 {
     use HasFactory, HasUuids;
 
     public function topic(): BelongsTo
     {
-        return $this->belongsTo(MyTopic::class);
-    }
-
-    public function checkpoint(): BelongsTo
-    {
-        return $this->belongsTo(Checkpoint::class);
+        return $this->belongsTo(MyTopic::class, 'my_topic_id');
     }
 }

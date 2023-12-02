@@ -7,9 +7,6 @@
     class="w-full z-20 flex flex-col gap-4 grow px-6 lg:px-10 my-4 flex-wrap">
     <x-splade-toggle class="w-full">
         <div class="flex gap-6 md:justify-end flex-wrap items-center overflow-x-auto">
-            {{-- <div class="whitespace-nowrap items-center lg:my-8 md:grow dark:text-sky-500">
-                {{ $slot }}
-            </div> --}}
             @can('use-dashboard')
                 <x-splade-link :href="route('dashboard.index', ['tab' => 'topics'])"
                     class="w-fit flex items-center gap-2 justify-end text-violet-500 hover:text-violet-600 transition-all duration-300">
@@ -70,4 +67,13 @@
             </div>
         </x-splade-transition>
     </x-splade-toggle>
+    <div class="soft flex gap-10 text-sm flex-wrap dark:text-slate-300 mb-6">
+        @foreach ($subjects->sortBy('title') as $subject)
+            <button type="submit" @click="form.subject = '{{ $subject->id }}'"
+                class="@if ($subject->id == request()->query('subject')) bg-blue-400 text-slate-50 rounded-full px-3 @endif">{{ $subject->title }}</button>
+        @endforeach
+        <button @click="form.subject = null"
+            class="@if (null == request()->query('subject')) bg-blue-400 text-slate-50 rounded-full px-3 @endif">All
+            topics</button>
+    </div>
 </x-splade-form>

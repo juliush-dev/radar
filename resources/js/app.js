@@ -1,18 +1,15 @@
 import "./bootstrap";
 import "../css/app.css";
+import "../css/tiptap.scss";
 import "@protonemedia/laravel-splade/dist/style.css";
 import "@protonemedia/laravel-splade/dist/style.css";
 import "../css/choices.scss";
 import "vue3-emoji-picker/css";
 import Topic from "./Components/Topic.vue";
 import Skill from "./Components/Skill.vue";
-import Checkpoint from "./Components/Checkpoint.vue";
-import CheckpointSession from "./Components/CheckpointSession.vue";
-import KnowledgeCube from "./Components/KnowledgeCube.vue";
-import Knowledge from "./Components/Knowledge.vue";
-import Countdown from "./Components/Countdown.vue";
+import NoteSpace from "./Components/NoteSpace.vue";
 import LineChart from "./Components/LineChart.vue";
-import MyOffice from "./Components/MyOffice.vue";
+import TipTap from "./Components/TipTap.vue";
 
 import "@protonemedia/laravel-splade/dist/jodit.css";
 
@@ -32,13 +29,9 @@ createApp({
         components: {
             Topic,
             Skill,
-            Checkpoint,
-            CheckpointSession,
-            KnowledgeCube,
-            Knowledge,
+            NoteSpace,
             LineChart,
-            Countdown,
-            MyOffice,
+            TipTap,
         },
     })
     .mount(el);

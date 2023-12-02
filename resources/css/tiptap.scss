@@ -1,0 +1,27 @@
+.ProseMirror{
+    @apply min-w-full prose p-0 pr-6 dark:prose-invert focus:outline-none;
+    @apply dark:prose-blockquote:border-slate-400 prose-headings:m-0 prose-headings:mb-3;
+    @apply prose-img:w-full prose-img:h-auto prose-img:rounded-2xl dark:prose-headings:text-slate-500;
+    @apply  dark:prose-strong:text-slate-500;
+    @apply  prose-headings:text-slate-500;
+    // @apply  prose-headings:font-medium;
+}
+
+.ProseMirrorReplica{
+    @apply prose p-0  dark:prose-invert focus:outline-none;
+}
+.has-focus {
+    @apply border-2 rounded-md px-2  border-fuchsia-400;
+
+}
+.note form {
+    @apply w-full rounded-lg;
+}
+code {
+    font-size: 0.9rem;
+    padding: 0.25em;
+    border-radius: 0.25em;
+    background-color: rgba(#616161, 0.1);
+    color: #616161;
+    box-decoration-break: clone;
+}

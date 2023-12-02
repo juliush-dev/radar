@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Checkpoint;
 use App\Models\LearningMaterial;
 use App\Models\MyOffice;
+use App\Models\Note;
 use App\Models\Skill;
 use App\Models\Topic;
 use App\Models\User;
@@ -64,10 +65,6 @@ class AuthServiceProvider extends ServiceProvider
             return !$user->blocked;
         });
 
-        Gate::define('delete-learning-material', function (User $user, ?LearningMaterial $lm) {
-            return $lm != null ? $user->id === $lm->author?->id && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
-        });
-
         Gate::define('create-skill', function (?User $user) {
             return $user?->is_admin && !$user?->blocked;
         });
@@ -100,34 +97,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->is_admin && !$user->blocked;
         });
 
-        Gate::define('create-checkpoint', function (?User $user) {
-            return !$user?->blocked || $user == null;
-        });
-        Gate::define('preview-checkpoint', function (?User $user, Checkpoint $checkpoint) {
-            return (!$user?->blocked || $user == null) && (($checkpoint->is_public && !$checkpoint->is_update) || (!$checkpoint->is_public && (!empty($user) && $user->id == $checkpoint->author->id)) || (!empty($user) && $user->is_admin));
-        });
-        Gate::define('record-checkpoint', function (?User $user, Checkpoint $checkpoint) {
-            return (!$user?->blocked || $user == null) && (($checkpoint->is_public && !$checkpoint->is_update) || (!$checkpoint->is_public && (!empty($user) && $user->id == $checkpoint->author->id)) || (!empty($user) && $user->is_admin));
-        });
-        Gate::define('update-checkpoint', function (User $user, ?Checkpoint $checkpoint) {
-            return $checkpoint != null ? !isset($checkpoint->potential_replacement) && (($user->id === $checkpoint->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked) : $user->is_admin && !$user->blocked;
-        });
-        Gate::define('see-checkpoint-update-path', function (User $user, ?Checkpoint $checkpoint) {
-            return $checkpoint != null ? (($user->id === $checkpoint->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked) : $user->is_admin && !$user->blocked;
-        });
-        Gate::define('delete-checkpoint', function (User $user, ?Checkpoint $checkpoint) {
-            return $checkpoint != null ? ($user->id === $checkpoint->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
-        });
-
-        Gate::define('delete-checkpoint-session', function (User $user, ?UserCheckpointSession $session) {
-            return $session != null ? ($user->id === $session->author?->id) && !$user->blocked || $user->is_admin && !$user->blocked : $user->is_admin && !$user->blocked;
-        });
-
-        Gate::define('create-office', function (User $user) {
-            return !$user?->blocked;
-        });
-        Gate::define('see-office', function (User $user, MyOffice $myOffice) {
-            return (!$user->blocked && $user->id == $myOffice->user->id);
+        Gate::define('edit-note', function (User $user, Note $note) {
+            return (!$user->blocked && $user->id == $note->author->id);
         });
     }
 }

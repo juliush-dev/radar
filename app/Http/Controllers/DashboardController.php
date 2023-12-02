@@ -27,7 +27,7 @@ class DashboardController extends Controller
             $tabParameters['totalSkills'] = $this->rq->totalSkills();
             $tabParameters['totalUsers'] = $this->rq->totalUsers();
             $tabParameters['totalTopics'] = $this->rq->totalTopics();
-            $tabParameters['totalLearningMaterials'] = $this->rq->totalLearningMaterials();
+            $tabParameters['totalNotes'] = $this->rq->totalNotes();
             $tabParameters['totalSubjects'] = $this->rq->totalSubjects();
             $tabParameters['totalGroups'] = $this->rq->totalGroups();
             $usersByMonth = $this->rq->usersByMonth();
@@ -71,14 +71,12 @@ class DashboardController extends Controller
             $tabParameters['users'] = $this->rq->usersTable();
         } elseif ($activeTab == 'topics') {
             $tabParameters['topics'] = $this->rq->topicsTable();
-        } elseif ($activeTab == 'learning-materials') {
-            $tabParameters['lms'] = $this->rq->learningMaterialsTable();
         } elseif ($activeTab == 'subjects') {
             $tabParameters['subjects'] = $this->rq->subjectsTable();
         } elseif ($activeTab == 'groups') {
             $tabParameters['groups'] = $this->rq->groupsTable();
-        } elseif ($activeTab == 'checkpoints') {
-            $tabParameters['checkpoints'] = $this->rq->checkpointsTable();
+        } elseif ($activeTab == 'notes') {
+            $tabParameters['notes'] = $this->rq->notesTable();
         }
 
         return view(

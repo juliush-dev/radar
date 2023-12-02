@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\CheckpointController;
-use App\Http\Controllers\CheckpointKnowledgeController;
+use App\Http\Controllers\MyNoteController;
 use App\Http\Controllers\MyOfficeController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserCheckpointSessionController;
-use App\Http\Controllers\UserCheckpointSessionResultController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,6 +95,24 @@ Route::middleware('splade')->group(function () {
                     '/subjects/{subject}',
                     'updateSubject'
                 )->name('subjects.update');
+
+                Route::post(
+                    '/topics/{topic}/notes',
+                    'storeNote'
+                )->name('notes.store');
+                Route::patch(
+                    '/notes/{note}',
+                    'updateNote'
+                )->name('notes.update');
+                Route::delete(
+                    '/notes/{note}',
+                    'deleteNote'
+                )->name('notes.delete');
+
+                Route::get(
+                    '/notes/{note}/relations',
+                    'referencableNote'
+                )->name('notes.relate');
             });
 
         Route::resource(
@@ -102,6 +120,7 @@ Route::middleware('splade')->group(function () {
             App\Http\Controllers\TopicController::class
         )->except(['show', 'index']);
 
+        Route::get('/notes/{note}/references', [NoteController::class, 'references'])->name('topics.references');
         Route::resource(
             'skills',
             App\Http\Controllers\SkillController::class
@@ -228,96 +247,7 @@ Route::middleware('splade')->group(function () {
                     'destroy'
                 )->name('destroy');
             });
-
-        Route::controller(UserCheckpointSessionResultController::class)
-            ->prefix('results')
-            ->name('results.')
-            ->group(function () {
-                Route::post(
-                    '/sessions/{session}/bridges/{bridge}/crossed',
-                    'correct'
-                )->name('correct');
-                Route::post(
-                    '/sessions/{session}/bridges/{bridge}/missed',
-                    'wrong'
-                )->name('wrong');
-            });
-
-        Route::controller(MyOfficeController::class)
-            ->prefix('my-office')
-            ->name('my-office.')
-            ->group(function () {
-
-                Route::get(
-                    '/{office}',
-                    'show'
-                )->name('show');
-                Route::post(
-                    '/',
-                    'store'
-                )->name('store');
-                Route::delete(
-                    '/{office}',
-                    'destroy'
-                )->name('destroy');
-
-                Route::post(
-                    '/{office}/subjects/{subject}/add',
-                    'addSubject'
-                )->name('subjects.add');
-                Route::post(
-                    '/subjects/{subject}/remove',
-                    'removeSubject'
-                )->name('subjects.remove');
-                Route::get(
-                    '/subjects/{subject}',
-                    'showSubject'
-                )->name('subjects.show');
-                Route::post(
-                    '/{office}/subjects/reorder',
-                    'reorderSubjects'
-                )->name('subjects.reorder');
-
-                Route::post(
-                    '/subjects/{subject}/topics/{topic}/add',
-                    'addTopic'
-                )->name('topics.add');
-                Route::post(
-                    '/topics/{topic}/remove',
-                    'removeTopic'
-                )->name('topics.remove');
-                Route::get(
-                    '/topics/{topic}',
-                    'showTopic'
-                )->name('topics.show');
-                Route::post(
-                    '/{office}/topics/reorder',
-                    'reorderTopics'
-                )->name('topics.reorder');
-
-
-                Route::post(
-                    '/topics/{topic}/checkpoints/{checkpoint}/add',
-                    'addCheckpoint'
-                )->name('checkpoints.add');
-                Route::post(
-                    '/checkpoints/{checkpoint}/remove',
-                    'removeCheckpoint'
-                )->name('checkpoints.remove');
-                Route::get(
-                    '/checkpoints/{checkpoint}',
-                    'showCheckpoint'
-                )->name('checkpoints.show');
-                Route::post(
-                    '/{office}/checkpoints/reorder',
-                    'reorderCheckpoints'
-                )->name('checkpoints.reorder');
-            });
     });
-    Route::get('/knowledge/{knowledge}', [
-        CheckpointKnowledgeController::class,
-        'show'
-    ])->name('knowledge.show');
 
     Route::resource(
         'fields',

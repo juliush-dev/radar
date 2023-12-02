@@ -2,25 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\Checkpoint;
 use App\Models\Field;
 use App\Models\Group;
-use App\Models\LearningMaterial;
+use App\Models\Note;
 use App\Models\Skill;
 use App\Models\Skill\Type;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\User;
 use App\Models\UserCheckpointSession;
-use App\Models\UserCheckpointSessionResult;
-use App\Tables\Checkpoints;
 use App\Tables\Groups;
-use App\Tables\LearningMaterials;
+use App\Tables\Notes;
 use App\Tables\Subjects;
 use App\Tables\Topics;
 use App\Tables\Users;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -49,9 +45,9 @@ class RadarQuery
         return Topics::class;
     }
 
-    public function learningMaterialsTable()
+    public function notesTable()
     {
-        return LearningMaterials::class;
+        return Notes::class;
     }
 
     public function subjectsTable()
@@ -86,9 +82,9 @@ class RadarQuery
         return Group::count();
     }
 
-    public function totalLearningMaterials()
+    public function totalNotes()
     {
-        return LearningMaterial::count();
+        return Note::count();
     }
 
     public function topics($filter = [])
@@ -176,9 +172,7 @@ class RadarQuery
         if ($all) {
             return Subject::all();
         }
-        return Subject::whereHas('topics', function ($query) {
-            $query->where('is_public', true);
-        })->get();
+        return Subject::where('is_public', true)->get();
     }
 
     public function skills($filter = [], $all = false)
@@ -251,40 +245,6 @@ class RadarQuery
         return User::all();
     }
 
-    public function checkpoints($filter = [])
-    {
-        $checkpoint = Checkpoint::query();
-        if (!empty($filter['author'])) {
-            $checkpoint->where(function ($query) use ($filter) {
-                $query->where(function ($query) use ($filter) {
-                    $query->where('is_public', true);
-                    $query->where('is_update', false);
-                    $query->where(function ($query) use ($filter) {
-                        $query->whereNot('user_id', $filter['author'])
-                            ->orWhere('user_id', null);
-                    });
-                });
-                $query->orWhere(function ($query) use ($filter) {
-                    $query->where('user_id', $filter['author']);
-                    $query->where('potential_replacement', null);
-                    $query->where(function ($query) {
-                        $query->where('is_update', true)->orWhere('is_update', false);
-                    });
-                });
-            });
-        } else {
-            $checkpoint->where('is_public', true)->where('is_update', false);
-        }
-        if (!empty($filter['topic'])) {
-            $checkpoint->where('topic_id', $filter['topic']);
-        }
-        return $checkpoint->get();
-    }
-
-    public function checkpointsTable()
-    {
-        return Checkpoints::class;
-    }
 
     public function checkpointsSessions($filter = [])
     {
@@ -299,8 +259,11 @@ class RadarQuery
     }
 
 
-    static function publicOrAuthor($userId)
+    static function publicOrAuthor($userId = null)
     {
+        if ($userId == null) {
+            $userId = Auth::user()?->id;
+        }
         return function ($query) use ($userId) {
             $query->where(function ($query) use ($userId) {
                 $query->where('is_public', true);

@@ -1,18 +1,17 @@
 <?php
 
-namespace App\View\Components\Forms;
+namespace App\View\Components\Dashboard;
 
-use App\Services\RadarQuery;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class KnowledgeCube extends Component
+class Notes extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(public $notes)
     {
         //
     }
@@ -22,6 +21,6 @@ class KnowledgeCube extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.forms.knowledge-cube');
+        return view('components.dashboard.notes');
     }
 }

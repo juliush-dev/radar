@@ -56,7 +56,7 @@ class Topics extends AbstractTable
             ->selectFilter('subject_id', $this->rq->subjects(true)->pluck('title', 'id')->all(), 'subject')
             ->column('title', canBeHidden: false)
             ->column('subject.title', 'subject', canBeHidden: false)
-            ->column('learningMaterials', 'LMs')
+            ->column('notes', 'Notes')
             ->column('author.name', 'author')
             ->column('public')
             ->column('potentialReplacementOf.title', 'Update of', canBeHidden: false)
