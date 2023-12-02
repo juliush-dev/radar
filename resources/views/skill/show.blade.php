@@ -21,7 +21,7 @@
                     <Link href="{{ Auth::check() ? route('skills.create') : '#login-required' }}"
                         class="text-sky-400 hover:text-sky-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
+                        stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     </Link>
@@ -40,7 +40,7 @@
                         <x-layouts.navigation-link class="text-red-400" resource="skills" action="destroy" :action-args="$skill">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor"
-                                class="w-6 h-6 text-red-500 hover:text-red-600 shadow
+                                class="w-5 h-5 text-red-500 hover:text-red-600 shadow
                                 hover:shadow-md transition-all duration-300">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>

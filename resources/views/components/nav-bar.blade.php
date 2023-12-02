@@ -16,7 +16,7 @@
      </x-splade-modal>
  @endguest
  <div v-show="radar.navigation"
-     class="z-30 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white shadow-sm shadow-fuchsia-400"
+     class="z-30 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300"
      @preserveScroll('navigationContainer')>
      <div class="flex gap-2 items-center px-4 lg:py-2 lg:px-10 md:pb-0 pl-[21px]">
          <span
@@ -32,7 +32,7 @@
              {{ empty($activePage) ? 'Welcome' : $activePage }}
          </h1>
      </div>
-     <div class="text-sm flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-2 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-0 overflow-x-auto"
+     <div class="text-base flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-2 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-0 overflow-x-auto"
          @preserveScroll('mainNavigation')>
          @if (!Route::is('welcome'))
              <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="welcome"
@@ -66,11 +66,11 @@
          @endauth
          <x-authentication />
          <x-splade-link modal :href="$previousRoute"
-             class="my-auto whitespace-nowrap w-fit flex gap-2 justify-end text-violet-400 hover:text-violet-500 transition-all duration-300">
+             class="my-auto whitespace-nowrap w-fit flex gap-2 justify-end text-fuchsia-400 hover:text-fuchsia-500 transition-all duration-300">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="w-5 h-5">
                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-             </svg> Previous page
+             </svg>
          </x-splade-link>
          <button @click="radar.dark = !radar.dark" v-text="radar.dark ? '🙄' : '🥱'"
              class="mt-0.5 px-0.5 whitespace-nowrap"></button>

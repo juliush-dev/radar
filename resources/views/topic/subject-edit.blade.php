@@ -9,8 +9,8 @@
             ]" class="w-full">
                 <x-splade-input required name="title" label="title" class="mb-4" />
                 <x-splade-input required name="abbreviation" label="abbreviation" class="mb-4" />
-                <x-splade-select required name="years" :options="$years" option-value="id" option-label="title"
-                    label="Years" multiple class="mb-4" />
+                <x-splade-select name="years" :options="$years" option-value="id" option-label="title" label="Years"
+                    multiple class="mb-4" />
                 <button type="submit"
                     class="w-full py-2 px-4 bg-fuchsia-500 text-white hover:bg-fuchsia-600 shadow-md">
                     Save changes
