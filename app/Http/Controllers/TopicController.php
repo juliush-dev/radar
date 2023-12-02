@@ -256,11 +256,11 @@ class TopicController extends Controller
         );
         Toast::title('Topic deleted')->autoDismiss(5);
 
-        $redirectRoute = route('topics.index');
-        if (Referer::get() == $currentRoute = route('dashboard.index', ['tab' => 'topics'])) {
-            $redirectRoute = $currentRoute;
-        }
-        return redirect($redirectRoute);
+        // $redirectRoute = null;
+        // if (Referer::get() == $currentRoute = route('dashboard.index', ['tab' => 'topics'])) {
+        //     $redirectRoute = $currentRoute;
+        // }
+        return redirect(Referer::get());
     }
 
     public function unpublishTopic(Topic $topic)
@@ -332,6 +332,8 @@ class TopicController extends Controller
                     $subjectYear->year = $year;
                     $subjectYear->save();
                 });
+            } else {
+                $subject->years()->delete();
             }
         });
         return redirect(Referer::get());
@@ -402,10 +404,5 @@ class TopicController extends Controller
             $note->delete();
         });
         return redirect(Referer::get());
-    }
-
-    public function referencableNote(Note $note)
-    {
-        return view('components.referencable-notes');
     }
 }

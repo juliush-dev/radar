@@ -4,21 +4,20 @@
         class="whitespace-break-spaces text-md first-letter:uppercase w-full text-pink-500 group-hover:text-pink-700 dark:text-pink-300 dark:group-hover:text-pink-400 transition-colors duration-300">
         <h1 class="mb-2">{{ $field->title }}</h1>
     </x-nav-link>
-    <p class="font-normal text-sm mb-4 text-slate-500 dark:text-slate-300">
+    <div class="font-normal text-sm mb-4 text-slate-500 dark:text-slate-300 flex items-center gap-3 flex-wrap">
         <span class="capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">
             {{ $field->code }}
         </span>
-        @foreach ($field->years as $year)
-            @if ($loop->first)
-                <span class="mx-1">/</span>
-            @endif
-            <span
-                class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
-            @if (!$loop->last)
-                <span class="mx-1">-</span>
-            @endif
-        @endforeach
-    </p>
+        <div class="flex items-center gap-0 text-slate-400">
+            @foreach ($field->years as $year)
+                <span
+                    class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
+                @if (!$loop->last)
+                    <span class="mx-1">-</span>
+                @endif
+            @endforeach
+        </div>
+    </div>
     @if (!Route::is('fields.index') && $field->details)
         <x-splade-toggle>
             <x-splade-transition show="toggled" animation="slide-left" enter="transition-opacity duration-300"

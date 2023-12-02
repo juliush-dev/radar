@@ -108,11 +108,6 @@ Route::middleware('splade')->group(function () {
                     '/notes/{note}',
                     'deleteNote'
                 )->name('notes.delete');
-
-                Route::get(
-                    '/notes/{note}/relations',
-                    'referencableNote'
-                )->name('notes.relate');
             });
 
         Route::resource(

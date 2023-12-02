@@ -67,15 +67,18 @@
             </div>
         </x-splade-transition>
     </x-splade-toggle>
-    <div class="soft flex gap-10 text-base flex-wrap dark:text-slate-300 mb-6">
+    <div class="soft flex flex-col md:flex-row items-start gap-6 lg:gap-8 text-sm flex-wrap dark:text-slate-300 mb-6">
         @foreach ($subjects->sortBy('title') as $subject)
             <button type="submit" @click="form.subject = '{{ $subject->id }}'"
-                class="@if ($subject->id == request()->query('subject')) bg-blue-400 text-slate-50 rounded-full px-3 @endif">
-                {{ $subject->title }} <span class="font-mono">({{ $subject->topics()->count() }})</span>
+                class="text-left @if ($subject->id == request()->query('subject')) bg-pink-600 text-slate-50 rounded-full px-3 @endif">
+                {{ $subject->title }}
+                <span class="font-mono">
+                    ({{ $subject->publicTopics()->count() }}P/{{ $subject->topics()->count() }})
+                </span>
             </button>
         @endforeach
         <button @click="form.subject = null"
-            class="@if (null == request()->query('subject')) bg-blue-400 text-slate-50 rounded-full px-3 @endif">All
+            class="@if (null == request()->query('subject')) bg-pink-600 text-slate-50 rounded-full px-3 @endif">All
             topics</button>
     </div>
 </x-splade-form>

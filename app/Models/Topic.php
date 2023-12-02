@@ -102,8 +102,10 @@ class Topic extends Model
                     ->pluck('potential_replacement_of')
                     ->all()
             )->get();
-        $notesWithoutReplacement->each(function ($oldNote) {
-            $oldNote->copyToTopic($this);
+        $notesWithoutReplacement->each(function (Note $oldNote) {
+            $noteCopy = $oldNote->copyToTopic($this);
+            $noteCopy->categories()->attach($oldNote->categories()->pluck('category_id'));
+            $noteCopy->categoryOf()->attach($oldNote->categoryOf()->pluck('note_id'));
         });
     }
 

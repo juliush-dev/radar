@@ -16,9 +16,9 @@
      </x-splade-modal>
  @endguest
  <div v-show="radar.navigation"
-     class="z-30 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300"
+     class="z-30 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300/50 dark:border-slate-700/50"
      @preserveScroll('navigationContainer')>
-     <div class="flex gap-2 items-center px-4 lg:py-2 lg:px-10 md:pb-0 pl-[21px]">
+     <div class="flex gap-2 items-center pt-4 px-4 lg:pt-0 lg:py-2 lg:px-10 md:pb-0 pl-[20px] md:pl-[21px]">
          <span
              class="justify-center p-1 bg-green-400 dark:bg-yellow-400 rounded-full text-slate-50 dark:text-slate-900 flex items.center capitalize flex-nowrap">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

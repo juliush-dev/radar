@@ -21,7 +21,7 @@ class Note extends Model
     {
         return $this->belongsTo(Topic::class);
     }
-    public function copyToTopic($topic)
+    public function copyToTopic($topic): Note
     {
 
         $noteCopy = $this->replicate();
@@ -45,6 +45,8 @@ class Note extends Model
         } else {
             $this->is_update = 0;
         }
+        $this->categories()->attach($oldNote->categories()->whereNotIn('category_id', $this->categories()->pluck('category_id'))->pluck('category_id'));
+        $this->categoryOf()->attach($oldNote->categoryOf()->whereNotIn('note_id', $this->categoryOf()->pluck('note_id'))->pluck('note_id'));
         $oldNote->delete();
         $this->is_public = true;
         $this->save();
