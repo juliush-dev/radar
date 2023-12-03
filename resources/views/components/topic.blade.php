@@ -6,16 +6,10 @@
      </x-nav-link>
 
      <div class="font-normal text-sm mb-6 text-slate-500 dark:text-slate-300 flex items-center gap-3 flex-wrap">
-         @can('update-subject')
-             <x-nav-link modal href="{{ route('topics.subjects.edit', $topic->subject) }}"
-                 class="dark:text-teal-300 text-teal-500">
-                 {{ $topic->subject->title }}
-             </x-nav-link>
-         @else
-             <span class="dark:text-slate-300 text-slate-600">
-                 {{ $topic->subject->title }}
-             </span>
-         @endcan
+         <x-nav-link href="{{ route('topics.index') . '?subject=' . $topic->subject->id }}"
+             class="dark:text-teal-300 text-teal-500">
+             {{ $topic->subject->title }}
+         </x-nav-link>
          <div class="flex items-center gap-0 text-slate-400">
              @foreach ($topic->years as $year)
                  <span class="first-letter:capitalize whitespace-nowrap">{{ $year->year }}</span>

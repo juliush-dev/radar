@@ -8,16 +8,10 @@
                  </h1>
              </div>
              <div class="mb-4 grow flex gap-2 flex-wrap">
-                 @can('update-subject')
-                     <x-nav-link modal href="{{ route('topics.subjects.edit', $topic->subject) }}"
-                         class="dark:text-teal-300 text-teal-500">
-                         {{ $topic->subject->title }}
-                     </x-nav-link>
-                 @else
-                     <span class="dark:text-slate-300 text-slate-600">
-                         {{ $topic->subject->title }}
-                     </span>
-                 @endcan
+                 <x-nav-link modal href="{{ route('topics.index') . '?subject=' . $topic->subject->id }}"
+                     class="dark:text-teal-300 text-teal-500">
+                     {{ $topic->subject->title }}
+                 </x-nav-link>
                  @if ($topic->years->count() > 0)
                      /<p class="font-light">
                          @foreach ($topic->years as $year)
