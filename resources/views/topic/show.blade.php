@@ -187,5 +187,6 @@
                  <x-field :field="$skillField->field" />
              @endforeach
          </div>
+         <div class="@if (Agent::isAndroidOs() || Agent::isEdge()) mb-36 @endif"></div>
      </main>
  </x-layouts.app>

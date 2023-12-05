@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->string('abbreviation')->nullable();
+            $table->boolean('is_public')->default(false);
             $table->timestamps();
         });
     }

@@ -1,10 +1,9 @@
 .ProseMirror{
-    @apply min-w-full prose p-0 pr-6 dark:prose-invert focus:outline-none;
+    @apply min-w-full prose p-0 dark:prose-invert focus:outline-none;
     @apply prose-blockquote:border-pink-400 dark:prose-blockquote:border-pink-800 prose-headings:m-0 prose-headings:mb-3;
     @apply prose-img:max-w-full prose-img:h-auto prose-img:rounded-md dark:prose-headings:text-slate-300;
     @apply  dark:prose-strong:text-slate-300;
     @apply  prose-headings:text-slate-700;
-    // @apply  prose-headings:font-medium;
 }
 
 .ProseMirrorReplica{
@@ -15,7 +14,7 @@
 
 }
 .note form {
-    @apply w-full rounded-lg;
+    @apply w-full overflow-hidden rounded-lg;
 }
 code {
     font-size: 0.9rem;
@@ -61,4 +60,82 @@ mark {
     @apply bg-amber-400 dark:bg-amber-700 dark:text-slate-200;
     @apply px-1 rounded-md;
     box-decoration-break: clone;
+}
+
+.ProseMirror {
+    table {
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 0;
+        overflow: hidden;
+
+        td,
+        th {
+            min-width: 1em;
+            border: 2px solid #ced4da;
+            padding: 3px 5px;
+            vertical-align: top;
+            box-sizing: border-box;
+            position: relative;
+
+            >* {
+                margin-bottom: 0;
+            }
+        }
+
+        th {
+            font-weight: bold;
+            text-align: left;
+            background-color: #f1f3f5;
+        }
+
+        .selectedCell:after {
+            z-index: 2;
+            position: absolute;
+            content: "";
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(200, 200, 255, 0.4);
+            pointer-events: none;
+        }
+
+        .column-resize-handle {
+            position: absolute;
+            right: -2px;
+            top: 0;
+            bottom: -2px;
+            width: 4px;
+            background-color: #adf;
+            pointer-events: none;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+.tableWrapper {
+    padding: 1rem 0;
+    overflow-x: auto;
+}
+
+.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+}
+
+.controls-panel{
+    @apply flex flex-col gap-4 h-52 overflow-y-auto md:mr-6;
+    @apply rounded-md border border-slate-200 dark:border-fuchsia-700;
+}
+
+.controls-panel button {
+    @apply first-letter:uppercase text-sky-400;
+}
+
+.ProseMirror p{
+     @apply w-full break-all;
 }

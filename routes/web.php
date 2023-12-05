@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\CheckpointController;
-use App\Http\Controllers\MyNoteController;
-use App\Http\Controllers\MyOfficeController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserCheckpointSessionController;
@@ -21,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('splade')->group(function () {
     // Registers routes to support the interactive components...
-    Route::spladeWithVueBridge();
+    // Route::spladeWithVueBridge();
 
     // Registers routes to support password confirmation in Form and Link components...
     Route::spladePasswordConfirmation();

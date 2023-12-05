@@ -69,6 +69,7 @@
                     <x-skill :skill="$skill->skill" :user-assessment="$rq->userSkillAssessment($skill->skill)" />
                 @endforeach
             </div>
+            <div class="@if (Agent::isAndroidOs() || Agent::isEdge()) mb-36 @endif"></div>
         </x-splade-modal>
     </main>
 </x-layouts.app>

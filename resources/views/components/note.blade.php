@@ -1,5 +1,5 @@
 <div
-    class="w-full overflow-hidden flex justify-center note md:border-2 border-slate-300 dark:border-slate-700/60 rounded-lg mb-6 transition-all duration-300">
+    class="mx-auto w-full overflow-hidden flex justify-center note md:border-2 border-slate-300 dark:border-slate-700/60 rounded-lg p-6 mb-6 transition-all duration-300">
     <x-splade-form action="{{ route('topics.notes.update', $note) }}" method="patch" :default="[
         'content' => $note->content,
         'is_public' => $note->is_public,
@@ -8,9 +8,9 @@
         'categories' => $note->categoriesMap(),
         'getCategoriesOptions' => false,
     ]"
-        class="flex flex-col justify-between md:pl-6 py-6 overflow-hidden" stay background
+        class="flex flex-col justify-between overflow-hidden w-full" stay background
         submit-on-change="content, is_public, getCategoriesOptions, categories">
-        <div class="flex flex-wrap md:items-center gap-6 mb-6 w-full md:pr-6" id="{{ $note->id }}">
+        <div class="flex flex-wrap md:items-center gap-6 mb-3 w-full" id="{{ $note->id }}">
             <div class="font-medium text-slate-400 first-letter:uppercase dark:text-slate-600">
                 {{ $note->author->name }}
             </div>
@@ -81,7 +81,7 @@
                 </div>
             </x-splade-transition>
         </div>
-        <div class="flex items-center md:mr-6 mt-4 gap-6">
+        <div class="flex items-center mt-4 gap-6">
             @auth
                 @can('edit-note', [$note])
                     <x-splade-checkbox inline label="Public" name="is_public" value="1" class="checked:bg-fuchsia-400" />

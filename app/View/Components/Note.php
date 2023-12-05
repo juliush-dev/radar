@@ -6,11 +6,11 @@ use App\Models\Note as ModelsNote;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use ProtoneMedia\Splade\Components\WithVue;
+// use ProtoneMedia\Splade\Components\WithVue;
 
 class Note extends Component
 {
-    use WithVue;
+    // use WithVue;
     /**
      * Create a new component instance.
      */

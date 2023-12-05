@@ -3,27 +3,27 @@
      <div class="h-full w-full flex flex-col gap-0 justify-evenly overflow-hidden">
          <div
              class="h-1/2 overflow-auto bg-slate-50 dark:bg-slate-800 flex flex-nowrap gap-0 shadow-sm shadow-slate-400 w-full">
-             @foreach ($note->categoryOf()->whereNot('topic_id', $note->topic->id)->get() as $referer)
+             @foreach ($referers = $note->categoryOf()->whereNot('topic_id', $note->topic->id)->get() as $referer)
                  <section
-                     class="min-h-screen @if (!$loop->last) min-w-[80%] md:min-w-[70%] lg:min-w-[50%] border-r-4 border-slate-200 dark:border-slate-700 @else min-w-[80%] md:min-w-[50%] @endif">
+                     class="@if ($loop->first && $referers->count() == 1) min-w-[100%] @endif @if (!$loop->last) min-w-[80%] md:min-w-[70%] lg:min-w-[50%] border-r-4 border-slate-200 dark:border-slate-700 @else min-w-[80%] md:min-w-[50%] @endif">
                      <div
-                         class="z-10 sticky top-0 text-2xl py-3 font-medium  mb-3 whitespace-nowrap px-6 bg-slate-100 dark:bg-slate-800 dark:text-white dark:border-slate-700 shadow w-full">
+                         class="z-10 sticky top-0 text-2xl py-3 font-medium  mb-3 whitespace-nowrap px-6 bg-blue-400 dark:bg-blue-800 dark:text-white dark:border-slate-700 shadow w-full">
                          <Link href="{{ route('topics.show', $referer->topic) }}"
-                             class="text-base font-normal transition-colors duration-300 text-fuchsia-400 hover:text-fuchsia-500">
+                             class="text-base font-normal transition-colors duration-300 text-slate-50 hover:text-slate-100">
                          {{ $referer->topic->title }}
                          </Link><br>
-                         <span class="text-xl text-slate-400 dark:text-slate-500">{{ $referer->extractTitle() }}</span>
+                         <span class="text-xl text-slate-50 dark:text-slate-100">{{ $referer->extractTitle() }}</span>
                      </div>
-                     <div class="w-full pl-6 md:px-6 pb-6 min-h-full">
+                     <div class="w-full pl-6 md:px-6 pb-6">
                          <div class="ProseMirror">{!! $referer->content !!}</div>
                      </div>
                  </section>
              @endforeach
          </div>
          <div
-             class="h-1/2 overflow-auto bg-slate-50 dark:bg-slate-800 flex flex-nowrap gap-0 shadow-sm shadow-slate-400 w-full">
+             class="min-h-[55%] max-h-[55%] overflow-auto bg-slate-50 dark:bg-slate-800 flex flex-nowrap gap-0 shadow-sm shadow-slate-400 w-full">
              <section
-                 class="min-h-screen min-w-[80%] md:min-w-[70%] lg:min-w-[50%] border-r-4 border-slate-200 dark:border-slate-700">
+                 class="min-w-[80%] md:min-w-[70%] lg:min-w-[50%] border-r-4 border-slate-200 dark:border-slate-700">
                  <div
                      class="z-10 sticky top-0 text-2xl py-3 font-medium  mb-3 whitespace-nowrap px-6 bg-pink-400 dark:bg-pink-800 dark:text-white dark:border-slate-700 shadow w-full">
                      <Link href="{{ route('topics.show', $note->topic) }}"
@@ -32,8 +32,9 @@
                      </Link><br>
                      <span class="text-xl text-slate-50 dark:text-slate-100">{{ $note->extractTitle() }}</span>
                  </div>
-                 <div class="w-full pl-6 md:px-6 pb-6 min-h-full">
+                 <div class="w-full pl-6 md:px-6 pb-6">
                      <div class="ProseMirror">{!! $note->content !!}</div>
+                     <div class="@if (Agent::isAndroidOs() || Agent::isEdge()) mb-36 @endif"></div>
                  </div>
              </section>
              @foreach ($note->categoryOf()->where('topic_id', $note->topic->id)->get() as $referer)
@@ -47,8 +48,9 @@
                          </Link><br>
                          <span class="text-xl text-slate-400 dark:text-slate-500">{{ $referer->extractTitle() }}</span>
                      </div>
-                     <div class="w-full pl-6 md:px-6 pb-6 min-h-full">
+                     <div class="w-full pl-6 md:px-6 pb-6">
                          <div class="ProseMirror">{!! $referer->content !!}</div>
+                         <div class="@if (Agent::isAndroidOs() || Agent::isEdge()) mb-36 @endif"></div>
                      </div>
                  </section>
              @endforeach
