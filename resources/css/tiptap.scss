@@ -14,7 +14,7 @@
 
 }
 .note form {
-    @apply w-full overflow-hidden rounded-lg;
+    @apply w-full overflow-hidden rounded-lg md:p-6;
 }
 code {
     font-size: 0.9rem;
