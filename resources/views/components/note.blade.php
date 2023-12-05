@@ -1,5 +1,5 @@
 <div
-    class="mx-auto w-full overflow-hidden flex justify-center note md:border-2 border-slate-300 dark:border-slate-700/60 rounded-lg p-6 mb-6 transition-all duration-300">
+    class="mx-auto w-full overflow-hidden flex justify-center note md:border-2 border-slate-300 dark:border-slate-700/60 rounded-lg md:p-6 mb-6 transition-all duration-300">
     <x-splade-form action="{{ route('topics.notes.update', $note) }}" method="patch" :default="[
         'content' => $note->content,
         'is_public' => $note->is_public,
