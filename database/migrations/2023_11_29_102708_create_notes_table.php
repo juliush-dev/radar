@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
             $table->longText('content');
             $table->boolean('is_public')->default(false);
             $table->boolean('is_update')->default(false);
