@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('types', function (Blueprint $table) {
-        //     $table->uuid('id')->primary();
-        //     $table->string('title');
-        //     $table->timestamps();
-        // });
+        Schema::create('types', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('title');
+            $table->timestamps();
+        });
     }
 
     /**
