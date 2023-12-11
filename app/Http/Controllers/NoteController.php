@@ -51,7 +51,6 @@ class NoteController extends Controller
         DB::transaction(function () use ($request, &$newNote) {
             $newNote = new Note;
             $newNote->user_id = $request->user()->id;
-            $newNote->topic_id = null;
             $newNote->content = '<h1>My new Note title</h1>';
             $newNote->save();
         });
