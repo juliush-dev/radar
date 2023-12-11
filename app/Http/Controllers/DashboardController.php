@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\RadarQuery;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Faker\Factory;
-use Jenssegers\Agent\Facades\Agent;
 
 class DashboardController extends Controller
 {
@@ -38,29 +35,12 @@ class DashboardController extends Controller
                 return $acc;
             }, ["labels" => [], "numbers" => []]);
 
-            $faker = Factory::create();
-            $fakeUsersNumbers = [];
-            for ($i = 1; $i <= (Agent::isMobile() ? 3 : 6); $i++) {
-                // get a random digit, but always a new one, to avoid duplicates
-                $fakeUsersNumbers[] = $faker->randomDigit();
-            }
-            $fakeDaysDates = []; // Initialize an empty array to store the formatted dates
-
-            // Generate 11 created_at dates before today
-            for ($i = 1; $i <= (Agent::isMobile() ? 3 : 6); $i++) {
-                $date = $faker->dateTimeBetween('-30 days', 'now'); // Change the date range as needed
-                $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $date->format('Y-m-d H:i:s'))
-                    ->subDay($i) // Subtract $i days from each date
-                    ->format('D, M j, Y'); // Format the date with day and month abbreviation
-                $fakeDaysDates[] = $formattedDate; // Store each formatted date in the array
-            }
             $usersChart = [
-                "labels" => array_merge($fakeDaysDates, $data['labels']),
+                "labels" =>  $data['labels'],
                 "datasets" => [
                     [
                         "label" => 'New users',
-                        "data" =>
-                        array_merge($fakeUsersNumbers, $data['numbers']),
+                        "data" => $data['numbers'],
                         "backgroundColor" => 'rgba(255, 0, 255, 0.5)',
                     ]
                 ]
