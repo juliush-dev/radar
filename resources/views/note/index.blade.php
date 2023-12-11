@@ -6,7 +6,7 @@
             <x-notes-filter :$filter />
             <note v-slot="note">
                 <ul class="flex flex-col gap-16 mt-8">
-                    <li class="flex flex-wrap font-bold items-center gap-6 border-b border-slate-400/30 pb-1">
+                    <li class="flex flex-wrap font-bold items-center gap-6">
                         @if (isset($filter) && count($filter) > 0)
                             <Link href="{{ route('notes.index') }}"
                                 class="flex gap-2 items-center bg-slate-200 text-slate-900 dark:bg-slate-900 dark:text-slate-200 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
