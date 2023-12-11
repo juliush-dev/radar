@@ -89,7 +89,7 @@ class RadarQuery
 
     public function notes($filter = [])
     {
-        $notes = Note::query();
+        $notes = Note::where(RadarQuery::publicOrAuthor());
         if (!empty($filter['categories'])) {
             $selectedCategories = $filter['categories'];
             $foundNotes = $notes->whereHas('categories', function (Builder $query) use ($selectedCategories) {

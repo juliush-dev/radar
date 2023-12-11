@@ -52,7 +52,7 @@ class Notes extends AbstractTable
             ->selectFilter('user_id', $this->rq->users()->pluck('name', 'id')->all(), 'author')
             ->selectFilter('is_public', [true => 'Public', false => 'Not public'], 'visibility')
             ->column('title', canBeHidden: false)
-            ->column('topic.title', 'Topic')
+            ->column('categories.name', 'categories')
             ->column('author.name', 'author')
             ->column('public')
             ->column('action', canBeHidden: false)

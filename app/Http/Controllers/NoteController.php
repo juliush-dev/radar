@@ -62,16 +62,6 @@ class NoteController extends Controller
     {
         DB::transaction(function () use ($request, &$note) {
             $note->content = $request->input('content');
-
-            // $note->categories()->detach();
-            // $note->categories()->attach(collect($request->input('categories', []))->pluck('id'));
-
-            $newCategory = $request->input('newCategory');
-            if ($newCategory) {
-                $cat = new Category;
-                $cat->name = $newCategory;
-                $cat->save();
-            }
             $note->save();
         });
         $response['updated_at'] = $note->updated_at;
@@ -101,5 +91,23 @@ class NoteController extends Controller
             $note->delete();
         });
         return redirect(route('notes.index'));
+    }
+
+    public function publish(Note $note)
+    {
+        DB::transaction(function () use ($note) {
+            $note->is_public = true;
+            $note->save();
+        });
+        return redirect(Referer::get());
+    }
+
+    public function unpublish(Note $note)
+    {
+        DB::transaction(function () use ($note) {
+            $note->is_public = false;
+            $note->save();
+        });
+        return redirect(Referer::get());
     }
 }

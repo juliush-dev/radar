@@ -13,10 +13,8 @@ class Overview extends Component
      */
     public function __construct(
         public $totalUsers,
-        public $totalSkills,
-        public $totalTopics,
         public $totalNotes,
-        public $totalSubjects,
+        public $totalSkills,
         public $totalGroups,
         public $usersChart,
     ) {

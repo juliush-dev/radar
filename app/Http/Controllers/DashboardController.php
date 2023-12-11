@@ -26,7 +26,6 @@ class DashboardController extends Controller
         if ($activeTab == null) {
             $tabParameters['totalSkills'] = $this->rq->totalSkills();
             $tabParameters['totalUsers'] = $this->rq->totalUsers();
-            $tabParameters['totalTopics'] = $this->rq->totalTopics();
             $tabParameters['totalNotes'] = $this->rq->totalNotes();
             $tabParameters['totalSubjects'] = $this->rq->totalSubjects();
             $tabParameters['totalGroups'] = $this->rq->totalGroups();
@@ -69,8 +68,6 @@ class DashboardController extends Controller
             $tabParameters['usersChart'] = $usersChart;
         } elseif ($activeTab == 'users') {
             $tabParameters['users'] = $this->rq->usersTable();
-        } elseif ($activeTab == 'topics') {
-            $tabParameters['topics'] = $this->rq->topicsTable();
         } elseif ($activeTab == 'subjects') {
             $tabParameters['subjects'] = $this->rq->subjectsTable();
         } elseif ($activeTab == 'groups') {
