@@ -38,7 +38,7 @@ export default {
         return {
             chartOptions: {
                 // aspectRatio: 4/1,
-                responsive: true,
+                // responsive: true,
                 scales: {
                     y: {
                         beginAtZero: true,
