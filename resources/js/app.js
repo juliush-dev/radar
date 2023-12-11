@@ -7,10 +7,10 @@ import "../css/choices.scss";
 import "vue3-emoji-picker/css";
 import Topic from "./Components/Topic.vue";
 import Skill from "./Components/Skill.vue";
-import NoteSpace from "./Components/NoteSpace.vue";
+import Note from "./Components/Note.vue";
 import LineChart from "./Components/LineChart.vue";
 import TipTap from "./Components/TipTap.vue";
-
+import.meta.glob(["../images/**", "../fonts/**"]);
 import "@protonemedia/laravel-splade/dist/jodit.css";
 
 import { createApp } from "vue/dist/vue.esm-bundler.js";
@@ -29,7 +29,7 @@ createApp({
         components: {
             Topic,
             Skill,
-            NoteSpace,
+            Note,
             LineChart,
             TipTap,
         },

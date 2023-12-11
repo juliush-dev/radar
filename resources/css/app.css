@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -45,10 +46,10 @@ tr {
     font-family: "Onest", sans-serif;
 }
 .soft {
-    font-family: "Fira Code", monospace;
+    font-family: "Chakra Petch", sans-serif;
 }
 code {
-    font-family: "Fira Code", monospace;
+    font-family: "Chakra Petch", sans-serif;
 }
 .jodit-container {
     border-radius: 0px;

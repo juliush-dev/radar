@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('note_category', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('relation')->nullable();
+        Schema::create('note_relative', function (Blueprint $table) {
+            $table->id();
             $table->foreignUuid('note_id')->nullable()->constrained('notes')->nullOnDelete();
-            $table->foreignUuid('category_id')->nullable()->constrained('notes')->nullOnDelete();
+            $table->foreignUuid('relative_id')->nullable()->constrained('notes')->nullOnDelete();
             $table->foreignUuid('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->boolean('is_public')->default(false);
-            $table->boolean('is_update')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('note_category');
+        Schema::dropIfExists('note_relative');
     }
 };

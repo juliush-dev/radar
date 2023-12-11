@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topic_years', function (Blueprint $table) {
-            $table->foreignUuid('topic_id')->constrained()->cascadeOnDelete();
-            $table->string('year');
-            $table->primary(['topic_id', 'year']);
-            $table->timestamps();
-        });
+        // Schema::create('categories', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->text('name');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('topic_years');
+        Schema::dropIfExists('categories');
     }
 };

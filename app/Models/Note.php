@@ -45,42 +45,41 @@ class Note extends Model
         } else {
             $this->is_update = 0;
         }
-        $this->categories()->attach($oldNote->categories()->whereNotIn('category_id', $this->categories()->pluck('category_id'))->pluck('category_id'));
-        $this->categoryOf()->attach($oldNote->categoryOf()->whereNotIn('note_id', $this->categoryOf()->pluck('note_id'))->pluck('note_id'));
+        $this->relatives()->attach($oldNote->relatives()->whereNotIn('relative_id', $this->relatives()->pluck('relative_id'))->pluck('relative_id'));
+        $this->relativeOf()->attach($oldNote->relativeOf()->whereNotIn('note_id', $this->relativeOf()->pluck('note_id'))->pluck('note_id'));
         $oldNote->delete();
         $this->is_public = true;
         $this->save();
     }
     // the notes this note is referecd by
-    public function categoryOf(): BelongsToMany
+    public function relativeOf(): BelongsToMany
     {
-        return $this->BelongsToMany(Note::class, 'note_category', 'category_id', 'note_id'); // the note using it reference it as their category
+        return $this->BelongsToMany(Note::class, 'note_relative', 'relative_id', 'note_id'); // the note using it reference it as their category
     }
 
-    // the notes this note uses as categories
-    public function categories(): BelongsToMany
+    // the notes this note uses as relatives
+    public function relatives(): BelongsToMany
     {
-        return $this->belongsToMany(Note::class, 'note_category', 'note_id', 'category_id'); // its categories reference it by its id
+        return $this->belongsToMany(Note::class, 'note_relative', 'note_id', 'relative_id'); // its relatives reference it by its id
     }
 
-    public function categoriesMap()
+    public static function relativesOptions($noteId)
     {
-        $map =  $this->categories->map(fn ($note) => ['title' => $note->extractTitle(), 'id' => $note->id, 'topic' => $note->topic->title, 'topic_id' => $note->topic->id]);
-        return $map;
-    }
-
-    public function categoriesOptions()
-    {
-        $map = Note::whereNot('id', $this->id)
-            ->where(\App\Services\RadarQuery::publicOrAuthor())
+        $map = Note::where(function ($query) use ($noteId) {
+            if (isset($noteId)) {
+                $query->whereNot('id', $noteId);
+            }
+        })
+            // ->where(\App\Services\RadarQuery::publicOrAuthor())
             ->get()
-            ->map(fn ($note) => ['title' => $note->extractTitle(), 'id' => $note->id, 'topic' => $note->topic->title, 'topic_id' => $note->topic->id]);
+            ->map(fn ($note) => ['title' => $note->extractTitle(), 'id' => $note->id]);
         return $map;
     }
 
     public function extractTitle()
     {
         $temp = "Headless note";
+        $title = '';
         if (preg_match('/<h\d[^>]*>(.*?)<\/h\d>/i', $this->content, $matches)) {
             $firstHeadingText = $matches[1];
             $title =  $firstHeadingText;
@@ -99,5 +98,10 @@ class Note extends Model
     public function potentialReplacementOf(): BelongsTo
     {
         return $this->belongsTo(Note::class, 'potential_replacement_of');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'note_category', 'note_id', 'category_id');
     }
 }

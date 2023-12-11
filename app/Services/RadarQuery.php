@@ -87,49 +87,23 @@ class RadarQuery
         return Note::count();
     }
 
-    public function topics($filter = [])
+    public function notes($filter = [])
     {
-        $topics = Topic::query();
-        if (!empty($filter['author'])) {
-            $topics->where(function ($query) use ($filter) {
-                $query->where(function ($query) use ($filter) {
-                    $query->where('is_public', true);
-                    $query->where('is_update', false);
-                    $query->where(function ($query) use ($filter) {
-                        $query->whereNot('user_id', $filter['author'])
-                            ->orWhere('user_id', null);
-                    });
-                });
-                $query->orWhere(function ($query) use ($filter) {
-                    $query->where('user_id', $filter['author']);
-                    $query->where('potential_replacement', null);
-                    $query->where(function ($query) {
-                        $query->where('is_update', true)->orWhere('is_update', false);
-                    });
-                });
+        $notes = Note::query();
+        if (!empty($filter['categories'])) {
+            $selectedCategories = $filter['categories'];
+            $foundNotes = $notes->whereHas('categories', function (Builder $query) use ($selectedCategories) {
+                $query->whereIn('category_id', $selectedCategories);
+            })->orderBy('updated_at', 'desc')->get();
+            $filteredNotes = $foundNotes->filter(function ($note) use ($selectedCategories) {
+                return collect($selectedCategories)->reduce(function ($acc, $categoryId) use ($note) {
+                    $acc &= $note->categories()->where('category_id', $categoryId)->exists();
+                    return $acc;
+                }, true);
             });
-        } else {
-            $topics->where('is_public', true)->where('is_update', false);
+            return $filteredNotes;
         }
-        if (!empty($filter['year'])) {
-            $topics->whereHas('years', function (Builder $query) use ($filter) {
-                $query->where('year', $filter['year']);
-            });
-        }
-        if (!empty($filter['field'])) {
-            $topics->whereHas('fields', function (Builder $query) use ($filter) {
-                $query->where('id', $filter['field']);
-            });
-        }
-        if (!empty($filter['skill'])) {
-            $topics->whereHas('skills', function (Builder $query) use ($filter) {
-                $query->where('id', $filter['skill']);
-            });
-        }
-        if (!empty($filter['subject'])) {
-            $topics->where('subject_id', $filter['subject']);
-        }
-        return $topics->get();
+        return $notes->orderBy('updated_at', 'desc')->get();
     }
 
     public function groups()

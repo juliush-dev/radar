@@ -32,18 +32,14 @@
              {{ empty($activePage) ? 'Welcome' : $activePage }}
          </h1>
      </div>
-     <div class="text-base flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-2 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-0 overflow-x-auto"
+     <div class="text-base flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-2 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-2 overflow-x-auto"
          @preserveScroll('mainNavigation')>
-         @if (!Route::is('welcome'))
-             <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="welcome"
-                 label="Landing page"
+         @if (!Route::is('notes.index'))
+             <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="notes"
+                 action="index" label="Notes"
                  icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
          @endif
-         @if (!Route::is('topics.index'))
-             <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="topics"
-                 action="index" label="Topics"
-                 icon="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-         @endif
+
          @if (!Route::is('skills.index'))
              <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="skills"
                  action="index" label="Skills"

@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             return $this->destroy($request);
         }
         Toast::title("🦄 Welcome!")->autoDismiss(3);
-        return redirect(route('topics.index'));
+        return redirect(route('notes.index'));
     }
 
     /**

@@ -1,23 +1,19 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Note;
 
-use App\Services\EnumTransformer;
-use App\Services\RadarQuery;
+use App\Models\Note;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class TopicsFilter extends Component
+class Referers extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public $subjects,
-        public $years,
-        public $fields,
-        public $skills,
+        public Note $note
     ) {
         //
     }
@@ -27,6 +23,6 @@ class TopicsFilter extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.topics-filter');
+        return view('components.note.referers');
     }
 }

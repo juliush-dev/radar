@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\CheckpointController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserCheckpointSessionController;
+use App\Models\Note;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,94 +31,34 @@ Route::middleware('splade')->group(function () {
     // Registers routes to support async File Uploads with Filepond...
     Route::spladeUploads();
 
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('welcome');
+    Route::get('/', [App\Http\Controllers\NoteController::class, 'index'])->name('notes.index');
+    Route::get('/notes/filter', [App\Http\Controllers\NoteController::class, 'filter'])->name('notes.filter');
 
-    Route::get(
-        '/topics/learning-materials/{learningMaterial}/download',
-        [
-            App\Http\Controllers\TopicController::class, 'downloadLearningMaterial'
-        ]
-    )->name('topics.learning-materials.download');
-
-    Route::get(
-        '/checkpoints/{checkpoint}/session/preview',
-        [CheckpointController::class, 'preview']
-    )->name('checkpoints.preview');
 
     Route::middleware('auth')->group(function () {
-        Route::controller(App\Http\Controllers\TopicController::class)
-            ->prefix('topics')
-            ->name('topics.')
-            ->group(function () {
-                Route::post(
-                    '/{topic}/learning-materials/upload',
-                    'uploadLearningMaterial'
-                )->name('learning-materials.upload');
-                Route::delete(
-                    '/learning-materials/{learningMaterial}/remove',
-                    'removeLearningMaterial'
-                )->name('learning-materials.remove');
-                Route::post(
-                    '/learning-materials/{learningMaterial}/publish',
-                    'publishLearningMaterial'
-                )->name('learning-materials.publish');
-                Route::post(
-                    '/learning-materials/{learningMaterial}/unpublish',
-                    'unpublishLearningMaterial'
-                )->name('learning-materials.unpublish');
-
-                Route::post(
-                    '/{topic}/publish',
-                    'publishTopic'
-                )->name('publish');
-                Route::post(
-                    '/{topic}/unpublish',
-                    'unpublishTopic'
-                )->name('unpublish');
-                Route::post(
-                    '/{topic}/apply-update',
-                    'applyUpdate'
-                )->name('apply-update');
-
-                Route::get(
-                    '/subjects/{subject}/edit',
-                    'editSubject'
-                )->name('subjects.edit');
-                Route::delete(
-                    '/subjects/{subject}/remove',
-                    'destroySubject'
-                )->name('subjects.remove');
-                Route::patch(
-                    '/subjects/{subject}',
-                    'updateSubject'
-                )->name('subjects.update');
-
-                Route::post(
-                    '/topics/{topic}/notes',
-                    'storeNote'
-                )->name('notes.store');
-                Route::patch(
-                    '/notes/{note}',
-                    'updateNote'
-                )->name('notes.update');
-                Route::delete(
-                    '/notes/{note}',
-                    'deleteNote'
-                )->name('notes.delete');
-            });
-
         Route::resource(
-            'topics',
-            App\Http\Controllers\TopicController::class
-        )->except(['show', 'index']);
+            'notes',
+            App\Http\Controllers\NoteController::class
+        )->except(['show', 'index', 'create']);
+        Route::get('/notes/{note}/relatives', [NoteController::class, 'relatives'])->name('notes.relatives');
+        Route::post('/notes/{note}/relate', [NoteController::class, 'relate'])->name('notes.relate');
 
-        Route::get('/notes/{note}/references', [NoteController::class, 'references'])->name('topics.references');
+
+        Route::get('/notes/{note}/references', [App\Http\Controllers\NoteController::class, 'references'])->name('topics.references');
         Route::resource(
             'skills',
             App\Http\Controllers\SkillController::class
         )->except(['show', 'index']);
+
+
+        Route::get('/categories/notes/{note}', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/categories/notes/{note}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::post('/categories/notes/{note}/store', [CategoryController::class, 'store'])->name('categories.store');
+        Route::patch('/categories/{category}/notes/{note}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::get('/categories/notes/{note}/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/categories/notes/{note}/categorize', [CategoryController::class, 'categorize'])->name('notes.categorize');
+        Route::get('/categories/notes/{note}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+        Route::delete('/categories/notes/{note}/destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
         Route::resource(
             'profile',
@@ -181,75 +122,11 @@ Route::middleware('splade')->group(function () {
             'checkpoints',
             App\Http\Controllers\CheckpointController::class
         )->only(['edit', 'update', 'destroy']);
-        Route::controller(App\Http\Controllers\CheckpointController::class)
-            ->prefix('checkpoints')
-            ->name('checkpoints.')
-            ->group(function () {
-                Route::get(
-                    '/topics/{topic}',
-                    'create'
-                )->name('create');
-                Route::post(
-                    '/topics/{topic}',
-                    'store'
-                )->name('store');
-                Route::post(
-                    '/{checkpoint}/session/initiate',
-                    'initiate'
-                )->name('initiate');
-                Route::post(
-                    '/{checkpoint}/publish',
-                    'publish'
-                )->name('publish');
-                Route::post(
-                    '/{checkpoint}/unpublish',
-                    'unpublish'
-                )->name('unpublish');
-                Route::post(
-                    '/{checkpoint}/apply-update',
-                    'applyUpdate'
-                )->name('apply-update');
-            });
-
-        Route::controller(UserCheckpointSessionController::class)
-            ->prefix('sessions')
-            ->name('sessions.')
-            ->group(function () {
-                Route::get(
-                    '/{session}/start',
-                    'start'
-                )->name('start');
-                Route::patch(
-                    '/{session}/stop',
-                    'stop'
-                )->name('stop');
-                Route::get(
-                    '/{session}/review',
-                    'review'
-                )->name('review');
-                Route::post(
-                    '/{session}/bridges/{bridge}/crossed',
-                    'cross'
-                )->name('results.cross');
-                Route::post(
-                    '/{session}/bridges/{bridge}/missed',
-                    'miss'
-                )->name('results.miss');
-                Route::delete(
-                    '/{session}',
-                    'destroy'
-                )->name('destroy');
-            });
     });
 
     Route::resource(
         'fields',
         App\Http\Controllers\FieldController::class
-    )->only(['index', 'show']);
-
-    Route::resource(
-        'topics',
-        App\Http\Controllers\TopicController::class
     )->only(['index', 'show']);
 
     Route::resource(

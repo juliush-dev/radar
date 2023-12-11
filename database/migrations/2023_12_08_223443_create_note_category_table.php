@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('types', function (Blueprint $table) {
-        //     $table->uuid('id')->primary();
-        //     $table->string('title');
+        // Schema::create('note_category', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignUuid('note_id')->constrained()->cascadeOnDelete();
+        //     $table->foreignId('category_id')->constrained()->cascadeOnDelete();
         //     $table->timestamps();
         // });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('types');
+        Schema::dropIfExists('note_category');
     }
 };
