@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('note_category', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->foreignUuid('note_id')->constrained()->cascadeOnDelete();
-        //     $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-        //     $table->timestamps();
-        // });
+        Schema::create('note_category', function (Blueprint $table) {
+            $table->id();
+            $table->foreignUuid('note_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**
