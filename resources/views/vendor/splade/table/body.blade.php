@@ -21,7 +21,7 @@
             @foreach ($table->columns() as $column)
                 <td @if ($table->rowLinks->has($itemKey)) @click="(event) => table.visit(@js($table->rowLinks->get($itemKey)), @js($table->rowLinkType), event)" @endif
                     v-show="table.columnIsVisible(@js($column->key))"
-                    class="whitespace-break-spaces text-sm @if ($loop->first && $hasBulkActions)
+                    class="whitespace-break-spaces flex-wrap text-sm @if ($loop->first && $hasBulkActions)
 pr-6
 @else
 px-6

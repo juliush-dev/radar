@@ -8,7 +8,7 @@
         @if ($note->is_public)
             <x-splade-form submit-on-change :action="route('notes.unpublish', $note)" method="patch">
                 <button type="submit"
-                    class="flex gap-2 items-center bg-orange-100 text-orange-900 dark:bg-orange-900 dark:text-orange-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                    class="flex flex-nowrap whitespace-nowrap gap-2 items-center bg-orange-100 text-orange-900 dark:bg-orange-900 dark:text-orange-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -20,7 +20,7 @@
         @else
             <x-splade-form submit-on-change :action="route('notes.publish', $note)" method="patch">
                 <button type="submit"
-                    class="flex gap-2 items-center bg-pink-100 text-pink-900 dark:bg-pink-900 dark:text-pink-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                    class="flex flex-nowrap whitespace-nowrap gap-2 items-center bg-pink-100 text-pink-900 dark:bg-pink-900 dark:text-pink-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
