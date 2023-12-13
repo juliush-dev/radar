@@ -1,12 +1,11 @@
      <x-splade-data remember="radar" local-storage store="radar" default="{ dark: false, navigation: true }" />
-     <div class="w-screen h-screen overflow-hidden" v-bind:class="radar.dark && 'dark'">
+     <div v-bind:class="radar.dark && 'dark'" class="h-screen w-screen flex items-center justify-center">
          <div
-             class="w-full flex flex-col  min-h-full relative bg-slate-100 dark:bg-slate-800 transition-all duration-500 overflow-hidden">
+             class="h-full w-full flex flex-col relative bg-slate-100 dark:text-white text-slate-600  dark:bg-slate-800  transition-all duration-100">
              <x-nav-bar :$activePage :$previousRoute :$icon />
-             <div class="overflow-hidden relative flex-1">
-                 <div class="absolute top-0 bottom-0 left-0 right-0 overflow-hidden">
-                     {{ $slot }}
-                 </div>
+             <div class="flex-1 overflow-y-auto px-6 lg:px-[20%] @if (Agent::isAndroidOs() || Agent::isEdge()) pb-36 @else pb-6 @endif"
+                 @preserveScroll('main-layout')>
+                 {{ $slot }}
              </div>
          </div>
      </div>

@@ -16,9 +16,9 @@
      </x-splade-modal>
  @endguest
  <div v-show="radar.navigation"
-     class="z-30 @if (Agent::isAndroidOs() || Agent::isEdge()) pt-2 @endif flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300/50 dark:border-slate-700/50"
+     class="backdrop-blur @if (Agent::isAndroidOs() || Agent::isEdge()) pt-2 @endif sticky top-0 z-10 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300/50 dark:border-slate-700/50 lg:px-[19.3%] overflow-hidden"
      @preserveScroll('navigationContainer')>
-     <div class="flex gap-2 items-center pt-4 px-4 lg:pt-0 lg:py-2 lg:px-10 md:pb-0 pl-[18px] md:pl-[21px]">
+     {{-- <div class="flex gap-2 items-center pt-4 px-4 lg:pt-0 lg:py-2 lg:px-10 md:pb-0 pl-[18px] md:pl-[21px]">
          <span
              class="justify-center p-1 bg-green-400 dark:bg-yellow-400 rounded-full text-slate-50 dark:text-slate-900 flex items.center capitalize flex-nowrap">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -28,11 +28,11 @@
              </svg>
          </span>
          <h1
-             class="text-xl font-medium text-green-400 dark:text-yellow-400 whitespace-nowrap w-full lg:w-52 overflow-hidden text-ellipsis">
+             class="text-xl font-medium text-green-400 dark:text-yellow-400 whitespace-nowrap w-40 lg:w-52 overflow-hidden text-ellipsis">
              {{ empty($activePage) ? 'Welcome' : $activePage }}
          </h1>
-     </div>
-     <div class="text-base flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 w-fit transition-all duration-200  py-2 pr-7 xs:pl-[23.2px] pl-[22px]  lg:px-10 lg:pl-2 overflow-x-auto"
+     </div> --}}
+     <div class="w-full text-base flex gap-6 items-center text-fuchsia-800 dark:text-fuchsia-300  transition-all duration-200  py-2 pr-6 lg:pr-3 xs:pl-[23.2px] pl-[22px] lg:pl-2 overflow-x-auto"
          @preserveScroll('mainNavigation')>
          @if (!Route::is('notes.index'))
              <x-layouts.navigation-link class="hover:text-fuchsia-700 dark:hover:text-fuchsia-600" resource="notes"
@@ -60,15 +60,18 @@
                  @endcan
              @endif
          @endauth
-         <x-authentication />
-         <x-splade-link modal :href="$previousRoute"
-             class="my-auto whitespace-nowrap w-fit flex gap-2 justify-end text-fuchsia-400 hover:text-fuchsia-500 transition-all duration-300">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                 stroke="currentColor" class="w-5 h-5">
-                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-             </svg>
-         </x-splade-link>
-         <button @click="radar.dark = !radar.dark" v-text="radar.dark ? '🙄' : '🥱'"
-             class="mt-0.5 px-0.5 whitespace-nowrap"></button>
+         <div class="md:ml-auto flex gap-6">
+             <x-authentication />
+             <x-splade-link modal :href="$previousRoute"
+                 class="my-auto whitespace-nowrap w-fit flex gap-2 justify-end text-fuchsia-400 hover:text-fuchsia-500 transition-all duration-300">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-5 h-5">
+                     <path stroke-linecap="round" stroke-linejoin="round"
+                         d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                 </svg>
+             </x-splade-link>
+             <button @click="radar.dark = !radar.dark" v-text="radar.dark ? '🙄' : '🥱'"
+                 class="mt-0.5 px-0.5 whitespace-nowrap"></button>
+         </div>
      </div>
  </div>

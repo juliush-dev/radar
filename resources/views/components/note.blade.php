@@ -40,12 +40,12 @@
             <div class="ProseMirror" v-html="form.content"></div>
         @endcan
     </x-splade-form>
-    <div class="md:px-6 flex flex-col gap-6">
+    <div class="flex flex-col gap-6">
         <x-note.referers :$note />
         <x-note.relatives :$note />
         <x-note.categories :$note />
     </div>
-    <div class="flex gap-4 flex-wrap md:px-6 mt-8">
+    <div class="flex gap-4 flex-wrap mt-8">
         <Link @click.prevent slideover href="{{ route('notes.relatives', $note) }}" class="text-blue-400">
         Relatives
         </Link>

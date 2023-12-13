@@ -5,10 +5,10 @@
     'field' => request()->query('field'),
     'assessment' => request()->query('assessment'),
 ]"
-    class="w-full z-20 flex flex-col gap-4 grow px-6 lg:px-10 my-4 flex-wrap overflow-hidden">
+    class="w-full z-10 flex flex-col gap-4 grow mb-4 flex-wrap overflow-hidden my-6">
     <x-splade-toggle class="w-full overflow-hidden">
         <div class="flex gap-6 md:justify-end flex-wrap items-center overflow-x-auto">
-            <div class="whitespace-nowrap items-center lg:my-8 md:grow">
+            <div class="whitespace-nowrap items-center md:grow">
                 {{ $slot }}
             </div>
             @can('create-skill')

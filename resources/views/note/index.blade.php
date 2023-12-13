@@ -1,12 +1,11 @@
 <x-layouts.app
     icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
     @if (count($notes) > 0)
-        <div class="relative h-full overflow-hidden overflow-y-auto text-slate-600 dark:text-slate-100 p-6 lg:px-80 pb-20 md:pb-8 @if (Agent::isAndroidOs() || Agent::isEdge()) pb-36 @endif"
-            @preserveScroll('notesIndex')>
+        <div>
             <x-notes-filter :$filter />
             <note v-slot="note">
-                <ul class="flex flex-col gap-16 mt-8">
-                    <li class="flex flex-wrap font-bold items-center gap-6">
+                <ul class="flex flex-col gap-6 py-6">
+                    <li class="ml-auto flex flex-wrap font-bold items-center gap-6">
                         @if (isset($filter) && count($filter) > 0)
                             <Link href="{{ route('notes.index') }}"
                                 class="flex gap-2 items-center bg-slate-200 text-slate-900 dark:bg-slate-900 dark:text-slate-200 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
@@ -39,7 +38,8 @@
                     </li>
 
                     @forelse ($notes as $note)
-                        <li class="flex flex-col flex-wrap gap-2 justify-between border-b border-slate-400/30 pb-2">
+                        <li
+                            class="flex flex-col flex-wrap gap-2 justify-between border-b border-slate-400/30 pb-2 mb-6">
                             <h1
                                 class="text-lg font-medium first-letter:uppercase text-fuchsia-500 group-hover:text-fuchsia-600 transition-all duration-300">
                                 <Link href="{{ route('notes.edit', $note) }}">
@@ -72,7 +72,7 @@
             </note>
         </div>
     @else
-        <div class="relative h-full overflow-hidden flex w-full">
+        <div class="relative h-full overflow-hidden flex w-full mt-8">
             <div class="relative w-full lg:w-1/2"
                 style="background-image:
                 linear-gradient(30.8deg, rgba(0, 0, 0, 0.7) 30%,transparent 100%),
@@ -92,9 +92,9 @@
             <div
                 class="absolute left-0 top-0 right-0 bottom-0 w-full lg:relative lg:w-1/2 flex items-center justify-center text-center lg:bg-fuchsia-100">
                 <p
-                    class="soft text-4xl md:text-5xl h-[74%] lg:full py-8 lg:p-0 border-4 lg:border-none border-slate-50 shadow-lg bg-slate-950/10 lg:bg-transparent lg:shadow-none rounded-md lg:text-6xl flex flex-col lg:gap-2 items-center justify-center leading-normal font-semibold uppercase w-2/3 text-slate-100 lg:text-fuchsia-900">
-                    <span class="soft mb-2 block w-fit">Don't hate.</span>
-                    <span class="soft block w-fit mt-auto lg:m-0">Take Notes</span>
+                    class="soft text-2xl md:text-3xl lg:text-4xl h-[74%] p-8 lg:p-0  flex flex-col lg:gap-2 items-center justify-center leading-normal font-semibold uppercase w-2/3 text-slate-100 lg:text-fuchsia-900">
+                    <span class="soft mb-2 block w-fit mt-auto lg:m-0">Don't hate.</span>
+                    <span class="soft block w-fit">Take Notes</span>
                     <span class="soft block w-fit mb-2 md:mb-6 lg:m-0">and</span>
                     <span class="soft block w-fit">Meditate</span>
                 </p>

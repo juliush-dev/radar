@@ -1,9 +1,8 @@
 <x-splade-form method="get" preserve-scroll submit-on-change="reset" :default="[
     'year' => request()->query('year'),
 ]"
-    class="w-full z-20 flex flex-col gap-4 grow px-6 lg:px-10 my-4 flex-wrap">
+    class="w-full z-10 flex flex-col gap-4 grow flex-wrap overflow-hidden my-6">
     <x-splade-toggle class="w-full">
-
         <div class="flex gap-6 md:justify-end flex-wrap items-center overflow-x-auto">
             {{-- <div class="whitespace-nowrap items-center lg:my-8 md:grow dark:text-sky-500">
                 {{ $slot }}
