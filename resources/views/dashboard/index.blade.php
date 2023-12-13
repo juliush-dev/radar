@@ -1,7 +1,7 @@
 <x-layouts.app active-page="Dashboard"
     icon="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z">
     <div>
-        <div class="sticky right-0 overflow-x-auto top-0 z-10 shrink-0 flex gap-0 border border-slate-50/5 shadow mb-4 backdrop-blur"
+        <div class="sticky right-0 overflow-x-auto top-0 z-40 shrink-0 flex gap-0 border border-slate-50/5 shadow mb-4 backdrop-blur"
             @preserveScroll('dashboardMenu')>
             <Link
                 class="whitespace-nowrap flex gap-2 pl-4 px-6 py-4 cursor-pointer {{ $activeTab == null ? ' bg-pink-500 dark:bg-cyan-500 text-white' : 'text-slate-50 bg-slate-800' }}"

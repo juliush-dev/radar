@@ -1,5 +1,5 @@
 <thead>
-    <tr class="border-b border-slate-200 bg-slate-100 dark:bg-slate-300">
+    <tr class="border-b border-slate-200 bg-slate-100 dark:bg-slate-300 dark:text-slate-800">
         @if ($hasBulkActions = $table->hasBulkActions())
             <th width="64" class="px-6 py-3 text-xs whitespace-nowrap">
                 @include('splade::table.select-rows-dropdown')

@@ -1,7 +1,7 @@
 <x-splade-table :for="$notes">
     @cell('title', $note)
         <Link href="{{ route('notes.edit', $note) }}"
-            class="text-fuchsia-500 hover:text-fuchsia-600 transition-all duration-300">
+            class="text-fuchsia-500 hover:text-fuchsia-600 transition-all duration-300 w-full whitespace-break-spaces">
         {{ $note->extractTitle() }}</Link>
     @endcell
     @cell('public', $note)
