@@ -1,6 +1,6 @@
 <template>
     <div id="menu"
-         class="opacity-50 hover:opacity-100 transition-all duration-300 flex gap-4 items-center w-fit rounded-lg px-2 py-1 border-t-2 shadow shadow-fuchsia-500 border-fuchsia-400 bg-slate-100">
+         class="transition-all duration-300 flex gap-4 items-center w-fit rounded-lg px-2 py-1 border-t-2 shadow shadow-fuchsia-500 border-fuchsia-400 bg-slate-100">
         <div class="flex items-center">
             <button id="table" class="w-fit" @click.prevent>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -89,11 +89,17 @@
                 <button class="mark-relative" @click.stop="editor.commands.setClass('mark-relative')">
                     Mark as relative
                 </button>
-                <button class="mark-connector" @click.stop="editor.commands.setClass('mark-connector')">
-                    Mark as connector
+                <button class="mark-subject" @click.stop="editor.commands.setClass('mark-subject')">
+                    Subject
                 </button>
-                <button class="mark-urgent" @click.stop="editor.commands.setClass('mark-urgent')">
-                    Mark as urgent
+                <button class="mark-verb" @click.stop="editor.commands.setClass('mark-verb')">
+                    Verb
+                </button>
+                <button class="mark-complement" @click.stop="editor.commands.setClass('mark-complement')">
+                    Complement
+                </button>
+                <button class="mark-preposition" @click.stop="editor.commands.setClass('mark-preposition')">
+                    Preposition
                 </button>
             </div>
         </div>

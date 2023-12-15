@@ -42,11 +42,10 @@ export const CustomTextStyle = Mark.create({
                 const attributes = getMarkAttributes(state, this.type)
                 const hasStyles = Object.entries(attributes).some(([, value]) => !!value)
 
-                if (hasStyles) {
+                if (true || hasStyles) {
                     return true
                 }
 
-                return commands.unsetMark(this.name)
             },
         }
     },

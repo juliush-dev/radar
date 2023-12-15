@@ -4,7 +4,7 @@
             @auth
                 <div class="flex gap-4 items-center justify-center">
                     <x-nav-link href="{{ route('logout') }}" method="post"
-                        class="whitespace-nowrap hover:text-fuchsia-700 dark:hover:text-fuchsia-600 flex items-center gap-2 ">
+                        class="whitespace-nowrap hover:text-fuchsia-900 dark:hover:text-fuchsia-500 flex items-center gap-2 ">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5 my-auto">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -17,7 +17,7 @@
                 <div class="flex gap-2 items-center justify-center">
                     @if (!Route::is('login') || Route::is('register'))
                         <x-nav-link href="{{ route('login') }}"
-                            class="whitespace-nowrap hover:text-fuchsia-700 dark:hover:text-fuchsia-600 flex items-center gap-2 ">
+                            class="whitespace-nowrap hover:text-fuchsia-900 dark:hover:text-fuchsia-500 flex items-center gap-2 ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 my-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -29,7 +29,7 @@
                     @if (!Route::is('register') && Route::has('register'))
                         <span class="mx-4 my-auto dark:text-slate-100 text-slate-500 text-md">or</span>
                         <x-nav-link href="{{ route('register') }}"
-                            class="whitespace-nowrap hover:text-fuchsia-700 dark:hover:text-fuchsia-600 mr-2 flex items-center gap-2 ">
+                            class="whitespace-nowrap hover:text-fuchsia-900 dark:hover:text-fuchsia-500 mr-2 flex items-center gap-2 ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 my-auto">
                                 <path stroke-linecap="round" stroke-linejoin="round"

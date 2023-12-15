@@ -58,24 +58,31 @@ ul[data-type="taskList"] {
     }
 }
 
-mark {
-    @apply bg-amber-100 text-amber-600 dark:bg-amber-600 dark:text-amber-100 font-medium;
-    @apply px-1 rounded-md;
-    box-decoration-break: clone;
-}
-
 .mark-relative {
     @apply bg-violet-100 text-violet-600 dark:bg-violet-600 dark:text-violet-100 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
 
-.mark-connector {
+.mark-subject {
+    @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-300 font-medium;
+    @apply p-1 rounded-md;
+    box-decoration-break: clone;
+}
+
+mark, .mark-verb {
+    @apply bg-amber-100 text-amber-600 dark:bg-amber-600 dark:text-amber-100 font-medium;
+    @apply p-1 rounded-md;
+    box-decoration-break: clone;
+}
+
+
+.mark-complement, .mark-connector {
     @apply bg-lime-100 text-lime-900 dark:bg-lime-900 dark:text-lime-100 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
-.mark-urgent {
+.mark-preposition, .mark-urgent {
     @apply bg-red-100 text-red-600 dark:bg-red-600 dark:text-red-100 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
