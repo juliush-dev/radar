@@ -18,7 +18,7 @@
  <div v-show="radar.navigation"
      class="bg-inherit @if (Agent::isAndroidOs() || Agent::isEdge()) pt-2 @endif sticky top-0 z-20 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300/50 dark:border-slate-700/50 mx-6 lg:mx-0 overflow-hidden"
      @preserveScroll('navigationContainer')>
-     <div class="w-full lg:w-[890px]  mx-auto text-base flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300  transition-all duration-200  py-2 overflow-x-auto"
+     <div class="w-full lg:w-[890px] mx-auto text-base flex gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 transition-all duration-200  py-2 overflow-x-auto pr-12 md:pr-0"
          @preserveScroll('mainNavigation')>
          <x-layouts.navigation-link class="hover:text-fuchsia-900 dark:hover:text-fuchsia-500" resource="notes"
              action="index" label="Notes"

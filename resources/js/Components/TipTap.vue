@@ -128,7 +128,6 @@ export default {
                 CustomTextStyle,
             ],
             content: this.modelValue,
-            autofocus: 'end',
             onFocus: () => {
                 this.destroyComments();
                 this.reloadComments();
