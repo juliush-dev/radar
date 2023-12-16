@@ -1,7 +1,7 @@
 <x-layouts.app
     icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
     @if (count($notes) > 0)
-        <div>
+        <div class="px-6">
             <x-notes-filter :$filter />
             <note v-slot="note">
                 <ul class="flex flex-col gap-6 py-6">
@@ -72,7 +72,7 @@
             </note>
         </div>
     @else
-        <div class="relative h-full overflow-hidden flex w-full mt-8">
+        <div class="relative h-full overflow-hidden flex w-full">
             <div class="relative w-full lg:w-1/2"
                 style="background-image:
                 linear-gradient(30.8deg, rgba(0, 0, 0, 0.7) 30%,transparent 100%),

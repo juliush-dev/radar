@@ -9,10 +9,10 @@
                 autocomplete="new-password" />
             <x-splade-input id="password_confirmation" type="password" name="password_confirmation" :label="__('Confirm Password')"
                 required />
-            <div class="flex items-center justify-end gap-5 flex-wrap text-end">
+            <div class="flex items-center justify-end flex-wrap text-end gap-5">
                 <x-splade-submit class="whitespace-nowrap bg-fuchsia-500 hover:bg-fuchsia-600 shadow-md"
                     :label="__('Register')" />
-                <x-authentication />
+                <x-authentication class="text-xs" />
             </div>
         </x-splade-form>
     </x-auth-card>

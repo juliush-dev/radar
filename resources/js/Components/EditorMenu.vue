@@ -1,6 +1,6 @@
 <template>
     <div id="menu"
-         class="transition-all duration-300 flex gap-4 items-center w-fit rounded-lg px-2 py-1 border-t-2 shadow shadow-fuchsia-500 border-fuchsia-400 bg-slate-100">
+         class="px-2 py-1 shadow-lg bg-slate-100 border-2 border-slate-300 rounded-md transition-all duration-300 flex gap-4 items-center w-fit">
         <div class="flex items-center">
             <button id="table" class="w-fit" @click.prevent>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -176,7 +176,6 @@ export default {
 
         const onImageLoadingLabelContent = '<span class="px-4 rounded bg-slate-100 border border-blue-400 py-1">Loading...</span>';
         const onImageLoadingFailedLabelContent = (error) => `<span class="px-4 rounded bg-red-400 border border-red-400 text-white py-1">Request failed ${error}</span>`;
-        const onRelativesLoadingFailedLabelContent = (error) => `<span class="px-4 rounded bg-slate-100 border border-blue-400 py-1">Request failed ${error}</span>`;
 
         tippy('#table', {
             interactive: true,

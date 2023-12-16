@@ -39,7 +39,7 @@
                 @endif
             @endforeach
         </div>
-        <div class="flex gap-1 items-center">
+        <div class="flex gap-1 items-center flex-wrap">
             @if ($skill->fields->count() > 0)
                 @foreach ($skill->fields as $skillField)
                     <x-layouts.navigation-link open-as="modal" class="dark:text-sky-300 text-sky-500"
