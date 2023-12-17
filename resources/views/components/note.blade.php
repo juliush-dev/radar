@@ -45,7 +45,10 @@
         <x-note.relatives :$note />
         <x-note.categories :$note />
     </div>
-    <div class="flex gap-4 flex-wrap mt-8">
+    <div class="flex gap-6 flex-wrap mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-12">
+        <Link @click.prevent slideover href="{{ route('notes.history') }}" class="text-blue-400">
+        History
+        </Link>
         <Link @click.prevent slideover href="{{ route('notes.relatives', $note) }}" class="text-blue-400">
         Relatives
         </Link>

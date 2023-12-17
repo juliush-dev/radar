@@ -44,6 +44,7 @@ Route::middleware('splade')->group(function () {
         Route::post('/notes/{note}/relate', [NoteController::class, 'relate'])->name('notes.relate');
         Route::patch('/notes/{note}/publish', [NoteController::class, 'publish'])->name('notes.publish');
         Route::patch('/notes/{note}/unpublish', [NoteController::class, 'unpublish'])->name('notes.unpublish');
+        Route::get('/notes/last-opened', [NoteController::class, 'history'])->name('notes.history');
 
 
         Route::get('/notes/{note}/references', [App\Http\Controllers\NoteController::class, 'references'])->name('topics.references');

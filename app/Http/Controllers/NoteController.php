@@ -109,4 +109,10 @@ class NoteController extends Controller
         });
         return redirect(Referer::get());
     }
+
+    public function history()
+    {
+        $lastOpened = Note::latest('updated_at')->take(12)->get();
+        return view('note.history', ['lastOpened' => $lastOpened]);
+    }
 }

@@ -1,6 +1,6 @@
 <template>
     <div id="menu"
-         class="px-2 py-1 shadow-lg bg-slate-100 border-2 border-slate-300 rounded-md transition-all duration-300 flex gap-4 items-center w-fit">
+         class="px-2 py-1 shadow-lg bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 rounded-md transition-all duration-300 flex gap-4 items-center w-fit">
         <div class="flex items-center">
             <button id="table" class="w-fit" @click.prevent>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
