@@ -72,32 +72,34 @@
             </note>
         </div>
     @else
-        <div class="relative h-full overflow-hidden flex w-full">
-            <div class="relative w-full lg:w-1/2"
-                style="background-image:
+        <div class="h-full flex justify-center items-center">
+            <div class="relative h-full lg:h-[500px] overflow-hidden flex w-full">
+                <div class="relative w-full lg:w-1/2"
+                    style="background-image:
                 linear-gradient(30.8deg, rgba(0, 0, 0, 0.7) 30%,transparent 100%),
                 radial-gradient(circle at 70% 40%, transparent, rgba(0, 0, 0, 1) 90%),
                 url('{{ Vite::asset('resources/images/benjamin-child-rOn57CBgyMo-unsplash.jpg') }}');
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;">
-                <p class="absolute bottom-4 text-sm font-light text-slate-300/50 text-center w-full z-20">
-                    Photo by <a
-                        href="https://unsplash.com/@bchild311?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-                        class="underline">Benjamin
-                        Child</a> on <a class="underline"
-                        href="https://unsplash.com/photos/woman-in-black-tank-top-and-black-pants-sitting-on-green-grass-field-during-daytime-rOn57CBgyMo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-                </p>
-            </div>
-            <div
-                class="absolute left-0 top-0 right-0 bottom-0 w-full lg:relative lg:w-1/2 flex items-center justify-center text-center lg:bg-fuchsia-100">
-                <p
-                    class="soft text-2xl md:text-3xl lg:text-4xl h-[74%] p-8 lg:p-0  flex flex-col lg:gap-2 items-center justify-center leading-normal font-semibold uppercase w-2/3 text-slate-100 lg:text-fuchsia-900">
-                    <span class="soft mb-2 block w-fit mt-auto lg:m-0">Don't hate.</span>
-                    <span class="soft block w-fit">Take Notes</span>
-                    <span class="soft block w-fit mb-2 md:mb-6 lg:m-0">and</span>
-                    <span class="soft block w-fit">Meditate</span>
-                </p>
+                    <p class="absolute bottom-4 text-sm font-light text-slate-300/50 text-center w-full z-20">
+                        Photo by <a
+                            href="https://unsplash.com/@bchild311?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                            class="underline">Benjamin
+                            Child</a> on <a class="underline"
+                            href="https://unsplash.com/photos/woman-in-black-tank-top-and-black-pants-sitting-on-green-grass-field-during-daytime-rOn57CBgyMo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+                    </p>
+                </div>
+                <div
+                    class="absolute left-0 top-0 right-0 bottom-0 w-full lg:relative lg:w-1/2 flex items-center justify-center text-center lg:bg-fuchsia-100">
+                    <p
+                        class="soft text-2xl md:text-3xl lg:text-4xl h-[74%] p-8 lg:p-0  flex flex-col lg:gap-2 items-center justify-center leading-normal font-semibold uppercase w-2/3 text-slate-100 lg:text-fuchsia-900">
+                        <span class="soft mb-2 block w-fit mt-auto lg:m-0">Don't hate.</span>
+                        <span class="soft block w-fit">Take Notes</span>
+                        <span class="soft block w-fit mb-2 md:mb-6 lg:m-0">and</span>
+                        <span class="soft block w-fit">Meditate</span>
+                    </p>
+                </div>
             </div>
         </div>
     @endif

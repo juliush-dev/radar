@@ -40,7 +40,7 @@
             <div class="ProseMirror" v-html="form.content"></div>
         @endcan
     </x-splade-form>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6 mt-8 lg:flex-col lg:fixed lg:left-[6%] lg:w-80 lg:px-6 py-[1px] lg:top-12">
         <x-note.referers :$note />
         <x-note.relatives :$note />
         <x-note.categories :$note />
