@@ -72,7 +72,7 @@
             </note>
         </div>
     @else
-        <div class="h-full flex justify-center items-center">
+        <div class="h-[96%] flex justify-center items-center">
             <div class="relative h-full lg:h-[500px] overflow-hidden flex w-full">
                 <div class="relative w-full lg:w-1/2"
                     style="background-image:

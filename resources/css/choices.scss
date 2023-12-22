@@ -40,7 +40,7 @@ fieldset:disabled .#{$choices-selector} {
     @apply shadow-sm;
 
     .#{$choices-selector}__inner {
-        @apply block rounded-none border border-fuchsia-300 shadow-sm shadow-fuchsia-200 w-full py-2 bg-white;
+        @apply block rounded-none border border-fuchsia-300 shadow-sm shadow-fuchsia-200 w-full py-2 bg-transparent;
         min-height: auto;
     }
 

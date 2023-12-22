@@ -5,7 +5,7 @@
 
         <textarea
             {{ $attributes->except(['v-if', 'v-show', 'class', 'autosize'])->class(
-                    'block w-full rounded-none border-fuchsia-500 shadow-sm focus:border-slate-500 focus:ring focus:ring-slate-200 focus:ring-opacity-50 disabled:border-slate-300 disabled:border-4',
+                    'block w-full rounded-none border-fuchsia-500 shadow-sm focus:border-slate-500 focus:ring focus:ring-slate-200 focus:ring-opacity-50 disabled:border-slate-300 disabled:border-4 bg-transparent',
                 )->merge([
                     'name' => $name,
                     'v-model' => $vueModel(),

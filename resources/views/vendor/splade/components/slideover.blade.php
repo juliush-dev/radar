@@ -26,7 +26,7 @@
             }"
                 animation="{{ $attributes->get('position') === 'left' ? 'slide-left' : 'slide-right' }}">
                 <x-splade-component is="dialog" panel dusk="slideover-dialog">
-                    <div {{ $attributes->class('bg-transparent min-h-screen relative') }}>
+                    <div {{ $attributes->class('min-h-screen relative') }}>
                         <div v-if="modal.closeButton" class="absolute top-0 right-0 pt-3 pr-3">
                             <button dusk="close-modal-button" @click="modal.close" type="button"
                                 class="text-teal-600 hover:text-green-500">

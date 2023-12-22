@@ -6,7 +6,10 @@
         ->all();
 @endphp
 <section v-if="@js(count($categories) > 0)">
-    <ul class="flex gap-4 flex-wrap">
+    @if ($inEditor)
+        <h3 class="text-lg font-semibold">Categorized as</h3>
+    @endif
+    <ul class="flex @if ($inEditor) lg:flex-col mt-3 @endif gap-4 flex-wrap">
         @foreach ($categories as $category)
             <li class="w-fit">
                 <Link href="{{ route('notes.filter') . "?categories%5B0%5D={$category['id']}" }}"

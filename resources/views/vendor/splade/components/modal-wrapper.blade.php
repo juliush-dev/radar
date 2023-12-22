@@ -11,8 +11,14 @@
 
                 <div v-if="(modal.stack === 1 && !modal.animate) || (modal.stack > 1 && modal.onTopOfStack)"
                     class="fixed z-30 inset-0" />
-
-                {{ $slot }}
+                <div class="modal-content-theme-setter relative w-full h-full">
+                    {{ $slot }}
+                </div>
+                <x-splade-script>
+                    if(window.document.getElementById('themeSetter')?.classList.contains('dark')){
+                    window.document.querySelector('.modal-content-theme-setter')?.classList.toggle('dark');
+                    };
+                </x-splade-script>
             </x-splade-component>
         </x-splade-component>
     </template>

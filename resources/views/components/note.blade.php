@@ -4,7 +4,7 @@
         'updated_at' => $note->updated_at,
     ]"
         class="flex flex-col justify-between overflow-hidden w-full" stay background submit-on-change="content">
-        <div class="flex flex-wrap md:items-center gap-6 mb-3 w-full" id="{{ $note->id }}">
+        <div class="flex flex-wrap md:items-center gap-6 mb-8 w-full" id="{{ $note->id }}">
             <div class="font-medium text-slate-400 first-letter:uppercase dark:text-slate-600">
                 {{ $note->author->name }}
             </div>
@@ -40,20 +40,22 @@
             <div class="ProseMirror" v-html="form.content"></div>
         @endcan
     </x-splade-form>
-    <div class="flex flex-col gap-6 mt-8 lg:flex-col lg:fixed lg:left-0 lg:w-80 lg:px-6 py-[1px] lg:top-12">
+    <div
+        class="flex border-t border-fuchsia-400/50 lg:border-none flex-col gap-10 mt-3 pt-4 lg:flex-col lg:fixed lg:left-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-10 lg:overflow-y-auto lg:pb-4">
         <x-note.referers :$note />
         <x-note.relatives :$note />
-        <x-note.categories :$note />
+        <x-note.categories inEditor="true" :$note />
     </div>
-    <div class="flex gap-6 flex-wrap mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-12">
+    <div
+        class="flex gap-6 flex-wrap mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-5 lg:overflow-y-auto lg:pb-4">
         <Link @click.prevent slideover href="{{ route('notes.history') }}" class="text-blue-400">
         History
         </Link>
         <Link @click.prevent slideover href="{{ route('notes.relatives', $note) }}" class="text-blue-400">
-        Relatives
+        Toggle references
         </Link>
         <Link @click.prevent slideover href="{{ route('categories.index', $note) }}" class="text-blue-400">
-        Categories
+        Toggle Categories
         </Link>
         <Link @click.prevent slideover href="{{ route('categories.edit', $note) }}" class="text-blue-400">
         Edit Categories

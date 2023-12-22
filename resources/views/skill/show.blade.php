@@ -56,7 +56,7 @@
             </h2>
             <p class="mb-8 text-md">
                 @can('update-type')
-                    <x-nav-link modal href="{{ route('skills.types.edit', $skill->type) }}"
+                    <x-nav-link slideover href="{{ route('skills.types.edit', $skill->type) }}"
                         class="dark:text-teal-300 text-teal-500 whitespace-normal">
                         {{ $skill->type->title }}
                     </x-nav-link>
@@ -73,7 +73,7 @@
             </h2>
             <p class="mb-8 text-md">
                 @can('update-group')
-                    <x-nav-link modal href="{{ route('skills.groups.edit', $skill->group) }}"
+                    <x-nav-link slideover href="{{ route('skills.groups.edit', $skill->group) }}"
                         class="dark:text-teal-300 text-teal-500 whitespace-normal">
                         {{ $skill->group->title }}
                     </x-nav-link>

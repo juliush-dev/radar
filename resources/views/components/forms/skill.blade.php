@@ -3,7 +3,8 @@
   @php($groups = $rq->groups())
   @php($types = $rq->types())
   <skill v-slot="skill" :form="form">
-      <div class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-white gap-0 w-full flex-wrap shadow mb-4">
+      <div
+          class="sticky right-0 overflow-x-auto top-0 z-10 flex bg-inherit backdrop-blur gap-0 w-full flex-wrap shadow mb-4">
           <button class="px-6 py-4 cursor-pointer w-full md:w-fit"
               v-bind:class=" skill.activeTab == 'skill' ? ' bg-pink-500 text-white' : 'text-slate-50 bg-slate-700' "
               @click.prevent="skill.setActiveTab('skill')">skill</button>
@@ -18,7 +19,7 @@
           </div>
       </div>
       <section v-show="skill.activeTab == 'skill'"
-          class="w-full flex flex-col bg-white border border-slate-200 dark:border-white p-8">
+          class="w-full flex flex-col bg-inherit border border-slate-200 dark:border-slate-700 p-8">
           <x-splade-textarea required name="title" label="Title" class="mb-6" />
           <div class="flex flex-col gap-4 mb-4">
               <x-splade-select name="type" label="Select a type" :options="$types" option-value="id"
