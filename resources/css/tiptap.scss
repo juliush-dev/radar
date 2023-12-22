@@ -110,6 +110,7 @@ mark, .mark-verb {
             vertical-align: top;
             box-sizing: border-box;
             position: relative;
+            @apply dark:bg-transparent;
 
             >* {
                 margin-bottom: 0;
