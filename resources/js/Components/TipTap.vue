@@ -1,8 +1,8 @@
 <template>
-    <div class="w-full">
+    <div class="w-full pb-10">
         <editor-content :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
-            offset: [45, 0]
+            offset: [35, 0]
         }" :shouldShow="({ editor, view, state, oldState }) => {
     return true;
 }">
