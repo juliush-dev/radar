@@ -72,3 +72,18 @@ code {
     background-image: radial-gradient(#444cf7 0.5px, #fdfdff 0.5px);
     background-size: 10px 10px;
 }
+
+input {
+    background: transparent;
+}
+
+textarea {
+    background: transparent;
+}
+
+.hero-image {
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}

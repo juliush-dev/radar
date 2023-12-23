@@ -11,8 +11,19 @@
         $method = '';
     }
     $route = isset($actionArgs) ? ($isInlineLink ? $routeName : route($routeName, $actionArgs)) : ($isInlineLink ? $routeName : route($routeName));
-    $isActive = $type == 'call-to-action' ? false : request()->routeIs($routeName);
-    // || request()->url() == $route || str_starts_with(Route::currentRouteName(), $resource);
+    $isActive = $type == 'call-to-action';
+    if (!$isActive) {
+        $defaultRoutePair = [$routeName, $label];
+        $currentRouteName = Route::currentRouteName();
+        $routeNamePairs = collect([$defaultRoutePair, ...$alternativeRouteNames]);
+        $matchingRoute = $routeNamePairs->first(function ($pair) use ($currentRouteName) {
+            return $pair[0] === $currentRouteName;
+        });
+        if ($matchingRoute) {
+            $isActive = true;
+            $label = $matchingRoute[1];
+        }
+    }
 @endphp
 
 <x-splade-toggle :data="$isActive">
@@ -33,7 +44,7 @@
                 :type="$type">
                 @if (strlen($icon) > 0)
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="my-auto w-5 h-5">
+                        stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icon }}" />
                     </svg>
                 @endif

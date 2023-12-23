@@ -1,6 +1,6 @@
 <x-layouts.app
     icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
-    @if (count($notes) > 0)
+    @if (count($notes) > 0 || isset($filter['categories']))
         <div class="px-6">
             <x-notes-filter :$filter />
             <note v-slot="note">
@@ -18,7 +18,7 @@
                             </Link>
                         @endif
                         <Link href="#notes-filter"
-                            class="flex gap-2 items-center bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                            class="lg:hidden flex gap-2 items-center bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -36,7 +36,6 @@
                         New note
                         </Link>
                     </li>
-
                     @forelse ($notes as $note)
                         <li
                             class="flex flex-col flex-wrap gap-2 justify-between border-b border-slate-400/30 pb-2 mb-6">

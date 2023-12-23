@@ -22,6 +22,7 @@ class NavigationLink extends Component
         public bool $post = false,
         public bool $dropdown = true,
         public bool $requireLogin = false,
+        public array $alternativeRouteNames = [],
     ) {
         //
     }

@@ -15,10 +15,22 @@ class Category extends Model
         return $this->belongsToMany(Note::class, 'note_category', 'category_id', 'note_id');
     }
 
-    public static function options()
+    public static function options($filter = [])
     {
-        $map = Category::all()
-            ->map(fn ($category) => ['name' => $category->name, 'id' => $category->id]);
+        $categories = Category::all();
+
+        // Filter categories based on the provided names
+        $filteredCategories = $categories->whereIn('id', $filter);
+
+        // Get the remaining categories
+        $remainingCategories = $categories->diff($filteredCategories);
+
+        // Concatenate filtered and remaining categories
+        $orderedCategories = $filteredCategories->merge($remainingCategories);
+
+        // Map the categories to the desired format
+        $map = $orderedCategories->map(fn ($category) => ['name' => $category->name, 'id' => $category->id]);
+
         return $map;
     }
 }
