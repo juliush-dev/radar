@@ -26,7 +26,7 @@
 <x-splade-form action="{{ route('notes.filter') }}" method="get" :default="[
     'categories' => $filter['categories'] ?? [],
 ]" submit-on-change
-    class="md:hidden lg:block lg:flex-col lg:fixed lg:left-0 lg:w-[18rem] lg:border-r border-slate-400/30 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-10 lg:overflow-y-auto lg:pb-4">
+    class="hidden lg:block lg:flex-col lg:fixed lg:left-0 lg:w-[18rem] lg:border-r border-slate-400/30 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-10 lg:overflow-y-auto lg:pb-4">
     <h3 class="text-lg font-semibold  mb-6">Notes by categories</h3>
     <ul class="flex flex-col gap-6" @preserveScroll('NotesFilter')>
         @foreach ($categoriesOptions as $categoryOption)
