@@ -190,4 +190,12 @@ mark, .mark-verb {
 
 }
 
+.ProseMirror div[data-youtube-video] {
+    @apply w-full rounded-2xl mx-auto px-2;
+}
+
+.ProseMirror div[data-youtube-video] iframe {
+    @apply w-full rounded-xl mx-auto;
+}
+
 

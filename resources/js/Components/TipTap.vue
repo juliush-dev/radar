@@ -32,6 +32,8 @@ import { Editor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
 import { Extension } from '@tiptap/core'
 import tippy from 'tippy.js'
 import 'tippy.js/themes/light-border.css';
+import Youtube from '@tiptap/extension-youtube'
+
 
 const Commander = Extension.create({
     name: "Commander",
@@ -126,6 +128,7 @@ export default {
                 ClassToggler,
                 Commander,
                 CustomTextStyle,
+                Youtube
             ],
             content: this.modelValue,
             onFocus: () => {
