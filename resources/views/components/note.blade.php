@@ -1,4 +1,5 @@
-<div class="mx-auto w-full overflow-hidden note mb-6 transition-all duration-300 relative">
+<div
+    class="mx-auto w-full overflow-visible note transition-all duration-300 relative border p-4 rounded-md dark:border-slate-400/10">
     <x-splade-form action="{{ route('notes.update', $note) }}" method="patch" :default="[
         'content' => $note->content,
         'updated_at' => $note->updated_at,

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full pb-10">
+    <div class="w-full">
         <editor-content :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
@@ -33,6 +33,33 @@ import { Extension } from '@tiptap/core'
 import tippy from 'tippy.js'
 import 'tippy.js/themes/light-border.css';
 import Youtube from '@tiptap/extension-youtube'
+
+const CustomImage = Extension.create({
+    addGlobalAttributes () {
+        return [
+            {
+                // Extend the following extensions
+                types: [
+                    'image',
+                ],
+                // … with those attributes
+                attributes: {
+                    type: {
+                        default: 'diagram',
+                        renderHTML: attributes => {
+                            // … and return an object with HTML attributes.
+                            if (attributes.src?.includes('plantuml')) {
+                                return {
+                                    ...attributes,
+                                    'data-type': `${attributes.type}`,
+                                }
+                            }
+                        },
+                    },
+                }
+            }];
+    },
+})
 
 
 const Commander = Extension.create({
@@ -106,7 +133,6 @@ export default {
         this.editor = new Editor({
             extensions: [
                 StarterKit,
-                Image,
                 Link,
                 TaskList,
                 TaskItem.configure({
@@ -128,7 +154,9 @@ export default {
                 ClassToggler,
                 Commander,
                 CustomTextStyle,
-                Youtube
+                Youtube,
+                CustomImage,
+                Image,
             ],
             content: this.modelValue,
             onFocus: () => {

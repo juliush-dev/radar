@@ -5,7 +5,7 @@
     @apply  dark:prose-strong:text-slate-300;
     @apply  prose-headings:text-slate-700;
     @apply  underline-offset-4;
-    @apply  prose-img:m-0;
+    // @apply  prose-img:m-0;
     font-family: 'Chakra Petch', sans-serif;
 }
 
@@ -191,7 +191,7 @@ mark, .mark-verb {
 }
 
 .ProseMirror div[data-youtube-video] {
-    @apply w-full rounded-2xl mx-auto px-2;
+    @apply w-full rounded-2xl mx-auto px-2 border-l-8 border-r-8;
 }
 
 .ProseMirror div[data-youtube-video] iframe {

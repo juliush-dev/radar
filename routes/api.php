@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,32 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/api/topics', function (Request $request) {
-    return [['id' => 1, 'title' => 'Opa']];
+Route::post('/plantuml/render', function (Request $request) {
+    $code = $request->input('code');
+    $response = "Source file couldn't be created";
+    if ($code != null && ($code = trim($code))) {
+        $fileName = "source_" . time();
+        // Storage::disk('public')->deleteDirectory('plantuml');
+        if (Storage::disk('public')->put("plantuml/$fileName", $code)) {
+            $path = Storage::path("public/plantuml/$fileName");
+            $dir = dirname($path);
+            $response = $dir;
+            shell_exec("cd .. && java -jar plantuml.jar -tsvg -o '$dir' $path");
+            $response = Storage::url("public/plantuml/$fileName.svg");
+        }
+    }
+    return $response;
+});
+
+Route::get('/plantuml/resolve', function (Request $request) {
+    $sourceDiagram = $request->input('src');
+    $arr = explode('/', $sourceDiagram);
+    $diagramFileName = array_pop($arr);
+    $arr = explode('.', $diagramFileName);
+    $codeFileName = array_shift($arr);
+    $response = "File not found";
+    if (Storage::disk('public')->exists("plantuml/$codeFileName")) {
+        $response = Storage::disk('public')->get("plantuml/$codeFileName");
+    }
+    return $response;
 });
