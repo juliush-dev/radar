@@ -118,11 +118,11 @@
                               v-model="comment"></textarea>
                 </div>
                 <div class="flex gap-4">
-                    <button class="bg-sky-100 text-sky-900 dark:bg-sky-900 dark:text-sky-100 font-medium py-1 px-2 shadow rounded"
+                    <button class="bg-sky-100 text-sky-900 dark:bg-sky-900/40 dark:text-sky-100/40 font-medium py-1 px-2 shadow rounded"
                             @click.stop="setComment">
                         Comment
                     </button>
-                    <button class="bg-slate-200 text-slate-900 dark:bg-slate-900 dark:text-slate-100 font-medium py-1 px-2 shadow rounded"
+                    <button class="bg-slate-200 text-slate-900 dark:bg-slate-900/40 dark:text-slate-100/40 font-medium py-1 px-2 shadow rounded"
                             @click.stop="unsetComment">
                         Uncomment
                     </button>

@@ -65,37 +65,37 @@ ul[data-type="taskList"] {
 }
 
 .mark-relative {
-    @apply bg-violet-100 text-violet-600 dark:bg-violet-600 dark:text-violet-100 font-medium;
+    @apply bg-violet-100 text-violet-600 dark:bg-violet-600/40 dark:text-violet-400/40 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
 
 .mark-subject {
-    @apply bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-300 font-medium;
+    @apply bg-gray-300 text-gray-900 dark:bg-gray-900/40 dark:text-gray-300/40 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
 
 mark, .mark-verb {
-    @apply bg-amber-100 text-amber-600 dark:bg-amber-600 dark:text-amber-100 font-medium;
+    @apply bg-amber-100 text-amber-600 dark:bg-amber-600/40 dark:text-amber-400/40 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
 
 
 .mark-complement, .mark-connector {
-    @apply bg-lime-100 text-lime-900 dark:bg-lime-900 dark:text-lime-100 font-medium;
+    @apply bg-lime-100 text-lime-900 dark:bg-lime-900/40 dark:text-lime-400/40 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
 .mark-preposition, .mark-urgent {
-    @apply bg-red-100 text-red-600 dark:bg-red-600 dark:text-red-100 font-medium;
+    @apply bg-red-100 text-red-600 dark:bg-red-600/40 dark:text-red-400/40 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
 
 .unmark {
-    @apply bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-100 font-medium;
+    @apply bg-slate-200 text-slate-600 dark:bg-slate-600/40 dark:text-slate-400/40 font-medium;
     @apply p-1 rounded-md;
     box-decoration-break: clone;
 }
@@ -168,12 +168,13 @@ mark, .mark-verb {
 
 .controls-panel{
     @apply flex flex-col min-w-[200px] shadow-lg gap-4 max-h-52 overflow-y-auto md:mr-6;
-    @apply bg-slate-100 dark:bg-slate-800;
+    @apply bg-inherit backdrop-blur;
+    @apply dark:text-slate-400;
     @apply p-3 rounded border-2 border-fuchsia-400;
 }
 
 .controls-panel button:is(.soft) {
-    @apply first-letter:uppercase text-sky-400;
+    @apply first-letter:uppercase text-sky-400 dark:text-sky-400/40;
 }
 
 .ProseMirror p{
@@ -181,16 +182,17 @@ mark, .mark-verb {
 }
 
 .ProseMirror span[data-tippy-content]{
-    @apply bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100 font-medium;
+    @apply bg-green-100 text-green-900 dark:bg-green-900/40 dark:text-green-100/40 font-medium;
     @apply p-1 rounded-md;
     @apply shadow;
 }
 .tippy-box[data-theme~='tomato'] {
-    @apply bg-sky-100 text-sky-700 dark:bg-sky-700 dark:text-sky-100;
-    @apply px-2 rounded-md;
+    @apply backdrop-blur text-sky-400/50 p-3;
+    @apply rounded-md;
     @apply shadow-md;
-    @apply border-2 border-sky-200;
+    @apply border-2 border-sky-400/5;
     @apply first-letter:uppercase;
+    @apply text-base;
     font-family: 'Chakra Petch', sans-serif;
 
 }

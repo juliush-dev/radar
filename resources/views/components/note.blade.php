@@ -48,14 +48,14 @@
         @endif
     </x-splade-form>
     <div
-        class=" border-t border-fuchsia-400/50 lg:border-none mt-3 pt-4 flex  flex-wrap gap-10 lg:flex-col lg:fixed lg:left-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-10 lg:overflow-y-auto lg:pb-4">
+        class=" border-t border-fuchsia-400/50 lg:border-none mt-3 pt-4 flex  flex-wrap gap-10 lg:flex-col lg:fixed lg:left-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-11 lg:overflow-y-auto lg:pb-4">
         <x-note.referers :$note />
         <x-note.relatives :$note />
         <x-note.categories inEditor="true" :$note />
     </div>
     @if (!Agent::isPhone())
         <div
-            class="flex flex-wrap gap-6 mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-5 lg:overflow-y-auto lg:pb-4 text-blue-400 dark:text-blue-400/30">
+            class="flex flex-wrap gap-6 mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-6 lg:overflow-y-auto lg:pb-4 text-blue-400 dark:text-blue-400/30">
             <Link @click.prevent slideover href="{{ route('notes.history') }}">
             History
             </Link>
