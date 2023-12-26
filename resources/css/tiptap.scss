@@ -1,13 +1,23 @@
 .ProseMirror{
     @apply min-w-full prose p-0 dark:prose-invert focus:outline-none;
+    @apply dark:text-inherit;
     @apply prose-blockquote:border-pink-400 dark:prose-blockquote:border-pink-800 prose-headings:m-0 prose-headings:mb-3;
-    @apply prose-img:max-w-full prose-img:h-auto prose-img:rounded-md dark:prose-headings:text-slate-300;
-    @apply  dark:prose-strong:text-slate-300;
+    @apply prose-img:max-w-full prose-img:h-auto prose-img:rounded-md;
+    // @apply  dark:prose-strong:text-slate-300;
     @apply  prose-headings:text-slate-700;
     @apply  underline-offset-4;
     @apply  prose-th:dark:border-slate-400/30;
-    @apply  prose-td:dark:border-slate-400/30;
+    @apply prose-pre:bg-inherit prose-pre:dark:bg-slate-500/5 prose-pre:dark:backdrop-blur;
+    @apply prose-pre:mx-1 prose-pre:shadow-slate-400 prose-pre:dark:shadow-none;
+    @apply prose-pre:text-sky-800 prose-pre:dark:text-slate-500;
+    @apply prose-a:text-inherit;
+    @apply prose-em:text-inherit;
+    @apply prose-strong:text-inherit;
     font-family: 'Chakra Petch', sans-serif;
+}
+
+pre{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .ProseMirrorReplica{
@@ -20,14 +30,7 @@
 .note form {
     @apply w-full overflow-hidden rounded-lg;
 }
-code {
-    font-size: 0.9rem;
-    padding: 0.25em;
-    border-radius: 0.25em;
-    background-color: rgba(#616161, 0.1);
-    color: #616161;
-    box-decoration-break: clone;
-}
+
 ul[data-type="taskList"] {
     list-style: none;
     padding: 0;
@@ -199,4 +202,7 @@ mark, .mark-verb {
     @apply w-full rounded-xl mx-auto;
 }
 
+input[type="checkbox"]{
+    @apply border-slate-400 dark:border-slate-500/30 bg-inherit;
+}
 

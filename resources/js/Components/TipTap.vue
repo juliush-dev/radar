@@ -26,7 +26,7 @@ import TableRow from '@tiptap/extension-table-row'
 import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
 import { CustomTextStyle } from './CustomTextStyle.vue'
-import EditorMenu from './EditorMenu.vue'
+import EditorMenu, { selectionIsPlantUMLCode, selectionIsPlantUMLDiagram } from './EditorMenu.vue'
 import { ClassToggler } from './ClassToggler.vue'
 import { Editor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
 import { Extension } from '@tiptap/core'
@@ -35,6 +35,19 @@ import 'tippy.js/themes/light-border.css';
 import Youtube from '@tiptap/extension-youtube'
 
 const CustomImage = Extension.create({
+    addKeyboardShortcuts () {
+        return {
+            'Mod-,': () => {
+                if (selectionIsPlantUMLCode(this.editor)) {
+                    document.querySelector('#render-plantuml').click();
+                } else if (selectionIsPlantUMLDiagram(this.editor)) {
+                    document.querySelector('#resolve-plantuml').click();
+                } else {
+                    alert("Selection is not a valid plantuml code or diagram");
+                }
+            },
+        }
+    },
     addGlobalAttributes () {
         return [
             {

@@ -28,7 +28,7 @@
                         Filter
                         </Link>
                         <Link href="{{ route('notes.store') }}" method="post"
-                            class="flex gap-2 items-center bg-fuchsia-100 text-fuchsia-900 dark:bg-fuchsia-900 dark:text-fuchsia-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                            class="flex gap-2 items-center bg-fuchsia-100 text-fuchsia-900 dark:bg-fuchsia-900/40 dark:text-fuchsia-100/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -40,15 +40,14 @@
                         <li
                             class="flex flex-col flex-wrap gap-2 justify-between border-b border-slate-400/30 pb-2 mb-6">
                             <h1
-                                class="text-lg font-medium first-letter:uppercase text-fuchsia-500 group-hover:text-fuchsia-600 transition-all duration-300">
+                                class="text-lg font-medium first-letter:uppercase text-fuchsia-500 dark:text-fuchsia-500/40 hover:text-fuchsia-600 dark:hover:text-fuchsia-500/60 transition-all duration-300">
                                 <Link href="{{ route('notes.edit', $note) }}">
                                 {{ $note->extractTitle() }}
                                 </Link>
                             </h1>
                             <div class="flex flex-wrap items-center gap-6">
-                                <span class="text-slate-400">{{ $note->author->name }}</span>
-                                <span class="text-slate-400"
-                                    v-text="note.extractDate('{{ $note->updated_at }}')"></span>
+                                <span>{{ $note->author->name }}</span>
+                                <span v-text="note.extractDate('{{ $note->updated_at }}')"></span>
                                 <x-note.categories :$note />
                                 @can('edit-note', [$note])
                                     <Link method="delete" href="{{ route('notes.destroy', $note) }}"

@@ -1,6 +1,6 @@
 <template>
     <div id="menu"
-         class="px-2 py-1 shadow-lg bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 rounded-md transition-all duration-300 flex gap-4 items-center w-fit">
+         class="px-2 py-1 shadow-lg bg-slate-100 dark:bg-slate-800 border-2 border-slate-400/40 rounded-md transition-all duration-300 flex gap-4 items-center w-fit">
         <div class="flex items-center">
             <button id="table" class="w-fit" @click.prevent>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -176,23 +176,10 @@ export default {
     },
 
     methods: {
-        isPlantUMLCode (str) {
-            // Check if the string starts with '@startuml' and ends with '@enduml'
-            const startsWithStartUML = str.trim().startsWith('@startuml')
-                || str.trim().startsWith('@startmindmap')
-                || str.trim().startsWith('@startjson')
-                || str.trim().startsWith('@startwbs');
-            const endsWithEndUML = str.trim().endsWith('@enduml')
-                || str.trim().endsWith('@endmindmap')
-                || str.trim().endsWith('@endjson')
-                || str.trim().endsWith('@endwbs');
-            // Return true if both conditions are met, indicating a valid PlantUML code
-            return startsWithStartUML && endsWithEndUML;
-        },
 
         async renderPlantuml () {
-            const content = this.getEditorSelectionContent();
-            if (this.editor.isActive('codeBlock') && this.isPlantUMLCode(content)) {
+            if (selectionIsPlantUMLCode(this.editor)) {
+                const content = getEditorSelectionContent(this.editor);
                 try {
                     const response = await axios.post('/api/plantuml/render', {
                         code: content,
@@ -208,9 +195,8 @@ export default {
 
         },
         async resolvePlantumlDiagram () {
-            const type = this.editor.state.selection?.node?.attrs?.type;
-            const src = this.editor.state.selection?.node?.attrs?.src;
-            if (type == "diagram" && src && src.includes("plantuml")) {
+            if (selectionIsPlantUMLDiagram(this.editor)) {
+                const src = this.editor.state.selection?.node?.attrs?.src;
                 const response = await axios.get('/api/plantuml/resolve', {
                     params: {
                         src
@@ -231,15 +217,6 @@ export default {
             } else {
                 alert('No plantuml diagram found under this cursor position');
             }
-        },
-        getEditorSelectionContent () {
-            const fragment = this.editor.state.selection.$anchor.parent.content;
-            const content = fragment.textBetween(0, fragment.size);
-            return content;
-        },
-        getEditorSelectionRange () {
-            const fragment = this.editor.state.selection;
-            console.log(fragment.$anchor.parent);
         },
         setComment () {
             this.editor.commands.setComment(this.comment);
@@ -338,4 +315,34 @@ export default {
         // this.destroy()
     },
 }
+
+export function selectionIsPlantUMLCode (editor) {
+    const content = getEditorSelectionContent(editor);
+    return editor.isActive('codeBlock') && isPlantUMLCode(content);
+}
+
+export function selectionIsPlantUMLDiagram (editor) {
+    const type = editor.state.selection?.node?.attrs?.type;
+    const src = editor.state.selection?.node?.attrs?.src;
+    return type == "diagram" && src && src.includes("plantuml");
+}
+function isPlantUMLCode (str) {
+    // Check if the string starts with '@startuml' and ends with '@enduml'
+    const startsWithStartUML = str.trim().startsWith('@startuml')
+        || str.trim().startsWith('@startmindmap')
+        || str.trim().startsWith('@startjson')
+        || str.trim().startsWith('@startwbs');
+    const endsWithEndUML = str.trim().endsWith('@enduml')
+        || str.trim().endsWith('@endmindmap')
+        || str.trim().endsWith('@endjson')
+        || str.trim().endsWith('@endwbs');
+    // Return true if both conditions are met, indicating a valid PlantUML code
+    return startsWithStartUML && endsWithEndUML;
+}
+function getEditorSelectionContent (editor) {
+    const fragment = editor.state.selection.$anchor.parent.content;
+    const content = fragment.textBetween(0, fragment.size);
+    return content;
+}
+
 </script>

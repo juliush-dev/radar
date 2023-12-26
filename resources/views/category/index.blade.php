@@ -1,9 +1,9 @@
 <x-layouts.app>
     <x-splade-modal close-explicitly :close-button="false">
         <x-layouts.modal-content-wrapper>
-            <ul class="flex flex-col gap-2 p-6 font-medium">
+            <ul class="flex flex-col gap-6 p-6 font-medium">
                 @foreach ($categoriesOptions as $category)
-                    <li class="mb-4">
+                    <li>
                         <x-splade-form
                             action="{{ route('categories.update', ['category' => $category['id'], 'note' => $note]) }}"
                             method="patch" :default="[

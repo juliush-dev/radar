@@ -15,10 +15,9 @@
             @auth
                 @can('edit-note', [$note])
                     <div class="flex flex-wrap gap-6 md:ml-auto">
-                        <span v-text="note.extractDate('{{ $note->created_at }}')" class="text-slate-400"></span>
+                        <span v-text="note.extractDate('{{ $note->created_at }}')"></span>
                         <span
-                            v-text="note.extractDate(form.updated_at = (form.$response && form.$response.updated_at) ? form.$response.updated_at : form.updated_at)"
-                            class="text-slate-400"></span>
+                            v-text="note.extractDate(form.updated_at = (form.$response && form.$response.updated_at) ? form.$response.updated_at : form.updated_at)"></span>
                         <Link id="new-note" method="post" href="{{ route('notes.store') }}" class="dark:text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
@@ -56,23 +55,23 @@
     </div>
     @if (!Agent::isPhone())
         <div
-            class="flex flex-wrap gap-6 mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-5 lg:overflow-y-auto lg:pb-4">
-            <Link @click.prevent slideover href="{{ route('notes.history') }}" class="text-blue-400">
+            class="flex flex-wrap gap-6 mt-8 lg:flex-col lg:fixed lg:right-0 lg:w-80 lg:px-6 py-[1px] lg:top-7 lg:bottom-0 lg:pt-5 lg:overflow-y-auto lg:pb-4 text-blue-400 dark:text-blue-400/30">
+            <Link @click.prevent slideover href="{{ route('notes.history') }}">
             History
             </Link>
-            <Link @click.prevent slideover href="{{ route('notes.relatives', $note) }}" class="text-blue-400">
+            <Link @click.prevent slideover href="{{ route('notes.relatives', $note) }}">
             Toggle references
             </Link>
-            <Link @click.prevent slideover href="{{ route('categories.index', $note) }}" class="text-blue-400">
+            <Link @click.prevent slideover href="{{ route('categories.index', $note) }}">
             Toggle Categories
             </Link>
-            <Link @click.prevent slideover href="{{ route('categories.edit', $note) }}" class="text-blue-400">
+            <Link @click.prevent slideover href="{{ route('categories.edit', $note) }}">
             Edit Categories
             </Link>
-            <Link @click.prevent slideover href="{{ route('categories.create', $note) }}" class="text-blue-400">
+            <Link @click.prevent slideover href="{{ route('categories.create', $note) }}">
             New Category
             </Link>
-            <Link @click.prevent slideover href="{{ route('categories.delete', $note) }}" class="text-blue-400">
+            <Link @click.prevent slideover href="{{ route('categories.delete', $note) }}">
             Delete Categories
             </Link>
         </div>

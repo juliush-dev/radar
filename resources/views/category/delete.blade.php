@@ -6,8 +6,8 @@
             ]"
                 confirm-danger="Delete requested" confirm-text="The selected categories will be permanently deleted"
                 confirm-button="Yes, delete the selected categories permanently" cancel-button="No don't delete"
-                class="flex flex-col gap-2 p-6 font-medium">
-                <ul class="flex flex-col gap-2">
+                class="flex flex-col gap-6 p-6 font-medium">
+                <ul class="flex flex-col gap-6">
                     @foreach ($categoriesOptions as $category)
                         <li>
                             <label class="flex gap-2">

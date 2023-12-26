@@ -34,8 +34,7 @@
         @foreach ($categoriesOptions as $categoryOption)
             <li>
                 <label class="flex gap-2">
-                    <input type="checkbox" class="rounded border-fuchsia-200" v-model="form.categories"
-                        value="{{ $categoryOption['id'] }}">
+                    <input type="checkbox" v-model="form.categories" value="{{ $categoryOption['id'] }}">
                     <span class="soft -mt-1"><span
                             class="font-medium text-lg">{{ $categoryOption['name'] }}</span></span>
                 </label>

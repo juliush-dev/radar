@@ -1,17 +1,16 @@
 <div
-    class="overflow-hidden relative group rounded-md border-2 border-pink-300 text-white shadow shadow-pink-400/80 dark:shadow-pink-400/50 hover:shadow-md hover:shadow-pink-400/60  flex flex-col gap-0 p-6 transition-all duration-300">
+    class="overflow-hidden relative group rounded-md border-2 dark:border-slate-400/40 border-inherit  flex flex-col gap-0 p-6 transition-all duration-300">
     <x-nav-link href="{{ route('fields.show', $field) }}"
-        class="whitespace-break-spaces text-md first-letter:uppercase w-full text-pink-500 group-hover:text-pink-700 dark:text-pink-300 dark:group-hover:text-pink-400 transition-colors duration-300">
+        class="whitespace-break-spaces text-md first-letter:uppercase w-full text-pink-500 group-hover:text-pink-700 dark:text-pink-500/40 dark:hover:text-pink-500/40 transition-colors duration-300">
         <h1 class="mb-2">{{ $field->title }}</h1>
     </x-nav-link>
-    <div class="font-normal text-sm mb-4 text-slate-500 dark:text-slate-300 flex items-center gap-3 flex-wrap">
-        <span class="capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">
+    <div class="font-normal text-sm mb-4  flex items-center gap-3 flex-wrap">
+        <span class="capitalize whitespace-nowrap">
             {{ $field->code }}
         </span>
-        <div class="flex items-center gap-0 text-slate-400">
+        <div class="flex items-center gap-0">
             @foreach ($field->years as $year)
-                <span
-                    class="first-letter:capitalize whitespace-nowrap dark:text-slate-300 text-slate-500">{{ $year->year }}</span>
+                <span class="first-letter:capitalize whitespace-nowrap">{{ $year->year }}</span>
                 @if (!$loop->last)
                     <span class="mx-1">-</span>
                 @endif
@@ -21,7 +20,7 @@
     @if (!Route::is('fields.index') && $field->details)
         <x-splade-toggle>
             <x-splade-transition show="toggled" animation="slide-left" enter="transition-opacity duration-300"
-                leave="transition-opacity duration-1000" class="mb-4 font-sans dark:text-slate-300 text-slate-500">
+                leave="transition-opacity duration-1000" class="mb-4 font-sans">
                 {!! $field->details !!}
             </x-splade-transition>
             <button @click="toggle" v-text="toggled ? 'Less' : 'More...'"
