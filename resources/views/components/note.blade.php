@@ -4,7 +4,8 @@
         'content' => $note->content,
         'updated_at' => $note->updated_at,
     ]"
-        class="flex flex-col justify-between overflow-hidden w-full" stay background submit-on-change="content">
+        class="flex flex-col justify-between overflow-hidden w-full" stay background submit-on-change="content"
+        debounce="500">
         <div class="flex flex-wrap md:items-center gap-6 mb-8 w-full" id="{{ $note->id }}">
             <div class="font-medium text-slate-400 first-letter:uppercase dark:text-slate-600">
                 {{ $note->author->name }}
