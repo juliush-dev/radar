@@ -179,9 +179,13 @@ export default {
         isPlantUMLCode (str) {
             // Check if the string starts with '@startuml' and ends with '@enduml'
             const startsWithStartUML = str.trim().startsWith('@startuml')
-                || str.trim().startsWith('@startmindmap');
-            const endsWithEndUML = str.trim().endsWith('@enduml') ||
-                str.trim().endsWith('@endmindmap');
+                || str.trim().startsWith('@startmindmap')
+                || str.trim().startsWith('@startjson')
+                || str.trim().startsWith('@startwbs');
+            const endsWithEndUML = str.trim().endsWith('@enduml')
+                || str.trim().endsWith('@endmindmap')
+                || str.trim().endsWith('@endjson')
+                || str.trim().endsWith('@endwbs');
             // Return true if both conditions are met, indicating a valid PlantUML code
             return startsWithStartUML && endsWithEndUML;
         },

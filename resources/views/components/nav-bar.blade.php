@@ -16,7 +16,7 @@
      </x-splade-modal>
  @endguest
  <div v-show="radar.navigation"
-     class="bg-inherit @if (Agent::isAndroidOs() || Agent::isEdge() || Agent::isPhone()) py-2 @endif sticky top-0 z-20 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300/50 dark:border-slate-700/50 overflow-x-auto lg:overflow-hidden"
+     class="bg-inherit py-2 l:gpy-1 sticky top-0 z-20 flex flex-wrap lg:flex-nowrap items-center gap-0 md:gap-0 justify-between w-full  text-slate-800 dark:text-white border-b border-slate-300/50 dark:border-slate-700/50 overflow-x-auto lg:overflow-hidden"
      @preserveScroll('navigationContainer')>
      <div class="lg:w-[980px] mx-6 text-base flex justify-evenly gap-6 items-center text-fuchsia-600 dark:text-fuchsia-300 transition-all duration-200 lg:overflow-x-auto lg:mx-auto"
          @preserveScroll('mainNavigation')>

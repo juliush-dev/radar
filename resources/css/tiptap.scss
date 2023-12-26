@@ -5,7 +5,8 @@
     @apply  dark:prose-strong:text-slate-300;
     @apply  prose-headings:text-slate-700;
     @apply  underline-offset-4;
-    // @apply  prose-img:m-0;
+    @apply  prose-th:dark:border-slate-400/30;
+    @apply  prose-td:dark:border-slate-400/30;
     font-family: 'Chakra Petch', sans-serif;
 }
 
