@@ -25,7 +25,7 @@ pre{
     @apply prose p-0  dark:prose-invert focus:outline-none;
 }
 .has-focus {
-    @apply border-2 rounded-md px-2  border-fuchsia-400;
+    @apply border-2 rounded-md px-2  border-fuchsia-400 dark:border-fuchsia-950;
 
 }
 .note form {
@@ -168,9 +168,9 @@ mark, .mark-verb {
 
 .controls-panel{
     @apply flex flex-col min-w-[200px] shadow-lg gap-4 max-h-52 overflow-y-auto md:mr-6;
-    @apply bg-inherit backdrop-blur;
+    @apply bg-slate-50 dark:bg-slate-950;
     @apply dark:text-slate-400;
-    @apply p-3 rounded border-2 border-fuchsia-400;
+    @apply p-3 rounded border-2 border-fuchsia-400 dark:border-fuchsia-950;
 }
 
 .controls-panel button:is(.soft) {
