@@ -11,7 +11,8 @@
         @if (!Agent::isPhone())
             <div
                 class="lg:flex flex-col hidden h-[97%] lg:fixed lg:right-0 lg:w-80  py-[1px] lg:top-7 lg:bottom-0 lg:pt-6 lg:overflow-y-auto lg:pb-4 text-blue-400 dark:text-blue-400/30">
-                <div class="flex flex-col px-6 pb-6 pt-8 gap-4 h-full w-full soft sticky top-0 backdrop-blur z-10">
+                <div
+                    class="flex flex-col px-6 pb-6 pt-8 gap-4 w-full soft sticky top-0 bg-slate-100/90 dark:bg-slate-950/90 z-10">
                     <Link @click.prevent slideover href="{{ route('notes.history') }}">
                     History
                     </Link>
