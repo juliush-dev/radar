@@ -6,7 +6,7 @@
             <div class="ProseMirror" v-html="this.content"></div>
         </div>
         <div
-             class="absolute border border-slate-400/10 px-1 top-0 right-0 flex gap-3 backdrop-blur rounded-xl rounded-br-none rounded-tr-xl">
+             class="absolute border border-slate-400/40 px-3 py-1 top-0 right-0 flex gap-3 backdrop-blur rounded-xl rounded-tl-none rounded-br-none rounded-tr-xl">
             <Link :href="`/notes/${this.id}/edit`">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                  class="w-6 h-6">
