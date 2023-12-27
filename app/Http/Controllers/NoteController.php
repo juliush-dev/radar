@@ -35,14 +35,18 @@ class NoteController extends Controller
         return view('note.index', ['filter' => [], 'notes' => $this->rq->notes()]);
     }
 
-    public function references(Note $note)
+    public function showAsReferer(Note $referer)
     {
-        return view('note.references', ['note' => $note]);
+        return view('note.referer', ['note' => $referer]);
     }
 
-    public function edit(Note $note)
+    public function edit(Request $request, Note $note)
     {
-        return view("note.edit", ['note' => $note]);
+        $pile = null;
+        if ($input = $request->input('pile')) {
+            $pile = Note::find($input);
+        }
+        return view("note.edit", ['note' => $note, 'pile' => $pile]);
     }
 
     public function store(Request $request)

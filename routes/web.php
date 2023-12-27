@@ -36,6 +36,11 @@ Route::middleware('splade')->group(function () {
 
 
     Route::middleware('auth')->group(function () {
+        Route::get('/notes/modal', function (Request $request) {
+            $note = Note::find($request->input('note'));
+            $response = ['content' => $note?->content, 'id' => $note?->id];
+            return $response;
+        })->name('notes.modal');
         Route::resource(
             'notes',
             App\Http\Controllers\NoteController::class
@@ -47,7 +52,9 @@ Route::middleware('splade')->group(function () {
         Route::get('/notes/last-opened', [NoteController::class, 'history'])->name('notes.history');
 
 
-        Route::get('/notes/{note}/references', [App\Http\Controllers\NoteController::class, 'references'])->name('topics.references');
+        Route::get('/notes/{referer}', [App\Http\Controllers\NoteController::class, 'showAsReferer'])->name('notes.referer');
+
+
         Route::resource(
             'skills',
             App\Http\Controllers\SkillController::class

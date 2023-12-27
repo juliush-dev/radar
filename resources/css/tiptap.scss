@@ -209,3 +209,7 @@ input[type="checkbox"]{
     @apply border-slate-400 dark:border-slate-500/30 bg-inherit;
 }
 
+button {
+    @apply text-left;
+}
+

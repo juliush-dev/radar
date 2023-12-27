@@ -88,9 +88,6 @@ textarea {
     background-size: contain;
 }
 
-.note {
-    /* background-color: # */
-    /* background-image: linear-gradient(#444df712 1px, #e5e5f706 1px),
-        linear-gradient(to right, #444df712 1px, #e5e5f706 1px);
-    background-size: 20px 20px; */
+.modal-note {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px -10px 4px;
 }

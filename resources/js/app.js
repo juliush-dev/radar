@@ -8,6 +8,7 @@ import "vue3-emoji-picker/css";
 import Topic from "./Components/Topic.vue";
 import Skill from "./Components/Skill.vue";
 import Note from "./Components/Note.vue";
+import ModalNote from "./Components/ModalNote.vue";
 import LineChart from "./Components/LineChart.vue";
 import TipTap from "./Components/TipTap.vue";
 import.meta.glob(["../images/**", "../fonts/**"]);
@@ -32,6 +33,7 @@ createApp({
             Note,
             LineChart,
             TipTap,
+            ModalNote,
         },
     })
     .mount(el);

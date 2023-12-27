@@ -1,15 +1,6 @@
 <script>
-import { NodeHtmlMarkdown } from 'node-html-markdown'
 
 export default {
-    data () {
-        return {
-            nhm: null
-        }
-    },
-    mounted () {
-        this.nhm = new NodeHtmlMarkdown();
-    },
     methods: {
         extractDate (dateStr) {
             // Create a new Date object with the given string
@@ -28,14 +19,11 @@ export default {
 
             return date;
         },
-        convertToMarkdown (content) {
-            // console.log(this.nhm.translate(content));
-        }
     },
+
     render () {
         return this.$slots.default({
             extractDate: this.extractDate,
-            convertToMarkdown: this.convertToMarkdown,
         });
     },
 };

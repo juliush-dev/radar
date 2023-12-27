@@ -14,7 +14,7 @@
 
                 <ul class="flex flex-col gap-6 p-6 w-[80%]">
                     @foreach ($relativesOptions as $relative)
-                        <label class="flex gap-2">
+                        <label class="flex gap-2 soft">
                             <input type="checkbox" v-model="form.relatives" :value="@js($relative)">
                             <span class="-mt-1">{{ $relative['title'] }}</span>
                         </label>
