@@ -38,7 +38,7 @@ Route::middleware('splade')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('/notes/modal', function (Request $request) {
             $note = Note::find($request->input('note'));
-            $response = ['content' => $note?->content, 'id' => $note?->id];
+            $response = ['content' => $note->content ?? null, 'src' => $note->exists ? route('notes.edit', $note) : null];
             return $response;
         })->name('notes.modal');
         Route::resource(

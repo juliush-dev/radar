@@ -1,11 +1,15 @@
 <x-layouts.app
     icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
     @if (count($notes) > 0 || isset($filter['categories']))
+        <x-slot:leftSide>
+            <div class="h-full overflow-y-auto pb-20">
+                <x-notes-filter :$filter />
+            </div>
+        </x-slot>
         <div class="px-6">
-            <x-notes-filter :$filter />
             <note v-slot="note">
                 <ul class="flex flex-col gap-6 py-6">
-                    <li class="ml-auto flex flex-wrap font-bold items-center gap-6 mb-8">
+                    <li class="lg:ml-auto flex flex-wrap font-bold items-center gap-6 mb-8">
                         @if (isset($filter) && count($filter) > 0)
                             <Link href="{{ route('notes.index') }}"
                                 class="flex gap-2 items-center bg-slate-200 text-slate-900 dark:bg-slate-900 dark:text-slate-200 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
@@ -17,16 +21,6 @@
                             Reset Filter
                             </Link>
                         @endif
-                        <Link href="#notes-filter"
-                            class="lg:hidden flex gap-2 items-center bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-                        </svg>
-
-                        Filter
-                        </Link>
                         <Link href="{{ route('notes.store') }}" method="post"
                             class="flex gap-2 items-center bg-fuchsia-100 text-fuchsia-900 dark:bg-fuchsia-900/40 dark:text-fuchsia-100/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -69,6 +63,9 @@
                 </ul>
             </note>
         </div>
+        <x-slot:rightSide>
+            <x-note.last-opened :$lastOpened class="h-full pb-20 pt-6" />
+        </x-slot>
     @else
         <div class="h-[96%] flex justify-center items-center">
             <div class="relative h-full lg:h-[500px] overflow-hidden flex w-full">

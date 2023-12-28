@@ -5,10 +5,11 @@ import "@protonemedia/laravel-splade/dist/style.css";
 import "@protonemedia/laravel-splade/dist/style.css";
 import "../css/choices.scss";
 import "vue3-emoji-picker/css";
+import Main from "./Components/Main.vue";
 import Topic from "./Components/Topic.vue";
 import Skill from "./Components/Skill.vue";
 import Note from "./Components/Note.vue";
-import ModalNote from "./Components/ModalNote.vue";
+import BottomSide from "./Components/BottomSide.vue";
 import LineChart from "./Components/LineChart.vue";
 import TipTap from "./Components/TipTap.vue";
 import.meta.glob(["../images/**", "../fonts/**"]);
@@ -28,12 +29,13 @@ createApp({
         transform_anchors: false,
         progress_bar: true,
         components: {
+            Main,
             Topic,
             Skill,
             Note,
             LineChart,
             TipTap,
-            ModalNote,
+            BottomSide,
         },
     })
     .mount(el);

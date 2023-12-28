@@ -91,3 +91,13 @@ textarea {
 .modal-note {
     box-shadow: rgba(0, 0, 0, 0.1) 0px -10px 4px;
 }
+.modal-note ::-webkit-scrollbar {
+    /* Total width including `border-width` of scrollbar thumb */
+    width: 20px;
+    height: 0;
+}
+.modal-note ::-webkit-scrollbar-thumb {
+    height: 1em;
+    border: 7.5px solid rgba(0, 0, 0, 0); /* Transparent border together with `background-clip: padding-box` does the trick */
+    background-clip: padding-box;
+}

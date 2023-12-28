@@ -1,11 +1,10 @@
 <template>
-    <div class="w-full">
+    <div class="w-full" @click.alt="editor.setEditable(false)"
+         @click.ctrl="editor.setEditable(true); editor.chain().focus().run()">
         <editor-content :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
-        }" :shouldShow="({ editor, view, state, oldState }) => {
-    return true;
-}">
+        }" :shouldShow="() => { return editor.isEditable; }">
             <editor-menu :editor="editor" :noteId="noteId" :form="form" />
         </floating-menu>
     </div>
@@ -100,14 +99,19 @@ export default {
         },
         noteId: String,
         form: Object,
+        isEditable: {
+            type: Boolean,
+            default: true
+        }
     },
 
     emits: ['update:modelValue'],
 
+
     data () {
         return {
             editor: null,
-            tippyComment: null
+            tippyComment: null,
         }
     },
     watch: {
@@ -181,6 +185,7 @@ export default {
                 this.destroyComments();
                 this.reloadComments();
             },
+            editable: false
         })
     },
 
@@ -188,5 +193,6 @@ export default {
         this.destroyComments();
         this.editor.destroy()
     },
+
 }
 </script>

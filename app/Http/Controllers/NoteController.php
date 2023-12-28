@@ -24,15 +24,22 @@ class NoteController extends Controller
             return redirect(route('notes.index'));
         }
         $filter['categories'] = $categoriesFilterValue;
+        $lastOpened = Note::latest('updated_at')->take(12)->get();
         return view('note.index', [
             'notes' => $this->rq->notes($filter),
-            'filter' => $filter
+            'filter' => $filter,
+            'lastOpened' => $lastOpened
         ]);
     }
 
     public function index()
     {
-        return view('note.index', ['filter' => [], 'notes' => $this->rq->notes()]);
+        $lastOpened = Note::latest('updated_at')->take(12)->get();
+        return view('note.index', [
+            'notes' => $this->rq->notes(),
+            'filter' => [],
+            'lastOpened' => $lastOpened
+        ]);
     }
 
     public function showAsReferer(Note $referer)
@@ -40,13 +47,13 @@ class NoteController extends Controller
         return view('note.referer', ['note' => $referer]);
     }
 
-    public function edit(Request $request, Note $note)
+    public function edit(Note $note)
     {
-        $pile = null;
-        if ($input = $request->input('pile')) {
-            $pile = Note::find($input);
-        }
-        return view("note.edit", ['note' => $note, 'pile' => $pile]);
+        $lastOpened = Note::latest('updated_at')->take(12)->get();
+        return view("note.edit", [
+            'note' => $note,
+            'lastOpened' => $lastOpened
+        ]);
     }
 
     public function store(Request $request)
@@ -112,11 +119,5 @@ class NoteController extends Controller
             $note->save();
         });
         return redirect(Referer::get());
-    }
-
-    public function history()
-    {
-        $lastOpened = Note::latest('updated_at')->take(12)->get();
-        return view('note.history', ['lastOpened' => $lastOpened]);
     }
 }
