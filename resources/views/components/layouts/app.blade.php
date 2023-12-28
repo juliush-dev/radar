@@ -13,7 +13,7 @@
                      </div>
                      <div class="w-full lg:w-[945px] flex-shrink-0 h-full overflow-y-auto" @preserveScroll('main-layout')>
                          <div
-                             class="lg:hidden transition-all duration-300 absolute bottom-0  right-0 flex gap-4 m-6 z-20">
+                             class="lg:hidden transition-all duration-300 absolute bottom-0  right-0 flex gap-4 m-6 mb-10 lg:mb-6 z-20">
                              @if (isset($leftSide))
                                  <button @click="main.toggleLeftSide"
                                      class="flex gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">

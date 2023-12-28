@@ -1,7 +1,7 @@
 <template>
     <div class="modal-note fixed w-full inset-x-1/2 -translate-x-1/2 z-5 lg:w-[945px] h-1/2 bg-slate-100 dark:bg-slate-950 border border-slate-400/40 rounded-xl transition-all duration-300"
          :class="this.bottomData ? '-bottom-3' : '-bottom-1/2'">
-        <div class="h-full overflow-y-auto p-6 pb-20 lg:pb-6">
+        <div class="h-full overflow-y-auto p-3 md:p-6 pb-20 lg:pb-6">
             <div class="ProseMirror" v-html="this.bottomData?.content"></div>
         </div>
         <div
