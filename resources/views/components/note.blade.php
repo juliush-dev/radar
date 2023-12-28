@@ -1,4 +1,4 @@
-<div class="w-full note border p-3 lg:p-6 rounded-b-md dark:border-slate-400/10">
+<div class="w-full note border p-3 lg:p-6 mb-[45%] rounded-b-md dark:border-slate-400/10">
     <x-splade-form action="{{ route('notes.update', $note) }}" method="patch" :default="[
         'content' => $note->content,
         'updated_at' => $note->updated_at,

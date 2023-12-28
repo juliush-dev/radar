@@ -173,6 +173,10 @@ mark, .mark-verb {
     @apply p-3 rounded border-2 border-fuchsia-400 dark:border-fuchsia-950;
 }
 
+.controls-panel button {
+    @apply text-center;
+}
+
 .controls-panel button:is(.soft) {
     @apply first-letter:uppercase text-sky-400 dark:text-sky-400/40;
 }
@@ -187,8 +191,8 @@ mark, .mark-verb {
     @apply shadow;
 }
 .tippy-box[data-theme~='tomato'] {
-    @apply backdrop-blur text-sky-400/50 p-3;
-    @apply rounded-md;
+    @apply bg-black  text-yellow-500 px-2;
+    @apply rounded;
     @apply shadow-md;
     @apply border-2 border-sky-400/5;
     @apply first-letter:uppercase;
