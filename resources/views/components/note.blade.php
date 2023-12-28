@@ -1,11 +1,9 @@
-<div
-    class="mx-auto w-full overflow-visible shadow-sm note transition-all duration-300 relative border p-6 rounded-md dark:border-slate-400/10">
+<div class="w-full note border p-3 lg:p-6 rounded-b-md dark:border-slate-400/10">
     <x-splade-form action="{{ route('notes.update', $note) }}" method="patch" :default="[
         'content' => $note->content,
         'updated_at' => $note->updated_at,
-    ]"
-        class="flex flex-col justify-between overflow-hidden w-full" stay background submit-on-change="content"
-        debounce="500">
+    ]" stay background
+        submit-on-change="content" debounce="500">
         <div class="flex flex-wrap md:items-center gap-6 mb-8 w-full" id="{{ $note->id }}">
             <div class="font-medium text-slate-400 first-letter:uppercase dark:text-slate-600">
                 {{ $note->author->name }}

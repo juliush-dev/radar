@@ -1,6 +1,5 @@
 <template>
-    <div class="w-full" @click.alt="editor.setEditable(false)"
-         @click.ctrl="editor.setEditable(true); editor.chain().focus().run()">
+    <div @click.alt="editor.setEditable(false)" @click.ctrl="editor.setEditable(true); editor.chain().focus().run()">
         <editor-content :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
