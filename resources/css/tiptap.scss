@@ -159,6 +159,10 @@ mark, .mark-verb {
         @apply font-medium;
         @apply text-red-700 dark:text-red-700/50;
     }
+
+        p, ul {
+            font-family: 'Onest', sans-serif;
+        }
 }
 
 .tableWrapper {
