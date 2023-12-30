@@ -3,7 +3,6 @@
     @apply dark:text-inherit;
     @apply prose-blockquote:border-pink-400 dark:prose-blockquote:border-pink-800 prose-headings:m-0 prose-headings:mb-3;
     @apply prose-img:max-w-full prose-img:h-auto prose-img:rounded-md;
-    // @apply  dark:prose-strong:text-slate-300;
     @apply  prose-headings:text-slate-700;
     @apply  underline-offset-4;
     @apply prose-pre:bg-inherit prose-pre:dark:bg-slate-500/5 prose-pre:dark:backdrop-blur;
@@ -153,6 +152,12 @@ mark, .mark-verb {
         p {
             margin: 0;
         }
+    }
+
+    dfn {
+        font-style: normal;
+        @apply font-medium;
+        @apply text-red-700 dark:text-red-700/50;
     }
 }
 

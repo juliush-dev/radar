@@ -1,6 +1,6 @@
 <template>
     <div @click.alt="editor.setEditable(false)" @click.ctrl="editor.setEditable(true); editor.chain().focus().run()">
-        <editor-content :editor="editor" />
+        <editor-content id="editor" :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
         }" :shouldShow="() => { return editor.isEditable; }">
@@ -23,7 +23,8 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
-import { CustomTextStyle } from './CustomTextStyle.vue'
+import { CustomTextStyle } from './CustomTextStyle'
+import { DefinitionTerm } from './DefinitionTerm'
 import EditorMenu, { selectionIsPlantUMLCode, selectionIsPlantUMLDiagram } from './EditorMenu.vue'
 import { ClassToggler } from './ClassToggler.vue'
 import { Editor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
@@ -173,6 +174,7 @@ export default {
                 Youtube,
                 CustomImage,
                 Image,
+                DefinitionTerm,
             ],
             content: this.modelValue,
             onFocus: () => {
@@ -187,6 +189,7 @@ export default {
             editable: false
         })
     },
+
 
     beforeUnmount () {
         this.destroyComments();

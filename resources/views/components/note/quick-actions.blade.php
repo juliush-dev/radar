@@ -34,5 +34,11 @@
             Delete Categories
             </Link>
         </li>
+
+        <li>
+            <button @click.prevent="this.$splade.emit('listDefinitions')">
+                Show definitions
+            </button>
+        </li>
     </ul>
 </section>

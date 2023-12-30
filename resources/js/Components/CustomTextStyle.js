@@ -1,5 +1,4 @@
 
-<script>
 import {
     getMarkAttributes,
     Mark,
@@ -50,4 +49,3 @@ export const CustomTextStyle = Mark.create({
         }
     },
 })
-</script>
