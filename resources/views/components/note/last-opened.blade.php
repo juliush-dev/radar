@@ -9,7 +9,7 @@
     <ul class="flex flex-col gap-6 ml-0.5">
         @foreach ($lastOpened as $note)
             <Link href="{{ route('notes.edit', $note) }}"
-                class="soft first-letter:uppercase text-fuchsia-500 dark:text-fuchsia-500/40 group-hover:text-fuchsia-600 transition-all duration-300">
+                class="soft first-letter:uppercase text-fuchsia-500 dark:text-fuchsia-500/40 group-hover:text-fuchsia-600 transition-all duration-300 break-words max-w-sm lg:w-60">
             {{ $note->extractTitle() }}
             </Link>
         @endforeach

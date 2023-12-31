@@ -18,7 +18,7 @@
     <ul class="flex flex-col gap-4 mt-3 soft text-blue-400 dark:text-blue-400/30 ml-0.5">
         @foreach ($referers as $referer)
             <li>
-                <button @click="form.$put('note', @js($referer['id']))">
+                <button @click="form.$put('note', @js($referer['id']))" class="break-words max-w-sm lg:w-60">
                     {{ $referer['title'] }}
                 </button>
             </li>

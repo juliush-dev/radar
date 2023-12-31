@@ -27,7 +27,8 @@
     <ul class="flex flex-col gap-4 mt-3 soft text-blue-400 dark:text-blue-400/30 ml-0.5">
         @foreach ($relatives as $relative)
             <li>
-                <button @click="form.$put('note', @js($relative['id']))">
+                <button @click="form.$put('note', @js($relative['id']))"
+                    class="break-words @if (isset($category)) lg:w-52 @else lg:w-60 @endif  max-w-sm">
                     {{ $relative['title'] }}
                 </button>
             </li>
