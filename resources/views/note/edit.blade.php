@@ -3,7 +3,7 @@
     <x-slot:leftSide>
         <div class="w-full h-full border-r border-slate-400/10 flex flex-col justify-stretch">
             <x-splade-form method="get" action="{{ route('notes.modal') }}" stay background submit-on-change
-                @success="main.setBottomData" class="absolute top-0 bottom-0">
+                @success="main.setBottomData" class="w-full absolute top-0 bottom-0">
                 <x-note.categories :inEditor="true" :$note class="h-1/2 shadow overflow-y-auto" />
                 <div class="flex flex-col gap-6 h-1/2 overflow-y-auto p-6 pb-16">
                     <x-note.referers :$note />
