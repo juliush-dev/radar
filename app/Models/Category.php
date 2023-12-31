@@ -30,7 +30,7 @@ class Category extends Model
         $orderedCategories = $filteredCategories->merge($remainingCategories);
 
         // Map the categories to the desired format
-        $map = $orderedCategories->map(fn ($category) => ['name' => $category->name, 'id' => $category->id]);
+        $map = $orderedCategories->map(fn ($category) => ['name' => $category->name, 'id' => $category->id])->sortBy('name', SORT_NATURAL);
 
         return $map;
     }
