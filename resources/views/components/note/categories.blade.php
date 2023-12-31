@@ -19,9 +19,9 @@
                 <li class="w-fit ml-0.5">
                     <Link href="{{ route('notes.filter') . "?categories%5B0%5D={$category->id}" }}"
                         class="font-normal flex gap-2">
-                    #{{ $category->name }}
+                    # {{ $category->name }}
                     </Link>
-                    <x-note.relatives :$note :$category class="ml-6" />
+                    <x-note.relatives :$note :$category class="border-l pl-4 ml-1 dark:border-slate-400/5" />
                 </li>
             @endforeach
         </ul>

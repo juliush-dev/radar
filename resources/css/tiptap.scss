@@ -13,8 +13,11 @@
     @apply prose-strong:text-inherit;
     @apply prose-code:text-inherit;
     @apply prose-blockquote:dark:text-inherit;
+    @apply prose-headings:w-96 break-words;
+    @apply prose-headings:md:w-full;
     font-family: 'Chakra Petch', sans-serif;
 }
+
 
 pre{
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

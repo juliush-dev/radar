@@ -28,6 +28,7 @@ export default {
         },
         setBottomData ({ data }) {
             this.bottomData = null;
+            this.activeSide = null;
             setTimeout(() => {
                 this.bottomData = data;
             }, 300);
