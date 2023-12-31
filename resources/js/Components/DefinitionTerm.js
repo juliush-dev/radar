@@ -1,12 +1,4 @@
-import {
-    Mark,
-    markInputRule,
-    markPasteRule,
-    mergeAttributes,
-} from "@tiptap/core";
-
-export const hashtagInputRegex = /(?:^|\s)((?:#)((?:[^*]+))(?:#))$/;
-export const hashtagPasteRegex = /(?:^|\s)((?:#)((?:[^*]+))(?:#))/g;
+import { Mark, mergeAttributes } from "@tiptap/core";
 
 export const DefinitionTerm = Mark.create({
     name: "definitionTerm",
@@ -63,23 +55,5 @@ export const DefinitionTerm = Mark.create({
                 this.editor.commands.unsetDefinitionTerm();
             },
         };
-    },
-
-    addInputRules() {
-        return [
-            markInputRule({
-                find: hashtagInputRegex,
-                type: this.type,
-            }),
-        ];
-    },
-
-    addPasteRules() {
-        return [
-            markPasteRule({
-                find: hashtagPasteRegex,
-                type: this.type,
-            }),
-        ];
     },
 });

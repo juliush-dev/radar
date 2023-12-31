@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Category extends Model
 {
     use HasFactory;
-    public function categories(): BelongsToMany
+
+    public function notes(): BelongsToMany
     {
         return $this->belongsToMany(Note::class, 'note_category', 'category_id', 'note_id');
     }

@@ -10,11 +10,6 @@
     </h3>
     <ul class="flex flex-col gap-4 soft text-blue-400 dark:text-blue-400/30">
         <li>
-            <Link @click.prevent slideover href="{{ route('notes.relatives', $note) }}">
-            Toggle references
-            </Link>
-        </li>
-        <li>
             <Link @click.prevent slideover href="{{ route('categories.index', $note) }}">
             Toggle Categories
             </Link>

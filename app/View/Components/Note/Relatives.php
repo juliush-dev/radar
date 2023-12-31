@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Note;
 
+use App\Models\Category;
 use App\Models\Note;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -13,6 +14,7 @@ class Relatives extends Component
      * Create a new component instance.
      */
     public function __construct(
+        public Category $category,
         public Note $note
     ) {
         //
