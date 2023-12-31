@@ -72,7 +72,8 @@ class Note extends Model
         })
             // ->where(\App\Services\RadarQuery::publicOrAuthor())
             ->get()
-            ->map(fn ($note) => ['title' => $note->extractTitle(), 'id' => $note->id]);
+            ->map(fn ($note) => ['title' => $note->extractTitle(), 'id' => $note->id])
+            ->sortBy('title', SORT_NATURAL);
         return $map;
     }
 

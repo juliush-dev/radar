@@ -3,6 +3,7 @@
         ->map(function ($referer) {
             return ['id' => $referer->id, 'title' => $referer->extractTitle()];
         })
+        ->sortBy('title', SORT_NATURAL)
         ->all();
 @endphp
 <section v-if="@js(count($referers) > 0)" {{ $attributes }}>
@@ -14,7 +15,7 @@
         </svg>
         <span>Referenced by</span>
     </h3>
-    <ul class="flex flex-col gap-4 mt-3 soft text-blue-400 dark:text-blue-400/30">
+    <ul class="flex flex-col gap-4 mt-3 soft text-blue-400 dark:text-blue-400/30 ml-0.5">
         @foreach ($referers as $referer)
             <li>
                 <button @click="form.$put('note', @js($referer['id']))">

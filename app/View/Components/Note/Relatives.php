@@ -14,7 +14,7 @@ class Relatives extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public Category $category,
+        public ?Category $category = null,
         public Note $note
     ) {
         //

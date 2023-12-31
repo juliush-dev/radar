@@ -1,7 +1,10 @@
 @php
-    $categories = $note->categories;
+    $categories = $note
+        ->categories()
+        ->orderBy('name', 'asc')
+        ->get();
 @endphp
-@if ($inEditor)
+@if (isset($note))
     <section v-if="@js(count($categories) > 0)" {{ $attributes->merge(['class' => 'overflow-y-auto p-6']) }}>
         <h3 class="text-lg font-medium  flex flex-nowrap gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
