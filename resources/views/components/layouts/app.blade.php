@@ -6,12 +6,12 @@
              <Main v-slot="main">
                  <div class="flex-1 relative flex justify-center w-full overflow-hidden">
                      <div id="left-side" v-bind:class="main.leftSideActive ? 'left-0' : '-left-[100%]'"
-                         class="bg-slate-100/90 dark:bg-slate-950/90 absolute h-full backdrop-blur z-10 lg:z-0 lg:backdrop-blur-none lg:static lg:block w-full md:w-96 lg:w-80 shadow-lg lg:shadow-none transition-all duration-300">
+                         class="bg-slate-100/90 dark:bg-slate-950/90 absolute h-full backdrop-blur z-10 lg:z-0 lg:backdrop-blur-none lg:static lg:block w-full  flex-shrink-0 md:w-96 lg:w-80 shadow-lg lg:shadow-none transition-all duration-300">
                          @if (isset($leftSide))
                              {{ $leftSide }}
                          @endif
                      </div>
-                     <div class="w-full lg:w-[945px] flex-shrink-0 h-full overflow-y-auto" @preserveScroll('main-layout')>
+                     <div class="w-full h-full overflow-y-auto" @preserveScroll('main-layout')>
                          <div
                              class="lg:hidden transition-all duration-300 absolute -left-0.5 bottom-0  -right-0.5 flex gap-4 my-6 z-20">
                              @if (isset($leftSide))
@@ -48,7 +48,7 @@
                          {{ $slot }}
                      </div>
                      <div id="right-side" v-bind:class="main.rightSideActive ? 'right-0' : '-right-[100%]'"
-                         class="bg-slate-100/90 dark:bg-slate-950/90 absolute h-full backdrop-blur z-10 lg:z-0 lg:backdrop-blur-none lg:static lg:block w-full md:w-96 lg:w-80 shadow-lg lg:shadow-none transition-all duration-300">
+                         class="bg-slate-100/90 dark:bg-slate-950/90 absolute h-full backdrop-blur z-10 lg:z-0 lg:backdrop-blur-none lg:static lg:block w-full  flex-shrink-0  md:w-96 lg:w-80 shadow-lg lg:shadow-none transition-all duration-300">
                          @if (isset($rightSide))
                              {{ $rightSide }}
                          @endif
