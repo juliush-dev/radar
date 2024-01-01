@@ -13,33 +13,35 @@
                      </div>
                      <div class="w-full lg:w-[945px] flex-shrink-0 h-full overflow-y-auto" @preserveScroll('main-layout')>
                          <div
-                             class="lg:hidden transition-all duration-300 absolute bottom-0  right-0 flex gap-4 m-6 mb-10 lg:mb-6 z-20">
+                             class="lg:hidden transition-all duration-300 absolute -left-0.5 bottom-0  -right-0.5 flex gap-4 my-6 z-20">
                              @if (isset($leftSide))
                                  <button @click="main.toggleLeftSide"
                                      class="flex gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                     <svg v-if="!main.leftSideActive" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                          <path stroke-linecap="round" stroke-linejoin="round"
                                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
                                      </svg>
-                                     <span>
-                                         <span v-text="main.leftSideActive ? 'Close ' : 'Open '"></span>
-                                         left side
-                                     </span>
+                                     <svg v-if="main.leftSideActive" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M6 18 18 6M6 6l12 12" />
+                                     </svg>
                                  </button>
                              @endif
                              @if (isset($rightSide))
                                  <button @click="main.toggleRightSide"
-                                     class="flex gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                     class="flex ml-auto gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                                     <svg v-if="!main.rightSideActive" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                          <path stroke-linecap="round" stroke-linejoin="round"
                                              d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
                                      </svg>
-                                     <span>
-                                         <span v-text="main.rightSideActive ? 'Close ' : 'Open '"></span>
-                                         right side
-                                     </span>
+                                     <svg v-if="main.rightSideActive" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M6 18 18 6M6 6l12 12" />
+                                     </svg>
                                  </button>
                              @endif
                          </div>
