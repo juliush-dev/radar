@@ -18,7 +18,7 @@
     <x-slot:rightSide>
         <div class="w-full h-full border-l border-slate-400/10">
             <x-note.quick-actions :$note class="shadow p-6" />
-            <x-note.last-opened :$lastOpened class="p-6 h-[66%] overflow-y-auto pb-28" />
+            <x-note.last-opened :$lastOpened class="p-6 h-[50%] overflow-y-auto pb-28" />
         </div>
     </x-slot>
 </x-layouts.app>
