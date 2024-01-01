@@ -163,10 +163,12 @@ mark, .mark-verb {
         @apply text-red-700 dark:text-red-700/50;
         @apply opacity-100;
     }
-    p.blind *:not(dfn){
-        @apply opacity-0;
+    p:has(dfn){
+        @apply transition-colors duration-300;
     }
-
+    p.blind {
+        @apply text-neutral-200/50 dark:text-neutral-200/5;
+    }
     p, ul {
         font-family: 'Onest', sans-serif;
     }

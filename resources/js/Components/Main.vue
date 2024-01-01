@@ -48,15 +48,12 @@ export default {
             this.activeSide = null;
             if (!onEditionStart) {
                 this.$splade.emit('lockEditor');
-                alert('Editor will get lock for this operation');
             }
             const elements = document.querySelectorAll('#editor p:has(dfn)');
             elements.forEach(definition => {
                 if (onEditionStart) {
-                    definition.classList.remove('text-black/0');
                     definition.classList.remove('blind');
                 } else {
-                    definition.classList.toggle('text-black/0');
                     definition.classList.toggle('blind');
                 }
             })
