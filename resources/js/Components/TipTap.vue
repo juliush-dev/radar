@@ -186,8 +186,8 @@ export default {
                 this.destroyComments();
                 this.reloadComments();
             },
-            editable: false
-        })
+        });
+        this.editor.setEditable(false);
     },
 
 
