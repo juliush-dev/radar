@@ -40,5 +40,10 @@
                 Show definitions
             </button>
         </li>
+        <li>
+            <button @click.prevent="this.$splade.emit('toggleDefinitionsQuiz')">
+                Toggle definitions quiz
+            </button>
+        </li>
     </ul>
 </section>

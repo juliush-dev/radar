@@ -43,6 +43,23 @@ export default {
             }
             const htmlString = htmlArray.join('');
             this.setBottomData({ data: { src: '#', content: htmlString } });
+        },
+        toggleDefinitionsQuiz (onEditionStart = false) {
+            this.activeSide = null;
+            if (!onEditionStart) {
+                this.$splade.emit('lockEditor');
+                alert('Editor will get lock for this operation');
+            }
+            const elements = document.querySelectorAll('#editor p:has(dfn)');
+            elements.forEach(definition => {
+                if (onEditionStart) {
+                    definition.classList.remove('text-black/0');
+                    definition.classList.remove('blind');
+                } else {
+                    definition.classList.toggle('text-black/0');
+                    definition.classList.toggle('blind');
+                }
+            })
         }
     },
     computed: {
@@ -59,6 +76,12 @@ export default {
         });
         this.$splade.on('listDefinitions', () => {
             this.listDefinition();
+        });
+        this.$splade.on('toggleDefinitionsQuiz', () => {
+            this.toggleDefinitionsQuiz();
+        });
+        this.$splade.on('startingEdition', () => {
+            this.toggleDefinitionsQuiz(true);
         });
     },
 

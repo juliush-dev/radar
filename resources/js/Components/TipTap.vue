@@ -1,5 +1,6 @@
 <template>
-    <div @click.alt="editor.setEditable(false)" @click.ctrl="editor.setEditable(true); editor.chain().focus().run()">
+    <div @click.alt="editor.setEditable(false)"
+         @click.ctrl="editor.setEditable(true); editor.chain().focus().run(); this.$splade.emit('startingEdition')">
         <editor-content id="editor" :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
@@ -188,6 +189,12 @@ export default {
             },
         });
         this.editor.setEditable(false);
+        this.$splade.on('lockEditor', () => {
+            this.editor.setEditable(false);
+        });
+        this.$splade.on('unlockEditor', () => {
+            this.editor.setEditable(true);
+        });
     },
 
 

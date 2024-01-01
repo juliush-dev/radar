@@ -161,11 +161,15 @@ mark, .mark-verb {
         font-style: normal;
         @apply font-medium;
         @apply text-red-700 dark:text-red-700/50;
+        @apply opacity-100;
+    }
+    p.blind *:not(dfn){
+        @apply opacity-0;
     }
 
-        p, ul {
-            font-family: 'Onest', sans-serif;
-        }
+    p, ul {
+        font-family: 'Onest', sans-serif;
+    }
 }
 
 .tableWrapper {
