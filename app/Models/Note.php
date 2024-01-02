@@ -79,7 +79,7 @@ class Note extends Model
 
     public function extractTitle()
     {
-        $temp = "Headless note";
+        $temp = "Title of my new note";
         $title = '';
         if (preg_match('/<h\d[^>]*>(.*?)<\/h\d>/i', $this->content, $matches)) {
             $firstHeadingText = $matches[1];

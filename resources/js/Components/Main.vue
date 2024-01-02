@@ -44,20 +44,6 @@ export default {
             const htmlString = htmlArray.join('');
             this.setBottomData({ data: { src: '#', content: htmlString } });
         },
-        toggleDefinitionsQuiz (onEditionStart = false) {
-            this.activeSide = null;
-            if (!onEditionStart) {
-                this.$splade.emit('lockEditor');
-            }
-            const elements = document.querySelectorAll('#editor p:has(dfn)');
-            elements.forEach(definition => {
-                if (onEditionStart) {
-                    definition.classList.remove('blind');
-                } else {
-                    definition.classList.toggle('blind');
-                }
-            })
-        }
     },
     computed: {
         leftSideActive () {
@@ -73,12 +59,6 @@ export default {
         });
         this.$splade.on('listDefinitions', () => {
             this.listDefinition();
-        });
-        this.$splade.on('toggleDefinitionsQuiz', () => {
-            this.toggleDefinitionsQuiz();
-        });
-        this.$splade.on('startingEdition', () => {
-            this.toggleDefinitionsQuiz(true);
         });
     },
 

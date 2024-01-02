@@ -12,9 +12,7 @@
             </x-splade-form>
         </div>
     </x-slot>
-    <note v-slot="note">
-        <x-note :$note />
-    </note>
+    <x-note :$note />
     <x-slot:rightSide>
         <div class="w-full h-full border-l border-slate-400/10">
             <x-note.quick-actions :$note class="shadow p-6" />

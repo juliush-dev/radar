@@ -1,11 +1,48 @@
 <template>
-    <div @click.alt="editor.setEditable(false)"
-         @click.ctrl="editor.setEditable(true); editor.chain().focus().run(); this.$splade.emit('startingEdition')">
+    <!-- editor.chain().focus().run(); this.$splade.emit('startingEdition') -->
+    <div>
+        <div class="flex flex-wrap md:items-center gap-6 mb-8 w-full">
+            <div class="font-medium text-slate-400 first-letter:uppercase dark:text-slate-600" v-text="author">
+            </div>
+            <div class="flex flex-wrap gap-6 md:ml-auto">
+                <span v-text="createTime"></span>
+                <span v-text="updateTime" class="mr-6"></span>
+                <div class="flex gap-6 flex-nowrap items-center -mt-1">
+                    <button v-show="definitionsVisible" @click.prevent="form.$put('editable', !editable)">
+                        <svg v-if="!editable" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                        <svg v-if="editable" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                    </button>
+
+                    <Link id="new-note" method="post" v-bind:href="newNoteEndpoint">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-5 h-5 -mb-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    </Link>
+                    <Link id="delete-note" method="delete" v-bind:href="deleteNoteEndpoint"
+                          confirm-danger="Delete requested" confirm-text="This note will be permanently deleted"
+                          confirm-button="Yes, delete this note permanently" cancel-button="No don't delete">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-5 h-5 -mb-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    </Link>
+                </div>
+            </div>
+        </div>
         <editor-content id="editor" :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
         }" :shouldShow="() => { return editor.isEditable; }">
-            <editor-menu :editor="editor" :noteId="noteId" :form="form" />
+            <editor-menu :editor="editor" />
         </floating-menu>
     </div>
 </template>
@@ -98,11 +135,24 @@ export default {
             type: String,
             default: 'Start writing here',
         },
-        noteId: String,
         form: Object,
-        isEditable: {
-            type: Boolean,
-            default: true
+        author: {
+            type: String
+        },
+        editable: {
+            type: Boolean
+        },
+        createdAt: {
+            type: String
+        },
+        updatedAt: {
+            type: String
+        },
+        newNoteEndpoint: {
+            type: String
+        },
+        deleteNoteEndpoint: {
+            type: String
         }
     },
 
@@ -113,6 +163,7 @@ export default {
         return {
             editor: null,
             tippyComment: null,
+            definitionsVisible: true,
         }
     },
     watch: {
@@ -133,6 +184,17 @@ export default {
             }
             this.editor.commands.setContent(value, false)
         },
+        editable (value) {
+            this.editor.setEditable(value);
+        }
+    },
+    computed: {
+        createTime () {
+            return this.extractDate(this.createdAt);
+        },
+        updateTime () {
+            return this.extractDate(this.updatedAt);
+        }
     },
 
     methods: {
@@ -143,6 +205,30 @@ export default {
         },
         reloadComments () {
             this.tippyComment = tippy('span[data-tippy-content]', { theme: 'tomato' });
+        },
+        extractDate (dateStr) {
+            // Create a new Date object with the given string
+            var dateObj = new Date(dateStr);
+
+            // Extract the year, month, day, hour, and minute from the Date object
+            var year = dateObj.getUTCFullYear();
+            var month = dateObj.getUTCMonth() + 1; // getUTCMonth() is zero-based
+            var day = dateObj.getUTCDate();
+            var hour = dateObj.getUTCHours();
+            var minute = dateObj.getUTCMinutes();
+            var second = dateObj.getUTCSeconds();
+
+            // Format the date as a string
+            var date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
+
+            return date;
+        },
+        toggleDefinitionsQuiz () {
+            const elements = document.querySelectorAll('#editor p:has(dfn)');
+            this.definitionsVisible = document.querySelector('#editor p.blind') != undefined;
+            elements.forEach(definition => {
+                definition.classList.toggle('blind');
+            })
         }
     },
 
@@ -188,12 +274,16 @@ export default {
                 this.reloadComments();
             },
         });
-        this.editor.setEditable(false);
+        this.editor.setEditable(this.editable);
         this.$splade.on('lockEditor', () => {
             this.editor.setEditable(false);
         });
-        this.$splade.on('unlockEditor', () => {
-            this.editor.setEditable(true);
+        this.$splade.on('toggleDefinitionsQuiz', () => {
+            if (this.editable) {
+                alert('lock editor first');
+            } else {
+                this.toggleDefinitionsQuiz();
+            }
         });
     },
 

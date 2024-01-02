@@ -101,3 +101,9 @@ textarea {
     border: 7.5px solid rgba(0, 0, 0, 0); /* Transparent border together with `background-clip: padding-box` does the trick */
     background-clip: padding-box;
 }
+
+form fieldset {
+    /* max-width: 100px !important; */
+    max-width: 100%;
+    min-width: 100%;
+}

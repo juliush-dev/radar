@@ -163,8 +163,6 @@ export default {
 
     props: {
         editor: Object,
-        noteId: String,
-        form: Object,
     },
 
     data () {

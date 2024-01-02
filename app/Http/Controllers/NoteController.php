@@ -50,6 +50,9 @@ class NoteController extends Controller
     public function edit(Note $note)
     {
         $lastOpened = Note::latest('updated_at')->take(12)->get();
+        if (!$note->content || strlen($note->content) == 0) {
+            $note->content = "<h1>{$note->title}</h1>";
+        }
         return view("note.edit", [
             'note' => $note,
             'lastOpened' => $lastOpened
@@ -61,8 +64,8 @@ class NoteController extends Controller
         $newNote = null;
         DB::transaction(function () use ($request, &$newNote) {
             $newNote = new Note;
+            $newNote->content = '';
             $newNote->user_id = $request->user()->id;
-            $newNote->content = '<h1>My new Note title</h1>';
             $newNote->save();
         });
         return redirect(route('notes.edit', $newNote));
@@ -72,8 +75,14 @@ class NoteController extends Controller
     {
         DB::transaction(function () use ($request, &$note) {
             $note->content = $request->input('content');
+            $note->editable = $request->input('editable');
+            $note->save(); // so the title will be extracted from
+            // new content and not from the old one in the database
+            $note->title = $note->extractTitle();
             $note->save();
         });
+        $response['title'] = $note->title;
+        $response['editable'] = $note->editable;
         $response['updated_at'] = $note->updated_at;
         return $response;
     }
