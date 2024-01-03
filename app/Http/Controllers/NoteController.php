@@ -53,6 +53,7 @@ class NoteController extends Controller
         if (!$note->content || strlen($note->content) == 0) {
             $note->content = "<h1>{$note->title}</h1>";
         }
+        $note->editable = false;
         return view("note.edit", [
             'note' => $note,
             'lastOpened' => $lastOpened
