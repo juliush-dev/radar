@@ -15,7 +15,7 @@
 
                          @if (isset($leftSide))
                              <button @click="main.toggleLeftSide"
-                                 class="lg:hidden fixed -left-0.5 bottom-80 z-20 flex gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                                 class="lg:hidden fixed -left-0.5 bottom-96 z-20 flex gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                                  <svg v-if="!main.leftSideActive" xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                      <path stroke-linecap="round" stroke-linejoin="round"
@@ -29,7 +29,7 @@
                          @endif
                          @if (isset($rightSide))
                              <button @click="main.toggleRightSide"
-                                 class="lg:hidden fixed -right-0.5 bottom-80 z-20 flex ml-auto gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
+                                 class="lg:hidden fixed -right-0.5 bottom-96 z-20 flex ml-auto gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">
                                  <svg v-if="!main.rightSideActive" xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                      <path stroke-linecap="round" stroke-linejoin="round"
