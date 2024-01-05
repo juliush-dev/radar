@@ -1,7 +1,7 @@
 <template>
     <div class="h-full overflow-y-auto">
         <div
-             class="flex flex-wrap md:items-center w-full sticky top-0 z-[5] bg-slate-100 dark:bg-slate-950 shadow-sm md:shadow border border-slate-400/10 border-t-0 px-6 py-2">
+             class="flex flex-wrap md:items-center w-full sticky top-0 z-[5] bg-slate-100 dark:bg-slate-950 shadow-sm md:shadow border border-slate-400/10 border-t-0 px-3 lg:px-6 py-2">
             <span class="font-medium" v-text="title"></span>
             <div class="flex gap-6 ml-auto flex-nowrap items-center">
                 <button v-show="definitionsVisible" @click.prevent="form.$put('editable', !editable)">
