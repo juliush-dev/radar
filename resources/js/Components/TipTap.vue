@@ -1,44 +1,39 @@
 <template>
-    <!-- editor.chain().focus().run(); this.$splade.emit('startingEdition') -->
-    <div>
-        <div class="flex flex-wrap md:items-center gap-6 mb-8 w-full">
-            <div class="font-medium text-slate-400 first-letter:uppercase dark:text-slate-600" v-text="author">
-            </div>
-            <div class="flex flex-wrap gap-6 md:ml-auto">
-                <span v-text="createTime"></span>
-                <span v-text="updateTime" class="mr-6"></span>
-                <div class="flex gap-6 flex-nowrap items-center -mt-1">
-                    <button v-show="definitionsVisible" @click.prevent="form.$put('editable', !editable)">
-                        <svg v-if="!editable" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                        </svg>
-                        <svg v-if="editable" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                        </svg>
-                    </button>
+    <div class="h-full overflow-y-auto">
+        <div
+             class="flex flex-wrap md:items-center w-full sticky top-0 z-[5] bg-slate-100 dark:bg-slate-950 shadow-sm md:shadow border border-slate-400/10 border-t-0 px-6 py-2">
+            <span class="font-medium" v-text="title"></span>
+            <div class="flex gap-6 ml-auto flex-nowrap items-center">
+                <button v-show="definitionsVisible" @click.prevent="form.$put('editable', !editable)">
+                    <svg v-if="!editable" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                    <svg v-if="editable" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                </button>
 
-                    <Link id="new-note" method="post" v-bind:href="newNoteEndpoint">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                         stroke="currentColor" class="w-5 h-5 -mb-0.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    </Link>
-                    <Link id="delete-note" method="delete" v-bind:href="deleteNoteEndpoint"
-                          confirm-danger="Delete requested" confirm-text="This note will be permanently deleted"
-                          confirm-button="Yes, delete this note permanently" cancel-button="No don't delete">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                         stroke="currentColor" class="w-5 h-5 -mb-0.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    </Link>
-                </div>
+                <Link id="new-note" method="post" v-bind:href="newNoteEndpoint">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-5 h-5 -mb-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                </Link>
+                <Link id="delete-note" method="delete" v-bind:href="deleteNoteEndpoint" confirm-danger="Delete requested"
+                      confirm-text="This note will be permanently deleted"
+                      confirm-button="Yes, delete this note permanently" cancel-button="No don't delete">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-5 h-5 -mb-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                </Link>
             </div>
         </div>
-        <editor-content id="editor" :editor="editor" />
+        <editor-content class="p-3 lg:p-6 mb-[130%] lg:mb-[45%]" id="editor" :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
         }" :shouldShow="() => { return editor.isEditable; }">
@@ -139,6 +134,9 @@ export default {
         author: {
             type: String
         },
+        title: {
+            type: String
+        },
         editable: {
             type: Boolean
         },
@@ -219,17 +217,10 @@ export default {
             var second = dateObj.getUTCSeconds();
 
             // Format the date as a string
-            var date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
+            var date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 
             return date;
         },
-        toggleDefinitionsQuiz () {
-            const elements = document.querySelectorAll('#editor p:has(dfn)');
-            this.definitionsVisible = document.querySelector('#editor p.blind') != undefined;
-            elements.forEach(definition => {
-                definition.classList.toggle('blind');
-            })
-        }
     },
 
     mounted () {
@@ -282,7 +273,11 @@ export default {
             if (this.editable) {
                 alert('lock editor first');
             } else {
-                this.toggleDefinitionsQuiz();
+                const elements = document.querySelectorAll('#editor p:has(dfn)');
+                this.definitionsVisible = document.querySelector('#editor p.blind') != undefined;
+                elements.forEach(definition => {
+                    definition.classList.toggle('blind');
+                })
             }
         });
     },
