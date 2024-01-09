@@ -2,7 +2,7 @@
     icon="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
     @if (count($notes) > 0 || isset($filter['categories']))
         <x-slot:leftSide>
-            <div class="h-full overflow-y-auto pb-20">
+            <div class="h-full overflow-y-auto pb-20 shadow">
                 <x-notes-filter :$filter />
             </div>
         </x-slot>
@@ -64,7 +64,7 @@
             </note>
         </div>
         <x-slot:rightSide>
-            <x-note.last-opened :$lastOpened class="h-full pb-20 pt-6" />
+            <x-note.last-opened :$lastOpened class="h-full pb-20 pt-6 shadow" />
         </x-slot>
     @else
         <div class="h-[96%] flex justify-center items-center">

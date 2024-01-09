@@ -11,8 +11,7 @@
                              {{ $leftSide }}
                          @endif
                      </div>
-                     <div class="w-full h-full overflow-y-auto relative" @preserveScroll('main-layout')>
-
+                     <div class="w-full lg:w-[900px] h-full overflow-y-auto relative" @preserveScroll('main-layout')>
                          @if (isset($leftSide))
                              <button @click="main.toggleLeftSide"
                                  class="lg:hidden fixed -left-0.5 bottom-96 z-20 flex gap-2 items-center bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200/40 font-medium py-1 px-2 shadow rounded transition-all duration-300 hover:shadow-sm">

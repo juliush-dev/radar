@@ -7,7 +7,7 @@
                 <x-note.categories :inEditor="true" :$note class="h-1/2 shadow overflow-y-auto" />
                 <div class="flex flex-col gap-6 h-1/2 overflow-y-auto p-6 pb-16">
                     <x-note.referers :$note />
-                    <x-note.relatives :category="null" :$note />
+                    <x-note.relatives class="shadow-sm" :category="null" :$note />
                 </div>
             </x-splade-form>
         </div>
@@ -16,7 +16,7 @@
     <x-slot:rightSide>
         <div class="w-full h-full border-l border-slate-400/10">
             <x-note.quick-actions :$note class="shadow p-6" />
-            <x-note.last-opened :$lastOpened class="p-6 h-[50%] overflow-y-auto pb-28" />
+            <x-note.last-opened :$lastOpened class="p-6 h-[65%] overflow-y-auto pb-28 shadow-sm" />
         </div>
     </x-slot>
 </x-layouts.app>

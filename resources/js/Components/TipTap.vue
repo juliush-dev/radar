@@ -33,8 +33,8 @@
                 </Link>
             </div>
         </div>
-        <editor-content class="p-3 lg:p-6 mb-[130%] lg:mb-[45%] border border-slate-400/10 shadow-sm" id="editor"
-                        :editor="editor" />
+        <editor-content class="p-3 lg:p-6 mb-[130%] lg:mb-[45%] border border-slate-400/10 shadow-sm overflow-hidden"
+                        id="editor" :editor="editor" />
         <floating-menu :editor="editor" v-if="editor" :tippy-options="{
             offset: [35, 0]
         }" :shouldShow="() => { return editor.isEditable; }">
